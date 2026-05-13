@@ -1,0 +1,729 @@
+---
+title: "Schedule"
+---
+
+Weekly topics, learning objectives, and skills. Click a week to expand.
+
+```{=html}
+<!-- Bloom's legend -->
+<div class="d-flex flex-wrap gap-2 mb-4 align-items-center">
+  <small class="text-secondary me-1">Bloom's level:</small>
+  <span class="bloom bloom-remember">Remember</span>
+  <span class="bloom bloom-understand">Understand</span>
+  <span class="bloom bloom-apply">Apply</span>
+  <span class="bloom bloom-analyze">Analyze</span>
+  <span class="bloom bloom-evaluate">Evaluate</span>
+  <span class="bloom bloom-create">Create</span>
+</div>
+
+<style>
+/* accordion layout */
+.accordion-button { gap: 1rem; align-items: baseline; }
+.week-num   { font-weight: 700; white-space: nowrap; min-width: 5rem; }
+.week-dates { font-size: 0.82rem; opacity: 0.65; white-space: nowrap; }
+.week-topic { font-style: italic; }
+
+.acc-grid {
+  display: grid;
+  grid-template-columns: 1fr 210px;
+  gap: 0 2rem;
+}
+@media (max-width: 640px) { .acc-grid { grid-template-columns: 1fr; } }
+
+.acc-aside h6 { margin-top: 1.1rem; }
+.acc-aside h6:first-child { margin-top: 0; }
+
+.slo-list { list-style: none; padding-left: 0; margin-bottom: 0; }
+.slo-list li { margin-bottom: 0.35rem; line-height: 1.5; }
+
+/* break row */
+.accordion-button.break-week {
+  background-color: var(--bs-secondary-bg);
+  color: var(--bs-secondary-color);
+  font-style: italic;
+  cursor: default;
+  pointer-events: none;
+}
+.accordion-button.break-week::after { display: none; }
+</style>
+
+<div class="accordion" id="scheduleAccordion">
+
+<!-- ══════════════════════════════════════════════════════════
+     WEEK 00 — Introduction to C++
+     ══════════════════════════════════════════════════════════ -->
+<div class="accordion-item">
+  <h2 class="accordion-header">
+    <button class="accordion-button collapsed" type="button"
+            data-bs-toggle="collapse" data-bs-target="#w00">
+      <span class="week-num">Week 00</span>
+      <span class="week-dates">Aug 31 – Sep 5</span>
+      <span class="week-topic">Introduction to C++</span>
+    </button>
+  </h2>
+  <div id="w00" class="accordion-collapse collapse" data-bs-parent="#scheduleAccordion">
+    <div class="accordion-body">
+      <div class="acc-grid">
+        <div>
+          <p class="slo-section-label">🧠 Understanding</p>
+          <ul class="slo-list">
+            <li><span class="bloom bloom-understand">Understand</span> Describe the process of <strong>compilation</strong> of a C++ program.</li>
+            <li><span class="bloom bloom-understand">Understand</span> Articulate the importance of initializing variables.</li>
+            <li><span class="bloom bloom-analyze">Analyze</span> Identify and compare the sizes of different data types.</li>
+            <li><span class="bloom bloom-understand">Understand</span> Explain what pointers are and how dereferencing works.</li>
+          </ul>
+          <p class="slo-section-label">🛠️ Skills</p>
+          <ul class="slo-list">
+            <li><span class="bloom bloom-apply">Apply</span> Perform basic I/O using <code>cout</code> and <code>cin</code>.</li>
+            <li><span class="bloom bloom-apply">Apply</span> Create and initialize variables of various data types.</li>
+            <li><span class="bloom bloom-apply">Apply</span> Write and convert values in decimal, hexadecimal, and binary.</li>
+            <li><span class="bloom bloom-apply">Apply</span> Declare and initialize array variables.</li>
+            <li><span class="bloom bloom-apply">Apply</span> Create pointers and use the dereferencing and address-of operators.</li>
+          </ul>
+        </div>
+        <div class="acc-aside">
+          <h6>📖 Readings</h6>
+          <p><a href="https://runestone.academy/runestone/books/published/cpp4python/index.html" target="_blank">C++ for Python Programmers</a><br>Chapters 1, 2, Sec. 5.1–5.2</p>
+          <h6>🖥️ Slides</h6>
+          <p><em>Coming soon</em></p>
+          <h6>🔗 Resources</h6>
+          <p><a href="https://integer.exposed/#0x0008" target="_blank">Binary Exposed</a></p>
+          <h6>📝 Assignments</h6>
+          <p><a href="week00/lab00.html">Lab 00</a><br>
+             <a href="week00/proj00.html">Project 00</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     WEEK 01 — Control Structures, Functions, Parameter Passing
+     ══════════════════════════════════════════════════════════ -->
+<div class="accordion-item">
+  <h2 class="accordion-header">
+    <button class="accordion-button collapsed" type="button"
+            data-bs-toggle="collapse" data-bs-target="#w01">
+      <span class="week-num">Week 01</span>
+      <span class="week-dates">Sep 7 – Sep 12</span>
+      <span class="week-topic">Control Structures, Functions, Parameter Passing</span>
+    </button>
+  </h2>
+  <div id="w01" class="accordion-collapse collapse" data-bs-parent="#scheduleAccordion">
+    <div class="accordion-body">
+      <div class="acc-grid">
+        <div>
+          <p class="slo-section-label">🧠 Understanding</p>
+          <ul class="slo-list">
+            <li><span class="bloom bloom-understand">Understand</span> Articulate the differences between in, out, and in/out parameters.</li>
+            <li><span class="bloom bloom-analyze">Analyze</span> Compare pass-by-value, pass-by-reference, and pass-by-const-ref and choose correctly.</li>
+          </ul>
+          <p class="slo-section-label">🛠️ Skills</p>
+          <ul class="slo-list">
+            <li><span class="bloom bloom-apply">Apply</span> Write <code>if</code>, <code>if-else</code>, <code>if-else-if</code>, and <code>switch</code> statements correctly.</li>
+            <li><span class="bloom bloom-apply">Apply</span> Create <code>while</code> and <code>for</code> loops using <code>break</code> and <code>continue</code>.</li>
+            <li><span class="bloom bloom-apply">Apply</span> Define and call functions with overloading and default arguments.</li>
+            <li><span class="bloom bloom-apply">Apply</span> Pass arrays as parameters to functions.</li>
+            <li><span class="bloom bloom-apply">Apply</span> Use Makefiles to build multi-file C++ projects.</li>
+          </ul>
+        </div>
+        <div class="acc-aside">
+          <h6>📖 Readings</h6>
+          <p><a href="https://runestone.academy/runestone/books/published/cpp4python/index.html" target="_blank">C++ for Python Programmers</a><br>Chapters 3 and 4<br>
+          <a href="https://makefiletutorial.com/" target="_blank">Makefile Tutorial</a></p>
+          <h6>🖥️ Slides</h6>
+          <p><em>Coming soon</em></p>
+          <h6>📝 Assignments</h6>
+          <p><a href="week01/lab01.html">Lab 01</a><br>
+             <a href="week01/proj01.html">Project 01</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     WEEK 02 — File I/O, Exception Handling, 2D Arrays
+     ══════════════════════════════════════════════════════════ -->
+<div class="accordion-item">
+  <h2 class="accordion-header">
+    <button class="accordion-button collapsed" type="button"
+            data-bs-toggle="collapse" data-bs-target="#w02">
+      <span class="week-num">Week 02</span>
+      <span class="week-dates">Sep 14 – Sep 19</span>
+      <span class="week-topic">File I/O, Exception Handling, 2D Arrays</span>
+    </button>
+  </h2>
+  <div id="w02" class="accordion-collapse collapse" data-bs-parent="#scheduleAccordion">
+    <div class="accordion-body">
+      <div class="acc-grid">
+        <div>
+          <p class="slo-section-label">🧠 Understanding</p>
+          <ul class="slo-list">
+            <li><span class="bloom bloom-understand">Understand</span> Explain end-of-file conditions and how to detect them.</li>
+            <li><span class="bloom bloom-understand">Understand</span> Explain the purpose and flow of exception handling (<code>try</code>/<code>catch</code>/<code>throw</code>).</li>
+          </ul>
+          <p class="slo-section-label">🛠️ Skills</p>
+          <ul class="slo-list">
+            <li><span class="bloom bloom-apply">Apply</span> Open, read from, write to, and close files.</li>
+            <li><span class="bloom bloom-apply">Apply</span> Use <code>try</code>, <code>catch</code>, and <code>throw</code> correctly in C++ programs.</li>
+            <li><span class="bloom bloom-apply">Apply</span> Define, iterate over, and manipulate two-dimensional arrays.</li>
+          </ul>
+        </div>
+        <div class="acc-aside">
+          <h6>📖 Readings</h6>
+          <p><a href="https://runestone.academy/runestone/books/published/cpp4python/index.html" target="_blank">C++ for Python Programmers</a><br>Chapters 6 and 7</p>
+          <h6>🖥️ Slides</h6>
+          <p><em>Coming soon</em></p>
+          <h6>📝 Assignments</h6>
+          <p><a href="week02/lab02.html">Lab 02</a><br>
+             <a href="week02/proj02.html">Project 02</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     WEEK 03 — Classes and Operator Overloading
+     ══════════════════════════════════════════════════════════ -->
+<div class="accordion-item">
+  <h2 class="accordion-header">
+    <button class="accordion-button collapsed" type="button"
+            data-bs-toggle="collapse" data-bs-target="#w03">
+      <span class="week-num">Week 03</span>
+      <span class="week-dates">Sep 21 – Sep 26</span>
+      <span class="week-topic">Classes and Operator Overloading</span>
+    </button>
+  </h2>
+  <div id="w03" class="accordion-collapse collapse" data-bs-parent="#scheduleAccordion">
+    <div class="accordion-body">
+      <div class="acc-grid">
+        <div>
+          <p class="slo-section-label">🧠 Understanding</p>
+          <ul class="slo-list">
+            <li><span class="bloom bloom-understand">Understand</span> Reason about <code>public</code> and <code>private</code> access modifiers.</li>
+            <li><span class="bloom bloom-analyze">Analyze</span> Explain when C++ calls constructors and destructors and why that matters.</li>
+          </ul>
+          <p class="slo-section-label">🛠️ Skills</p>
+          <ul class="slo-list">
+            <li><span class="bloom bloom-apply">Apply</span> Define a class and implement it across <code>.h</code> and <code>.cpp</code> files.</li>
+            <li><span class="bloom bloom-apply">Apply</span> Implement constructors, destructors, and general methods.</li>
+            <li><span class="bloom bloom-apply">Apply</span> Instantiate objects statically.</li>
+            <li><span class="bloom bloom-apply">Apply</span> Implement operator overloading for a class.</li>
+            <li><span class="bloom bloom-create">Create</span> Apply test-driven development to design and verify a class.</li>
+          </ul>
+        </div>
+        <div class="acc-aside">
+          <h6>📖 Readings</h6>
+          <p><em>TBD</em></p>
+          <h6>🖥️ Slides</h6>
+          <p><em>Coming soon</em></p>
+          <h6>📝 Assignments</h6>
+          <p><a href="week03/lab03.html">Lab 03</a><br>
+             <a href="week03/proj03.html">Project 03</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     WEEK 04 — Vectors / Dynamic Arrays
+     ══════════════════════════════════════════════════════════ -->
+<div class="accordion-item">
+  <h2 class="accordion-header">
+    <button class="accordion-button collapsed" type="button"
+            data-bs-toggle="collapse" data-bs-target="#w04">
+      <span class="week-num">Week 04</span>
+      <span class="week-dates">Sep 28 – Oct 3</span>
+      <span class="week-topic">Vectors — Dynamic Arrays</span>
+    </button>
+  </h2>
+  <div id="w04" class="accordion-collapse collapse" data-bs-parent="#scheduleAccordion">
+    <div class="accordion-body">
+      <div class="acc-grid">
+        <div>
+          <p class="slo-section-label">🧠 Understanding</p>
+          <ul class="slo-list">
+            <li><span class="bloom bloom-analyze">Analyze</span> Reason about the difference between <strong>shallow</strong> and <strong>deep</strong> copies of a data structure.</li>
+            <li><span class="bloom bloom-understand">Understand</span> Explain when C++ calls the destructor on an object.</li>
+            <li><span class="bloom bloom-understand">Understand</span> Explain when it is important to implement the destructor explicitly.</li>
+            <li><span class="bloom bloom-analyze">Analyze</span> Understand how a dynamic array adapts its internal size.</li>
+          </ul>
+          <p class="slo-section-label">🛠️ Skills</p>
+          <ul class="slo-list">
+            <li><span class="bloom bloom-apply">Apply</span> Recognize and implement a copy constructor.</li>
+            <li><span class="bloom bloom-apply">Apply</span> Use <code>new</code>, <code>delete</code>, and <code>delete[]</code> to manage dynamic memory.</li>
+            <li><span class="bloom bloom-create">Create</span> Implement a dynamic array class with resizing behavior.</li>
+          </ul>
+        </div>
+        <div class="acc-aside">
+          <h6>📖 Readings</h6>
+          <p><em>TBD</em></p>
+          <h6>🖥️ Slides</h6>
+          <p><em>Coming soon</em></p>
+          <h6>📝 Assignments</h6>
+          <p><a href="week04/lab04.html">Lab 04</a><br>
+             <a href="week04/proj04.html">Project 04</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     WEEK 05 — Generic Containers
+     ══════════════════════════════════════════════════════════ -->
+<div class="accordion-item">
+  <h2 class="accordion-header">
+    <button class="accordion-button collapsed" type="button"
+            data-bs-toggle="collapse" data-bs-target="#w05">
+      <span class="week-num">Week 05</span>
+      <span class="week-dates">Oct 5 – Oct 10</span>
+      <span class="week-topic">Generic Containers</span>
+    </button>
+  </h2>
+  <div id="w05" class="accordion-collapse collapse" data-bs-parent="#scheduleAccordion">
+    <div class="accordion-body">
+      <div class="acc-grid">
+        <div>
+          <p class="slo-section-label">🧠 Understanding</p>
+          <ul class="slo-list">
+            <li><span class="bloom bloom-analyze">Analyze</span> Describe when appending to a dynamic array is inexpensive vs. expensive.</li>
+            <li><span class="bloom bloom-analyze">Analyze</span> Reason about the difference between a dynamic array's <em>size</em> and <em>capacity</em>.</li>
+            <li><span class="bloom bloom-understand">Understand</span> Explain what a class template is and why to use it instead of a class.</li>
+            <li><span class="bloom bloom-analyze">Analyze</span> Reason about time complexity: linear, constant, and amortized constant time.</li>
+          </ul>
+          <p class="slo-section-label">🛠️ Skills</p>
+          <ul class="slo-list">
+            <li><span class="bloom bloom-apply">Apply</span> Implement a class template.</li>
+            <li><span class="bloom bloom-analyze">Analyze</span> Determine the time complexity of append, insert, remove, and copy-constructor on a dynamic array.</li>
+          </ul>
+        </div>
+        <div class="acc-aside">
+          <h6>📖 Readings</h6>
+          <p><em>TBD</em></p>
+          <h6>🖥️ Slides</h6>
+          <p><em>Coming soon</em></p>
+          <h6>📝 Assignments</h6>
+          <p><a href="week05/lab05.html">Lab 05</a><br>
+             <a href="week05/proj05.html">Project 05</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     WEEK 06 — Linked Lists
+     ══════════════════════════════════════════════════════════ -->
+<div class="accordion-item">
+  <h2 class="accordion-header">
+    <button class="accordion-button collapsed" type="button"
+            data-bs-toggle="collapse" data-bs-target="#w06">
+      <span class="week-num">Week 06</span>
+      <span class="week-dates">Oct 12 – Oct 15</span>
+      <span class="week-topic">Linked Lists</span>
+    </button>
+  </h2>
+  <div id="w06" class="accordion-collapse collapse" data-bs-parent="#scheduleAccordion">
+    <div class="accordion-body">
+      <div class="acc-grid">
+        <div>
+          <p class="slo-section-label">🧠 Understanding</p>
+          <ul class="slo-list">
+            <li><span class="bloom bloom-understand">Understand</span> Describe the organization of a linked list and how Nodes chain together.</li>
+            <li><span class="bloom bloom-analyze">Analyze</span> Reason about the time complexity of prepend, append, remove, traverse, search, and indexing.</li>
+            <li><span class="bloom bloom-understand">Understand</span> Explain how the Node destructor causes a chain reaction to delete all Nodes.</li>
+            <li><span class="bloom bloom-evaluate">Evaluate</span> Compare and contrast a linked list vs. a dynamic array and choose the right one for a given scenario.</li>
+          </ul>
+          <p class="slo-section-label">🛠️ Skills</p>
+          <ul class="slo-list">
+            <li><span class="bloom bloom-apply">Apply</span> Write code to traverse a linked list.</li>
+            <li><span class="bloom bloom-create">Create</span> Implement prepend, append, and remove operations on a linked list.</li>
+          </ul>
+        </div>
+        <div class="acc-aside">
+          <h6>📖 Readings</h6>
+          <p><em>TBD</em></p>
+          <h6>🖥️ Slides</h6>
+          <p><em>Coming soon</em></p>
+          <h6>📝 Assignments</h6>
+          <p><a href="week06/lab06.html">Lab 06</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     WEEK 07 — Fall Break
+     ══════════════════════════════════════════════════════════ -->
+<div class="accordion-item">
+  <h2 class="accordion-header">
+    <button class="accordion-button break-week" type="button">
+      <span class="week-num">Week 07</span>
+      <span class="week-dates">Oct 16 – Oct 22</span>
+      <span class="week-topic">🍂 Fall Break &amp; Advising Days — No Class</span>
+    </button>
+  </h2>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     WEEK 08 — Algorithm Analysis and Big-Oh
+     ══════════════════════════════════════════════════════════ -->
+<div class="accordion-item">
+  <h2 class="accordion-header">
+    <button class="accordion-button collapsed" type="button"
+            data-bs-toggle="collapse" data-bs-target="#w08">
+      <span class="week-num">Week 08</span>
+      <span class="week-dates">Oct 23 – Oct 31</span>
+      <span class="week-topic">Algorithm Analysis and Big-Oh</span>
+    </button>
+  </h2>
+  <div id="w08" class="accordion-collapse collapse" data-bs-parent="#scheduleAccordion">
+    <div class="accordion-body">
+      <div class="acc-grid">
+        <div>
+          <p class="slo-section-label">🧠 Understanding</p>
+          <ul class="slo-list">
+            <li><span class="bloom bloom-understand">Understand</span> Describe the concept of Big-Oh notation for analyzing algorithmic complexity.</li>
+            <li><span class="bloom bloom-analyze">Analyze</span> Reason about Big-Oh as an approximation: <em>a·f(n) + b</em>.</li>
+            <li><span class="bloom bloom-remember">Remember</span> Identify typical Big-Oh curves (O(1), O(log n), O(n), O(n log n), O(n²)).</li>
+          </ul>
+          <p class="slo-section-label">🛠️ Skills</p>
+          <ul class="slo-list">
+            <li><span class="bloom bloom-analyze">Analyze</span> Classify the time complexity of a given algorithm using Big-Oh notation.</li>
+            <li><span class="bloom bloom-evaluate">Evaluate</span> Compare the efficiency of two algorithms and justify the better choice.</li>
+          </ul>
+        </div>
+        <div class="acc-aside">
+          <h6>📖 Readings</h6>
+          <p><em>TBD</em></p>
+          <h6>🖥️ Slides</h6>
+          <p><em>Coming soon</em></p>
+          <h6>📝 Assignments</h6>
+          <p><a href="week08/lab08.html">Lab 08</a><br>
+             <a href="week08/proj08.html">Project 08</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     WEEK 09 — Stacks and Queues
+     ══════════════════════════════════════════════════════════ -->
+<div class="accordion-item">
+  <h2 class="accordion-header">
+    <button class="accordion-button collapsed" type="button"
+            data-bs-toggle="collapse" data-bs-target="#w09">
+      <span class="week-num">Week 09</span>
+      <span class="week-dates">Nov 2 – Nov 7</span>
+      <span class="week-topic">Stacks and Queues</span>
+    </button>
+  </h2>
+  <div id="w09" class="accordion-collapse collapse" data-bs-parent="#scheduleAccordion">
+    <div class="accordion-body">
+      <div class="acc-grid">
+        <div>
+          <p class="slo-section-label">🧠 Understanding</p>
+          <ul class="slo-list">
+            <li><span class="bloom bloom-remember">Remember</span> Enumerate the typical API for a Stack and a Queue.</li>
+            <li><span class="bloom bloom-understand">Understand</span> Define an Abstract Data Type (ADT).</li>
+            <li><span class="bloom bloom-analyze">Analyze</span> Reason about how to implement Stacks and Queues so all operations are O(1).</li>
+            <li><span class="bloom bloom-understand">Understand</span> Describe how a circular array works.</li>
+            <li><span class="bloom bloom-understand">Understand</span> Define a deque and explain how to implement it.</li>
+          </ul>
+          <p class="slo-section-label">🛠️ Skills</p>
+          <ul class="slo-list">
+            <li><span class="bloom bloom-create">Create</span> Implement a Stack using a fixed-size array or linked list.</li>
+            <li><span class="bloom bloom-create">Create</span> Implement a Queue using a circular array.</li>
+          </ul>
+        </div>
+        <div class="acc-aside">
+          <h6>📖 Readings</h6>
+          <p><em>TBD</em></p>
+          <h6>🖥️ Slides</h6>
+          <p><em>Coming soon</em></p>
+          <h6>📝 Assignments</h6>
+          <p><a href="week09/lab09.html">Lab 09</a><br>
+             <a href="week09/proj09.html">Project 09</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     WEEK 10 — Recursion
+     ══════════════════════════════════════════════════════════ -->
+<div class="accordion-item">
+  <h2 class="accordion-header">
+    <button class="accordion-button collapsed" type="button"
+            data-bs-toggle="collapse" data-bs-target="#w10">
+      <span class="week-num">Week 10</span>
+      <span class="week-dates">Nov 9 – Nov 14</span>
+      <span class="week-topic">Recursion</span>
+    </button>
+  </h2>
+  <div id="w10" class="accordion-collapse collapse" data-bs-parent="#scheduleAccordion">
+    <div class="accordion-body">
+      <div class="acc-grid">
+        <div>
+          <p class="slo-section-label">🧠 Understanding</p>
+          <ul class="slo-list">
+            <li><span class="bloom bloom-understand">Understand</span> Define the structure of a recursive solution: base case and recursive case.</li>
+            <li><span class="bloom bloom-remember">Remember</span> Correctly use the terms "winding phase" and "unwinding phase".</li>
+            <li><span class="bloom bloom-analyze">Analyze</span> Argue why a recursive solution is generally less efficient than an iterative one.</li>
+            <li><span class="bloom bloom-analyze">Analyze</span> Describe the role the runtime stack plays in recursive execution.</li>
+            <li><span class="bloom bloom-analyze">Analyze</span> Reason about the time complexity of the Towers of Hanoi problem.</li>
+          </ul>
+          <p class="slo-section-label">🛠️ Skills</p>
+          <ul class="slo-list">
+            <li><span class="bloom bloom-apply">Apply</span> Implement a basic recursive function (e.g., factorial, Fibonacci).</li>
+            <li><span class="bloom bloom-analyze">Analyze</span> Trace through a recursive call stack step by step.</li>
+          </ul>
+        </div>
+        <div class="acc-aside">
+          <h6>📖 Readings</h6>
+          <p><em>TBD</em></p>
+          <h6>🖥️ Slides</h6>
+          <p><em>Coming soon</em></p>
+          <h6>📝 Assignments</h6>
+          <p><a href="week10/lab10.html">Lab 10</a><br>
+             <a href="week10/proj10.html">Project 10</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     WEEK 11 — Binary Search Trees
+     ══════════════════════════════════════════════════════════ -->
+<div class="accordion-item">
+  <h2 class="accordion-header">
+    <button class="accordion-button collapsed" type="button"
+            data-bs-toggle="collapse" data-bs-target="#w11">
+      <span class="week-num">Week 11</span>
+      <span class="week-dates">Nov 16 – Nov 21</span>
+      <span class="week-topic">Binary Search Trees</span>
+    </button>
+  </h2>
+  <div id="w11" class="accordion-collapse collapse" data-bs-parent="#scheduleAccordion">
+    <div class="accordion-body">
+      <div class="acc-grid">
+        <div>
+          <p class="slo-section-label">🧠 Understanding</p>
+          <ul class="slo-list">
+            <li><span class="bloom bloom-understand">Understand</span> Articulate the operations one can perform on a BST.</li>
+            <li><span class="bloom bloom-analyze">Analyze</span> Reason about the time complexity of BST operations in best and worst cases.</li>
+            <li><span class="bloom bloom-understand">Understand</span> Define what makes a BST <strong>balanced</strong>.</li>
+            <li><span class="bloom bloom-analyze">Analyze</span> Describe the algorithm for finding the max node in a left subtree and min in a right subtree.</li>
+          </ul>
+          <p class="slo-section-label">🛠️ Skills</p>
+          <ul class="slo-list">
+            <li><span class="bloom bloom-create">Create</span> Implement <code>insert</code>, <code>contains</code>, <code>remove</code>, <code>getHeight</code>, and tree traversals.</li>
+            <li><span class="bloom bloom-apply">Apply</span> Implement the BST destructor using recursive node deletion.</li>
+          </ul>
+        </div>
+        <div class="acc-aside">
+          <h6>📖 Readings</h6>
+          <p><em>TBD</em></p>
+          <h6>🖥️ Slides</h6>
+          <p><em>Coming soon</em></p>
+          <h6>📝 Assignments</h6>
+          <p><a href="week11/lab11.html">Lab 11</a><br>
+             <a href="week11/proj11.html">Project 11</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     WEEK 12 — AVL Trees
+     ══════════════════════════════════════════════════════════ -->
+<div class="accordion-item">
+  <h2 class="accordion-header">
+    <button class="accordion-button collapsed" type="button"
+            data-bs-toggle="collapse" data-bs-target="#w12">
+      <span class="week-num">Week 12</span>
+      <span class="week-dates">Nov 23 – Nov 28</span>
+      <span class="week-topic">AVL Trees</span>
+    </button>
+  </h2>
+  <div id="w12" class="accordion-collapse collapse" data-bs-parent="#scheduleAccordion">
+    <div class="accordion-body">
+      <div class="acc-grid">
+        <div>
+          <p class="slo-section-label">🧠 Understanding</p>
+          <ul class="slo-list">
+            <li><span class="bloom bloom-understand">Understand</span> Identify an AVL tree as a self-balancing BST.</li>
+            <li><span class="bloom bloom-understand">Understand</span> Articulate the importance of the <strong>balance factor</strong> in determining when to rebalance.</li>
+            <li><span class="bloom bloom-remember">Remember</span> Name the four rotation cases: LL, RR, LR, RL.</li>
+          </ul>
+          <p class="slo-section-label">🛠️ Skills</p>
+          <ul class="slo-list">
+            <li><span class="bloom bloom-apply">Apply</span> Compute the balance factor for a node.</li>
+            <li><span class="bloom bloom-create">Create</span> Implement AVL rotations to restore balance after insert or remove.</li>
+          </ul>
+          <div class="alert alert-warning py-1 px-2 mt-2" style="font-size:0.85rem;">
+            ⚠️ Nov 25–27 Thanksgiving break. Nov 23 class covered by substitute.
+          </div>
+        </div>
+        <div class="acc-aside">
+          <h6>📖 Readings</h6>
+          <p><em>TBD</em></p>
+          <h6>🖥️ Slides</h6>
+          <p><em>Coming soon</em></p>
+          <h6>📝 Assignments</h6>
+          <p><a href="week12/lab12.html">Lab 12</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     WEEK 13 — STL set and map
+     ══════════════════════════════════════════════════════════ -->
+<div class="accordion-item">
+  <h2 class="accordion-header">
+    <button class="accordion-button collapsed" type="button"
+            data-bs-toggle="collapse" data-bs-target="#w13">
+      <span class="week-num">Week 13</span>
+      <span class="week-dates">Nov 30 – Dec 5</span>
+      <span class="week-topic">STL <code>set</code> and <code>map</code></span>
+    </button>
+  </h2>
+  <div id="w13" class="accordion-collapse collapse" data-bs-parent="#scheduleAccordion">
+    <div class="accordion-body">
+      <div class="acc-grid">
+        <div>
+          <p class="slo-section-label">🧠 Understanding</p>
+          <ul class="slo-list">
+            <li><span class="bloom bloom-understand">Understand</span> Describe the unique characteristics of the STL <code>set</code> (unique values, sorted order).</li>
+            <li><span class="bloom bloom-analyze">Analyze</span> Identify the time complexity of <code>set</code> and <code>map</code> operations.</li>
+            <li><span class="bloom bloom-understand">Understand</span> Explain the behavior of an iterator.</li>
+            <li><span class="bloom bloom-understand">Understand</span> Describe the unique characteristics of the STL <code>map</code> (key-value pairs, unique keys).</li>
+            <li><span class="bloom bloom-analyze">Analyze</span> Reason about the unique behavior of indexing (<code>[]</code>) in a <code>map</code>.</li>
+          </ul>
+          <p class="slo-section-label">🛠️ Skills</p>
+          <ul class="slo-list">
+            <li><span class="bloom bloom-apply">Apply</span> Write code using iterators to traverse all items in a <code>set</code> or <code>map</code>.</li>
+            <li><span class="bloom bloom-apply">Apply</span> Use <code>set</code> and <code>map</code> to solve practical problems.</li>
+          </ul>
+        </div>
+        <div class="acc-aside">
+          <h6>📖 Readings</h6>
+          <p><em>TBD</em></p>
+          <h6>🖥️ Slides</h6>
+          <p><em>Coming soon</em></p>
+          <h6>📝 Assignments</h6>
+          <p><a href="week13/lab13.html">Lab 13</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     WEEK 14 — Hash Tables & Sorting
+     ══════════════════════════════════════════════════════════ -->
+<div class="accordion-item">
+  <h2 class="accordion-header">
+    <button class="accordion-button collapsed" type="button"
+            data-bs-toggle="collapse" data-bs-target="#w14">
+      <span class="week-num">Week 14</span>
+      <span class="week-dates">Dec 7 – Dec 9</span>
+      <span class="week-topic">Hash Tables &amp; Sorting Algorithms</span>
+    </button>
+  </h2>
+  <div id="w14" class="accordion-collapse collapse" data-bs-parent="#scheduleAccordion">
+    <div class="accordion-body">
+      <div class="acc-grid">
+        <div>
+          <p class="slo-section-label">🧠 Understanding</p>
+          <ul class="slo-list">
+            <li><span class="bloom bloom-analyze">Analyze</span> Reason about the properties of a good hash algorithm.</li>
+            <li><span class="bloom bloom-analyze">Analyze</span> Identify the time complexity of hash table operations.</li>
+            <li><span class="bloom bloom-analyze">Analyze</span> Reason about the time-space trade-off in a hash table.</li>
+            <li><span class="bloom bloom-analyze">Analyze</span> Identify the time complexity of Insertion Sort and Selection Sort in best and worst cases.</li>
+            <li><span class="bloom bloom-evaluate">Evaluate</span> Compare Insertion Sort and Selection Sort and justify which is preferable for a given input.</li>
+          </ul>
+          <p class="slo-section-label">🛠️ Skills</p>
+          <ul class="slo-list">
+            <li><span class="bloom bloom-create">Create</span> Implement the basic data structure for a hash table.</li>
+            <li><span class="bloom bloom-apply">Apply</span> Implement Insertion Sort and Selection Sort.</li>
+          </ul>
+        </div>
+        <div class="acc-aside">
+          <h6>📖 Readings</h6>
+          <p><em>TBD</em></p>
+          <h6>🖥️ Slides</h6>
+          <p><em>Coming soon</em></p>
+          <h6>📝 Assignments</h6>
+          <p><a href="week14/lab14.html">Lab 14</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end accordion -->
+
+<script>
+(function () {
+  const weeks = {
+    w00: ['2026-08-31', '2026-09-05'],
+    w01: ['2026-09-07', '2026-09-12'],
+    w02: ['2026-09-14', '2026-09-19'],
+    w03: ['2026-09-21', '2026-09-26'],
+    w04: ['2026-09-28', '2026-10-03'],
+    w05: ['2026-10-05', '2026-10-10'],
+    w06: ['2026-10-12', '2026-10-15'],
+    w07: ['2026-10-16', '2026-10-22'], // Fall Break — no expand
+    w08: ['2026-10-23', '2026-10-31'],
+    w09: ['2026-11-02', '2026-11-07'],
+    w10: ['2026-11-09', '2026-11-14'],
+    w11: ['2026-11-16', '2026-11-21'],
+    w12: ['2026-11-23', '2026-11-28'],
+    w13: ['2026-11-30', '2026-12-05'],
+    w14: ['2026-12-07', '2026-12-09'],
+  };
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  for (const [id, [start, end]] of Object.entries(weeks)) {
+    const s = new Date(start), e = new Date(end);
+    e.setHours(23, 59, 59, 999);
+    if (today < s || today > e) continue;
+
+    // Highlight the button
+    const btn = document.querySelector(`[data-bs-target="#${id}"]`);
+    if (!btn) break;
+    btn.classList.add('current-week');
+
+    // Add badge
+    const badge = document.createElement('span');
+    badge.className = 'current-week-badge';
+    badge.textContent = '📍 Current week';
+    btn.appendChild(badge);
+
+    // Auto-expand (skip Fall Break)
+    if (id === 'w07') break;
+    const panel = document.getElementById(id);
+    if (panel) {
+      panel.classList.add('show');
+      btn.classList.remove('collapsed');
+      btn.setAttribute('aria-expanded', 'true');
+    }
+    break;
+  }
+})();
+</script>
+```

@@ -1,0 +1,225 @@
+---
+title: "Main Page"
+title-block-style: none
+---
+
+```{=html}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const el = document.getElementById('hero-last-updated');
+  if (!el) return;
+  const d = new Date(document.lastModified);
+  el.textContent = 'Last updated: ' + d.toLocaleDateString('en-US', {
+    year: 'numeric', month: 'long', day: 'numeric'
+  });
+});
+</script>
+<style>
+/* hide Quarto's auto title block on this page */
+#title-block-header { display: none !important; }
+
+/* ── Hero ──────────────────────────────────────────────────── */
+.hero {
+  background: #6E1C2E;
+  color: #fff;
+  padding: 2.5rem 2rem;
+  border-radius: var(--bs-border-radius-lg, .5rem);
+  margin-bottom: 1.5rem;
+}
+.hero-eyebrow {
+  font-size: .75rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  opacity: .7;
+  margin-bottom: .4rem;
+}
+.hero-title {
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: .5rem;
+}
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  font-size: .9rem;
+  opacity: .85;
+  margin-bottom: 1.5rem;
+}
+.hero-meta span { display: flex; align-items: center; gap: .35rem; }
+.hero-btn {
+  display: inline-block;
+  background: #fff;
+  color: #6E1C2E !important;
+  font-size: .875rem;
+  font-weight: 600;
+  padding: .45rem 1.1rem;
+  border-radius: .375rem;
+  text-decoration: none !important;
+  border: none;
+}
+.hero-btn:hover { background: #f0f0f0; color: #6E1C2E !important; }
+.hero-btn-ghost {
+  display: inline-block;
+  background: transparent;
+  color: #fff !important;
+  font-size: .875rem;
+  font-weight: 500;
+  padding: .45rem 1.1rem;
+  border-radius: .375rem;
+  text-decoration: none !important;
+  border: 1.5px solid rgba(255,255,255,.6);
+  margin-left: .6rem;
+}
+.hero-btn-ghost:hover { background: rgba(255,255,255,.12); color: #fff !important; }
+
+/* ── Schedule cards ────────────────────────────────────────── */
+.sched-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .85rem;
+  margin-bottom: 1.5rem;
+}
+@media (max-width: 640px) { .sched-cards { grid-template-columns: 1fr; } }
+.sched-card {
+  background: var(--bs-body-bg);
+  border: 1px solid var(--bs-border-color);
+  border-radius: .5rem;
+  padding: 1rem 1.1rem;
+}
+.sched-type {
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--bs-secondary-color);
+  margin-bottom: .35rem;
+}
+.sched-days { font-size: .95rem; font-weight: 600; margin-bottom: .15rem; }
+.sched-time { font-size: .85rem; color: var(--bs-secondary-color); margin-bottom: .4rem; }
+.sched-room {
+  display: inline-block;
+  font-size: .72rem;
+  background: var(--bs-secondary-bg);
+  color: var(--bs-secondary-color);
+  padding: .15em .55em;
+  border-radius: .25rem;
+}
+
+/* ── Bottom row ────────────────────────────────────────────── */
+.bottom-row {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: .85rem;
+}
+@media (max-width: 640px) { .bottom-row { grid-template-columns: 1fr; } }
+
+/* ── Instructor card ───────────────────────────────────────── */
+.instructor-card {
+  background: var(--bs-body-bg);
+  border: 1px solid var(--bs-border-color);
+  border-radius: .5rem;
+  padding: 1.25rem;
+}
+.avatar {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: #6E1C2E;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: .9rem;
+}
+.instructor-name { font-size: .95rem; font-weight: 600; margin-bottom: .3rem; }
+.instructor-detail {
+  font-size: .82rem;
+  color: var(--bs-secondary-color);
+  margin-bottom: .2rem;
+}
+.instructor-btns { display: flex; flex-direction: column; gap: 6px; margin-top: 1rem; }
+
+/* ── SLO card ──────────────────────────────────────────────── */
+.slo-card {
+  background: var(--bs-body-bg);
+  border: 1px solid var(--bs-border-color);
+  border-radius: .5rem;
+  padding: 1.25rem;
+}
+.slo-label {
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--bs-secondary-color);
+  margin-bottom: .9rem;
+}
+.slo-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: .6rem; }
+.slo-list li { display: flex; gap: .7rem; align-items: baseline; font-size: .9rem; }
+.slo-num { font-size: .72rem; font-weight: 700; min-width: 18px; color: var(--bs-secondary-color); }
+</style>
+
+<!-- ── Hero ──────────────────────────────────────────────── -->
+<div class="hero">
+  <div class="hero-eyebrow">Calvin University · Computer Science</div>
+  <div class="hero-title">Introduction to Data Structures</div>
+  <div class="hero-meta">
+    <span>💻 CS 112 · C++</span>
+    <span>📅 Fall 2026</span>
+    <span>🗓️ Aug 31 – Dec 9</span>
+  </div>
+  <div style="font-size:.75rem;opacity:.6;margin-bottom:1.2rem;" id="hero-last-updated"></div>
+  <a href="content/schedule.html" class="hero-btn">View schedule →</a>
+  <a href="content/checkins.html" class="hero-btn-ghost">Skills &amp; Check-Ins</a>
+  <a href="policies/policies.html" class="hero-btn-ghost">Course policies</a>
+</div>
+
+<!-- ── Schedule cards ──────────────────────────────────── -->
+<div class="sched-cards">
+  <div class="sched-card">
+    <div class="sched-type">Lecture · CS 112-A</div>
+    <div class="sched-days">Mon · Wed · Fri</div>
+    <div class="sched-time">12:15 – 1:20 PM</div>
+    <span class="sched-room">SB 382</span>
+  </div>
+  <div class="sched-card">
+    <div class="sched-type">Lab A · CS 112L-A</div>
+    <div class="sched-days">Tuesday</div>
+    <div class="sched-time">8:00 – 9:40 AM</div>
+    <span class="sched-room">SB 372</span>
+  </div>
+  <div class="sched-card">
+    <div class="sched-type">Lab B · CS 112L-B</div>
+    <div class="sched-days">Tuesday</div>
+    <div class="sched-time">10:20 AM – 12:00 PM</div>
+    <span class="sched-room">SB 372</span>
+  </div>
+</div>
+
+<!-- ── Instructor + SLOs ────────────────────────────────── -->
+<div class="bottom-row">
+  <div class="instructor-card">
+    <div class="avatar">EA</div>
+    <div class="instructor-name">Prof. Eric Araújo</div>
+    <div class="instructor-detail">📧 eric.araujo@calvin.edu</div>
+    <div class="instructor-detail">🏢 Office NH 293</div>
+    <div class="instructor-btns">
+      <a href="#" class="btn btn-sm" style="background:#6E1C2E;color:#fff;border-color:#6E1C2E;">📅 Book Office Hours</a>
+      <a href="#" class="btn btn-sm btn-outline-secondary">📝 Book Check-in Exam</a>
+    </div>
+  </div>
+  <div class="slo-card">
+    <div class="slo-label">Course outcomes</div>
+    <ul class="slo-list">
+      <li><span class="slo-num">01</span> Use pointers and dynamic memory to implement generic container classes (vectors, lists, stacks, queues, trees).</li>
+      <li><span class="slo-num">02</span> Analyze and compare data structure operations using Big-Oh notation.</li>
+      <li><span class="slo-num">03</span> Design and implement recursive data structure operations.</li>
+      <li><span class="slo-num">04</span> Apply test-driven development to verify data structure correctness.</li>
+      <li><span class="slo-num">05</span> Use parallel computing techniques to improve algorithm performance and measure the improvement.</li>
+    </ul>
+  </div>
+</div>
+```

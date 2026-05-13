@@ -1,0 +1,46 @@
+<div id="site-banner">
+  🚧 This is a permanently-under-construction website.
+  If you find missing information or broken links, please
+  <a href="mailto:eric.araujo@calvin.edu">let us know</a>.
+  <button onclick="document.getElementById('site-banner').style.display='none'" aria-label="Dismiss">&times;</button>
+</div>
+
+<style>
+  #site-banner {
+    background-color: #fff3cd;
+    color: #664d03;
+    border-bottom: 1px solid #ffda6a;
+    padding: 0.6rem 1.2rem;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 1050;
+  }
+  #site-banner a {
+    color: #664d03;
+    font-weight: 600;
+    text-decoration: underline;
+  }
+  #site-banner button {
+    margin-left: auto;
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: #664d03;
+    line-height: 1;
+    padding: 0 0.25rem;
+  }
+
+  /* dark mode */
+  .quarto-dark #site-banner {
+    background-color: #332800;
+    color: #ffda6a;
+    border-bottom-color: #664d03;
+  }
+  .quarto-dark #site-banner a  { color: #ffda6a; }
+  .quarto-dark #site-banner button { color: #ffda6a; }
+</style>

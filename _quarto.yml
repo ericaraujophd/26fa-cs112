@@ -1,0 +1,51 @@
+project:
+  type: book
+  output-dir: _book
+  render:
+    - "**/*.qmd"
+
+book:
+  title: "CS 112 | Fall 2026"
+  subtitle: "Introduction to Data Structures"
+  author:
+    - name: Eric Araújo
+      email: eric.araujo@calvin.edu
+  date: last-modified
+  repo-url: https://github.com/ericaraujophd/26fa-cs112/
+  repo-actions: [issue]
+  favicon: figures/logoCalvin-150-logo.png
+  # cover-image: figures/Calvin-150-logo.png
+  search: true
+
+  sidebar:
+    logo: figures/Calvin-150-logo.png
+    logo-alt: Calvin University
+    pinned: true
+
+  chapters:
+    - index.qmd
+    - content/schedule.qmd
+    - content/checkins.qmd
+    - part: "Course Information"
+      chapters:
+        - policies/policies.qmd
+        - policies/grading.qmd
+        - policies/honesty.qmd
+        - policies/classroom.qmd
+    - content/organization.qmd
+
+language:
+  title-block-published: "Last Updated"
+
+format:
+  html:
+    # include-before-body: _banner.html
+    number-sections: false
+    toc: false
+    theme:
+      light: united
+      dark: darkly
+    css: custom.css
+    highlight-style: github
+    code-copy: true
+    code-overflow: wrap

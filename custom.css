@@ -1,0 +1,113 @@
+/* ── Calvin University brand colors ─────────────────────────── */
+:root {
+  --calvin-maroon: #6E1C2E;
+  --calvin-maroon-dark: #4e1220;
+  --calvin-maroon-light: rgba(110, 28, 46, 0.08);
+  --calvin-gold: #C49A2C;
+  --calvin-gold-dark: #9e7a1f;
+  --calvin-gold-light: rgba(196, 154, 44, 0.12);
+}
+
+/* ── Font size ─────────────────────────────────────────────── */
+body {
+  font-size: 1.1rem;
+}
+
+/* ── Hyperlinks ─────────────────────────────────────────────── */
+a {
+  color: var(--calvin-maroon);
+}
+a:hover {
+  color: var(--calvin-maroon-dark);
+}
+/* Dark mode: maroon is too dark on dark bg — use gold instead */
+.quarto-dark a {
+  color: var(--calvin-gold);
+}
+.quarto-dark a:hover {
+  color: var(--calvin-gold-dark);
+}
+
+/* ── Hide author / date block on every page ────────────────── */
+.quarto-title-meta {
+  display: none;
+}
+
+/* ── Bloom's taxonomy badges ────────────────────────────────── */
+.bloom {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  padding: 0.15em 0.5em;
+  border-radius: 0.25rem;
+  vertical-align: middle;
+  white-space: nowrap;
+  display: inline-block;
+  margin-right: 0.35rem;
+}
+.bloom-remember   { background-color: #adb5bd; color: #000; }
+.bloom-understand { background-color: #0dcaf0; color: #000; }
+.bloom-apply      { background-color: #198754; color: #fff; }
+.bloom-analyze    { background-color: #ffc107; color: #000; }
+.bloom-evaluate   { background-color: #fd7e14; color: #fff; }
+.bloom-create     { background-color: #6f42c1; color: #fff; }
+
+/* ── Current week highlight ─────────────────────────────────── */
+.accordion-button.current-week {
+  border-left: 4px solid var(--calvin-maroon);
+  background-color: var(--calvin-maroon-light);
+}
+.quarto-dark .accordion-button.current-week {
+  border-left-color: var(--calvin-gold);
+  background-color: var(--calvin-gold-light);
+}
+.current-week-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  background-color: var(--calvin-maroon);
+  color: #fff;
+  padding: 0.15em 0.55em;
+  border-radius: 0.25rem;
+  margin-left: 0.6rem;
+  vertical-align: middle;
+}
+.quarto-dark .current-week-badge {
+  background-color: var(--calvin-gold);
+  color: #000;
+}
+
+/* ── Schedule section headers ───────────────────────────────── */
+.slo-section-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--bs-secondary-color);
+  margin: 0.9rem 0 0.35rem;
+}
+.slo-section-label:first-child { margin-top: 0; }
+
+/* ── Sidebar header — logo and title centered ───────────────── */
+.sidebar-header {
+  text-align: center !important;
+}
+.sidebar-logo-link {
+  display: block;
+  text-align: center;
+}
+.sidebar-logo {
+  max-height: 164px;
+  width: auto;
+  display: inline-block;
+}
+.sidebar-title {
+  display: none;
+}
+
+/* ── Sidebar title link color ───────────────────────────────── */
+.sidebar-title a {
+  color: var(--calvin-maroon) !important;
+}
+.quarto-dark .sidebar-title a {
+  color: var(--calvin-gold) !important;
+}

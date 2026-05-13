@@ -1,0 +1,427 @@
+---
+title: "Pre-Lab 00"
+subtitle: "Getting Started — The CS112 Oracle"
+date: "Week of Aug 25, 2026"
+---
+
+::: {.callout-note}
+**This pre-lab is not graded.** It exists so that you arrive at your first lab session with your tools already set up and working. Please complete it *before* your first lab meeting. If you get stuck, post on Moodle or ask a classmate — everyone is figuring this out together.
+:::
+
+## Objectives
+
+By the end of this pre-lab, you will be able to:
+
+- Log in to Coder and use a Linux terminal.
+- Use basic Linux commands (`mkdir`, `cd`, `ls`, `pwd`).
+- Connect VS Code on your laptop to the Calvin Linux environment.
+- Create a GitHub account and accept a GitHub Classroom assignment.
+- Clone a repository and open it in VS Code.
+- Understand what a makefile does and how compilation works in C++.
+- Edit a C++ source file, compile it, run it, and push your changes to GitHub.
+
+## 1. Introduction
+
+**Welcome to CS112!**
+
+If you are coming from CS108, you are used to Python — a language where you just run `python main.py` and things happen. C++ works differently. Before a C++ program can run, it must be **compiled**: translated from human-readable source code into machine instructions that the CPU can execute directly. This makes C++ programs much faster than Python, but it adds a step to your workflow.
+
+In this course, we will write C++ using **Visual Studio Code** (VS Code) as our editor, but we will run and compile our programs on **Calvin's Linux servers** through a service called **Coder**. This means your editor lives on your laptop, but the C++ compiler lives on the server.
+
+Here is a quick look at how Python and C++ differ before you run anything:
+
+| | Python | C++ |
+|---|---|---|
+| How you run it | `python main.py` (interpreted) | `./lab00` (compiled first) |
+| Output to screen | `print("Hello")` | `cout << "Hello" << endl;` |
+| Input from keyboard | `name = input("Name? ")` | `cin >> name;` |
+| Variable types | Figured out automatically | You must declare them |
+| End of a statement | Just a newline | Semicolon `;` |
+| Grouping code | Indentation | Curly braces `{ }` |
+
+You will notice these differences throughout the pre-lab. We will point them out as we go.
+
+## 2. Using Linux
+
+All your CS112 work will run on a **Linux** server. Linux is a Unix-based operating system used extensively in computer science, software engineering, and research. Learning your way around a Linux terminal is a genuine career skill.
+
+Here are the commands you will use most often:
+
+| Command | What it does |
+|---|---|
+| `pwd` | **P**rint **W**orking **D**irectory — shows where you are |
+| `ls` | **L**i**s**t — shows files and folders here |
+| `cd dirname` | **C**hange **D**irectory — move into `dirname` |
+| `cd ..` | Go up one directory level |
+| `mkdir dirname` | **M**a**k**e **Dir**ectory — create a new folder |
+
+::: {.callout-tip}
+If you want to go deeper, [Ubuntu's command-line tutorial](https://ubuntu.com/tutorials/command-line-for-beginners#1-overview) is a great free resource to work through on your own time.
+:::
+
+## 3. Coder
+
+The Calvin CS Department provides a service called [Coder](https://coder.cs.calvin.edu) that gives you access to a Linux environment and a C++ compiler. You do not need to install a compiler on your own laptop — Coder handles that.
+
+Do this:
+
+1. Open [https://coder.cs.calvin.edu](https://coder.cs.calvin.edu) in your browser.
+2. Sign in using your **full Calvin email address** (e.g., `jcalvin@calvin.edu`).
+3. Click **New Workspace** → **Calvin CS Linux**.
+4. Name it `cs112`. Leave all other options at their defaults. Click **Create Workspace**.
+5. Wait a few seconds for your workspace to start. Leave this browser tab open.
+
+## 4. Where to Store Your CS112 Work
+
+You will have many assignments in CS112. It is good practice to keep them organized under one folder. Let us create that folder now.
+
+From your Coder webpage, click the **Terminal** button. Then type:
+
+```bash
+mkdir cs112
+```
+
+Change into that directory:
+
+```bash
+cd cs112
+```
+
+Verify where you are:
+
+```bash
+pwd
+```
+
+You should see `/home/<username>/cs112`, where `<username>` is your Calvin username. Every assignment you clone this semester will go inside this `cs112` folder.
+
+## 5. Installing and Connecting VS Code
+
+We will edit code on your laptop using VS Code, but compile and run it on the Linux server through Coder.
+
+**Step 1 — Install VS Code on your laptop:**
+
+1. Go to [https://code.visualstudio.com](https://code.visualstudio.com) and download VS Code for your operating system. Install it.
+2. Open VS Code.
+
+**Step 2 — Connect VS Code to Coder:**
+
+3. Return to the Coder browser tab. Find the **VS Code Desktop** button and click it.
+4. When VS Code asks if you want to install the **Coder** extension, accept. This allows VS Code on your laptop to reach the compiler on the server.
+5. VS Code will ask you to select the platform for the remote host — choose **Linux**.
+6. Once connected, choose **Open Folder** and type `/home/<username>/cs112` (substituting your actual username). Click OK.
+7. If asked to trust the authors, select **Yes, I trust the authors**. (You are the author.)
+8. Open a terminal inside VS Code: **Terminal menu → New Terminal**. You should see a Linux terminal at the bottom of the screen — this is running on the Calvin server.
+
+## 6. Configuring VS Code
+
+A few one-time settings will make your life much easier all semester.
+
+**Install the C++ extension:**
+
+Open any `.cpp` file. VS Code will suggest installing the **C/C++ Extension Pack** in the lower-right corner. Accept it. If it does not appear automatically, open the Extensions panel (left sidebar), search for `C/C++ Extension Pack`, and install it.
+
+**Configure Auto Save:**
+
+Press **F1** (or Ctrl+Shift+P), type `Preferences: Open User Settings`, and select it. In the search bar at the top, type `Auto Save`. Set `Files: Auto Save` to **onFocusChange**. This saves your file automatically whenever you switch to another window — no more losing work because you forgot to save.
+
+**Set Tab Size:**
+
+In the same Settings page, search for `Tab Size`. Set `Editor: Tab Size` to **4**.
+
+**Set C++ Formatting Style:**
+
+Under **Extensions → C/C++ → Formatting**, find `C_Cpp: Clang_format_style` and set it to:
+
+```
+{ BasedOnStyle: Google, IndentWidth: 4, AccessModifierOffset: -4, AllowShortFunctionsOnASingleLine: InlineOnly }
+```
+
+**Set Intellisense to use g++:**
+
+Press Ctrl+Shift+P, search for `C/C++: Select IntelliSense Configuration`, and choose **g++ (found in /usr/bin)**. This tells VS Code which compiler to use when underlining errors in your editor.
+
+## 7. Create a GitHub Account
+
+GitHub is where all your CS112 code will live. Your grader will visit your GitHub repository to read and grade your code. It also means you can access your work from any machine.
+
+If you do not already have an account:
+
+1. Go to [https://github.com](https://github.com) and sign up. Use your **Calvin email address**.
+2. Complete the verification steps (you may need to set up two-factor authentication).
+3. Skip any personalization steps — just click "Skip Personalization" at the bottom.
+
+Keep your GitHub tab open for the next step.
+
+## 8. Accept the GitHub Classroom Assignment and Clone Your Repo
+
+Each assignment in CS112 is distributed through **GitHub Classroom**. When you accept an invitation, GitHub automatically creates a private repository just for you with the starter code already inside.
+
+::: {.callout-important}
+Click this link to accept the pre-lab assignment: **[Pre-Lab 00 Invitation — LINK COMING SOON]**
+
+Wait a few seconds, then refresh the page until it says "You're ready to go!" Click the link to open your new repository.
+:::
+
+**Get the repo URL:**
+
+On your repository page, click the green **\<\> Code** button, then the **SSH** tab. Click the copy icon to copy the URL (it starts with `git@github.com:...`).
+
+**Clone the repo:**
+
+In your VS Code terminal (the one connected to Coder), make sure you are in your `cs112` folder:
+
+```bash
+pwd
+```
+
+If you are not, run `cd ~/cs112`. Then clone:
+
+```bash
+git clone <paste-your-repo-url-here>
+```
+
+If this is your first time using Git with Coder, you will see an error about SSH keys. Read the next section.
+
+### Setting Up SSH Keys for GitHub
+
+GitHub requires an SSH key to verify your identity. Coder generates one for you automatically. When `git clone` fails, look at the error output — somewhere near the top you will see a public key that looks like:
+
+```
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAA...
+```
+
+Copy that entire line. Then:
+
+1. Go to [https://github.com/settings/keys](https://github.com/settings/keys).
+2. Click **New SSH Key**.
+3. Title: `CS112 Coder`
+4. Paste the key into the Key field. Click **Add SSH Key**.
+
+Now retry the clone:
+
+```bash
+git clone <paste-your-repo-url-here>
+```
+
+This time it should succeed. Verify by listing your files:
+
+```bash
+ls
+```
+
+You should see a directory named something like `lab00-yourgithubusername`. Change into it:
+
+```bash
+cd lab00-yourgithubusername
+ls
+```
+
+You will find: `main.cpp`, `fortune.h`, `fortune.cpp`, `makefile`, and `README.md`.
+
+Open this folder in VS Code: **File → Open Folder**, then navigate to `/home/<username>/cs112/lab00-yourgithubusername`.
+
+## 9. Understanding the Makefile
+
+Before you compile anything, let us understand *how* compilation works. This is one of the biggest conceptual differences between Python and C++.
+
+### How Python runs your code
+
+In Python, you type `python main.py` and the Python **interpreter** reads your source code line by line and executes it. Your `.py` file is never turned into anything else — the interpreter does all the work at runtime.
+
+### How C++ compilation works
+
+In C++, your source code goes through **two stages** before it can run:
+
+**Stage 1 — Compile:** Each `.cpp` source file is individually translated into an **object file** (`.o`). Object files contain machine code, but they are not yet runnable — they might refer to functions defined in other files.
+
+**Stage 2 — Link:** The **linker** combines all the `.o` files into a single **executable** (in our case, a file called `lab00`). This is the program you actually run.
+
+```
+main.cpp   ──compile──▶  main.o   ──┐
+                                    ├──link──▶  lab00  ──run──▶  output
+fortune.cpp──compile──▶  fortune.o──┘
+```
+
+Doing this manually every time would look like:
+
+```bash
+g++ -Wall -std=c++17 -c main.cpp        # produces main.o
+g++ -Wall -std=c++17 -c fortune.cpp     # produces fortune.o
+g++ -Wall -std=c++17 -o lab00 main.o fortune.o  # produces lab00
+```
+
+That is three commands, and if you only changed `fortune.cpp`, you would still have to remember which commands to re-run. A **makefile** automates this.
+
+### Reading the makefile
+
+Open `makefile` in VS Code. Here is what each part does:
+
+```makefile
+CXX      = g++
+CXXFLAGS = -Wall -std=c++17
+```
+
+These are **variables**. `CXX` is the compiler name. `CXXFLAGS` are the options we always pass to it: `-Wall` turns on all warnings (helpful!), `-std=c++17` selects the C++17 standard.
+
+```makefile
+lab00: main.o fortune.o
+	$(CXX) $(CXXFLAGS) -o lab00 main.o fortune.o
+```
+
+This is a **rule**. The format is:
+
+```
+target: dependencies
+    command
+```
+
+`lab00` is what we want to build. It depends on `main.o` and `fortune.o`. If either of those is out of date, `make` runs the command to rebuild `lab00`. Notice the command line starts with a **tab character** — makefiles require this, not spaces.
+
+```makefile
+main.o: main.cpp fortune.h
+	$(CXX) $(CXXFLAGS) -c main.cpp
+```
+
+This rule says: to build `main.o`, compile `main.cpp` (the `-c` flag means "compile only, don't link yet"). It depends on `fortune.h` too — if the header changes, `main.o` needs to be rebuilt.
+
+```makefile
+fortune.o: fortune.cpp fortune.h
+	$(CXX) $(CXXFLAGS) -c fortune.cpp
+```
+
+Same idea for `fortune.cpp`.
+
+```makefile
+clean:
+	rm -f *.o lab00
+```
+
+`make clean` deletes all object files and the executable. Use this when you want a completely fresh build.
+
+### `make` is smart about what to rebuild
+
+One of `make`'s best features: it only recompiles files that have changed since the last build. If you only edit `fortune.cpp`, `make` will recompile `fortune.o` and re-link `lab00` — but it will *not* recompile `main.cpp`, because `main.cpp` has not changed. This saves time on larger projects.
+
+## 10. Compile and Run the Starter Code
+
+In your VS Code terminal, make sure you are inside your `lab00-yourgithubusername` directory. Then type:
+
+```bash
+make
+```
+
+You should see output like:
+
+```
+g++ -Wall -std=c++17 -c main.cpp
+g++ -Wall -std=c++17 -c fortune.cpp
+g++ -Wall -std=c++17 -o lab00 main.o fortune.o
+```
+
+Type `ls` — you should now see `lab00` in the directory. Run it:
+
+```bash
+./lab00
+```
+
+The `./` means "run this file in the current directory." You should see the Oracle's banner and be able to enter your name, stress level, and birth month. The fortunes will be placeholder text for now — that is your job in the next section.
+
+## 11. Your Coding Task: Write the Fortunes
+
+Open `fortune.cpp` in VS Code. Your task is to replace each of the 10 placeholder strings with a **funny, CS-themed fortune** of your own invention.
+
+The fortune that appears when you run the program is selected using this formula:
+
+```cpp
+int index = (stressLevel + birthMonth) % NUM_FORTUNES;
+```
+
+So if your stress level is 3 and you were born in September (month 9), your index is `(3 + 9) % 10 = 2`, and you get `fortunes[2]`. Different students will get different fortunes — the Oracle is personalized!
+
+**Requirements for your fortunes:**
+
+- All 10 strings must be filled in (no placeholders left).
+- Each fortune must be a complete sentence ending in `.` or `!`.
+- Keep them **clean and school-appropriate**.
+- They should be **CS-themed** — references to compilers, segfaults, pointers, deadlines, coffee, rubber ducks, Stack Overflow, and so on are all fair game.
+
+::: {.callout-tip}
+**Need inspiration?** Think about the experience of being a student in a programming course. What does the Oracle *know* about your future this semester? What would be funny-but-true?
+:::
+
+### What the C++ looks like vs. Python
+
+In Python, you might write a list like this:
+
+```python
+fortunes = [
+    "You will debug for two hours. The bug will be a typo.",
+    "Your code will work. You will not know why.",
+    # ... 8 more ...
+]
+```
+
+In C++, you declare the **type** of the array and its **size** up front:
+
+```cpp
+const int NUM_FORTUNES = 10;
+string fortunes[NUM_FORTUNES] = {
+    "You will debug for two hours. The bug will be a typo.",
+    "Your code will work. You will not know why.",
+    // ... 8 more ...
+};
+```
+
+Notice: `string` instead of a plain variable, curly braces `{}` instead of square brackets, and each element ends with a comma (except the last). Comments in C++ use `//` for a single line, just like in Python.
+
+After editing `fortune.cpp`, compile again:
+
+```bash
+make
+```
+
+Run your program:
+
+```bash
+./lab00
+```
+
+Try different inputs to confirm a few different fortunes appear. If you see a compile error, read the error message — the compiler will tell you the file name and line number of the problem. Fix it and `make` again.
+
+::: {.callout-note}
+**What about `make clean`?**
+
+If you ever see strange behavior — like edits not seeming to take effect — try:
+
+```bash
+make clean
+make
+```
+
+This forces a complete rebuild from scratch.
+:::
+
+## 12. Push Your Code to GitHub
+
+When your fortunes are written and the program runs correctly, submit your work to GitHub.
+
+In VS Code, look at the **Source Control** icon in the left sidebar (it looks like a branch). Click it. You will see your changed files listed. Type a short commit message (e.g., `"Add 10 fortunes to fortune.cpp"`), then click the **checkmark** to commit. Follow any prompts to sync/push to your remote repository.
+
+To verify the push worked, go to your repository page on github.com and confirm you can see your updated `fortune.cpp` with your fortunes in it.
+
+::: {.callout-important}
+Add your name to the `README.md` file before pushing. Open it in VS Code, add a line with your name, and save.
+:::
+
+### A note on GitHub Actions
+
+When you push, GitHub may run an automated check on your repository. For this pre-lab, the check simply verifies that the code compiles and that all 10 fortunes have been replaced (no placeholder text remaining). If you see a red ❌ on github.com, click on it to see which check failed, fix the issue, and push again. A green ✅ means you are done.
+
+## You are ready!
+
+Congratulations — your development environment is set up and you have written your first C++ code for CS112. See you in lab!
+
+::: {.callout-tip}
+**Working from home?** As long as you have VS Code and can connect to Coder, you can do all your CS112 work from your laptop anywhere with internet. The setup you did today is all you need.
+:::
