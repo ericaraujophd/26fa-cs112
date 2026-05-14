@@ -1,5 +1,0 @@
----
-title: "Project 5"
----
-
-*Project instructions coming soon.*

@@ -83,11 +83,11 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
         </div>
         <div class="acc-aside">
           <h6>📖 Readings</h6>
-          <p><a href="https://runestone.academy/runestone/books/published/cpp4python/index.html" target="_blank">C++ for Python Programmers</a><br>Chapters 1, 2, Sec. 5.1–5.2</p>
+          <p><a href="https://runestone.academy/runestone/books/published/cpp4python/index.html" target="_blank" rel="noopener">C++ for Python Programmers</a><br>Chapters 1, 2, Sec. 5.1–5.2</p>
           <h6>🖥️ Slides</h6>
           <p><em>Coming soon</em></p>
           <h6>🔗 Resources</h6>
-          <p><a href="https://integer.exposed/#0x0008" target="_blank">Binary Exposed</a></p>
+          <p><a href="https://integer.exposed/#0x0008" target="_blank" rel="noopener">Binary Exposed</a></p>
           <h6>📝 Assignments</h6>
           <p><a href="week00/lab00.html">Lab 00</a><br>
              <a href="week00/proj00.html">Project 00</a></p>
@@ -129,8 +129,8 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
         </div>
         <div class="acc-aside">
           <h6>📖 Readings</h6>
-          <p><a href="https://runestone.academy/runestone/books/published/cpp4python/index.html" target="_blank">C++ for Python Programmers</a><br>Chapters 3 and 4<br>
-          <a href="https://makefiletutorial.com/" target="_blank">Makefile Tutorial</a></p>
+          <p><a href="https://runestone.academy/runestone/books/published/cpp4python/index.html" target="_blank" rel="noopener">C++ for Python Programmers</a><br>Chapters 3 and 4<br>
+          <a href="https://makefiletutorial.com/" target="_blank" rel="noopener">Makefile Tutorial</a></p>
           <h6>🖥️ Slides</h6>
           <p><em>Coming soon</em></p>
           <h6>📝 Assignments</h6>
@@ -172,7 +172,7 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
         </div>
         <div class="acc-aside">
           <h6>📖 Readings</h6>
-          <p><a href="https://runestone.academy/runestone/books/published/cpp4python/index.html" target="_blank">C++ for Python Programmers</a><br>Chapters 6 and 7</p>
+          <p><a href="https://runestone.academy/runestone/books/published/cpp4python/index.html" target="_blank" rel="noopener">C++ for Python Programmers</a><br>Chapters 6 and 7</p>
           <h6>🖥️ Slides</h6>
           <p><em>Coming soon</em></p>
           <h6>📝 Assignments</h6>

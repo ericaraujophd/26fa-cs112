@@ -1,5 +1,0 @@
----
-title: "Lab 3"
----
-
-*Lab instructions coming soon.*

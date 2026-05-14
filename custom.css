@@ -100,14 +100,16 @@ a:hover {
   width: auto;
   display: inline-block;
 }
-.sidebar-title {
+/* Hide the sidebar title text link, but keep the tools visible
+   (the dark mode toggle and GitHub link live inside .sidebar-title > .sidebar-tools-main) */
+.sidebar-title > a:first-of-type {
   display: none;
 }
 
 /* ── Sidebar title link color ───────────────────────────────── */
-.sidebar-title a {
+.sidebar-title > a {
   color: var(--calvin-maroon) !important;
 }
-.quarto-dark .sidebar-title a {
+.quarto-dark .sidebar-title > a {
   color: var(--calvin-gold) !important;
 }

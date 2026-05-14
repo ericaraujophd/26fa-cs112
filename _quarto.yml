@@ -26,6 +26,7 @@ book:
     - index.qmd
     - content/schedule.qmd
     - content/checkins.qmd
+    - content/pre/gettingStarted.qmd
     - part: "Course Information"
       chapters:
         - policies/policies.qmd
