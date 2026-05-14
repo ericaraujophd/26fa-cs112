@@ -18,7 +18,10 @@ By the end of this pre-lab, you will be able to:
 - Create a GitHub account and accept a GitHub Classroom assignment.
 - Clone a repository and open it in VS Code.
 - Understand what a makefile does and how compilation works in C++.
-- Edit a C++ source file, compile it, run it, and push your changes to GitHub.
+- Declare variables of type `string` and `int` in C++.
+- Print output to the screen using `cout` and read input from the keyboard using `cin`.
+- Call a function that takes parameters and returns a value.
+- Compile and run your code, then push your changes to GitHub.
 
 ## 1. Introduction
 
@@ -32,7 +35,7 @@ Here is a quick look at how Python and C++ differ before you run anything:
 
 | | Python | C++ |
 |---|---|---|
-| How you run it | `python main.py` (interpreted) | `./lab00` (compiled first) |
+| How you run it | `python main.py` (interpreted) | `./a00` (compiled first) |
 | Output to screen | `print("Hello")` | `cout << "Hello" << endl;` |
 | Input from keyboard | `name = input("Name? ")` | `cin >> name;` |
 | Variable types | Figured out automatically | You must declare them |
@@ -235,16 +238,16 @@ This time it should succeed. Verify by listing your files:
 ls
 ```
 
-You should see a directory named something like `lab00-yourgithubusername`. Change into it:
+You should see a directory named something like `a00-yourgithubusername`. Change into it:
 
 ```bash
-cd lab00-yourgithubusername
+cd a00-yourgithubusername
 ls
 ```
 
 You will find: `main.cpp`, `fortune.h`, `fortune.cpp`, `makefile`, and `README.md`.
 
-Open this folder in VS Code: **File → Open Folder**, then navigate to `/home/<username>/cs112/lab00-yourgithubusername`.
+Open this folder in VS Code: **File → Open Folder**, then navigate to `/home/<username>/cs112/a00-yourgithubusername`.
 
 ## 9. Understanding the Makefile
 
@@ -260,12 +263,15 @@ In C++, your source code goes through **two stages** before it can run:
 
 **Stage 1 — Compile:** Each `.cpp` source file is individually translated into an **object file** (`.o`). Object files contain machine code, but they are not yet runnable — they might refer to functions defined in other files.
 
-**Stage 2 — Link:** The **linker** combines all the `.o` files into a single **executable** (in our case, a file called `lab00`). This is the program you actually run.
+**Stage 2 — Link:** The **linker** combines all the `.o` files into a single **executable** (in our case, a file called `a00`). This is the program you actually run.
 
-```
-main.cpp   ──compile──▶  main.o   ──┐
-                                    ├──link──▶  lab00  ──run──▶  output
-fortune.cpp──compile──▶  fortune.o──┘
+```{mermaid}
+flowchart LR
+	A[main.cpp] -->|compile| B[main.o]
+	C[fortune.cpp] -->|compile| D[fortune.o]
+	B -->|link| E[a00]
+	D -->|link| E
+	E -->|run| F[output]
 ```
 
 Doing this manually every time would look like:
@@ -273,7 +279,7 @@ Doing this manually every time would look like:
 ```bash
 g++ -Wall -std=c++17 -c main.cpp        # produces main.o
 g++ -Wall -std=c++17 -c fortune.cpp     # produces fortune.o
-g++ -Wall -std=c++17 -o lab00 main.o fortune.o  # produces lab00
+g++ -Wall -std=c++17 -o a00 main.o fortune.o  # produces a00
 ```
 
 That is three commands, and if you only changed `fortune.cpp`, you would still have to remember which commands to re-run. A **makefile** automates this.
@@ -290,8 +296,8 @@ CXXFLAGS = -Wall -std=c++17
 These are **variables**. `CXX` is the compiler name. `CXXFLAGS` are the options we always pass to it: `-Wall` turns on all warnings (helpful!), `-std=c++17` selects the C++17 standard.
 
 ```makefile
-lab00: main.o fortune.o
-	$(CXX) $(CXXFLAGS) -o lab00 main.o fortune.o
+a00: main.o fortune.o
+	$(CXX) $(CXXFLAGS) -o a00 main.o fortune.o
 ```
 
 This is a **rule**. The format is:
@@ -301,7 +307,7 @@ target: dependencies
     command
 ```
 
-`lab00` is what we want to build. It depends on `main.o` and `fortune.o`. If either of those is out of date, `make` runs the command to rebuild `lab00`. Notice the command line starts with a **tab character** — makefiles require this, not spaces.
+`a00` is what we want to build. It depends on `main.o` and `fortune.o`. If either of those is out of date, `make` runs the command to rebuild `a00`. Notice the command line starts with a **tab character** — makefiles require this, not spaces.
 
 ```makefile
 main.o: main.cpp fortune.h
@@ -319,18 +325,18 @@ Same idea for `fortune.cpp`.
 
 ```makefile
 clean:
-	rm -f *.o lab00
+	rm -f *.o a00
 ```
 
 `make clean` deletes all object files and the executable. Use this when you want a completely fresh build.
 
 ### `make` is smart about what to rebuild
 
-One of `make`'s best features: it only recompiles files that have changed since the last build. If you only edit `fortune.cpp`, `make` will recompile `fortune.o` and re-link `lab00` — but it will *not* recompile `main.cpp`, because `main.cpp` has not changed. This saves time on larger projects.
+One of `make`'s best features: it only recompiles files that have changed since the last build. If you only edit `fortune.cpp`, `make` will recompile `fortune.o` and re-link `a00` — but it will *not* recompile `main.cpp`, because `main.cpp` has not changed. This saves time on larger projects.
 
 ## 10. Compile and Run the Starter Code
 
-In your VS Code terminal, make sure you are inside your `lab00-yourgithubusername` directory. Then type:
+In your VS Code terminal, make sure you are inside your `a00-yourgithubusername` directory. Then type:
 
 ```bash
 make
@@ -341,107 +347,169 @@ You should see output like:
 ```
 g++ -Wall -std=c++17 -c main.cpp
 g++ -Wall -std=c++17 -c fortune.cpp
-g++ -Wall -std=c++17 -o lab00 main.o fortune.o
+g++ -Wall -std=c++17 -o a00 main.o fortune.o
 ```
 
-Type `ls` — you should now see `lab00` in the directory. Run it:
+Type `ls` — you should now see `a00` in the directory. Run it:
 
 ```bash
-./lab00
+./a00
 ```
 
-The `./` means "run this file in the current directory." You should see the Oracle's banner and be able to enter your name, stress level, and birth month. The fortunes will be placeholder text for now — that is your job in the next section.
+The `./` means "run this file in the current directory." The program will immediately exit without doing much — that is expected. `main.cpp` has placeholders where you will write the interactive code. That is your task in the next section.
 
-## 11. Your Coding Task: Write the Fortunes
+## 11. Your Coding Task: Complete `main.cpp`
 
-Open `fortune.cpp` in VS Code. Your task is to replace each of the 10 placeholder strings with a **funny, CS-themed fortune** of your own invention.
+Open `main.cpp` in VS Code. This is the only file you will edit. `fortune.cpp` and `fortune.h` are already complete — read through them to get a sense of how a C++ function is written, but do not change them.
 
-The fortune that appears when you run the program is selected using this formula:
+`main.cpp` has four TODO comments. Work through them in order.
 
-```cpp
-int index = (stressLevel + birthMonth) % NUM_FORTUNES;
-```
+---
 
-So if your stress level is 3 and you were born in September (month 9), your index is `(3 + 9) % 10 = 2`, and you get `fortunes[2]`. Different students will get different fortunes — the Oracle is personalized!
+### TODO 1 — Declare your variables
 
-**Requirements for your fortunes:**
-
-- All 10 strings must be filled in (no placeholders left).
-- Each fortune must be a complete sentence ending in `.` or `!`.
-- Keep them **clean and school-appropriate**.
-- They should be **CS-themed** — references to compilers, segfaults, pointers, deadlines, coffee, rubber ducks, Stack Overflow, and so on are all fair game.
-
-::: {.callout-tip}
-**Need inspiration?** Think about the experience of being a student in a programming course. What does the Oracle *know* about your future this semester? What would be funny-but-true?
-:::
-
-### What the C++ looks like vs. Python
-
-In Python, you might write a list like this:
+In Python, you just assign a value and the language figures out the type:
 
 ```python
-fortunes = [
-    "You will debug for two hours. The bug will be a typo.",
-    "Your code will work. You will not know why.",
-    # ... 8 more ...
-]
+name = ""
+stress_level = 0
+birth_month = 0
 ```
 
-In C++, you declare the **type** of the array and its **size** up front:
+In C++, you must declare the **type** of each variable before you use it:
 
 ```cpp
-const int NUM_FORTUNES = 10;
-string fortunes[NUM_FORTUNES] = {
-    "You will debug for two hours. The bug will be a typo.",
-    "Your code will work. You will not know why.",
-    // ... 8 more ...
-};
+string name;
+int stressLevel;
+int birthMonth;
 ```
 
-Notice: `string` instead of a plain variable, curly braces `{}` instead of square brackets, and each element ends with a comma (except the last). Comments in C++ use `//` for a single line, just like in Python.
+`string` holds text. `int` holds a whole number. Notice the semicolon at the end of each line — every statement in C++ ends with one.
 
-After editing `fortune.cpp`, compile again:
+Add these three declarations where TODO 1 is.
+
+---
+
+### TODO 2 — Print prompts and read input
+
+Use `cout` to print a line to the screen and `cin` to read input from the keyboard.
+
+**Printing with `cout`:**
+
+```cpp
+cout << "What is your name? ";
+```
+
+The `<<` operator sends text to the output stream. Note there is **no** `endl` here — we want the cursor to stay on the same line so the user types right after the prompt.
+
+**Reading with `cin`:**
+
+```cpp
+cin >> name;
+```
+
+The `>>` operator reads one word (or number) from the keyboard and stores it in the variable.
+
+In Python this would be:
+
+```python
+name = input("What is your name? ")
+```
+
+In C++, the prompt and the read are two separate statements. Write one `cout` and one `cin` for each of the three pieces of information.
+
+Use these exact prompt strings (the autograder will check them):
+
+```
+"What is your name? "
+"On a scale of 1-5, how nervous are you about CS112? "
+"What month were you born in (1-12)? "
+```
+
+---
+
+### TODO 3 — Call `getFortune()`
+
+`getFortune()` is a function declared in `fortune.h`. It takes two `int` parameters and returns a `string`. Call it like this:
+
+```cpp
+string fortune = getFortune(stressLevel, birthMonth);
+```
+
+This creates a new `string` variable named `fortune` and stores the result of the function call in it. Add this line where TODO 3 is.
+
+---
+
+### TODO 4 — Print the Oracle's response
+
+Use `cout` to print two lines inside the banner:
+
+```
+  The Oracle speaks, NAME!
+```
+*(an empty line)*
+```
+FORTUNE
+```
+
+Where `NAME` and `FORTUNE` are your variables. In C++, you can chain multiple things on one `cout` line:
+
+```cpp
+cout << "  The Oracle speaks, " << name << "!" << endl;
+```
+
+---
+
+### Compile and test
+
+After filling in all four TODOs, compile:
 
 ```bash
 make
 ```
 
-Run your program:
+If you see errors, read them carefully — the compiler tells you the file name and line number of the problem. Fix the error and `make` again.
+
+Run the program:
 
 ```bash
-./lab00
+./a00
 ```
 
-Try different inputs to confirm a few different fortunes appear. If you see a compile error, read the error message — the compiler will tell you the file name and line number of the problem. Fix it and `make` again.
+Enter your name, a stress level between 1 and 5, and your birth month. You should see the full Oracle experience, including a fortune at the end.
+
+Once it looks right, run the autograder:
+
+```bash
+make test
+```
+
+You will see a PASS or FAIL for each test case, with hints if something is wrong. Fix any failures and run `make test` again until all tests pass.
 
 ::: {.callout-note}
 **What about `make clean`?**
 
-If you ever see strange behavior — like edits not seeming to take effect — try:
+If edits do not seem to take effect, try:
 
 ```bash
 make clean
 make
 ```
 
-This forces a complete rebuild from scratch.
+This forces a completely fresh build.
 :::
 
 ## 12. Push Your Code to GitHub
 
-When your fortunes are written and the program runs correctly, submit your work to GitHub.
-
-In VS Code, look at the **Source Control** icon in the left sidebar (it looks like a branch). Click it. You will see your changed files listed. Type a short commit message (e.g., `"Add 10 fortunes to fortune.cpp"`), then click the **checkmark** to commit. Follow any prompts to sync/push to your remote repository.
-
-To verify the push worked, go to your repository page on github.com and confirm you can see your updated `fortune.cpp` with your fortunes in it.
+When all tests pass, submit your work to GitHub.
 
 ::: {.callout-important}
 Add your name to the `README.md` file before pushing. Open it in VS Code, add a line with your name, and save.
 :::
 
-### A note on GitHub Actions
+In VS Code, look at the **Source Control** icon in the left sidebar (it looks like a branch). Click it. You will see your changed files listed. Type a short commit message (e.g., `"Complete main.cpp"`), then click the **checkmark** to commit. Follow any prompts to sync/push to your remote repository.
 
-When you push, GitHub may run an automated check on your repository. For this pre-lab, the check simply verifies that the code compiles and that all 10 fortunes have been replaced (no placeholder text remaining). If you see a red ❌ on github.com, click on it to see which check failed, fix the issue, and push again. A green ✅ means you are done.
+To verify the push worked, go to your repository page on github.com and confirm you can see your updated `main.cpp`.
 
 ## You are ready!
 
