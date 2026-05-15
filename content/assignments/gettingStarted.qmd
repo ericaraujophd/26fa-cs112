@@ -6,6 +6,8 @@ subtitle: "The CS112 Oracle"
 
 ::: {.callout-note}
 **This pre-lab is not graded.** It exists so that you arrive at your first lab session with your tools already set up and working. Please complete it *before* your first lab meeting. If you get stuck, post on Moodle or ask a classmate — everyone is figuring this out together.
+
+**Plan to set aside about 1.5 to 2 hours.** Most of that time goes to the one-time setup steps — Coder, VS Code, and GitHub. Once those are done, they're done for the whole semester. The actual coding at the end is short.
 :::
 
 ## Objectives

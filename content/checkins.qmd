@@ -2,10 +2,10 @@
 title: "Skills & Check-Ins"
 ---
 
-There are **no traditional tests** in CS 112. Instead, your grade reflects whether you have *demonstrated* each of the 33 course skills — through your labs and projects, and through individual check-in appointments with the instructor.
+There are **no traditional tests** in CS 112. Instead, your grade reflects whether you have *demonstrated* each of the 33 course skills — through your assignments, and through individual check-in appointments with the instructor.
 
 ::: {.callout-note}
-**The short version:** Do your labs and projects — they are how you learn, and your completion percentage affects your final grade. Then come in for your **cluster check-in**: a 20-minute conversation where you walk through code you wrote and work through a fresh problem. Every student does this for every cluster.
+**The short version:** Do your assignments — they are how you learn, and your completion percentage affects your final grade. Then come in for your **cluster check-in**: a 25-minute conversation where you walk through code you wrote and work through a fresh problem. Every student books a separate appointment for every cluster.
 :::
 
 ---
@@ -44,7 +44,7 @@ Skills start at N and move up as you demonstrate understanding at check-ins. The
 
 ## What Happens at a Check-In
 
-Each appointment is **20 minutes** and covers the skills in **one cluster group**. It is a conversation, not a timed test.
+Each appointment is **25 minutes** and covers the skills in **one cluster**. It is a conversation, not a timed test.
 
 ```{=html}
 <div style="margin:1.25rem 0;">
@@ -54,31 +54,31 @@ Each appointment is **20 minutes** and covers the skills in **one cluster group*
       <div style="flex:1;background:var(--calvin-maroon,#6E1C2E);color:#fff;padding:.9rem .8rem;">
         <div style="font-size:.7rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;opacity:.7;margin-bottom:.3rem;">0 – 2 min</div>
         <div style="font-weight:600;margin-bottom:.25rem;">Your submitted work</div>
-        <div style="font-size:.8rem;opacity:.85;">Instructor picks a section of your lab or project to discuss.</div>
+        <div style="font-size:.8rem;opacity:.85;">Instructor picks a section of your assignment to discuss.</div>
       </div>
 
       <div style="flex:3;background:var(--bs-secondary-bg);padding:.9rem .8rem;">
-        <div style="font-size:.7rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--bs-secondary-color);margin-bottom:.3rem;">2 – 8 min</div>
+        <div style="font-size:.7rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--bs-secondary-color);margin-bottom:.3rem;">2 – 10 min</div>
         <div style="font-weight:600;margin-bottom:.25rem;">Code walkthrough</div>
         <div style="font-size:.8rem;color:var(--bs-secondary-color);">You explain your design choices, edge cases, and reasoning. "Why did you do it this way?" · "What happens if the list is empty?"</div>
       </div>
 
       <div style="flex:3;background:var(--bs-secondary-bg);padding:.9rem .8rem;border-left:1px solid var(--bs-border-color);">
-        <div style="font-size:.7rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--bs-secondary-color);margin-bottom:.3rem;">8 – 16 min</div>
+        <div style="font-size:.7rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--bs-secondary-color);margin-bottom:.3rem;">10 – 20 min</div>
         <div style="font-weight:600;margin-bottom:.25rem;">Fresh problem</div>
         <div style="font-size:.8rem;color:var(--bs-secondary-color);">A short, new problem targeting skills in this cluster. Write code, trace, or explain — however the skill requires. You can think aloud.</div>
       </div>
 
       <div style="flex:2;background:var(--bs-secondary-bg);padding:.9rem .8rem;border-left:1px solid var(--bs-border-color);">
-        <div style="font-size:.7rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--bs-secondary-color);margin-bottom:.3rem;">16 – 19 min</div>
+        <div style="font-size:.7rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--bs-secondary-color);margin-bottom:.3rem;">20 – 24 min</div>
         <div style="font-weight:600;margin-bottom:.25rem;">Follow-up</div>
         <div style="font-size:.8rem;color:var(--bs-secondary-color);">"Why this approach?" · "What if the input were empty?"</div>
       </div>
 
       <div style="flex:1;background:var(--bs-secondary-bg);padding:.9rem .8rem;border-left:1px solid var(--bs-border-color);">
-        <div style="font-size:.7rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--bs-secondary-color);margin-bottom:.3rem;">19 – 20 min</div>
+        <div style="font-size:.7rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--bs-secondary-color);margin-bottom:.3rem;">24 – 25 min</div>
         <div style="font-weight:600;margin-bottom:.25rem;">Recorded</div>
-        <div style="font-size:.8rem;color:var(--bs-secondary-color);">N / D / M noted per skill.</div>
+        <div style="font-size:.8rem;color:var(--bs-secondary-color);">N / D / M noted for the cluster.</div>
       </div>
     </div>
 
@@ -92,7 +92,7 @@ A single problem in the session may touch more than one skill — that is expect
 
 ## Check-In Windows
 
-There are **four reference windows** during the semester, plus a final window during exam period. The windows are not hard deadlines — you book when you feel ready. But the instructor's available slots are limited, so waiting until the last two weeks to schedule multiple cluster sessions will leave you without open appointments.
+You book **one 25-minute appointment per cluster** — 7 appointments total across the semester, plus the Final Window. The appointments are grouped into three scheduling windows. The windows are not hard deadlines, but the instructor's available slots are limited: do not wait until the last two weeks to schedule appointments that should have happened in Window 1.
 
 ```{=html}
 <style>
@@ -118,9 +118,8 @@ There are **four reference windows** during the semester, plus a final window du
   border-radius: 0;
 }
 .ci-seg-1 { background: #6E1C2E; }
-.ci-seg-2 { background: #8B4513; }
-.ci-seg-3 { background: #C49A2C; color: #000; }
-.ci-seg-4 { background: #5a3e7a; }
+.ci-seg-2 { background: #C49A2C; color: #000; }
+.ci-seg-3 { background: #5a3e7a; }
 .ci-seg-f { background: #2c5f2e; }
 .ci-axis {
   display: flex;
@@ -130,7 +129,7 @@ There are **four reference windows** during the semester, plus a final window du
   padding: 0 .25rem;
   margin-bottom: 1.2rem;
 }
-.ci-cards { display: grid; grid-template-columns: repeat(5,1fr); gap: .6rem; }
+.ci-cards { display: grid; grid-template-columns: repeat(4,1fr); gap: .6rem; }
 @media (max-width:700px) { .ci-cards { grid-template-columns: 1fr 1fr; } }
 .ci-card {
   border-radius: .4rem;
@@ -141,24 +140,21 @@ There are **four reference windows** during the semester, plus a final window du
 .ci-card-date { font-weight: 700; margin-bottom: .3rem; font-size:.88rem; }
 .ci-card-clusters { font-size: .78rem; opacity: .85; }
 .ci-1 { background:#6E1C2E; color:#fff; }
-.ci-2 { background:#8B4513; color:#fff; }
-.ci-3 { background:#C49A2C; color:#000; }
-.ci-4 { background:#5a3e7a; color:#fff; }
+.ci-2 { background:#C49A2C; color:#000; }
+.ci-3 { background:#5a3e7a; color:#fff; }
 .ci-f { background:#2c5f2e; color:#fff; }
 </style>
 
 <div class="ci-timeline-wrap">
   <div class="ci-bar-track">
-    <div class="ci-segment ci-seg-1" style="left:27%;width:6%;">CI 1</div>
-    <div class="ci-segment ci-seg-2" style="left:52%;width:6%;">CI 2</div>
-    <div class="ci-segment ci-seg-3" style="left:72%;width:6%;">CI 3</div>
-    <div class="ci-segment ci-seg-4" style="left:89%;width:5.5%;">CI 4</div>
+    <div class="ci-segment ci-seg-1" style="left:27%;width:7%;">W1</div>
+    <div class="ci-segment ci-seg-2" style="left:72%;width:7%;">W2</div>
+    <div class="ci-segment ci-seg-3" style="left:89%;width:5.5%;">W3</div>
     <div class="ci-segment ci-seg-f" style="left:95.5%;width:4.5%;">F</div>
   </div>
   <div class="ci-axis">
     <span>Aug 31</span>
     <span>Oct 2</span>
-    <span>Oct 30</span>
     <span>Nov 20</span>
     <span>Dec 9</span>
     <span>Dec 17</span>
@@ -166,29 +162,24 @@ There are **four reference windows** during the semester, plus a final window du
 
   <div class="ci-cards">
     <div class="ci-card ci-1">
-      <div class="ci-card-num">Check-In 1</div>
+      <div class="ci-card-num">Window 1</div>
       <div class="ci-card-date">~ Oct 2</div>
-      <div class="ci-card-clusters">Clusters A and B<br>(11 skills)</div>
+      <div class="ci-card-clusters">Clusters A, B<br>2 appointments × 25 min</div>
     </div>
     <div class="ci-card ci-2">
-      <div class="ci-card-num">Check-In 2</div>
-      <div class="ci-card-date">~ Oct 30</div>
-      <div class="ci-card-clusters">C1–C3, D1<br>(4 skills)</div>
+      <div class="ci-card-num">Window 2</div>
+      <div class="ci-card-date">~ Nov 20</div>
+      <div class="ci-card-clusters">Clusters C, D, E<br>3 appointments × 25 min</div>
     </div>
     <div class="ci-card ci-3">
-      <div class="ci-card-num">Check-In 3</div>
-      <div class="ci-card-date">~ Nov 20</div>
-      <div class="ci-card-clusters">C4–C7, D2–D3, E1–E3<br>(10 skills)</div>
-    </div>
-    <div class="ci-card ci-4">
-      <div class="ci-card-num">Check-In 4</div>
+      <div class="ci-card-num">Window 3</div>
       <div class="ci-card-date">~ Dec 9</div>
-      <div class="ci-card-clusters">Clusters F and G<br>(9 skills)</div>
+      <div class="ci-card-clusters">Clusters F, G<br>2 appointments × 25 min</div>
     </div>
     <div class="ci-card ci-f">
       <div class="ci-card-num">Final Window</div>
       <div class="ci-card-date">Dec 12–17</div>
-      <div class="ci-card-clusters">Any unmastered skill<br>(up to 6)</div>
+      <div class="ci-card-clusters">Any unmastered cluster<br>(upgrade N or D → M)</div>
     </div>
   </div>
 </div>
@@ -196,11 +187,11 @@ There are **four reference windows** during the semester, plus a final window du
 
 ---
 
-## Every Student Does Every Check-In
+## Every Student Does Every Cluster Check-In
 
-Check-ins are **not optional and not selective**. Every student schedules a session for every cluster window. Submitted labs and projects are not standalone proof of mastery — they are evidence you bring *to* the check-in and discuss. The check-in is where mastery is confirmed.
+Check-ins are **not optional and not selective**. Every student books a separate 25-minute appointment for every cluster — 7 appointments across the semester. Submitted assignments are not standalone proof of mastery — they are evidence you bring *to* the check-in and discuss. The check-in is where mastery is confirmed.
 
-Book your appointment when you feel ready — ideally after you have completed the labs and project for that cluster. You do not have to wait for the reference date. You also should not wait until the last week.
+Book each appointment when you feel ready — ideally after you have completed the assignments for that cluster. You do not have to wait for the window's reference date. You also should not wait until the last week of the window.
 
 ---
 
@@ -263,12 +254,12 @@ The last row is not a trap. If you genuinely engaged with the work but had a rou
 
 ---
 
-## Labs, Projects, and Your Grade
+## Assignments and Your Grade
 
-Labs and projects are **not graded for points**. Their role is twofold:
+Assignments are **not graded for points**. Their role is twofold:
 
-- **Practice.** Doing the labs and projects is how you build the skills the check-in confirms. A student who skips the linked list lab will have nothing to discuss at Check-In 2, and will find the fresh problem much harder.
-- **Completion threshold.** Completing a sufficient percentage of labs and projects is required to earn a given letter grade range. Strong check-in results alone are not enough — consistent engagement with the coursework matters. The specific thresholds are in the syllabus.
+- **Practice.** Doing the assignments is how you build the skills the check-in confirms. A student who skips the linked list assignment will have nothing to discuss at Check-In 2, and will find the fresh problem much harder.
+- **Completion threshold.** Completing a sufficient percentage of assignments is required to earn a given letter grade range. Strong check-in results alone are not enough — consistent engagement with the coursework matters. The specific thresholds are on the [Grading](../policies/grading.html) page.
 
 ---
 
@@ -336,20 +327,20 @@ Skills marked **†** are persistent and may be assessed at any check-in window,
               data-bs-toggle="collapse" data-bs-target="#clA">
         <span class="cluster-badge cl-a">A</span>
         <strong>C++ Foundations</strong>&nbsp;
-        <span style="font-size:.82rem;color:var(--bs-secondary-color);margin-left:.5rem;">6 skills · Check-In 1</span>
+        <span style="font-size:.82rem;color:var(--bs-secondary-color);margin-left:.5rem;">6 skills · Window 1</span>
       </button>
     </h2>
     <div id="clA" class="accordion-collapse collapse" data-bs-parent="#skillsAccordion">
       <div class="accordion-body">
         <table class="skill-table">
-          <thead><tr><th>Skill</th><th>Description</th><th>Lab</th><th>Project</th><th>Window</th></tr></thead>
+          <thead><tr><th>Skill</th><th>Description</th><th>Assignment(s)</th><th>Window</th></tr></thead>
           <tbody>
-            <tr><td class="skill-id">A1</td><td>Compile, run, and debug a C++ program</td><td>Lab 0</td><td>Project 0</td><td><span class="ci-badge">CI 1</span></td></tr>
-            <tr><td class="skill-id">A2</td><td>Use basic data types, variables, <code>const</code>, and operators</td><td>Lab 0</td><td>Project 0</td><td><span class="ci-badge">CI 1</span></td></tr>
-            <tr><td class="skill-id">A3 <span class="persistent-mark">†</span></td><td>Work with pointers and dynamic memory (<code>new</code>, <code>delete</code>, <code>&amp;</code>, <code>*</code>)</td><td>Lab 0</td><td>Project 0, 4</td><td><span class="ci-badge">CI 1</span></td></tr>
-            <tr><td class="skill-id">A4 <span class="persistent-mark">†</span></td><td>Write correct control structures and functions with proper parameter passing</td><td>Lab 1</td><td>Project 1</td><td><span class="ci-badge">CI 1</span></td></tr>
-            <tr><td class="skill-id">A5</td><td>Read and write files; handle exceptions with <code>try</code>/<code>catch</code>/<code>throw</code></td><td>Lab 2</td><td>Project 2</td><td><span class="ci-badge">CI 1</span></td></tr>
-            <tr><td class="skill-id">A6</td><td>Define and manipulate 2D arrays</td><td>Lab 2</td><td>Project 2</td><td><span class="ci-badge">CI 1</span></td></tr>
+            <tr><td class="skill-id">A1</td><td>Compile, run, and debug a C++ program</td><td>a00, a01</td><td><span class="ci-badge">W1</span></td></tr>
+            <tr><td class="skill-id">A2</td><td>Use basic data types, variables, <code>const</code>, and operators</td><td>a00, a01</td><td><span class="ci-badge">W1</span></td></tr>
+            <tr><td class="skill-id">A3 <span class="persistent-mark">†</span></td><td>Work with pointers and dynamic memory (<code>new</code>, <code>delete</code>, <code>&amp;</code>, <code>*</code>)</td><td>a00, a01, a09</td><td><span class="ci-badge">W1</span></td></tr>
+            <tr><td class="skill-id">A4 <span class="persistent-mark">†</span></td><td>Write correct control structures and functions with proper parameter passing</td><td>a01, a02, a03</td><td><span class="ci-badge">W1</span></td></tr>
+            <tr><td class="skill-id">A5</td><td>Read and write files; handle exceptions with <code>try</code>/<code>catch</code>/<code>throw</code></td><td>a04, a05</td><td><span class="ci-badge">W1</span></td></tr>
+            <tr><td class="skill-id">A6</td><td>Define and manipulate 2D arrays</td><td>a04, a05</td><td><span class="ci-badge">W1</span></td></tr>
           </tbody>
         </table>
       </div>
@@ -363,19 +354,19 @@ Skills marked **†** are persistent and may be assessed at any check-in window,
               data-bs-toggle="collapse" data-bs-target="#clB">
         <span class="cluster-badge cl-b">B</span>
         <strong>Object-Oriented Programming</strong>&nbsp;
-        <span style="font-size:.82rem;color:var(--bs-secondary-color);margin-left:.5rem;">5 skills · Check-In 1</span>
+        <span style="font-size:.82rem;color:var(--bs-secondary-color);margin-left:.5rem;">5 skills · Window 1</span>
       </button>
     </h2>
     <div id="clB" class="accordion-collapse collapse" data-bs-parent="#skillsAccordion">
       <div class="accordion-body">
         <table class="skill-table">
-          <thead><tr><th>Skill</th><th>Description</th><th>Lab</th><th>Project</th><th>Window</th></tr></thead>
+          <thead><tr><th>Skill</th><th>Description</th><th>Assignment(s)</th><th>Window</th></tr></thead>
           <tbody>
-            <tr><td class="skill-id">B1</td><td>Define a class split across <code>.h</code> and <code>.cpp</code> files with correct access modifiers</td><td>Lab 3</td><td>Project 3</td><td><span class="ci-badge">CI 1</span></td></tr>
-            <tr><td class="skill-id">B2 <span class="persistent-mark">†</span></td><td>Implement constructors, destructors, and methods</td><td>Lab 3</td><td>Project 3</td><td><span class="ci-badge">CI 1</span></td></tr>
-            <tr><td class="skill-id">B3</td><td>Implement operator overloading</td><td>Lab 3</td><td>Project 3</td><td><span class="ci-badge">CI 1</span></td></tr>
-            <tr><td class="skill-id">B4 <span class="persistent-mark">†</span></td><td>Implement a copy constructor and distinguish shallow from deep copy</td><td>Lab 4</td><td>Project 4</td><td><span class="ci-badge">CI 1</span></td></tr>
-            <tr><td class="skill-id">B5</td><td>Apply Test-Driven Development to a class</td><td>Lab 3</td><td>Project 3</td><td><span class="ci-badge">CI 1</span></td></tr>
+            <tr><td class="skill-id">B1</td><td>Define a class split across <code>.h</code> and <code>.cpp</code> files with correct access modifiers</td><td>a06, a07</td><td><span class="ci-badge">W1</span></td></tr>
+            <tr><td class="skill-id">B2 <span class="persistent-mark">†</span></td><td>Implement constructors, destructors, and methods</td><td>a06, a07</td><td><span class="ci-badge">W1</span></td></tr>
+            <tr><td class="skill-id">B3</td><td>Implement operator overloading</td><td>a06, a07</td><td><span class="ci-badge">W1</span></td></tr>
+            <tr><td class="skill-id">B4 <span class="persistent-mark">†</span></td><td>Implement a copy constructor and distinguish shallow from deep copy</td><td>a08, a09</td><td><span class="ci-badge">W1</span></td></tr>
+            <tr><td class="skill-id">B5</td><td>Apply Test-Driven Development to a class</td><td>a06, a07</td><td><span class="ci-badge">W1</span></td></tr>
           </tbody>
         </table>
       </div>
@@ -389,21 +380,21 @@ Skills marked **†** are persistent and may be assessed at any check-in window,
               data-bs-toggle="collapse" data-bs-target="#clC">
         <span class="cluster-badge cl-c">C</span>
         <strong>Linear Data Structures</strong>&nbsp;
-        <span style="font-size:.82rem;color:var(--bs-secondary-color);margin-left:.5rem;">7 skills · Check-Ins 2 &amp; 3</span>
+        <span style="font-size:.82rem;color:var(--bs-secondary-color);margin-left:.5rem;">7 skills · Window 2</span>
       </button>
     </h2>
     <div id="clC" class="accordion-collapse collapse" data-bs-parent="#skillsAccordion">
       <div class="accordion-body">
         <table class="skill-table">
-          <thead><tr><th>Skill</th><th>Description</th><th>Lab</th><th>Project</th><th>Window</th></tr></thead>
+          <thead><tr><th>Skill</th><th>Description</th><th>Assignment(s)</th><th>Window</th></tr></thead>
           <tbody>
-            <tr><td class="skill-id">C1</td><td>Implement a dynamic array with resize behavior</td><td>Lab 4</td><td>Project 4</td><td><span class="ci-badge">CI 2</span></td></tr>
-            <tr><td class="skill-id">C2</td><td>Write and use a class template</td><td>Lab 5</td><td>Project 5</td><td><span class="ci-badge">CI 2</span></td></tr>
-            <tr><td class="skill-id">C3</td><td>Implement a linked list with correct pointer manipulation</td><td>Lab 6</td><td>Project 6</td><td><span class="ci-badge">CI 2</span></td></tr>
-            <tr><td class="skill-id">C4</td><td>Compare linked list and dynamic array for a given use case</td><td>Lab 7</td><td>—</td><td><span class="ci-badge">CI 3</span></td></tr>
-            <tr><td class="skill-id">C5</td><td>Implement a stack with O(1) push/pop</td><td>Lab 8</td><td>Project 7</td><td><span class="ci-badge">CI 3</span></td></tr>
-            <tr><td class="skill-id">C6</td><td>Implement a queue with O(1) enqueue/dequeue</td><td>Lab 8</td><td>Project 8</td><td><span class="ci-badge">CI 3</span></td></tr>
-            <tr><td class="skill-id">C7</td><td>Implement and use a hash table with a reasonable hash function</td><td>Lab 12</td><td>—</td><td><span class="ci-badge">CI 3</span></td></tr>
+            <tr><td class="skill-id">C1</td><td>Implement a dynamic array with resize behavior</td><td>a08, a09</td><td><span class="ci-badge">W2</span></td></tr>
+            <tr><td class="skill-id">C2</td><td>Write and use a class template</td><td>a10, a11</td><td><span class="ci-badge">W2</span></td></tr>
+            <tr><td class="skill-id">C3</td><td>Implement a linked list with correct pointer manipulation</td><td>a12</td><td><span class="ci-badge">W2</span></td></tr>
+            <tr><td class="skill-id">C4</td><td>Compare linked list and dynamic array for a given use case</td><td>a13</td><td><span class="ci-badge">W2</span></td></tr>
+            <tr><td class="skill-id">C5</td><td>Implement a stack with O(1) push/pop</td><td>a15, a16</td><td><span class="ci-badge">W2</span></td></tr>
+            <tr><td class="skill-id">C6</td><td>Implement a queue with O(1) enqueue/dequeue</td><td>a15, a16</td><td><span class="ci-badge">W2</span></td></tr>
+            <tr><td class="skill-id">C7</td><td>Implement and use a hash table with a reasonable hash function</td><td>a23</td><td><span class="ci-badge">W2</span></td></tr>
           </tbody>
         </table>
       </div>
@@ -417,17 +408,17 @@ Skills marked **†** are persistent and may be assessed at any check-in window,
               data-bs-toggle="collapse" data-bs-target="#clD">
         <span class="cluster-badge cl-d">D</span>
         <strong>Algorithm Analysis</strong>&nbsp;
-        <span style="font-size:.82rem;color:var(--bs-secondary-color);margin-left:.5rem;">3 skills · Check-Ins 2 &amp; 3</span>
+        <span style="font-size:.82rem;color:var(--bs-secondary-color);margin-left:.5rem;">3 skills · Window 2</span>
       </button>
     </h2>
     <div id="clD" class="accordion-collapse collapse" data-bs-parent="#skillsAccordion">
       <div class="accordion-body">
         <table class="skill-table">
-          <thead><tr><th>Skill</th><th>Description</th><th>Lab</th><th>Project</th><th>Window</th></tr></thead>
+          <thead><tr><th>Skill</th><th>Description</th><th>Assignment(s)</th><th>Window</th></tr></thead>
           <tbody>
-            <tr><td class="skill-id">D1 <span class="persistent-mark">†</span></td><td>Classify the Big-O complexity of a given code snippet</td><td>Lab 7</td><td>—</td><td><span class="ci-badge">CI 2</span></td></tr>
-            <tr><td class="skill-id">D2</td><td>Draw and compare Big-O growth curves</td><td>Lab 7</td><td>—</td><td><span class="ci-badge">CI 3</span></td></tr>
-            <tr><td class="skill-id">D3</td><td>Analyze best/worst/amortized complexity for dynamic array and linked list operations</td><td>Lab 7</td><td>Project 7</td><td><span class="ci-badge">CI 3</span></td></tr>
+            <tr><td class="skill-id">D1 <span class="persistent-mark">†</span></td><td>Classify the Big-O complexity of a given code snippet</td><td>a13</td><td><span class="ci-badge">W2</span></td></tr>
+            <tr><td class="skill-id">D2</td><td>Draw and compare Big-O growth curves</td><td>a13, a14</td><td><span class="ci-badge">W2</span></td></tr>
+            <tr><td class="skill-id">D3</td><td>Analyze best/worst/amortized complexity for dynamic array and linked list operations</td><td>a13, a14</td><td><span class="ci-badge">W2</span></td></tr>
           </tbody>
         </table>
       </div>
@@ -441,17 +432,17 @@ Skills marked **†** are persistent and may be assessed at any check-in window,
               data-bs-toggle="collapse" data-bs-target="#clE">
         <span class="cluster-badge cl-e">E</span>
         <strong>Recursion</strong>&nbsp;
-        <span style="font-size:.82rem;color:var(--bs-secondary-color);margin-left:.5rem;">3 skills · Check-In 3</span>
+        <span style="font-size:.82rem;color:var(--bs-secondary-color);margin-left:.5rem;">3 skills · Window 2</span>
       </button>
     </h2>
     <div id="clE" class="accordion-collapse collapse" data-bs-parent="#skillsAccordion">
       <div class="accordion-body">
         <table class="skill-table">
-          <thead><tr><th>Skill</th><th>Description</th><th>Lab</th><th>Project</th><th>Window</th></tr></thead>
+          <thead><tr><th>Skill</th><th>Description</th><th>Assignment(s)</th><th>Window</th></tr></thead>
           <tbody>
-            <tr><td class="skill-id">E1</td><td>Identify base case and recursive case in a recursive solution</td><td>Lab 9</td><td>Project 9</td><td><span class="ci-badge">CI 3</span></td></tr>
-            <tr><td class="skill-id">E2</td><td>Trace the call stack (winding/unwinding) for a recursive function</td><td>Lab 9</td><td>—</td><td><span class="ci-badge">CI 3</span></td></tr>
-            <tr><td class="skill-id">E3</td><td>Implement a recursive solution to a moderately complex problem</td><td>Lab 9</td><td>Project 9</td><td><span class="ci-badge">CI 3</span></td></tr>
+            <tr><td class="skill-id">E1</td><td>Identify base case and recursive case in a recursive solution</td><td>a17, a18</td><td><span class="ci-badge">W2</span></td></tr>
+            <tr><td class="skill-id">E2</td><td>Trace the call stack (winding/unwinding) for a recursive function</td><td>a17</td><td><span class="ci-badge">W2</span></td></tr>
+            <tr><td class="skill-id">E3</td><td>Implement a recursive solution to a moderately complex problem</td><td>a17, a18</td><td><span class="ci-badge">W2</span></td></tr>
           </tbody>
         </table>
       </div>
@@ -465,19 +456,19 @@ Skills marked **†** are persistent and may be assessed at any check-in window,
               data-bs-toggle="collapse" data-bs-target="#clF">
         <span class="cluster-badge cl-f">F</span>
         <strong>Trees</strong>&nbsp;
-        <span style="font-size:.82rem;color:var(--bs-secondary-color);margin-left:.5rem;">5 skills · Check-In 4 / Final</span>
+        <span style="font-size:.82rem;color:var(--bs-secondary-color);margin-left:.5rem;">5 skills · Window 3 / Final</span>
       </button>
     </h2>
     <div id="clF" class="accordion-collapse collapse" data-bs-parent="#skillsAccordion">
       <div class="accordion-body">
         <table class="skill-table">
-          <thead><tr><th>Skill</th><th>Description</th><th>Lab</th><th>Project</th><th>Window</th></tr></thead>
+          <thead><tr><th>Skill</th><th>Description</th><th>Assignment(s)</th><th>Window</th></tr></thead>
           <tbody>
-            <tr><td class="skill-id">F1</td><td>Implement BST insertion and traversals (in-order, pre-order, post-order)</td><td>Lab 10</td><td>Project 10</td><td><span class="ci-badge">CI 4</span></td></tr>
-            <tr><td class="skill-id">F2</td><td>Implement BST <code>contains</code> and <code>remove</code></td><td>Lab 11</td><td>Project 10</td><td><span class="ci-badge">CI 4</span></td></tr>
-            <tr><td class="skill-id">F3</td><td>Analyze BST complexity for best and worst cases</td><td>Lab 11</td><td>—</td><td><span class="ci-badge">CI 4</span></td></tr>
-            <tr><td class="skill-id">F4</td><td>Compute balance factors and identify when AVL rebalancing is needed</td><td>Lab 11</td><td>—</td><td><span class="ci-badge">CI 4</span></td></tr>
-            <tr><td class="skill-id">F5</td><td>Implement or trace through AVL tree rotations</td><td>Lab 11</td><td>—</td><td><span class="ci-badge">CI 4 / Final</span></td></tr>
+            <tr><td class="skill-id">F1</td><td>Implement BST insertion and traversals (in-order, pre-order, post-order)</td><td>a19, a20</td><td><span class="ci-badge">W3</span></td></tr>
+            <tr><td class="skill-id">F2</td><td>Implement BST <code>contains</code> and <code>remove</code></td><td>a19, a20</td><td><span class="ci-badge">W3</span></td></tr>
+            <tr><td class="skill-id">F3</td><td>Analyze BST complexity for best and worst cases</td><td>a20, a21</td><td><span class="ci-badge">W3</span></td></tr>
+            <tr><td class="skill-id">F4</td><td>Compute balance factors and identify when AVL rebalancing is needed</td><td>a21</td><td><span class="ci-badge">W3</span></td></tr>
+            <tr><td class="skill-id">F5</td><td>Implement or trace through AVL tree rotations</td><td>a21</td><td><span class="ci-badge">W3 / Final</span></td></tr>
           </tbody>
         </table>
       </div>
@@ -491,18 +482,18 @@ Skills marked **†** are persistent and may be assessed at any check-in window,
               data-bs-toggle="collapse" data-bs-target="#clG">
         <span class="cluster-badge cl-g">G</span>
         <strong>STL and Sorting</strong>&nbsp;
-        <span style="font-size:.82rem;color:var(--bs-secondary-color);margin-left:.5rem;">4 skills · Check-In 4 / Final</span>
+        <span style="font-size:.82rem;color:var(--bs-secondary-color);margin-left:.5rem;">4 skills · Window 3 / Final</span>
       </button>
     </h2>
     <div id="clG" class="accordion-collapse collapse" data-bs-parent="#skillsAccordion">
       <div class="accordion-body">
         <table class="skill-table">
-          <thead><tr><th>Skill</th><th>Description</th><th>Lab</th><th>Project</th><th>Window</th></tr></thead>
+          <thead><tr><th>Skill</th><th>Description</th><th>Assignment(s)</th><th>Window</th></tr></thead>
           <tbody>
-            <tr><td class="skill-id">G1</td><td>Use <code>std::vector</code>, <code>std::list</code>, <code>std::stack</code>, <code>std::queue</code> correctly</td><td>Lab 8</td><td>Project 7, 8</td><td><span class="ci-badge">CI 4</span></td></tr>
-            <tr><td class="skill-id">G2</td><td>Use <code>std::set</code> and <code>std::map</code> with iterators</td><td>Lab 12</td><td>—</td><td><span class="ci-badge">CI 4</span></td></tr>
-            <tr><td class="skill-id">G3</td><td>Describe and implement Insertion Sort and Selection Sort</td><td>—</td><td>—</td><td><span class="ci-badge">Final</span></td></tr>
-            <tr><td class="skill-id">G4</td><td>Identify the time complexity of common sorting algorithms</td><td>—</td><td>—</td><td><span class="ci-badge">Final</span></td></tr>
+            <tr><td class="skill-id">G1</td><td>Use <code>std::vector</code>, <code>std::list</code>, <code>std::stack</code>, <code>std::queue</code> correctly</td><td>a15, a16</td><td><span class="ci-badge">W3</span></td></tr>
+            <tr><td class="skill-id">G2</td><td>Use <code>std::set</code> and <code>std::map</code> with iterators</td><td>a22</td><td><span class="ci-badge">W3</span></td></tr>
+            <tr><td class="skill-id">G3</td><td>Describe and implement Insertion Sort and Selection Sort</td><td>a23</td><td><span class="ci-badge">Final</span></td></tr>
+            <tr><td class="skill-id">G4</td><td>Identify the time complexity of common sorting algorithms</td><td>a23</td><td><span class="ci-badge">Final</span></td></tr>
           </tbody>
         </table>
       </div>
@@ -542,5 +533,5 @@ Problems in the fresh-problem portion of a check-in are short, self-contained, a
 ---
 
 ::: {.callout-tip}
-**How to prepare:** Do your labs and projects with genuine understanding, not just correct output. The check-in is not a trick — it is a short conversation about whether you can do what the skill requires. Students who engage honestly with the coursework are well prepared for check-ins. The code walkthrough portion means your own submitted work is the first thing on the table, so know it.
+**How to prepare:** Do your assignments with genuine understanding, not just correct output. The check-in is not a trick — it is a short conversation about whether you can do what the skill requires. Students who engage honestly with the coursework are well prepared for check-ins. The code walkthrough portion means your own submitted assignment is the first thing on the table, so know it.
 :::

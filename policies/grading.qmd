@@ -2,4 +2,317 @@
 title: "Grading"
 ---
 
-*Content coming soon.*
+There are no traditional tests or point-based scores in CS 112. Your grade reflects whether you have genuinely learned the material — not how many points you accumulated on exams. This page explains the system in full.
+
+---
+
+## The Philosophy
+
+Most grading systems reward performance on high-stakes tests taken under pressure. This course does something different: it asks you to **demonstrate** mastery through a conversation about code you actually wrote, and it asks you to **stay engaged** consistently throughout the semester through daily quizzes and assignments.
+
+The result is a grade that is hard to fake and hard to luck into. A student who does the work, comes prepared to check-ins, and shows up every day will almost always end up with a grade that accurately reflects what they know.
+
+---
+
+## The Three Components
+
+Your final grade is determined by three independent components. **All three must be satisfied** — the weakest of the three sets your ceiling. Within a grade tier, four columns in the grade table must all be met simultaneously: M count, D count, quiz completion, and assignment completion.
+
+---
+
+### 1 · Cluster Mastery
+
+The course has 33 skills organized into 7 clusters (A through G). At individual 25-minute check-in appointments throughout the semester, you demonstrate the skills in each cluster one-on-one with the instructor. Each cluster ends up with one of three marks:
+
+```{=html}
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin:1rem 0 1.5rem;">
+  <div style="border:1px solid var(--bs-border-color);border-radius:.4rem;padding:.9rem;text-align:center;">
+    <div style="font-size:1.6rem;font-weight:800;color:var(--bs-secondary-color);">N</div>
+    <div style="font-weight:700;font-size:.88rem;margin:.2rem 0;">Not yet</div>
+    <div style="font-size:.8rem;color:var(--bs-secondary-color);">No evidence of the skill yet — either the check-in hasn't happened or the demonstration was insufficient.</div>
+  </div>
+  <div style="border:1px solid var(--bs-border-color);border-radius:.4rem;padding:.9rem;text-align:center;background:var(--bs-secondary-bg);">
+    <div style="font-size:1.6rem;font-weight:800;color:#8B4513;">D</div>
+    <div style="font-weight:700;font-size:.88rem;margin:.2rem 0;">Developing</div>
+    <div style="font-size:.8rem;color:var(--bs-secondary-color);">The core idea is there, but gaps remain. A follow-up or the Final Window can upgrade this to M.</div>
+  </div>
+  <div style="border:2px solid var(--calvin-maroon,#6E1C2E);border-radius:.4rem;padding:.9rem;text-align:center;">
+    <div style="font-size:1.6rem;font-weight:800;color:var(--calvin-maroon,#6E1C2E);">M</div>
+    <div style="font-weight:700;font-size:.88rem;margin:.2rem 0;">Mastered</div>
+    <div style="font-size:.8rem;color:var(--bs-secondary-color);">You have demonstrated full, correct understanding of the skills in this cluster.</div>
+  </div>
+</div>
+```
+
+**The grade tier is set by how many of the 7 clusters you master.** Mastering all 7 earns the A tier; mastering 6 earns A−; mastering 5 earns the B tier, and so on. Within a tier, your **D count** (clusters marked Developing) and your **quiz and assignment completion percentages** together determine whether you land at the +, plain, or − level. Earning Ds on more clusters, and completing more quizzes and assignments, both push your grade upward within the tier.
+
+See the [Skills & Check-Ins](../content/checkins.html) page for the full skill list and check-in schedule.
+
+**One important detail:** marks can move in both directions. An **M** earned early can drop to **D** at a later check-in if regression is observed. Persistent skills (A3, A4, B2, B4, D1) are re-assessed at every window for exactly this reason.
+
+---
+
+### 2 · Quiz Completion
+
+Short programming quizzes happen in class almost every day, including during lab time. Each quiz takes about 5 minutes. They are not graded for correctness — only **completion** counts. Submitting a reasonable attempt, even an imperfect one, is all that is required.
+
+The percentage of quizzes you complete determines the +/− modifier within your grade tier. Within the B tier (5 clusters mastered), for example, completing ≥ 80 % of quizzes earns B+, while completing ≥ 75 % earns B, and ≥ 70 % earns B−.
+
+**Why quizzes matter:** The quizzes are the course's measure of daily engagement. A student who attends and tries every day builds skills gradually; a student who shows up only for check-ins does not.
+
+---
+
+### 3 · Assignment Completion
+
+Assignments (a00 through a23) are programming tasks you work on during class and finish on your own time. They are not graded for points — **submitting reasonable work counts as complete**.
+
+**Assignments do not have individual due dates.** You may submit any assignment at any time before the last day of classes. What matters is your cumulative completion percentage at the end of the semester.
+
+**Minimum before each check-in:** Before booking your check-in appointment for a cluster, you must have submitted **at least 2 of the assignments listed for that cluster** (see the [Skills & Check-Ins](../content/checkins.html) page for the per-cluster assignment list). The first thing that happens at every check-in is the instructor picking a section of your submitted work to discuss — if you have nothing submitted, there is nothing to talk about and the appointment cannot proceed.
+
+Assignment completion works exactly like quiz completion: within a given grade tier, your assignment percentage determines the +/− modifier alongside your quiz percentage. Both must meet the threshold for a given grade.
+
+**Why assignments matter:** The assignments are the primary way you build the skills that check-ins assess. Consistent submission is a proxy for whether you did the practice that mastery requires.
+
+---
+
+## Grade Table
+
+The grade tier is set by your **cluster M count**. Within the tier, the grade level (+, plain, or −) is set by your **quiz and assignment completion percentages** — both must meet the threshold.
+
+```{=html}
+<style>
+.grade-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .875rem;
+  margin: 1.25rem 0 2rem;
+}
+.grade-table th {
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--bs-secondary-color);
+  border-bottom: 2px solid var(--bs-border-color);
+  padding: .45rem .75rem;
+  text-align: left;
+}
+.grade-table td {
+  padding: .5rem .75rem;
+  border-bottom: 1px solid var(--bs-border-color);
+  vertical-align: middle;
+}
+.grade-table tr:last-child td { border-bottom: none; }
+.grade-badge {
+  display: inline-block;
+  font-weight: 800;
+  font-size: 1rem;
+  min-width: 2.4rem;
+  text-align: center;
+}
+.g-a  { color: var(--calvin-maroon, #6E1C2E); }
+.g-b  { color: #8B4513; }
+.g-c  { color: #C49A2C; }
+.g-d  { color: var(--bs-secondary-color); }
+.g-f  { color: var(--bs-secondary-color); }
+.m-mark { color: var(--calvin-maroon, #6E1C2E); font-weight: 700; }
+.d-mark { color: #8B4513; font-weight: 700; }
+.separator-row td {
+  background: var(--bs-secondary-bg);
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--bs-secondary-color);
+  padding: .3rem .75rem;
+  border-bottom: 1px solid var(--bs-border-color);
+}
+</style>
+
+<table class="grade-table">
+  <thead>
+    <tr>
+      <th style="width:5rem;">Grade</th>
+      <th style="width:11rem;">Clusters mastered <span style="font-weight:400;font-size:.72rem;">(out of 7)</span></th>
+      <th style="width:11rem;">Clusters developing <span style="font-weight:400;font-size:.72rem;">(at least)</span></th>
+      <th style="width:9rem;">Quiz completion</th>
+      <th style="width:11rem;">Assignment completion</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <tr class="separator-row"><td colspan="5">A range — all 7 clusters mastered</td></tr>
+    <tr>
+      <td><span class="grade-badge g-a">A</span></td>
+      <td>7 <span class="m-mark">M</span></td>
+      <td>—</td>
+      <td>≥ 90 %</td>
+      <td>≥ 90 %</td>
+    </tr>
+    <tr>
+      <td><span class="grade-badge g-a">A−</span></td>
+      <td>6 <span class="m-mark">M</span></td>
+      <td>—</td>
+      <td>≥ 85 %</td>
+      <td>≥ 85 %</td>
+    </tr>
+
+    <tr class="separator-row"><td colspan="5">B range — 5 clusters mastered</td></tr>
+    <tr>
+      <td><span class="grade-badge g-b">B+</span></td>
+      <td>5 <span class="m-mark">M</span></td>
+      <td>≥ 2 <span class="d-mark">D</span></td>
+      <td>≥ 80 %</td>
+      <td>≥ 80 %</td>
+    </tr>
+    <tr>
+      <td><span class="grade-badge g-b">B</span></td>
+      <td>5 <span class="m-mark">M</span></td>
+      <td>≥ 1 <span class="d-mark">D</span></td>
+      <td>≥ 75 %</td>
+      <td>≥ 75 %</td>
+    </tr>
+    <tr>
+      <td><span class="grade-badge g-b">B−</span></td>
+      <td>5 <span class="m-mark">M</span></td>
+      <td>any</td>
+      <td>≥ 70 %</td>
+      <td>≥ 70 %</td>
+    </tr>
+
+    <tr class="separator-row"><td colspan="5">C range — 4 clusters mastered</td></tr>
+    <tr>
+      <td><span class="grade-badge g-c">C+</span></td>
+      <td>4 <span class="m-mark">M</span></td>
+      <td>≥ 2 <span class="d-mark">D</span></td>
+      <td>≥ 65 %</td>
+      <td>≥ 65 %</td>
+    </tr>
+    <tr>
+      <td><span class="grade-badge g-c">C</span></td>
+      <td>4 <span class="m-mark">M</span></td>
+      <td>≥ 1 <span class="d-mark">D</span></td>
+      <td>≥ 60 %</td>
+      <td>≥ 60 %</td>
+    </tr>
+    <tr>
+      <td><span class="grade-badge g-c">C−</span></td>
+      <td>4 <span class="m-mark">M</span></td>
+      <td>any</td>
+      <td>≥ 55 %</td>
+      <td>≥ 55 %</td>
+    </tr>
+
+    <tr class="separator-row"><td colspan="5">D range — 3 clusters mastered</td></tr>
+    <tr>
+      <td><span class="grade-badge g-d">D+</span></td>
+      <td>3 <span class="m-mark">M</span></td>
+      <td>≥ 2 <span class="d-mark">D</span></td>
+      <td>≥ 50 %</td>
+      <td>≥ 50 %</td>
+    </tr>
+    <tr>
+      <td><span class="grade-badge g-d">D</span></td>
+      <td>3 <span class="m-mark">M</span></td>
+      <td>≥ 1 <span class="d-mark">D</span></td>
+      <td>≥ 40 %</td>
+      <td>≥ 40 %</td>
+    </tr>
+    <tr>
+      <td><span class="grade-badge g-d">D−</span></td>
+      <td>≥ 1 <span class="m-mark">M</span></td>
+      <td>any</td>
+      <td>≥ 30 %</td>
+      <td>≥ 30 %</td>
+    </tr>
+
+    <tr class="separator-row"><td colspan="5">Failing</td></tr>
+    <tr>
+      <td><span class="grade-badge g-f">F</span></td>
+      <td>0 <span class="m-mark">M</span></td>
+      <td>—</td>
+      <td>any</td>
+      <td>any</td>
+    </tr>
+
+  </tbody>
+</table>
+```
+
+**How to read the table:** First, find the row group that matches your number of mastered clusters — that is your grade tier. Within the tier, find the highest row where **all four columns** are satisfied: your M count, your D count (read as "at least N"), your quiz completion %, and your assignment completion %. The "Developing" column uses "at least" — a student with 3 Ds satisfies both "≥ 1 D" and "≥ 2 D". The highest row where every condition is met is your grade.
+
+---
+
+## How the Cap Works — Worked Examples
+
+**Example 1 — Full mastery, strong engagement**
+A student masters all 7 clusters and completes 93 % of quizzes and 91 % of assignments. The M count places them in the A tier. The A row has no D requirement. Both completion percentages meet the ≥ 90 % threshold. **Final grade: A.**
+
+**Example 2 — One cluster developing**
+A student masters 6 clusters and has 1 D (Cluster G). Quiz completion is 88 % and assignment completion is 86 %. The M count places them in the A− row. The A− row has no D requirement. Both completion percentages meet the ≥ 85 % threshold. **Final grade: A−.**
+
+**Example 3 — Mastery without consistent engagement**
+A student masters 5 clusters and has 2 Ds — enough for B+. But quiz completion is 72 % and assignment completion is 78 %. The quiz percentage only clears the B− threshold (≥ 70 %). Even though the D count would allow B+, the quiz cap prevents it. **Final grade: B−.**
+
+**Example 4 — D count as the modifier**
+A student masters 5 clusters (B tier) and has exactly 1 D. Quiz completion is 82 % and assignment completion is 81 %. The D count satisfies "≥ 1 D" (B) but not "≥ 2 D" (B+). The completion percentages would clear B+ (≥ 80 %), but the D count caps the grade. **Final grade: B.**
+
+**Example 5 — Engagement without sufficient mastery**
+A student completes 94 % of quizzes and 95 % of assignments — well above every threshold. But they master only 4 clusters and have 3 Ds (C tier). The D count (≥ 2 D) and completion percentages easily satisfy the C+ row. **Final grade: C+.**
+
+---
+
+## Submission Deadline
+
+::: {.callout-important}
+**No submissions of any kind will be accepted after the last day of classes.** This applies to assignments, quizzes, and check-in requests alike. Plan accordingly — the course calendar does not move.
+:::
+
+---
+
+## The Final Window
+
+During exam week (Dec 12–17) there is one last check-in opportunity. You may revisit clusters that are currently N or D. A cluster upgraded to M in the Final Window counts exactly the same as one mastered in an earlier window — there is no penalty for late improvement.
+
+The Final Window is not a replacement for regular check-ins. Use it to close specific gaps, not to cover material you haven't engaged with at all.
+
+::: {.callout-warning}
+**Time slots are limited throughout the entire semester, including the Final Window.** If you leave all your check-ins for the end of the semester, you may not find enough open slots to complete the ones you need. Book your check-in appointments early and regularly as each cluster becomes ready — do not wait.
+:::
+
+---
+
+## Tracking Your Progress
+
+Moodle shows you three live numbers throughout the semester: your quiz completion %, your assignment completion %, and your cluster marks (N/D/M) for each of the 7 clusters. At any point, you can open this page, count your Ms, and find where your three numbers land in the table.
+
+---
+
+## Common Questions
+
+**Can I improve a D cluster to M after the window has passed?**
+Yes — the Final Window exists for exactly this. You can also request a follow-up appointment within reason.
+
+**What if I miss a quiz due to illness?**
+Missed quizzes count as incomplete regardless of reason. The thresholds are designed with some buffer — you do not need 100 % completion for an A. Extended illness should be discussed with the instructor.
+
+**Do assignments need to be perfect to count as complete?**
+No. Reasonable work submitted on time counts as complete.
+
+**My completion percentages are high but my cluster marks are low — why isn't my grade higher?**
+Your grade tier is set by cluster mastery, not by engagement. Consistent engagement makes mastery more likely, but the check-in is where mastery is confirmed. Strong completion numbers can only raise you within a tier, not to a higher tier.
+
+---
+
+## Grade Disputes
+
+Because assignments and quizzes are graded only for completion (not correctness), the only marks subject to dispute are **check-in results** (N, D, or M on a cluster).
+
+If you believe a check-in mark was recorded incorrectly, raise it with the instructor **within one week of the appointment**. Disputes brought up after that window will not be considered. The cleanest way to address a D you disagree with is to request a follow-up appointment and demonstrate mastery there — that is faster and more useful than an appeal.
+
+---
+
+::: {.callout-tip}
+**The clearest path to a good grade** is consistent engagement: do the assignments, show up and complete the quizzes, and come prepared to check-ins. Students who do all three rarely find themselves surprised at grade time.
+:::

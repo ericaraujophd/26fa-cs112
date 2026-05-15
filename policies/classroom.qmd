@@ -2,4 +2,54 @@
 title: "Classroom"
 ---
 
-*Content coming soon.*
+::: {.callout-important}
+No phones, no laptops, unless you are explicitly told you can use them.
+:::
+
+This is a challenging course, and distractions — for you and your neighbors — work against everyone. Devices put away means better focus and a better classroom for all.
+
+---
+
+## Required Materials
+
+No textbook purchase is required. All course materials — assignment instructions, reference readings, and supplementary resources — are available on this website.
+
+You will need access to a laptop (any operating system) that can run a modern web browser. All development happens on Calvin's Linux servers through Coder, so no local C++ toolchain is needed. See the [Getting Started](../content/assignments/gettingStarted.html) assignment for the full setup guide — complete it before your first class session.
+
+---
+
+## Office Hours
+
+The instructor does not keep fixed office hours. Appointments are booked directly through the link on the [course home page](../index.html). Book a slot whenever you need help — there is no minimum or maximum number of visits.
+
+---
+
+## Attendance
+
+**Class attendance is required.** Every session combines instruction, in-class practice, and daily quizzes. Missing a session means missing material that is difficult to recover on your own.
+
+- **Daily quizzes** are administered in the first 5 minutes of class on Moodle. Do not show up late.
+- If you are going to miss class due to physical or mental illness, please send an email **before** class starts.
+- Extended absences (illness, family emergency, or other circumstances) should be discussed with the instructor as early as possible. There is no automatic excused-absence policy, but open communication goes a long way.
+
+---
+
+## Disabilities
+
+Calvin University is committed to providing access to all students. If you are a student with a documented disability, please notify a Disability Coordinator in Student Success (located in Hiemenga Hall 227) to discuss necessary accommodations. If you have an accommodation memo, please come talk to me in the first two weeks of class.
+
+If you are a student needing reasonable modifications for pregnancy and related conditions, please contact the Title IX Coordinator in Student Life (located in Spoelhof University Center 364).
+
+---
+
+## Statement of Diversity and Inclusion
+
+Inside and outside of the classroom, I work to treat every person with equal respect, regardless of racial identity, gender identity, physicality, brain chemistry, nationality, political leanings, and religious background.
+
+Whoever you are, you are fearfully and wonderfully made. God delights in diversity and so do I. We humans need diverse viewpoints because every viewpoint, on its own, has blind spots — and that has been proven true in technology-related fields, where under-represented minorities are significantly under-represented in the working world. When companies work hard to rectify this, they find their products and services improve. We have found the same to be true in Computer Science classrooms.
+
+::: {.callout-warning}
+If you or someone else in this class is hurt by something I say or do, I would like to know about it so that we can work toward a remedy. This has happened in the past in my classroom — usually when I'm trying to be funny. If this happens this semester, please know that it was unintentional.
+
+Because this kind of feedback can be uncomfortable for all involved, I'll take it however it comes: in public or in private, on the spot or days later, directly from you or through another student, another professor, or my department chair Derek Schuurman ([derek.schuurman\@calvin.edu](mailto:derek.schuurman@calvin.edu)).
+:::

@@ -3,6 +3,7 @@ project:
   output-dir: _book
   render:
     - "**/*.qmd"
+    - "!policies/policies.qmd"
 
 book:
   title: "CS 112 | Fall 2026"
@@ -26,14 +27,15 @@ book:
     - index.qmd
     - content/schedule.qmd
     - content/checkins.qmd
-    - content/pre/gettingStarted.qmd
     - part: "Course Information"
       chapters:
-        - policies/policies.qmd
         - policies/grading.qmd
         - policies/honesty.qmd
         - policies/classroom.qmd
-    - content/organization.qmd
+    - part: "Assignments"
+      chapters:
+        - content/assignments/gettingStarted.qmd
+        - content/assignments/a01.qmd
 
 language:
   title-block-published: "Last Updated"

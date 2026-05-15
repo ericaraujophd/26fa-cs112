@@ -89,8 +89,8 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
           <h6>🔗 Resources</h6>
           <p><a href="https://integer.exposed/#0x0008" target="_blank" rel="noopener">Binary Exposed</a></p>
           <h6>📝 Assignments</h6>
-          <p><a href="week00/lab00.html">Lab 00</a><br>
-             <a href="week00/proj00.html">Project 00</a></p>
+          <p><a href="assignments/a00.html">a00</a><br>
+             <a href="assignments/a01.html">a01</a></p>
         </div>
       </div>
     </div>
@@ -134,8 +134,8 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
           <h6>🖥️ Slides</h6>
           <p><em>Coming soon</em></p>
           <h6>📝 Assignments</h6>
-          <p><a href="week01/lab01.html">Lab 01</a><br>
-             <a href="week01/proj01.html">Project 01</a></p>
+          <p><a href="assignments/a02.html">a02</a><br>
+             <a href="assignments/a03.html">a03</a></p>
         </div>
       </div>
     </div>
@@ -176,8 +176,8 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
           <h6>🖥️ Slides</h6>
           <p><em>Coming soon</em></p>
           <h6>📝 Assignments</h6>
-          <p><a href="week02/lab02.html">Lab 02</a><br>
-             <a href="week02/proj02.html">Project 02</a></p>
+          <p><a href="assignments/a04.html">a04</a><br>
+             <a href="assignments/a05.html">a05</a></p>
         </div>
       </div>
     </div>
@@ -220,8 +220,8 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
           <h6>🖥️ Slides</h6>
           <p><em>Coming soon</em></p>
           <h6>📝 Assignments</h6>
-          <p><a href="week03/lab03.html">Lab 03</a><br>
-             <a href="week03/proj03.html">Project 03</a></p>
+          <p><a href="assignments/a06.html">a06</a><br>
+             <a href="assignments/a07.html">a07</a></p>
         </div>
       </div>
     </div>
@@ -264,8 +264,8 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
           <h6>🖥️ Slides</h6>
           <p><em>Coming soon</em></p>
           <h6>📝 Assignments</h6>
-          <p><a href="week04/lab04.html">Lab 04</a><br>
-             <a href="week04/proj04.html">Project 04</a></p>
+          <p><a href="assignments/a08.html">a08</a><br>
+             <a href="assignments/a09.html">a09</a></p>
         </div>
       </div>
     </div>
@@ -307,8 +307,8 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
           <h6>🖥️ Slides</h6>
           <p><em>Coming soon</em></p>
           <h6>📝 Assignments</h6>
-          <p><a href="week05/lab05.html">Lab 05</a><br>
-             <a href="week05/proj05.html">Project 05</a></p>
+          <p><a href="assignments/a10.html">a10</a><br>
+             <a href="assignments/a11.html">a11</a></p>
         </div>
       </div>
     </div>
@@ -350,7 +350,7 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
           <h6>🖥️ Slides</h6>
           <p><em>Coming soon</em></p>
           <h6>📝 Assignments</h6>
-          <p><a href="week06/lab06.html">Lab 06</a></p>
+          <p><a href="assignments/a12.html">a12</a></p>
         </div>
       </div>
     </div>
@@ -404,8 +404,8 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
           <h6>🖥️ Slides</h6>
           <p><em>Coming soon</em></p>
           <h6>📝 Assignments</h6>
-          <p><a href="week08/lab08.html">Lab 08</a><br>
-             <a href="week08/proj08.html">Project 08</a></p>
+          <p><a href="assignments/a13.html">a13</a><br>
+             <a href="assignments/a14.html">a14</a></p>
         </div>
       </div>
     </div>
@@ -448,8 +448,8 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
           <h6>🖥️ Slides</h6>
           <p><em>Coming soon</em></p>
           <h6>📝 Assignments</h6>
-          <p><a href="week09/lab09.html">Lab 09</a><br>
-             <a href="week09/proj09.html">Project 09</a></p>
+          <p><a href="assignments/a15.html">a15</a><br>
+             <a href="assignments/a16.html">a16</a></p>
         </div>
       </div>
     </div>
@@ -492,8 +492,8 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
           <h6>🖥️ Slides</h6>
           <p><em>Coming soon</em></p>
           <h6>📝 Assignments</h6>
-          <p><a href="week10/lab10.html">Lab 10</a><br>
-             <a href="week10/proj10.html">Project 10</a></p>
+          <p><a href="assignments/a17.html">a17</a><br>
+             <a href="assignments/a18.html">a18</a></p>
         </div>
       </div>
     </div>
@@ -535,8 +535,8 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
           <h6>🖥️ Slides</h6>
           <p><em>Coming soon</em></p>
           <h6>📝 Assignments</h6>
-          <p><a href="week11/lab11.html">Lab 11</a><br>
-             <a href="week11/proj11.html">Project 11</a></p>
+          <p><a href="assignments/a19.html">a19</a><br>
+             <a href="assignments/a20.html">a20</a></p>
         </div>
       </div>
     </div>
@@ -580,7 +580,7 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
           <h6>🖥️ Slides</h6>
           <p><em>Coming soon</em></p>
           <h6>📝 Assignments</h6>
-          <p><a href="week12/lab12.html">Lab 12</a></p>
+          <p><a href="assignments/a21.html">a21</a></p>
         </div>
       </div>
     </div>
@@ -623,7 +623,7 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
           <h6>🖥️ Slides</h6>
           <p><em>Coming soon</em></p>
           <h6>📝 Assignments</h6>
-          <p><a href="week13/lab13.html">Lab 13</a></p>
+          <p><a href="assignments/a22.html">a22</a></p>
         </div>
       </div>
     </div>
@@ -666,7 +666,7 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
           <h6>🖥️ Slides</h6>
           <p><em>Coming soon</em></p>
           <h6>📝 Assignments</h6>
-          <p><a href="week14/lab14.html">Lab 14</a></p>
+          <p><a href="assignments/a23.html">a23</a></p>
         </div>
       </div>
     </div>

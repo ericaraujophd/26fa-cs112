@@ -1,5 +1,67 @@
 ---
-title: "Honesty"
+title: "Academic Honesty"
 ---
 
-*Content coming soon.*
+All assignments in this course are **individual work**. Every submission must consist of your own original code and writing. This page explains what that means in practice.
+
+---
+
+## Plagiarism
+
+Submitting another student's work as your own — with or without their knowledge — is academic fraud. Giving another person your work for them to submit is equally a violation. Both parties may receive a failing grade (F) and be subject to Calvin's policies on Academic Honesty.
+
+You are welcome to discuss ideas with classmates or with the instructor. **Discussion is not plagiarism. Copying code is.** Here are examples of what plagiarism looks like:
+
+- You copy a program from an online source, change variable names or output messages, and submit it without attribution.
+- A classmate writes some code that you add to your program. You document that you understand it — but you never indicate the source.
+- You find an online tutorial that walks you through building a system, then submit the result without attribution.
+
+**Two useful rules of thumb:**
+
+- If you used copy/paste — or a generative language model — to produce more than one or two lines of your submission, document the original source.
+- If the moment you figured out how to solve a problem occurred while looking at a website or at the output of an AI tool, document that source.
+
+These rules apply to the course's own starter code as well.
+
+---
+
+## AI Use
+
+Generative AI can support learning — but it can also short-circuit the productive struggle that is required for actual skill development. What enters your mind smoothly often exits just as smoothly. Here are guidelines for thoughtful AI use in this class:
+
+- **Use AI granularly:** ask for one step, not a complete solution.
+- **Use AI reflectively:** ask for feedback on what you've already done, not to build things for you.
+- **Use AI studiously:** ask it questions that test your understanding.
+- **Use AI skeptically:** even when it is not wrong, it may be overcomplicated or misguided. Go to the textbook or official documentation first.
+- **Use AI communally:** when working with others, position a shared conversation where everyone can see it. Discuss what the AI gives you rather than each person chatting privately with their own bot.
+
+**The policies:**
+
+- All code and prose you submit must be **typed by you**. Even if you are copying from documentation, type it out — the practice matters.
+- **No AI on assignments or quizzes**, whether in-class or out-of-class.
+- Asking for feedback, coaching, or debugging help is fine — but think for at least a minute on your own first.
+
+---
+
+## MOSS Similarity Detection
+
+::: {.callout-warning}
+Graders use **MOSS (Measure of Software Similarity)** to compare all submissions against one another. MOSS understands the structure of C++ and can detect similarity even when variable names and formatting have been changed. Significantly similar submissions will be assumed to involve cheating.
+:::
+
+One important consequence: if you and another student both independently ask an AI tool to write code for the same problem and submit the result, MOSS may flag the submissions as identical — and we will have to treat it as a violation. The only safe path is to write your own code.
+
+---
+
+## Summary
+
+| Situation | Allowed? |
+|---|---|
+| Discussing an approach with a classmate | ✓ Yes |
+| Looking up documentation or references | ✓ Yes (with attribution if used directly) |
+| Using AI for feedback on your own code | ✓ Yes |
+| Copying code from a classmate | ✗ No |
+| Submitting AI-generated code as your own | ✗ No |
+| Sharing your code with a classmate to submit | ✗ No |
+
+If you are unsure whether something is allowed, **ask before you do it** — not after.

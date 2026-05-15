@@ -1,0 +1,636 @@
+---
+title: "Assignment 01: RPG Character Creator"
+subtitle: "Variables, memory, control structures, and functions — in C++"
+---
+
+::: {.callout-note}
+Accept the assignment invitation on Moodle to get your personal GitHub repository,
+then clone it and open it in VS Code.
+
+**Plan to set aside about 2 to 2.5 hours.** The first part (character sheet) is
+designed to be started in lab with your class; the adventure system and function
+decomposition are the take-home extension. The pointer section and the while-loop
+refactor are the two places most students slow down — give yourself extra time there.
+:::
+
+## Objectives
+
+By the end of this assignment, you will be able to:
+
+- Declare variables of types `int`, `unsigned`, `double`, `string`, `char`, `bool`, `long`, and `const unsigned`
+- Use the address-of operator `&` to print where variables live in memory
+- Declare a pointer, assign it an address, and dereference it with `*`
+- Print a value in decimal, octal, and hexadecimal using stream manipulators
+- Explain what happens when an unsigned integer decrements below zero
+- Use `if / else if / else` to branch on a numeric range
+- Write a `while` loop that validates user input
+- Use a `switch` statement with fall-through cases
+- Write `for` loops that iterate both ascending and descending over arrays
+- Decompose repeated logic into named functions that take parameters and return values
+
+These objectives map to course skills **A1**, **A2**, **A3**, and **A4**.
+
+---
+
+## 1. Introduction
+
+You are writing the character-creation engine for a fantasy RPG. Every character
+in the game has a set of stats, and those stats live somewhere in the computer's
+memory. Your job is to declare those stats, inspect their locations, and build the
+systems that govern how a character is described, how they join a guild, and how
+they accumulate experience points.
+
+Unlike Python, where you just write `health = 100` and move on, C++ requires you
+to say exactly what *type* of value `health` is — and that choice has real
+consequences. Is it a number that can go negative? An integer or a decimal? Can
+it be changed, or is it a constant? These decisions affect how much memory is used,
+what operations are allowed, and what happens at the edge cases. The RPG bugs
+you encounter in this assignment are exactly the bugs that show up in real games
+written in C++.
+
+Here is a side-by-side comparison of how Python and C++ handle variable declarations:
+
+| Concept | Python | C++ |
+|---|---|---|
+| Integer variable | `health = 100` | `int health = 100;` |
+| Unsigned integer | *(no direct equivalent)* | `unsigned health = 100;` |
+| String | `name = "Aria"` | `string name = "Aria";` |
+| Character | `code = 'A'` | `char code = 'A';` |
+| Decimal number | `agility = 3.14` | `double agility = 3.14;` |
+| Boolean | `is_alive = True` | `bool isAlive = true;` |
+| Constant | `MAX_HEALTH = 1000000` | `const unsigned MAX_HEALTH = 1000000;` |
+| Address of variable | *(not accessible)* | `&health` |
+| Pointer | *(not accessible)* | `unsigned* ptr = &health;` |
+
+Two things to notice: C++ needs a semicolon at the end of every statement, and
+`true`/`false` are lowercase. The rest is fairly readable once you know the pattern.
+
+---
+
+## 2. The File You Will Edit
+
+Open **`functions.cpp`** in VS Code. This is the only file you need to edit.
+`functions.h` and `main.cpp` are already complete — read through them to
+understand the structure, but do not change them.
+
+To compile and run a specific step:
+
+```bash
+make
+./a01 step1
+```
+
+To run all automated tests:
+
+```bash
+make test
+```
+
+Run `make test` after finishing each TODO. The tests give PASS/FAIL for each check,
+with hints when something is wrong. Work through failures one at a time.
+
+---
+
+## 3. Part 1: The Character Sheet
+
+### TODO 1a — Declare character variables
+
+In `character_sheet()`, declare the following seven variables. The types and
+names must match exactly — the autograder checks them.
+
+| Variable | Type | Initial value |
+|---|---|---|
+| `MAX_HEALTH` | `const unsigned` | `1000000` |
+| `name` | `string` | Your first name (in double quotes) |
+| `classCode` | `char` | First letter of your last name (in single quotes) |
+| `agility` | `double` | `3.1415` |
+| `isAlive` | `bool` | `true` |
+| `gold` | `long` | `0` |
+| `health` | `unsigned` | `100` |
+
+::: {.callout-tip}
+**Single quotes vs. double quotes.** In C++, `'A'` is a single character (`char`).
+`"A"` is a string — even if it contains only one letter. Use single quotes for
+`char` variables and double quotes for `string` variables.
+:::
+
+::: {.callout-warning}
+**Unused variable warnings.** After TODO 1a, compiling will produce warnings about
+unused variables. This is expected — you will use them in TODO 1b. Warnings are not
+errors; the program still compiles and runs.
+:::
+
+---
+
+### TODO 1b — Print memory addresses
+
+Every variable you declare occupies space somewhere in RAM. In C++, the
+**address-of operator** `&` gives you the memory address of any variable:
+
+```cpp
+cout << &health;       // prints something like: 0x7ffd3a1b2c08
+```
+
+For `char` variables, `cout << &classCode` would treat the address as a
+C-style string and print garbage. Use a cast to `(void*)` to force it to
+print the address instead:
+
+```cpp
+cout << (void*)&classCode;
+```
+
+Print each variable's address on its own line using these **exact** labels
+(the autograder checks for them verbatim):
+
+```
+"MAX_HEALTH is at: "
+"name is at: "
+"classCode is at: "
+"agility is at: "
+"isAlive is at: "
+"gold is at: "
+"health is at: "
+```
+
+Your output will look something like this (the actual numbers will differ):
+
+```
+MAX_HEALTH is at: 0x7ffd3a1b2c10
+name is at: 0x7ffd3a1b2bf0
+classCode is at: 0x7ffd3a1b2bef
+agility is at: 0x7ffd3a1b2be0
+isAlive is at: 0x7ffd3a1b2bde
+gold is at: 0x7ffd3a1b2bd0
+health is at: 0x7ffd3a1b2bc8
+```
+
+::: {.callout-tip}
+**Why are the addresses different on every run?** Modern operating systems use
+address-space layout randomization (ASLR) — they deliberately place your program
+at a random memory location each time it runs. This is a security feature that
+makes it harder to exploit memory bugs.
+:::
+
+---
+
+### TODO 1c — Declare a pointer and use it
+
+A **pointer** is a variable that holds a memory address. Where a regular variable
+holds a value (like `100`), a pointer holds the address *where* a value lives
+(like `0x7ffd3a1b2bc8`).
+
+```cpp
+// Declare a pointer to health:
+unsigned* hpPtr = &health;
+
+// Print the address the pointer holds (same as &health):
+cout << "hpPtr points to: " << hpPtr << endl;
+
+// Dereference: follow the pointer to get the value at that address:
+cout << "Value at hpPtr: " << *hpPtr << endl;
+```
+
+In Python, every variable is already a reference — you can never see or manipulate
+the raw address. In C++, you can, which gives you both power and responsibility.
+
+Use these **exact** labels:
+
+```
+"hpPtr points to: "
+"Value at hpPtr: "
+```
+
+Expected output (address varies):
+
+```
+hpPtr points to: 0x7ffd3a1b2bc8
+Value at hpPtr: 100
+```
+
+Test with `./a01 step1`, then `make test`.
+
+---
+
+### TODO 2 — Number systems
+
+In `show_code()`, create an `int` called `code` initialized to `37`, then
+print it in all three number systems:
+
+```cpp
+cout << "Decimal:     " << dec << code << endl;
+cout << "Octal:       " << oct << code << endl;
+cout << "Hexadecimal: " << hex << code << endl;
+```
+
+The stream manipulators `dec`, `oct`, and `hex` change how subsequent integers
+are formatted in the output stream. They stay in effect until you change them.
+
+Expected output:
+
+```
+Decimal:     37
+Octal:       45
+Hexadecimal: 25
+```
+
+::: {.callout-tip}
+37 in binary is `100101`. Grouping into three bits from the right gives `100` `101`,
+which is `4` and `5` in decimal — so octal is `45`. Grouping into four bits gives
+`0010` `0101`, which is `2` and `5` — so hex is `25`.
+:::
+
+Test with `./a01 step2`, then `make test`.
+
+---
+
+### TODO 3 — Arrays and `sizeof`
+
+In `inventory_size()`, declare an array of 20 `float`s:
+
+```cpp
+float inventory[20];
+```
+
+Then print its total size in bytes using `sizeof`:
+
+```cpp
+cout << "Inventory size in bytes: " << sizeof(inventory) << endl;
+```
+
+`sizeof(inventory)` returns the **total** size of the whole array —
+20 floats × 4 bytes each = 80 bytes. Compare this to `sizeof(float)`,
+which only gives you the size of one `float`.
+
+Expected output:
+
+```
+Inventory size in bytes: 80
+```
+
+Test with `./a01 step3`, then `make test`.
+
+---
+
+### TODO 4 — Unsigned integer underflow
+
+In `health_underflow()`, you will discover one of the most infamous bugs in
+game programming. Declare an unsigned integer set to 0, then decrement it:
+
+```cpp
+unsigned int hp = 0;
+hp--;
+cout << "HP after underflow: " << hp << endl;
+```
+
+You will not see `-1`. Add a comment explaining why.
+
+::: {.callout-warning}
+**What is an unsigned integer?** A regular `int` can hold negative values
+(roughly −2 billion to +2 billion). An `unsigned int` can only hold
+non-negative values (0 to roughly 4 billion). Decrementing below zero does not
+produce a negative number — it *wraps around* to the maximum value. This is called
+**integer underflow**.
+
+This exact bug has caused real problems in shipped games: a character's health
+drops from 1 to 0, and instead of dying they suddenly have 4,294,967,295 HP.
+:::
+
+Expected output:
+
+```
+HP after underflow: 4294967295
+```
+
+Test with `./a01 step4`, then `make test`.
+
+---
+
+## 4. Part 2: The Adventure System
+
+### TODO 5 — Power tier rating (`if / else if / else`)
+
+In `rate_power()`, read an unsigned power level from the user and assign a
+letter tier using `if / else if / else`:
+
+| Power | Tier |
+|---|---|
+| 90 or above | A |
+| 80 – 89 | B |
+| 70 – 79 | C |
+| 60 – 69 | D |
+| Below 60 | F |
+
+Use these **exact** prompt strings:
+
+```
+"Enter your power level (0-100): "
+"Your power tier is: "
+```
+
+In Python this would be a chain of `elif`. In C++:
+
+```cpp
+if      (power >= 90) tier = 'A';
+else if (power >= 80) tier = 'B';
+else if ...
+```
+
+::: {.callout-tip}
+Declare `tier` as a `char` before the if chain, then assign to it inside each
+branch. Print it after the chain ends.
+:::
+
+Test with `./a01 step5`, then `make test`. The autograder checks every boundary
+value (89, 90, 79, 80, etc.), so be precise with your `>=` conditions.
+
+---
+
+### TODO 6 — Guild membership cost (`while` + `if / else`)
+
+In `guild_cost()`, you will combine two new control structures: a `while` loop
+for input validation and a nested `if / else` for cost lookup.
+
+**Step A — Validate the guild name with a while loop:**
+
+```cpp
+string guild;
+cout << "Enter guild name: ";
+cin >> guild;
+
+while (guild != "silver" && guild != "gold") {
+    cout << "I'm sorry, \"" << guild << "\" is not a known guild." << endl;
+    cout << "Enter guild name: ";
+    cin >> guild;
+}
+```
+
+The `\"` inside a string literal prints a literal double-quote character.
+The loop keeps running as long as the guild name is neither `"silver"` nor `"gold"`.
+
+**Step B — Read the duration:**
+
+```cpp
+unsigned months;
+cout << "Enter number of months: ";
+cin >> months;
+```
+
+**Step C — Compute the cost using this table:**
+
+| Guild  | 1 month | 2–6 months | 7+ months |
+|--------|---------|------------|-----------|
+| silver | $90     | $60        | $60       |
+| gold   | $90     | $70        | $35       |
+
+**Step D — Print the result** using this exact format:
+
+```
+"The cost for your guild is $"   (immediately followed by the cost and a period)
+```
+
+Example session:
+
+```
+Enter guild name: bronze
+I'm sorry, "bronze" is not a known guild.
+Enter guild name: gold
+Enter number of months: 3
+The cost for your guild is $70.
+```
+
+Test with `./a01 step6`, then `make test`. The autograder tests every cost cell in
+the table, both boundary values (months 6 and 7), and multiple invalid inputs.
+
+---
+
+### TODO 7 — Class affinity (`switch`)
+
+In `class_type()`, read a single lowercase character from the user and use a
+`switch` statement to determine whether it is a vowel (magical class) or
+consonant (physical class).
+
+The key technique here is **fall-through**: multiple `case` labels can share
+the same body by stacking them without a `break`:
+
+```cpp
+switch (letter) {
+    case 'a':
+    case 'e':
+    case 'i':
+    case 'o':
+    case 'u':
+        cout << "Vowel-class: magical affinity." << endl;
+        break;
+    default:
+        cout << "Consonant-class: physical affinity." << endl;
+}
+```
+
+Use these **exact** prompt strings:
+
+```
+"Enter your class letter: "
+"Vowel-class: magical affinity."
+"Consonant-class: physical affinity."
+```
+
+::: {.callout-note}
+`y` is a consonant for this exercise. The autograder checks it.
+:::
+
+Test with `./a01 step7`, then `make test`.
+
+---
+
+### TODO 8 — XP thresholds (`for` loop, ascending)
+
+In `xp_levels()`, create an array of 8 `unsigned` values and fill it with
+multiples of 7 using a `for` loop:
+
+```cpp
+unsigned xp[8];
+for (int i = 0; i < 8; i++) {
+    xp[i] = i * 7;   // 0, 7, 14, 21, 28, 35, 42, 49
+}
+```
+
+Then verify three specific values using `assert`:
+
+```cpp
+assert(xp[0] == 0);
+assert(xp[3] == 21);
+assert(xp[7] == 49);
+```
+
+If an assertion fails, the program crashes immediately with an error — that
+means your loop is filling the array incorrectly. Fix the loop and rerun.
+
+If all three pass, print:
+
+```
+All XP thresholds verified!
+```
+
+Test with `./a01 step8`, then `make test`.
+
+---
+
+### TODO 9 — Gold sum (`for` loop, descending)
+
+In `gold_sum()`, create an array of 100 `double`s, fill it forward, then sum
+it in reverse:
+
+```cpp
+double drops[100];
+for (int i = 0; i < 100; i++) {
+    drops[i] = i * 0.1;   // 0.0, 0.1, 0.2, ..., 9.9
+}
+
+double total = 0.0;
+for (int i = 99; i >= 0; i--) {   // ← descend from 99 down to 0
+    total += drops[i];
+}
+
+cout << "Total gold collected: " << total << endl;
+```
+
+::: {.callout-warning}
+**Why `int`, not `unsigned`, for the loop variable?**
+A descending `for` loop eventually reaches `i = -1` as its stopping condition.
+An `unsigned` variable cannot represent -1 — it wraps to 4,294,967,295 (the
+same underflow you saw in TODO 4). The loop would run forever. Always use `int`
+when your loop variable needs to go below zero.
+:::
+
+Expected output:
+
+```
+Total gold collected: 495
+```
+
+Test with `./a01 step9`, then `make test`.
+
+---
+
+## 5. Part 3: Function Decomposition
+
+In TODO 6 you wrote `guild_cost()` as one big function. It does three
+distinct things: validates the guild name, reads the duration, and computes
+the cost. A function that does three things is harder to test and reuse than
+three functions that each do one thing.
+
+In this part you will refactor that logic into three smaller functions.
+`play()` — already written in the starter code — calls them in sequence.
+After your three functions work, `play()` should produce the same output
+as `guild_cost()` without any changes on your part.
+
+### TODO 10a — `getGuild()`
+
+Extract the while-loop validation from TODO 6. The function should:
+
+- Print `"Enter guild name: "` and read input
+- If invalid, print the rejection message and ask again
+- Return the valid guild name as a `string`
+
+```cpp
+string getGuild() {
+    string guild;
+    // your while loop here
+    return guild;
+}
+```
+
+### TODO 10b — `getDuration()`
+
+Extract the months-input from TODO 6. The function should:
+
+- Print `"Enter number of months: "` and read an `unsigned`
+- Return the value
+
+```cpp
+unsigned getDuration() {
+    unsigned months;
+    // your cin here
+    return months;
+}
+```
+
+### TODO 10c — `computeCost()`
+
+Extract the cost-table logic from TODO 6. This function:
+
+- Takes `guild` (a `string`) and `months` (an `unsigned`) as parameters
+- Returns the cost as an `unsigned`
+- **Contains no `cout` or `cin`** — pure computation only
+
+```cpp
+unsigned computeCost(string guild, unsigned months) {
+    // your if/else table here
+    return cost;
+}
+```
+
+::: {.callout-tip}
+**In, out, and in/out parameters.** `computeCost` takes two *in parameters* —
+values passed in for the function to read — and returns one value. There is
+no need for `cin` or `cout` inside it. If you find yourself reaching for `cin`
+inside `computeCost`, step back: the caller (`play`) is responsible for
+gathering input; `computeCost` is only responsible for the math.
+:::
+
+### The pre-written `play()` function
+
+Open `functions.cpp` and find `play()` near the bottom. It is already complete:
+
+```cpp
+void play() {
+    string   guild  = getGuild();
+    unsigned months = getDuration();
+    unsigned cost   = computeCost(guild, months);
+    cout << "The cost for your guild is $" << cost << "." << endl;
+}
+```
+
+Study this function. Anyone reading it immediately understands what it does —
+not because it has comments, but because the function names say it all. This is
+what well-decomposed code looks like.
+
+---
+
+## 6. Testing Your Work
+
+After completing each TODO, run:
+
+```bash
+make test
+```
+
+You will see a PASS or FAIL for each of the 72 test cases. Read the hints on any
+FAILs — they tell you exactly which prompt string is missing, which boundary value
+is wrong, or which loop is behaving unexpectedly.
+
+::: {.callout-tip}
+If you get a **build error**, the hints do not matter yet — fix the compiler error
+first. The error message tells you the file name and line number. Read it carefully.
+:::
+
+When all tests pass:
+
+```
+Results: 72/72 passed
+All tests passed! Your character sheet is complete.
+```
+
+---
+
+## 7. Submit
+
+::: {.callout-important}
+Before pushing, open `README.md` and add your name.
+:::
+
+In VS Code, click the **Source Control** icon in the left sidebar. You will see your
+changed files. Type a commit message (e.g., `"Complete a01"`), click the checkmark
+to commit, then sync to push to GitHub.
+
+Verify on github.com that your updated `functions.cpp` is visible in your repository.
