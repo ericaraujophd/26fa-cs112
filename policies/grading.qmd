@@ -142,11 +142,11 @@ The grade tier is set by your **cluster M count**. Within the tier, the grade le
   </thead>
   <tbody>
 
-    <tr class="separator-row"><td colspan="5">A range — all 7 clusters mastered</td></tr>
+    <tr class="separator-row"><td colspan="5">A range — 6 or more clusters mastered</td></tr>
     <tr>
       <td><span class="grade-badge g-a">A</span></td>
-      <td>7 <span class="m-mark">M</span></td>
-      <td>—</td>
+      <td>≥ 6 <span class="m-mark">M</span></td>
+      <td>1 <span class="d-mark">D</span>, or 7 <span class="m-mark">M</span></td>
       <td>≥ 90 %</td>
       <td>≥ 90 %</td>
     </tr>
@@ -162,7 +162,7 @@ The grade tier is set by your **cluster M count**. Within the tier, the grade le
     <tr>
       <td><span class="grade-badge g-b">B+</span></td>
       <td>5 <span class="m-mark">M</span></td>
-      <td>≥ 2 <span class="d-mark">D</span></td>
+      <td>2 <span class="d-mark">D</span></td>
       <td>≥ 80 %</td>
       <td>≥ 80 %</td>
     </tr>
@@ -246,11 +246,11 @@ The grade tier is set by your **cluster M count**. Within the tier, the grade le
 
 ## How the Cap Works — Worked Examples
 
-**Example 1 — Full mastery, strong engagement**
-A student masters all 7 clusters and completes 93 % of quizzes and 91 % of assignments. The M count places them in the A tier. The A row has no D requirement. Both completion percentages meet the ≥ 90 % threshold. **Final grade: A.**
+**Example 1 — Six mastered, one developing**
+A student masters 6 clusters and has 1 D (Cluster G). Quiz completion is 92 % and assignment completion is 91 %. The A row requires ≥6M, ≥1D, and ≥90% on both — all satisfied. **Final grade: A.**
 
-**Example 2 — One cluster developing**
-A student masters 6 clusters and has 1 D (Cluster G). Quiz completion is 88 % and assignment completion is 86 %. The M count places them in the A− row. The A− row has no D requirement. Both completion percentages meet the ≥ 85 % threshold. **Final grade: A−.**
+**Example 2 — Six mastered, none developing**
+A student masters 6 clusters but Cluster G is N. Quiz completion is 88 % and assignment completion is 86 %. The A row is not satisfied (no D). The A− row requires 6M and ≥85% — satisfied. **Final grade: A−.**
 
 **Example 3 — Mastery without consistent engagement**
 A student masters 5 clusters and has 2 Ds — enough for B+. But quiz completion is 72 % and assignment completion is 78 %. The quiz percentage only clears the B− threshold (≥ 70 %). Even though the D count would allow B+, the quiz cap prevents it. **Final grade: B−.**
