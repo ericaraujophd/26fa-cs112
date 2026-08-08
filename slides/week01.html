@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week 01: Control Structures, Functions, Parameter Passing — CS112</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reset.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/theme/white.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/plugin/highlight/monokai.css">
+  <link rel="stylesheet" href="cs112-slides.css">
+</head>
+
+<body>
+<div class="reveal">
+<div class="slides">
+
+
+<section class="title-slide" data-background-color="#6E1C2E">
+  <div class="title-wrap">
+    <div class="title-watermark"><svg class="calvin-svg" id="calvin-mark" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3191.01 3271.58">
+  <defs>
+    <style>
+      .cvl-1 {
+        fill: #c10230;
+      }
+
+      .cvl-2 {
+        fill: #8a2432;
+      }
+
+      .cvl-3 {
+        fill: #ffffff;
+      }
+
+      .cvl-4 {
+        fill: #f2cd00;
+      }
+    </style>
+  </defs>
+  <g>
+    <path class="cvl-2" d="M1595.5,808.61l-77.86-50.86v-101.54l-135.92-88.82c-11.63-7.61-20.13-9.59-25.43-5.95-5.3,3.67-7.95,13.25-7.95,28.78v216.01c0,15.51,2.72,28.71,8.15,39.49,5.45,10.78,13.84,19.91,25.23,27.35l213.78,138.16v-202.63Z"/>
+    <path class="cvl-2" d="M1595.5,1115.21l-239.77-156.68c-29.5-19.29-52.82-43.49-69.9-72.66-17.08-29.17-25.65-59.15-25.65-89.95v-309.8c0-30.8,8.57-49.61,25.65-56.45,17.08-6.81,40.4-.58,69.9,18.69l239.77,156.71v-273.96L1080.82,0v1031.22l514.68,332.3v-248.32Z"/>
+    <path class="cvl-4" d="M1595.5,1011.25l-213.78-138.16c-11.39-7.44-19.78-16.57-25.23-27.35-5.42-10.78-8.15-23.98-8.15-39.49v-216.01c0-15.54,2.65-25.11,7.95-28.78,5.3-3.64,13.79-1.66,25.43,5.95l135.92,88.82v101.54l77.86,50.86v-203.56l-239.77-156.71c-29.5-19.26-52.82-25.5-69.9-18.69-17.08,6.84-25.65,25.65-25.65,56.45v309.8c0,30.8,8.57,60.79,25.65,89.95,17.08,29.17,40.4,53.37,69.9,72.66l239.77,156.68v-103.96Z"/>
+    <path class="cvl-1" d="M1595.5,1011.25l213.78-138.16c11.39-7.44,19.78-16.57,25.23-27.35,5.42-10.78,8.15-23.98,8.15-39.49v-216.01c0-15.54-2.65-25.11-7.95-28.78-5.3-3.64-13.79-1.66-25.43,5.95l-135.92,88.82v101.54l-77.86,50.86v202.63Z"/>
+    <path class="cvl-1" d="M1595.5,331.1v273.96l239.77-156.71c29.5-19.26,52.82-25.5,69.9-18.69,17.08,6.84,25.65,25.65,25.65,56.45v309.8c0,30.8-8.57,60.79-25.65,89.95-17.08,29.17-40.4,53.37-69.9,72.66l-239.77,156.68v248.32l514.68-332.3V0l-514.68,331.1Z"/>
+    <path class="cvl-3" d="M1595.5,808.61l77.86-50.86v-101.54l135.92-88.82c11.63-7.61,20.13-9.59,25.43-5.95,5.3,3.67,7.95,13.25,7.95,28.78v216.01c0,15.51-2.72,28.71-8.15,39.49-5.45,10.78-13.84,19.91-25.23,27.35l-213.78,138.16v103.96l239.77-156.68c29.5-19.29,52.82-43.49,69.9-72.66,17.08-29.17,25.65-59.15,25.65-89.95v-309.8c0-30.8-8.57-49.61-25.65-56.45-17.08-6.81-40.4-.58-69.9,18.69l-239.77,156.71v203.56Z"/>
+  </g>
+  <g>
+    <path class="cvl-4" d="M1432.04,3140.55c-17.3-9-29.11-18.02-35.42-27.02-6.31-9.02-9.46-19.53-9.46-31.54,0-18.02,7.71-32.89,23.13-44.61,15.42-11.71,34.62-17.57,57.6-17.57,20.73,0,37.87,4.69,51.42,14.06,13.55,9.37,20.32,21.51,20.32,36.4,0,22.23-15.8,42.53-47.4,60.92,24.03,11.66,39.95,22.74,47.76,33.25,7.81,10.51,11.71,23.04,11.71,37.58,0,20.06-9,36.67-27.01,49.82-18.01,13.16-39.51,19.74-64.51,19.74s-45.64-5.61-61.57-16.86c-15.93-11.23-23.89-26.16-23.89-44.78,0-27.99,19.1-51.13,57.31-69.4ZM1447.89,3147.23c-23.54,14.06-35.31,33.52-35.31,58.39,0,15.74,4.5,28.26,13.52,37.57,9.02,9.31,21.39,13.97,37.12,13.97,14.35,0,26.38-4.17,36.08-12.52,9.71-8.35,14.56-19.19,14.56-32.54s-4.42-23.7-13.26-32.89c-8.84-9.2-26.41-19.86-52.71-31.99ZM1476.04,3124.34c17.17-13.82,25.75-30.04,25.75-48.66,0-13.34-3.45-23.63-10.36-30.9-6.91-7.27-16.04-10.91-27.38-10.91s-20.82,3.31-28.1,9.92c-7.29,6.61-10.93,15.62-10.93,27.03s3.94,20.91,11.82,28.47c7.89,7.57,20.95,15.92,39.2,25.05Z"/>
+    <path class="cvl-4" d="M1983.08,3028.64c-37.48,7.45-65.55,20.52-84.23,39.2-18.68,18.68-30.74,41.66-36.2,68.94l.37.18c14.67-15.86,33.72-23.79,57.12-23.79,21.71,0,39.99,7.21,54.85,21.63,14.86,14.41,22.29,32.74,22.29,54.97,0,23.54-8.13,43.07-24.38,58.57-16.25,15.51-36.44,23.26-60.57,23.26-26.68,0-48.27-9.55-64.76-28.66-16.5-19.1-24.74-43.74-24.74-73.89,0-37.01,12.86-69.75,38.57-98.22,25.71-28.48,65.43-46.8,119.16-54.97l2.54,12.79ZM1959.42,3200.21c0-21.03-4.88-38.12-14.63-51.27-9.75-13.16-22.21-19.74-37.37-19.74-13.84,0-25.09,4.91-33.76,14.7-8.67,9.79-13,23.1-13,39.92,0,20.54,5.06,38.14,15.17,52.8,10.11,14.65,22.99,21.99,38.64,21.99,13.6,0,24.49-5.61,32.68-16.86,8.18-11.23,12.28-25.08,12.28-41.54Z"/>
+    <path class="cvl-4" d="M1265.24,3246.93c-3.25-1.2-4.93-4.27-5.05-9.22v-209.6l-2.13-1.78c-22.15,5.63-42.5,10.78-64.32,15.55v12.77l32.03,4.44c.48,26.44.72,56.81.72,91.1v42.49c0,16.89-.12,32.24-.36,46.06-.13,4.27-1.75,7-4.87,8.19l-27.53,9.83v10.87h100.16s0-10.21,0-10.21l-28.66-10.49Z"/>
+    <path class="cvl-4" d="M1782.51,3024.52h-162.64v66.27h8.73l10.45-36.76h115.16l-103.52,213.61h37.2c2.9-9.37,6.18-19.36,10-30.21,4.26-12.13,8.92-24.84,13.97-38.14,5.04-13.31,10.45-26.98,16.22-41.03,5.76-14.05,11.68-28.22,17.75-42.51,6.07-14.3,12.25-28.44,18.56-42.42,6.3-13.98,12.58-27.59,18.84-40.84l-.73-7.98Z"/>
+  </g>
+  <g>
+    <path class="cvl-3" d="M614.04,1742.05h-42.56l-60.3-148.41c-27.81-8.8-57.92-13.23-90.31-13.23-77.8,0-138.01,29.14-180.59,87.42-42.61,58.28-63.91,134.57-63.91,228.92,0,100.68,25.1,180.95,75.27,240.79,50.14,59.87,119.78,89.8,208.85,89.8,49.63,0,101.91-10.03,156.84-30.1l6.84,30.1c-70.39,47.88-149.97,71.81-238.69,71.81-115.11,0-208.16-34.68-279.09-104.05C35.47,2125.77,0,2034.4,0,1921.04c0-120.74,38.9-216.33,116.71-286.75,77.8-70.42,179.35-105.62,304.71-105.62,61.95,0,125.32,7.23,190.11,21.67l2.52,5.27v186.43Z"/>
+    <path class="cvl-3" d="M997.02,2238.43c-44.69,37.67-92.06,56.5-142.05,56.5s-89.22-12.23-120.92-36.7c-31.67-24.47-47.52-58.88-47.52-103.24,0-55.29,25.61-95.76,76.84-121.47,51.23-25.7,128.04-38.54,230.49-38.54l.54-39.63c.33-37.67-8.71-65.39-27.21-83.17-18.47-17.78-47.25-26.67-86.33-26.67-36.25,0-79.73,7.93-130.45,23.78l-14.77-42.25c74.97-34.14,147.14-51.23,216.51-51.23,63.37,0,110.8,14.16,142.32,42.49,31.49,28.36,47.07,69.1,46.74,122.25l-2.65,219.7c-.69,17.96-.36,28.92,1.05,39.83,1.42,10.91,6.33,23.8,17.05,33.52,15.16,13.75,34.29,17.03,59.01,21.96v25.77h-128.37c-35.06,0-77.3-16.91-90.28-42.92ZM993.86,2045.13c-55.26,0-94.71,7.05-118.27,21.12-23.59,14.1-35.38,38.21-35.38,72.35,0,31.01,8.35,53.09,25.07,66.29,16.72,13.2,36.52,19.8,59.42,19.8,26.04,0,48.76-6.69,68.1-20.07l1.05-159.5Z"/>
+    <polygon class="cvl-3" points="2260.29 1625.18 2260.29 1741.04 2410.27 1644.54 2410.27 1528.68 2260.29 1625.18"/>
+    <path class="cvl-3" d="M2259.57,1856.19v296.66c0,32.42-.36,55.48-1.05,69.19-.72,8.47-5.12,13.74-13.2,15.85l-65.35,18.47v25.37h310.64v-25.37l-66.81-18.47c-8.1-2.47-12.51-8.44-13.2-17.96-.69-16.54-1.05-45.74-1.05-87.66v-372.58l-149.97,96.5Z"/>
+    <path class="cvl-3" d="M1495.96,2222.04c-.72-13.71-1.06-36.77-1.06-69.19v-721.19l-149.97,96.5v604.11c0,41.91-.36,71.12-1.06,87.66-.72,9.52-5.12,15.49-13.23,17.96l-66.79,18.47v25.37h311.7v-25.37l-66.4-18.47c-8.11-2.11-12.5-7.38-13.2-15.85Z"/>
+    <path class="cvl-3" d="M3126.32,2237.89c-8.8-2.47-13.38-8.44-13.74-17.96-.69-21.12-1.05-53.67-1.05-97.69v-185.35c0-51.41-14.61-91.09-43.81-119.09-29.23-27.99-69.55-41.98-120.95-41.98-58.07,0-116.89,19.71-176.37,59.12v-46.98h-229.31v25.37l2.24.62,64.42,17.85c7.25,1.97,11.14,6.83,11.9,14.37.05.52.22.94.24,1.48.36,22.41.54,43.98.54,64.66v244.78c0,20.76-.18,42.43-.54,64.94-.33,8.47-4.4,13.74-12.14,15.85l-66.65,18.47v25.37h297.97v-25.37l-55.46-16.87c-7.75-2.14-11.78-7.92-12.14-17.45-.69-36.61-1.05-76.9-1.05-120.92v-227.08c30.98-16.87,61.08-25.34,90.31-25.34,33.45,0,58.61,9.43,75.51,28.26,16.9,18.83,25.34,49.9,25.34,93.2v221.27c0,16.91-.18,27.99-.51,33.27-.72,8.1-5.12,13.38-13.23,15.85l-51.74,15.82v25.37h294.93v-25.37l-64.68-18.47Z"/>
+    <path class="cvl-3" d="M1974.37,1787.97v25.34l56.23,15.85c-27.09,73.22-54.72,145.21-82.9,215.96-8.8,21.49-17.6,44.39-26.4,68.67-8.47-25.01-16.72-47.88-24.83-68.67-30.62-78.14-57.22-150.12-79.73-215.96l54.92-15.85v-25.34h-285.17v25.34l52.79,14.8c9.85,3.53,17.6,11.42,23.26,23.74l173.67,429.87h73.14c18.64-47.06,46.12-114.37,82.42-202,37.15-89.59,69.46-166.42,96.91-230.49,4.94-10.91,11.78-17.78,20.61-20.61l55.7-15.31v-25.34h-190.64Z"/>
+  </g>
+  <g>
+    <path class="cvl-3" d="M349.17,2661.18v-138.33h42.21v136.62c0,44.62,23,68.3,60.75,68.3s60.42-22.3,60.42-66.59v-138.33h42.21v136.27c0,71.74-40.49,107.78-103.32,107.78s-102.28-36.04-102.28-105.73Z"/>
+    <path class="cvl-3" d="M652.21,2522.85h39.12l128.73,166.13v-166.13h41.53v240.28h-35.36l-132.49-170.94v170.94h-41.53v-240.28Z"/>
+    <path class="cvl-3" d="M965.2,2522.85h42.21v240.28h-42.21v-240.28Z"/>
+    <path class="cvl-3" d="M1090.46,2522.85h46.68l72.42,184.67,72.09-184.67h45.66l-99.56,242h-37.75l-99.54-242Z"/>
+    <path class="cvl-3" d="M1407.93,2522.85h178.15v37.77h-135.94v62.46h120.49v38.1h-120.49v64.2h137.64v37.75h-179.86v-240.28Z"/>
+    <path class="cvl-3" d="M1677.35,2522.85h107.1c30.19,0,53.88,8.93,69.33,24.02,12.71,13.04,19.91,30.9,19.91,51.84v.69c0,39.47-23.69,63.15-56.99,72.76l64.88,90.96h-50.12l-59.03-83.76h-52.86v83.76h-42.21v-240.28ZM1781.35,2641.96c30.21,0,49.42-15.78,49.42-40.16v-.69c0-25.75-18.52-39.81-49.77-39.81h-61.44v80.65h61.79Z"/>
+    <path class="cvl-3" d="M1948.81,2728.12l25.4-30.21c23,19.91,46.34,31.23,75.87,31.23,26.08,0,42.55-12.36,42.55-30.19v-.69c0-17.17-9.6-26.43-54.23-36.73-51.14-12.36-79.97-27.47-79.97-71.74v-.69c0-41.19,34.32-69.68,82.04-69.68,35.01,0,62.81,10.63,87.19,30.21l-22.65,31.92c-21.63-16.13-43.25-24.71-65.22-24.71-24.73,0-39.14,12.69-39.14,28.49v.69c0,18.54,10.98,26.77,57.33,37.75,50.79,12.36,76.89,30.56,76.89,70.37v.69c0,44.97-35.36,71.74-85.82,71.74-36.73,0-71.4-12.69-100.23-38.44Z"/>
+    <path class="cvl-3" d="M2226.47,2522.85h42.21v240.28h-42.21v-240.28Z"/>
+    <path class="cvl-3" d="M2431.02,2561.99h-76.55v-39.14h195.3v39.14h-76.54v201.14h-42.21v-201.14Z"/>
+    <path class="cvl-3" d="M2703.84,2668.39l-95.41-145.53h50.11l66.94,106.06,67.96-106.06h48.4l-95.43,144.51v95.76h-42.56v-94.74Z"/>
+  </g>
+</svg></div>
+    <div class="title-text">
+      <p class="title-code">CS 112</p>
+      <p class="title-course">Introduction to Data Structures</p>
+      <div class="title-rule"></div>
+      <p class="title-week">Week 01</p>
+      <p class="title-topic">Control Structures, Functions, Parameter Passing</p>
+      <p class="title-author">Eric Ara&uacute;jo</p>
+      <p class="title-meta">Calvin University &middot; Fall 2026</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>This Week</h2>
+  <ul class="agenda-list">
+    <li><div class="agenda-num">1</div> Selection: <code>if</code> and <code>switch</code></li>
+    <li><div class="agenda-num">2</div> Loops: <code>while</code>, <code>for</code>, <code>break</code>/<code>continue</code></li>
+    <li><div class="agenda-num">3</div> Defining and calling functions</li>
+    <li><div class="agenda-num">4</div> Prototypes, default arguments, overloading</li>
+    <li><div class="agenda-num">5</div> Arrays as parameters</li>
+    <li><div class="agenda-num">6</div> Parameter passing: in, out, in/out <span class='badge'>KEY</span></li>
+    <li><div class="agenda-num">7</div> Building with <code>make</code></li>
+  </ul>
+</section>
+
+<section>
+  <h2>Selection: <code>if</code></h2>
+  <pre><code class="language-cpp" data-trim>
+if (hp &lt;= 0) {
+    cout &lt;&lt; "You have fallen." &lt;&lt; endl;
+} else if (hp &lt; 20) {
+    cout &lt;&lt; "You are badly hurt." &lt;&lt; endl;
+} else {
+    cout &lt;&lt; "You fight on." &lt;&lt; endl;
+}
+  </code></pre>
+  <ul>
+    <li>Braces are optional for one statement — <strong>use them anyway</strong></li>
+    <li>Boolean operators: <code>==</code> <code>!=</code> <code>&amp;&amp;</code> <code>||</code> <code>!</code></li>
+    <li><code>=</code> is assignment, <code>==</code> is comparison — the classic C++ bug</li>
+  </ul>
+  <div class="callout">Format as you go: in VS Code, <strong>F1 → Format Document</strong>. Readable code is hospitality toward whoever reads it next.</div>
+</section>
+
+<section>
+  <h2>Selection: <code>switch</code></h2>
+  <pre><code class="language-cpp" data-trim>
+switch (roll) {
+  case 1:
+    cout &lt;&lt; "Critical miss!" &lt;&lt; endl;
+    break;
+  case 19:
+  case 20:                  // 19 and 20 share a case
+    cout &lt;&lt; "Critical hit!" &lt;&lt; endl;
+    break;
+  default:
+    cout &lt;&lt; "A normal swing." &lt;&lt; endl;
+}
+  </code></pre>
+  <div class="callout callout-maroon">Forget <code>break</code> and execution <em>falls through</em> into the next case. Sometimes useful, usually a bug.</div>
+</section>
+
+<section>
+  <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
+  <div class="pi-question">
+    <strong>What prints when <code>roll</code> is 19?</strong>
+    <pre style="font-size:0.56em"><code class="language-cpp" data-trim>
+case 19:
+case 20:
+    cout &lt;&lt; "Critical hit!" &lt;&lt; endl;
+    break;
+default:
+    cout &lt;&lt; "A normal swing." &lt;&lt; endl;
+    </code></pre>
+  </div>
+  <ul class="pi-choices">
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">A.</span> Critical hit!</li>
+    <li><span class="letter">B.</span> Critical hit! then A normal swing.</li>
+    <li><span class="letter">C.</span> A normal swing.</li>
+    <li><span class="letter">D.</span> Nothing — case 19 is empty.</li>
+  </ul>
+  <div class="answer-box fragment" data-fragment-index="1">
+    <div class="ans-label">&#10003; Answer</div>
+    <strong>A — Critical hit!</strong> An empty <code>case</code> falls through to the next one, so 19 and 20 run the same code. The <code>break</code> then stops it before <code>default</code>.
+  </div>
+</section>
+
+<section>
+  <h2>Loops: <code>while</code></h2>
+  <pre><code class="language-cpp" data-trim>
+// how many times can we halve this before reaching 1?
+double value = 45444443442345345.0;
+int    count = 0;
+
+while (value &gt; 1.0) {
+    value /= 2.0;
+    ++count;
+}
+cout &lt;&lt; "2^" &lt;&lt; count &lt;&lt; " clears it" &lt;&lt; endl;
+  </code></pre>
+  <div class="callout">A <code>while</code> loop tests <em>before</em> each pass. If the condition starts false, the body never runs.</div>
+</section>
+
+<section>
+  <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
+  <div class="pi-question">
+    <strong>What does <code>arr</code> hold after this runs?</strong>
+    <pre style="font-size:0.56em"><code class="language-cpp" data-trim>
+int arr[] = { 3, 7, 11, 13 };
+int i = 1;
+while (i &lt; 4) {
+    arr[i] = arr[i] * 2;
+    ++i;
+}
+    </code></pre>
+  </div>
+  <ul class="pi-choices pi-compact">
+    <li><span class="letter">A.</span> 6, 14, 22, 26</li>
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">B.</span> 3, 14, 22, 26</li>
+    <li><span class="letter">C.</span> 6, 14, 22, 13</li>
+    <li><span class="letter">D.</span> 3, 14, 22, 13</li>
+    <li><span class="letter">E.</span> None of the others</li>
+  </ul>
+  <div class="answer-box fragment" data-fragment-index="1">
+    <div class="ans-label">&#10003; Answer</div>
+    <strong>B — 3, 14, 22, 26.</strong> <code>i</code> starts at 1, so <code>arr[0]</code> is never touched; the loop stops after <code>i == 3</code>, so the last element <em>is</em> doubled.
+  </div>
+</section>
+
+<section data-auto-animate>
+  <h2>From <code>while</code> to <code>for</code></h2>
+  <pre data-id="loop-code"><code class="language-cpp" data-trim>
+int i = 1;
+while (i &lt; 4) {
+    arr[i] = arr[i] * 2;
+    ++i;
+}
+  </code></pre>
+  <div class="callout">Three things scattered across four lines: <strong>start</strong>, <strong>test</strong>, <strong>step</strong>.</div>
+</section>
+
+<section data-auto-animate>
+  <h2>From <code>while</code> to <code>for</code></h2>
+  <pre data-id="loop-code"><code class="language-cpp" data-trim>
+for (int i = 1; i &lt; 4; ++i) {
+    arr[i] = arr[i] * 2;
+}
+  </code></pre>
+  <div class="callout">Same loop, one line of bookkeeping. <code>i</code> now lives <em>only</em> inside the loop — using it afterwards is a compile error.</div>
+</section>
+
+<section>
+  <h2><code>break</code> and <code>continue</code></h2>
+  <div class="two-col">
+    <div>
+      <h3>break — leave the loop</h3>
+      <pre style="font-size:0.5em"><code class="language-cpp" data-trim>
+for (int i = 0; i &lt; n; ++i) {
+  if (party[i] == target) {
+    found = i;
+    break;       // stop looking
+  }
+}
+      </code></pre>
+    </div>
+    <div>
+      <h3>continue — skip this pass</h3>
+      <pre style="font-size:0.5em"><code class="language-cpp" data-trim>
+for (int i = 0; i &lt; n; ++i) {
+  if (hp[i] &lt;= 0) {
+    continue;    // skip the fallen
+  }
+  total += hp[i];
+}
+      </code></pre>
+    </div>
+  </div>
+  <div class="callout">Both are shortcuts, not magic: anything they do can be written with a richer condition. Use them when they make the intent <em>clearer</em>.</div>
+</section>
+
+<section>
+  <h2>Defining a Function</h2>
+  <pre data-line-numbers><code class="language-cpp" data-trim>
+int rollDamage(int dice, int sides) {
+    int total = 0;
+    for (int i = 0; i &lt; dice; ++i) {
+        total += rand() % sides + 1;
+    }
+    return total;
+}
+
+int main() {
+    int hit = rollDamage(2, 6);     // 2d6
+}
+  </code></pre>
+  <div class="two-col" style="font-size:0.6em; margin-top:0.3em">
+    <div class="callout"><strong>Parameters</strong> (line 1) — names with types, comma separated.</div>
+    <div class="callout"><strong>Arguments</strong> (line 11) — the actual values you pass in.</div>
+  </div>
+</section>
+
+<section>
+  <h2>Define Before You Call</h2>
+  <p style="font-size:0.7em">C++ reads top to bottom. Calling a function the compiler hasn't seen yet is an error — so we declare it first with a <strong>prototype</strong>.</p>
+  <div class="two-col">
+    <div>
+      <h3>dice.h</h3>
+      <pre style="font-size:0.52em"><code class="language-cpp" data-trim>
+int rollDamage(int dice, int sides);
+      </code></pre>
+      <p style="font-size:0.55em">Just the signature — <em>what</em> exists.</p>
+    </div>
+    <div>
+      <h3>dice.cpp</h3>
+      <pre style="font-size:0.46em"><code class="language-cpp" data-trim>
+#include "dice.h"
+
+int rollDamage(int dice, int sides) {
+    ...
+}
+      </code></pre>
+      <p style="font-size:0.55em">The body — <em>how</em> it works.</p>
+    </div>
+  </div>
+  <div class="callout">Every <code>.cpp</code> that calls it just does <code>#include "dice.h"</code>. This is the header/source split from week 0, now with a reason.</div>
+</section>
+
+<section>
+  <h2>Default Arguments &amp; Overloading</h2>
+  <pre style="font-size:0.6em"><code class="language-cpp" data-trim>
+// default: callers may omit sides
+int rollDamage(int dice, int sides = 6);
+
+rollDamage(2);        // 2d6
+rollDamage(2, 20);    // 2d20
+
+// overloading: same name, different parameter lists
+int  attack(int strength);
+int  attack(int strength, int bonus);
+void attack(const string &amp;spell);
+  </code></pre>
+  <ul>
+    <li>Defaults go on the <strong>prototype</strong>, not the definition</li>
+    <li>Overloads must differ in <strong>parameters</strong> — return type alone is not enough</li>
+    <li>The compiler picks the match; ambiguity is a compile error</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Passing Arrays</h2>
+  <pre><code class="language-cpp" data-trim>
+void printParty(int hp[], int n);   // these two are
+void printParty(int *hp, int n);    // the same thing
+
+int party[] = { 12, 30, 8 };
+printParty(party, 3);               // nothing is copied
+  </code></pre>
+  <div class="mem-diagram" style="max-width:600px">
+    <div class="mem-row">
+      <span class="mem-addr">0x7ffd10</span>
+      <span class="mem-val">12 &nbsp; 30 &nbsp; 8</span>
+      <span class="mem-lbl">← party</span>
+    </div>
+    <div class="mem-row">
+      <span class="mem-addr">hp (in function)</span>
+      <span class="mem-val">0x7ffd10</span>
+      <span class="mem-lbl">← just the address</span>
+    </div>
+  </div>
+  <div class="callout callout-maroon">An array argument decays to a <strong>pointer to its first element</strong>. The function gets an address, not a copy — which is why it must also be told the <code>size</code>.</div>
+</section>
+
+<section>
+  <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
+  <div class="pi-question">
+    <strong>Which call passes <code>vals</code> more efficiently?</strong>
+    <pre style="font-size:0.56em"><code class="language-cpp" data-trim>
+void print(int *arr, int size);
+void print2(int arr[], int size);
+
+int vals[] = { 1, 3, 4 };
+print(vals, 3);
+print2(vals, 3);
+    </code></pre>
+  </div>
+  <ul class="pi-choices">
+    <li><span class="letter">A.</span> <code>print()</code> is more efficient</li>
+    <li><span class="letter">B.</span> <code>print2()</code> is more efficient</li>
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">C.</span> Neither — they are the same</li>
+  </ul>
+  <div class="answer-box fragment" data-fragment-index="1">
+    <div class="ans-label">&#10003; Answer</div>
+    <strong>C — identical.</strong> <code>int arr[]</code> in a parameter list <em>is</em> <code>int *arr</code>. Both calls pass one address; neither copies the array.
+  </div>
+</section>
+
+<section>
+  <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
+  <div class="pi-question">
+    <strong>Will the second call to <code>print2()</code> compile?</strong>
+    <pre style="font-size:0.56em"><code class="language-cpp" data-trim>
+void print2(int arr[], int size);
+
+int vals[] = { 1, 3, 4 };
+int val = 7;
+print2(vals, 3);
+print2(&amp;val, 1);
+    </code></pre>
+  </div>
+  <ul class="pi-choices">
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">A.</span> Yes — <code>&amp;val</code> is an address, and <code>int arr[]</code> takes an address</li>
+    <li><span class="letter">B.</span> No — <code>print2()</code> requires an actual array</li>
+    <li><span class="letter">C.</span> No — you cannot have an array of size 1</li>
+    <li><span class="letter">D.</span> None of the above</li>
+  </ul>
+  <div class="answer-box fragment" data-fragment-index="1">
+    <div class="ans-label">&#10003; Answer</div>
+    <strong>A — it compiles.</strong> The parameter is a pointer, and <code>&amp;val</code> is a valid <code>int*</code>. It compiles happily; passing a size larger than 1 would then read memory that isn't yours.
+  </div>
+</section>
+
+<section>
+  <h2>Protecting an Array: <code>const</code></h2>
+  <pre><code class="language-cpp" data-trim>
+int totalHP(const int hp[], int size) {
+    int total = 0;
+    for (int i = 0; i &lt; size; ++i) {
+        total += hp[i];
+    }
+    // hp[0] = 99;   ❌ compile error — hp is const here
+    return total;
+}
+  </code></pre>
+  <div class="callout">Marking a parameter <code>const</code> is a promise to the caller: <em>this function will not modify your data.</em> The compiler enforces the promise.</div>
+</section>
+
+<section class="demo-slide" data-background-color="#6E1C2E">
+  <h1>Demo</h1>
+  <div class="demo-rule"></div>
+  <svg class="demo-art" viewBox="0 -34 320 246" xmlns="http://www.w3.org/2000/svg">
+    <path d="M254,12 C250,0 260,-6 256,-20 C270,-11 267,1 261,12 Z" fill="#E8873A"/>
+    <path d="M266,12 C264,4 270,0 268,-10 C277,-3 275,5 271,12 Z" fill="#F2CD00"/>
+    <path d="M243,12 C241,5 246,2 244,-6 C251,-1 250,6 247,12 Z" fill="#E8873A" opacity=".75"/>
+    <rect x="40" y="10" width="240" height="150" rx="9" fill="#1e1f1a" stroke="#C49A2C" stroke-width="3"/>
+    <text x="58" y="46" font-family="'Fira Code',Consolas,monospace" font-size="15" fill="#9be36b">$ make</text>
+    <text x="58" y="76" font-family="'Fira Code',Consolas,monospace" font-size="13" fill="#ff7b72">undefined reference to</text>
+    <text x="58" y="96" font-family="'Fira Code',Consolas,monospace" font-size="13" fill="#ff7b72">   `rollDamage(int, int)'</text>
+    <text x="58" y="126" font-family="'Fira Code',Consolas,monospace" font-size="15" fill="#9be36b">$</text>
+    <rect x="72" y="114" width="9" height="15" fill="#9be36b"/>
+    <path d="M22,168 L298,168 L314,196 L6,196 Z" fill="#eceae3" stroke="#8d8d86" stroke-width="2.5" stroke-linejoin="round"/>
+    <rect x="140" y="174" width="40" height="6" rx="3" fill="#cfcdc6"/>
+  </svg>
+  <p class="demo-cap">Live coding. What could possibly go wrong?</p>
+  <p class="demo-sub">(the semicolon is always missing on line 12)</p>
+</section>
+
+<section>
+  <h2>Which Way Does the Data Flow?</h2>
+  <div class="two-col">
+    <div>
+      <div class="callout" style="font-size:0.62em"><strong>IN</strong> — the function reads it, caller's value never changes</div>
+      <div class="callout" style="font-size:0.62em"><strong>OUT</strong> — the function fills it in; whatever was there is ignored</div>
+      <div class="callout" style="font-size:0.62em"><strong>IN/OUT</strong> — the function reads it <em>and</em> updates it</div>
+    </div>
+    <div>
+      <pre style="font-size:0.5em"><code class="language-cpp" data-trim>
+// IN
+int totalHP(const int hp[], int n);
+
+// OUT
+void rollStats(int &amp;str, int &amp;dex);
+
+// IN/OUT
+void applyDamage(int &amp;hp, int hit);
+      </code></pre>
+    </div>
+  </div>
+  <div class="callout callout-maroon">Decide the <em>direction</em> first. The passing mechanism follows from it.</div>
+</section>
+
+<section>
+  <h2>Three Ways to Pass</h2>
+  <table>
+    <thead>
+      <tr><th>Mechanism</th><th>Syntax</th><th>Copies?</th><th>Can change caller's value?</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>By value</td><td><code>int hp</code></td><td>Yes</td><td>No</td></tr>
+      <tr><td>By reference</td><td><code>int &amp;hp</code></td><td>No</td><td><strong>Yes</strong></td></tr>
+      <tr><td>By const reference</td><td><code>const string &amp;name</code></td><td>No</td><td>No</td></tr>
+    </tbody>
+  </table>
+  <div class="two-col" style="font-size:0.6em; margin-top:0.5em">
+    <div class="callout"><strong>Small and IN?</strong> Pass by value — copying an <code>int</code> is free.</div>
+    <div class="callout"><strong>Big and IN?</strong> Pass by const reference — no copy, still safe.</div>
+  </div>
+  <div class="callout callout-maroon">Anything OUT or IN/OUT must be by <strong>plain reference</strong> — that's the only way the caller sees the change.</div>
+</section>
+
+<section>
+  <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
+  <div class="pi-question">
+    <strong>Does <code>x</code> flow <em>in</em>, <em>out</em>, or <em>in/out</em> of <code>j()</code>?</strong>
+    <pre style="font-size:0.56em"><code class="language-cpp" data-trim>
+int j(int val) {
+    val = val + 1;
+    return val;
+}
+
+int main() {
+    int x = 3;
+    int y = j(x);
+}
+    </code></pre>
+  </div>
+  <ul class="pi-choices pi-compact">
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">A.</span> In</li>
+    <li><span class="letter">B.</span> In/Out</li>
+    <li><span class="letter">C.</span> Out</li>
+    <li><span class="letter">D.</span> Out, because of what j() returns</li>
+  </ul>
+  <div class="answer-box fragment" data-fragment-index="1">
+    <div class="ans-label">&#10003; Answer</div>
+    <strong>A — In.</strong> <code>val</code> is a copy. <code>j()</code> changes its own copy and returns it; <code>x</code> back in <code>main()</code> is still 3.
+  </div>
+</section>
+
+<section>
+  <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
+  <div class="pi-question">
+    <strong>Does <code>x</code> flow <em>in</em>, <em>out</em>, or <em>in/out</em> of <code>j()</code>?</strong>
+    <pre style="font-size:0.56em"><code class="language-cpp" data-trim>
+void j(int &amp;val) {
+    val = val + 1;
+}
+
+int main() {
+    int x = 3;
+    j(x);
+}
+    </code></pre>
+  </div>
+  <ul class="pi-choices pi-compact">
+    <li><span class="letter">A.</span> In</li>
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">B.</span> In/Out</li>
+    <li><span class="letter">C.</span> Out</li>
+    <li><span class="letter">D.</span> Out, because of what j() returns</li>
+  </ul>
+  <div class="answer-box fragment" data-fragment-index="1">
+    <div class="ans-label">&#10003; Answer</div>
+    <strong>B — In/Out.</strong> <code>val</code> is a reference to <code>x</code>. The function <em>reads</em> the old value and <em>writes</em> a new one, so data flows both ways.
+  </div>
+</section>
+
+<section>
+  <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
+  <div class="pi-question">
+    <strong>Does <code>x</code> flow <em>in</em>, <em>out</em>, or <em>in/out</em> of <code>j()</code>?</strong>
+    <pre style="font-size:0.56em"><code class="language-cpp" data-trim>
+void j(int &amp;val) {
+    val = 17;
+}
+
+int main() {
+    int x = 3;
+    j(x);
+}
+    </code></pre>
+  </div>
+  <ul class="pi-choices pi-compact">
+    <li><span class="letter">A.</span> In</li>
+    <li><span class="letter">B.</span> In/Out</li>
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">C.</span> Out</li>
+    <li><span class="letter">D.</span> Out, because of what j() returns</li>
+  </ul>
+  <div class="answer-box fragment" data-fragment-index="1">
+    <div class="ans-label">&#10003; Answer</div>
+    <strong>C — Out.</strong> A reference again, but the old value is never read — it's overwritten. Data flows only outward.
+  </div>
+</section>
+
+<section>
+  <h2>Building with <code>make</code></h2>
+  <p style="font-size:0.68em">Three files, one command. <code>make</code> recompiles only what changed.</p>
+  <pre style="font-size:0.55em"><code class="language-makefile" data-trim>
+CXX      = g++
+CXXFLAGS = -Wall -std=c++17
+
+game: main.o dice.o
+	$(CXX) $(CXXFLAGS) -o game main.o dice.o
+
+main.o: main.cpp dice.h
+	$(CXX) $(CXXFLAGS) -c main.cpp
+
+dice.o: dice.cpp dice.h
+	$(CXX) $(CXXFLAGS) -c dice.cpp
+
+clean:
+	rm -f game *.o
+  </code></pre>
+  <div class="callout callout-maroon">Those indents must be <strong>real tabs</strong>, not spaces — the one rule that bites everyone once.</div>
+</section>
+
+<section>
+  <h2>Why <code>make</code> Earns Its Keep</h2>
+  <ul>
+    <li>A target is <strong>rebuilt only if</strong> something it depends on is newer</li>
+    <li>Change <code>dice.cpp</code> → only <code>dice.o</code> recompiles, then it relinks</li>
+    <li><code>make clean</code> throws away everything built, so you can start fresh</li>
+    <li>Your whole build recipe lives in the repo, not in someone's memory</li>
+  </ul>
+  <div class="callout">On a three-file project this saves seconds. On a big one it saves your afternoon — and it's how the autograder builds your code.</div>
+</section>
+
+<section class="closing-slide" data-background-color="#6E1C2E">
+  <h2>Week 01 Recap</h2>
+  <ul style="font-size:0.72em; color:rgba(255,255,255,0.92)">
+    <li><code style='color:var(--gold)'>if</code>/<code style='color:var(--gold)'>switch</code> and loops read the same as Python — the braces and types are new</li>
+    <li>A function must be <strong>declared before it is called</strong> — that's what headers are for</li>
+    <li>Arrays are passed as <strong>addresses</strong>, so functions need the size too</li>
+    <li>Choose the direction (in / out / in&#8202;/&#8202;out) first, then the mechanism</li>
+    <li><code style='color:var(--gold)'>make</code> rebuilds only what changed — and tabs matter</li>
+  </ul>
+  <div class="next">Next: a02 &middot; a03 →</div>
+  <p class="credit-line">
+    This deck stands on earlier CS112 materials by<br>
+    <strong>Joel Adams</strong> and <strong>Victor Norman</strong> &middot; adapted and extended by <strong>Eric Ara&uacute;jo</strong>
+  </p>
+</section>
+
+
+</div><!-- .slides -->
+</div><!-- .reveal -->
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/plugin/highlight/highlight.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/plugin/notes/notes.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    slideNumber: 'c/t',
+    transition: 'slide',
+    transitionSpeed: 'fast',
+    autoAnimateDuration: 0.55,
+    autoAnimateEasing: 'ease-out',
+    autoAnimateUnmatched: true,
+    pdfSeparateFragments: false,
+    plugins: [ RevealHighlight, RevealNotes ]
+  });
+</script>
+</body>
+</html>

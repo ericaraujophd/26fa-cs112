@@ -1,0 +1,34 @@
+---
+title: "Assignment 05: Generic Containers"
+subtitle: "Week 05 · Oct 5 – Oct 10"
+---
+
+::: {.callout-note}
+**Not published yet.** This page fills in before week 05 begins. The outline below
+is what the assignment is being built to cover — a preview, not a specification.
+:::
+
+## What this assignment will cover
+
+- Describe when appending to a dynamic array is inexpensive vs. expensive.
+- Reason about the difference between a dynamic array's size and capacity.
+- Explain what a class template is and why to use it instead of a class.
+- Reason about time complexity: linear, constant, and amortized constant time.
+- Implement a class template.
+
+## Course skills
+
+Primary practice for skill **C2**. See
+[Skills & Check-Ins](../checkins.html) for what each one means and when it is assessed.
+
+## Getting the code
+
+You will accept the assignment through Classroom 50, which creates your own private
+repository from the starter code. The accept link appears here when the assignment
+is published.
+
+## Submitting
+
+Commit and push to `main`. Every push is graded automatically — check the **Actions**
+tab of your repository for the run and **Releases** for your score. Your most recent
+submission before the deadline is the one that counts.

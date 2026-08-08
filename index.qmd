@@ -82,6 +82,59 @@ document.addEventListener('DOMContentLoaded', function () {
   margin-bottom: 1.5rem;
 }
 @media (max-width: 640px) { .sched-cards { grid-template-columns: 1fr; } }
+
+/* Lecture is joint, so it spans the full width above the two lab sections. */
+.sched-lecture { margin-bottom: .85rem; }
+.sched-lecture-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.sched-lecture-meta {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  flex-wrap: wrap;
+}
+.sched-everyone {
+  font-size: .72rem;
+  color: var(--bs-secondary-color);
+  font-style: italic;
+}
+
+.sched-labs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .85rem;
+  margin-bottom: 1.5rem;
+}
+@media (max-width: 640px) { .sched-labs { grid-template-columns: 1fr; } }
+
+.sched-lab-head {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  margin-bottom: .4rem;
+}
+.sched-lab-head .sched-type { margin-bottom: .1rem; }
+.sched-lab-head .sched-days { margin-bottom: 0; }
+.sched-badge {
+  flex: 0 0 auto;
+  width: 2rem;
+  height: 2rem;
+  border-radius: .4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1;
+}
+.sched-badge-a { background: var(--calvin-maroon, #6E1C2E); color: #fff; }
+.sched-badge-b { background: var(--calvin-gold, #C49A2C); color: #1a1a1a; }
+
 .sched-card {
   background: var(--bs-body-bg);
   border: 1px solid var(--bs-border-color);
@@ -174,26 +227,44 @@ document.addEventListener('DOMContentLoaded', function () {
   <div style="font-size:.75rem;opacity:.6;margin-bottom:1.2rem;" id="hero-last-updated"></div>
   <a href="content/schedule.html" class="hero-btn">View schedule →</a>
   <a href="content/checkins.html" class="hero-btn-ghost">Skills &amp; Check-Ins</a>
-  <a href="policies/policies.html" class="hero-btn-ghost">Course policies</a>
+  <a href="policies/grading.html" class="hero-btn-ghost">Course policies</a>
 </div>
 
 <!-- ── Schedule cards ──────────────────────────────────── -->
-<div class="sched-cards">
-  <div class="sched-card">
-    <div class="sched-type">Lecture · CS 112-A</div>
-    <div class="sched-days">Mon · Wed · Fri</div>
-    <div class="sched-time">12:15 – 1:20 PM</div>
-    <span class="sched-room">SB 382</span>
+<div class="sched-lecture sched-card">
+  <div class="sched-lecture-inner">
+    <div>
+      <div class="sched-type">Lecture · CS 112-A</div>
+      <div class="sched-days">Mon · Wed · Fri</div>
+      <div class="sched-time">12:15 – 1:20 PM</div>
+    </div>
+    <div class="sched-lecture-meta">
+      <span class="sched-room">SB 382</span>
+      <span class="sched-everyone">Both lab sections together</span>
+    </div>
   </div>
-  <div class="sched-card">
-    <div class="sched-type">Lab A · CS 112L-A</div>
-    <div class="sched-days">Tuesday</div>
+</div>
+
+<div class="sched-labs">
+  <div class="sched-card sched-lab sched-lab-a">
+    <div class="sched-lab-head">
+      <span class="sched-badge sched-badge-a">A</span>
+      <div>
+        <div class="sched-type">Lab A · CS 112L-A</div>
+        <div class="sched-days">Tuesday</div>
+      </div>
+    </div>
     <div class="sched-time">8:00 – 9:40 AM</div>
     <span class="sched-room">SB 372</span>
   </div>
-  <div class="sched-card">
-    <div class="sched-type">Lab B · CS 112L-B</div>
-    <div class="sched-days">Tuesday</div>
+  <div class="sched-card sched-lab sched-lab-b">
+    <div class="sched-lab-head">
+      <span class="sched-badge sched-badge-b">B</span>
+      <div>
+        <div class="sched-type">Lab B · CS 112L-B</div>
+        <div class="sched-days">Tuesday</div>
+      </div>
+    </div>
     <div class="sched-time">10:20 AM – 12:00 PM</div>
     <span class="sched-room">SB 372</span>
   </div>

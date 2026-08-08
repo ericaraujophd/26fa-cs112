@@ -1,0 +1,522 @@
+/* ══════════════════════════════════════════════════════════════
+   CS112 · Introduction to Data Structures · Calvin University
+   Shared slide styling for every week's Reveal.js deck.
+   Linked by slides/weekNN.html — edit here, all decks follow.
+   ══════════════════════════════════════════════════════════════ */
+
+    /* ── Calvin University palette ── */
+    :root {
+      --maroon:  #6E1C2E;
+      --gold:    #C49A2C;
+      --cream:   #F9F4EC;
+      --light-gold: #F5E9C8;
+    }
+
+    /* ── Base typography ── */
+    .reveal {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      font-size: 36px;
+      color: #1a1a1a;
+    }
+    .reveal-viewport { background: #fafaf8; }
+
+    /* ── Headings ── */
+    .reveal h1, .reveal h2, .reveal h3 {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      color: var(--maroon);
+      font-weight: 700;
+      text-transform: none;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.4em;
+    }
+    .reveal h1 { font-size: 2em; }
+    .reveal h2 {
+      font-size: 1.35em;
+      border-bottom: 3px solid var(--gold);
+      padding-bottom: 0.15em;
+    }
+    .reveal h3 { font-size: 1em; color: var(--gold); }
+
+    /* ── Slide number ── */
+    .reveal .slide-number {
+      background: var(--maroon);
+      color: white;
+      font-size: 0.45em;
+      padding: 3px 8px;
+      border-radius: 4px;
+      right: 10px;
+      bottom: 10px;
+    }
+
+    /* ── Progress bar ── */
+    .reveal .progress { color: var(--gold); height: 5px; }
+
+    /* ── Code blocks ── */
+    .reveal pre {
+      box-shadow: 0 4px 18px rgba(0,0,0,0.18);
+      border-radius: 8px;
+      font-size: 0.72em;
+      margin: 0.5em auto;
+      width: 100%;
+    }
+    .reveal pre code {
+      font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+      max-height: 420px;
+      padding: 1em 1.2em;
+    }
+
+    /* ── Inline code ── */
+    .reveal p code, .reveal li code, .reveal td code, .reveal th code {
+      background: #f0e8d8;
+      color: var(--maroon);
+      padding: 0.1em 0.35em;
+      border-radius: 4px;
+      font-size: 0.82em;
+      font-family: 'Fira Code', 'Consolas', monospace;
+    }
+
+    /* ── Bullets ── */
+    .reveal ul { font-size: 0.78em; }
+    .reveal ul li { margin: 0.3em 0; line-height: 1.4; }
+
+    /* ── Two-column layout ── */
+    .two-col h3 { font-size: 0.72em; line-height: 1.2; }
+    .two-col {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 1.4em;
+      align-items: start;
+    }
+
+    /* ── Callout boxes ── */
+    .callout {
+      background: #fff8e1;
+      border-left: 4px solid var(--gold);
+      padding: 0.45em 0.9em;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.68em;
+      text-align: left;
+      margin-top: 0.6em;
+      line-height: 1.5;
+    }
+    .callout-maroon {
+      background: #fdf0f2;
+      border-left-color: var(--maroon);
+    }
+
+    /* ── Peer Instruction ── */
+    .pi-badge {
+      background: var(--maroon);
+      color: white;
+      padding: 0.2em 0.7em;
+      border-radius: 5px;
+      font-size: 0.4em;
+      display: inline-block;
+      margin-bottom: 0.4em;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      vertical-align: middle;
+    }
+    .pi-question {
+      font-size: 0.78em;
+      text-align: left;
+      margin-bottom: 0.5em;
+    }
+    .pi-choices {
+      display: block !important;
+      width: 100% !important;
+      margin: 0 !important;
+      list-style: none !important;
+      padding: 0;
+      text-align: left;
+      font-size: 0.66em;
+      margin: 0;
+    }
+    .pi-choices li {
+      list-style: none !important;
+      padding: 0.34em 0.8em;
+      margin: 0.2em 0;
+      border-radius: 7px;
+      background: #f4f3f0;
+      border-left: 4px solid #d5d2cb;
+      line-height: 1.4;
+      transition: background .25s ease, border-color .25s ease;
+    }
+    .pi-choices li.fragment.correct {
+      opacity: 1 !important;
+      visibility: inherit !important;
+    }
+    .pi-choices li.correct.visible {
+      background: #e9f4ec;
+      border-left-color: #2f6f43;
+      color: #1d4d2e;
+      font-weight: 600;
+    }
+    .pi-choices li.correct.visible .letter { color: #2f6f43; }
+    .pi-choices li.correct.visible::after {
+      content: "✓";
+      float: right;
+      color: #2f6f43;
+      font-weight: 700;
+    }
+    /* seven-option questions need to be tighter */
+    .pi-choices.pi-compact { font-size: 0.6em; }
+    .pi-choices.pi-compact li {
+      padding: 0.2em 0.7em;
+      margin: 0.1em 0;
+      border-radius: 6px;
+      background: #f2f2f2;
+      border-left: 4px solid #ccc;
+      line-height: 1.4;
+    }
+    .pi-choices .letter {
+      display: inline-block;
+      width: 1.4em;
+      font-weight: 700;
+      color: var(--maroon);
+    }
+
+    /* Answer reveal box */
+    .answer-box {
+      background: #ffffff;
+      border: 1px solid #e0ddd6;
+      border-left: 5px solid #2f6f43;
+      border-radius: 9px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.09);
+      padding: 0.55em 0.95em;
+      font-size: 0.6em;
+      text-align: left;
+      margin-top: 0.7em;
+      color: #333;
+      font-weight: 400;
+      line-height: 1.45;
+    }
+    .answer-box strong { color: #1d4d2e; }
+    .answer-box .ans-label {
+      font-size: 0.8em;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #2f6f43;
+      margin-bottom: 0.25em;
+    }
+
+    /* ── Data type grid ── */
+    .type-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.55em;
+      font-size: 0.62em;
+      margin-top: 0.3em;
+    }
+    .type-card {
+      background: var(--cream);
+      border-radius: 8px;
+      padding: 0.55em 0.4em;
+      text-align: center;
+      border-top: 3px solid var(--gold);
+    }
+    .type-card .t-name {
+      font-family: 'Fira Code', monospace;
+      font-weight: 700;
+      color: var(--maroon);
+      font-size: 1.1em;
+    }
+    .type-card .t-size { color: #555; font-size: 0.9em; margin-top: 0.1em; }
+    .type-card .t-example { color: #888; font-size: 0.85em; font-style: italic; }
+
+    /* ── Memory diagram ── */
+    .mem-diagram {
+      border: 2px solid var(--gold);
+      border-radius: 8px;
+      padding: 0.5em 1em;
+      background: #fffdf5;
+      font-size: 0.6em;
+      font-family: 'Fira Code', monospace;
+      max-width: 520px;
+      margin: 0.5em auto;
+    }
+    .mem-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.18em 0;
+      border-bottom: 1px solid #eee;
+      align-items: center;
+    }
+    .mem-row:last-child { border-bottom: none; }
+    .mem-addr { color: #888; min-width: 6em; }
+    .mem-val  { color: var(--maroon); font-weight: 700; }
+    .mem-lbl  { color: var(--gold); font-weight: 700; font-size: 0.9em; }
+
+    /* ── Compilation flow ── */
+    .compile-flow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5em;
+      font-size: 0.62em;
+      flex-wrap: wrap;
+      margin-top: 0.5em;
+    }
+    .c-box {
+      background: var(--cream);
+      border: 2px solid var(--maroon);
+      border-radius: 8px;
+      padding: 0.4em 0.8em;
+      text-align: center;
+      min-width: 5em;
+    }
+    .c-box-gold { border-color: var(--gold); }
+    .c-box .c-type { font-size: 0.8em; color: #777; }
+    .c-box .c-name { font-family: 'Fira Code', monospace; font-weight: 700; color: var(--maroon); font-size: 1.05em; }
+    .c-arrow { font-size: 1.6em; color: var(--gold); font-weight: 700; line-height: 1; }
+    .c-step  { font-size: 0.82em; color: #555; text-align: center; }
+    .c-col   { display: flex; flex-direction: column; gap: 0.4em; align-items: center; }
+
+    /* ── Agenda items ── */
+    .agenda-list { list-style: none; padding: 0; margin: 0.2em 0 0; }
+    .agenda-list li {
+      display: flex;
+      align-items: center;
+      gap: 0.6em;
+      padding: 0.28em 0;
+      font-size: 0.72em;
+      border-bottom: 1px solid #eee;
+    }
+    .agenda-num {
+      background: var(--maroon);
+      color: white;
+      width: 1.5em; height: 1.5em;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85em; font-weight: 700;
+      flex-shrink: 0;
+    }
+    .badge {
+      background: var(--gold);
+      color: white;
+      padding: 0.05em 0.45em;
+      border-radius: 4px;
+      font-size: 0.7em;
+      font-weight: 700;
+      margin-left: 0.3em;
+    }
+
+    /* ── Table (comparison tables only — never code line-number tables) ── */
+    .reveal table:not(.hljs-ln) { font-size: 0.58em; width: 100%; border-collapse: collapse; }
+    .reveal table:not(.hljs-ln) th {
+      background: var(--maroon); color: white;
+      padding: 0.4em 0.6em; text-align: left;
+    }
+    .reveal table:not(.hljs-ln) td { padding: 0.32em 0.6em; border-bottom: 1px solid #eee; }
+    .reveal table:not(.hljs-ln) tr:nth-child(even) td { background: #f9f5f0; }
+
+    /* ── Code line numbers ── */
+    .reveal .hljs-ln { border-collapse: collapse; width: 100%; }
+    .reveal .hljs-ln td {
+      background: transparent !important;
+      border: none !important;
+      padding: 0 !important;
+    }
+    .reveal .hljs-ln td.hljs-ln-numbers {
+      color: #a3a89b;
+      opacity: 1;
+      text-align: right;
+      padding-right: 1.1em !important;
+      border-right: 1px solid rgba(255,255,255,0.13) !important;
+      user-select: none;
+      white-space: nowrap;
+    }
+    .reveal .hljs-ln td.hljs-ln-code { padding-left: 1em !important; }
+
+
+    /* ── Anatomy slide ── */
+    .anatomy-grid {
+      display: grid; grid-template-columns: minmax(0,1.02fr) minmax(0,1fr);
+      gap: 1.5em; align-items: center; margin-top: 0.2em;
+    }
+    .anatomy-grid pre { margin: 0; font-size: 0.6em; }
+    .an-item {
+      display: grid; grid-template-columns: auto 1fr;
+      gap: 0.7em; align-items: start; margin-bottom: 0.85em;
+    }
+    .an-item:last-child { margin-bottom: 0; }
+    .an-badge {
+      background: var(--maroon); color: #fff;
+      width: 1.55em; height: 1.55em; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.62em; font-weight: 700; flex-shrink: 0; margin-top: 0.15em;
+      font-family: 'Fira Code','Consolas',monospace;
+    }
+    .an-key {
+      font-family: 'Fira Code','Consolas',monospace;
+      color: var(--maroon); font-weight: 700; font-size: 0.63em;
+      display: block; margin-bottom: 0.1em;
+    }
+    .an-desc { font-size: 0.58em; line-height: 1.45; color: #333; margin: 0; }
+    .an-desc code { font-size: 0.92em; }
+
+    /* stacked variant */
+    .anatomy-wide { font-size: 0.62em !important; margin: 0.1em auto 0.55em !important; }
+    .anatomy-cards {
+      display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+      gap: 0.5em 1.1em; text-align: left;
+    }
+    .an-card {
+      display: grid; grid-template-columns: auto 1fr; gap: 0.55em;
+      background: var(--cream); border-left: 3px solid var(--gold);
+      border-radius: 0 6px 6px 0; padding: 0.5em 0.8em; align-items: start;
+    }
+    .an-card .an-badge { width: 1.45em; height: 1.45em; font-size: 0.55em; margin-top: 0.2em; }
+    .an-card .an-key  { font-size: 0.58em; margin-bottom: 0.15em; }
+    .an-card .an-desc { font-size: 0.52em; line-height: 1.4; }
+
+
+    /* ── Pipeline diagram ── */
+    .pipe-wrap { margin: 0.1em auto 0.55em; width: 100%; }
+    .pipe-svg { width: 100%; height: auto; display: block; font-family: 'Segoe UI', system-ui, sans-serif; }
+    .pipe-file  { fill: var(--cream); stroke: var(--maroon); stroke-width: 2; }
+    .pipe-obj   { fill: #ecebe7; stroke: #8d8d86; stroke-width: 2; }
+    .pipe-exe   { fill: #fbf3dd; stroke: var(--gold); stroke-width: 2.5; }
+    .pipe-name  { font-family: 'Fira Code','Consolas',monospace; font-weight: 700; fill: var(--maroon); }
+    .pipe-name-o{ font-family: 'Fira Code','Consolas',monospace; font-weight: 700; fill: #4a4a45; }
+    .pipe-kind  { fill: #8a8a82; }
+    .pipe-stage { fill: var(--maroon); font-weight: 800; letter-spacing: .09em; }
+    .pipe-sub   { fill: #7a7a72; font-style: italic; }
+    .pipe-inc   { fill: #9a7d2e; font-style: italic; }
+    .err-row { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 1.1em; text-align: left; }
+    .err-card {
+      background: #fdf0f2; border-left: 4px solid #b3261e;
+      border-radius: 0 6px 6px 0; padding: 0.45em 0.75em;
+    }
+    .err-when { font-size: 0.5em; font-weight: 800; letter-spacing: .07em;
+                text-transform: uppercase; color: #b3261e; }
+    .err-msg  { font-family: 'Fira Code','Consolas',monospace; font-size: 0.5em;
+                color: #333; margin: 0.18em 0; word-break: break-word; }
+    .err-why  { font-size: 0.5em; color: #555; margin: 0; line-height: 1.35; }
+
+    /* ── Long code blocks: show every line, never scroll ── */
+    .reveal pre.code-fit { font-size: 0.54em !important; }
+    .reveal pre.code-fit code { max-height: none !important; overflow: visible !important; }
+
+
+    /* ── Demo slide ── */
+    .demo-slide h1 {
+      color: #fff !important; font-size: 3.1em !important;
+      border: none !important; margin: 0 0 0.05em !important; letter-spacing: -0.02em;
+    }
+    .demo-rule { width: 110px; height: 5px; background: var(--gold);
+                 border-radius: 3px; margin: 0 auto 0.5em; }
+    .demo-art { width: 330px; height: auto; display: block; margin: 0 auto; }
+    .demo-cap { color: var(--gold); font-size: 0.62em; font-style: italic; margin-top: 0.55em; }
+    .demo-sub { color: rgba(255,255,255,0.45); font-size: 0.45em; margin-top: 0.25em; }
+
+
+    /* ── Comic break slides ── */
+    .comic-slide h2 { color: #fff !important; border-bottom-color: rgba(255,255,255,.35) !important;
+                      font-size: 1.15em !important; margin-bottom: 0.35em !important; }
+    .comic-card { background: #fff; border-radius: 10px; padding: 14px;
+                  box-shadow: 0 8px 26px rgba(0,0,0,.28); display: inline-block; max-width: 92%; }
+    .comic-card img { display: block; width: 100%; height: auto; border-radius: 4px; }
+    .comic-cap { color: var(--gold); font-size: 0.55em; font-style: italic; margin-top: 0.5em; }
+    .comic-credit { color: rgba(255,255,255,0.4); font-size: 0.38em; margin-top: 0.2em; }
+
+
+    .credit-line {
+      color: rgba(255,255,255,0.55);
+      font-size: 0.4em;
+      margin-top: 1.1em;
+      line-height: 1.5;
+      border-top: 1px solid rgba(255,255,255,0.18);
+      padding-top: 0.6em;
+      display: inline-block;
+    }
+    .credit-line strong { color: rgba(255,255,255,0.8); font-weight: 600; }
+
+    /* ── Title slide ── */
+    .title-wrap {
+      position: relative;
+      width: 960px; height: 700px;
+      margin: 0 auto;
+      overflow: hidden;
+      display: flex; flex-direction: column; justify-content: center;
+      text-align: left;
+    }
+    .title-watermark {
+      position: absolute;
+      right: 34px; top: 50%;
+      transform: translateY(-50%);
+      height: 56%;
+      opacity: 0.30;
+      pointer-events: none; user-select: none;
+    }
+    .title-watermark .calvin-svg { height: 100%; width: auto; display: block; }
+    .title-text { position: relative; padding-left: 78px; max-width: 452px; }
+    .title-text p { margin: 0; }
+    .title-code {
+      font-size: 96px; line-height: 0.95; font-weight: 800;
+      color: #fff; letter-spacing: -0.03em;
+    }
+    .title-course {
+      color: var(--gold); font-size: 25px; font-weight: 600; margin-top: 10px !important;
+    }
+    .title-rule {
+      width: 96px; height: 5px; background: var(--gold);
+      border-radius: 3px; margin: 30px 0 26px;
+    }
+    .title-week {
+      color: rgba(255,255,255,0.72); font-size: 19px; font-weight: 700;
+      letter-spacing: 0.24em; text-transform: uppercase;
+    }
+    .title-topic {
+      color: #fff; font-size: 42px; font-weight: 700;
+      margin-top: 8px !important; line-height: 1.1;
+    }
+    .title-author {
+      margin-top: 52px !important; color: #fff; font-size: 22px; font-weight: 600;
+    }
+    .title-meta {
+      color: rgba(255,255,255,0.5); font-size: 15px; margin-top: 7px !important;
+    }
+
+    /* ── Closing slide ── */
+    .closing-slide h2 { color: white !important; }
+    .closing-slide ul { color: rgba(255,255,255,0.9); }
+    .closing-slide .next { color: var(--gold); font-size: 0.6em; margin-top: 1.5em; }
+
+    /* a code block never widens its column */
+    .reveal pre { max-width: 100%; }
+    .reveal pre code { overflow-x: auto; }
+
+    /* ── Linked-list diagrams ── */
+    .ll-svg { width: 100%; height: auto; display: block; margin: 0.4em auto 0.2em;
+              font-family: 'Fira Code','Consolas',monospace; }
+    .ll-node  { fill: var(--cream); stroke: var(--maroon); stroke-width: 2.5; }
+    .ll-split { stroke: var(--maroon); stroke-width: 1.5; opacity: .55; }
+    .ll-val   { fill: var(--maroon); font-size: 20px; font-weight: 700; }
+    .ll-link  { stroke: var(--gold); stroke-width: 2.5; }
+    .ll-dot   { fill: var(--maroon); }
+    .ll-null  { fill: #8a8a82; font-size: 13px; font-style: italic; }
+    .ll-lbl   { fill: var(--gold); font-size: 14px; font-weight: 700; }
+
+    /* ── Tree diagrams ── */
+    .tree-svg { width: 100%; height: auto; display: block; margin: 0.3em auto;
+                font-family: 'Fira Code','Consolas',monospace; }
+    .tree-node { fill: var(--cream); stroke: var(--maroon); stroke-width: 2.5; }
+    .tree-hi   { fill: #fbf0d5; stroke: var(--gold); stroke-width: 3.5; }
+    .tree-lbl  { fill: var(--maroon); font-size: 17px; font-weight: 700; }
+    .tree-edge { stroke: var(--gold); stroke-width: 2.5; }
+
+    /* ── Growth curves ── */
+    .growth-svg { width: 100%; height: auto; display: block; margin: 0.2em auto;
+                  font-family: 'Segoe UI', system-ui, sans-serif; }
+    .growth-svg .axis { stroke: #b5b0a6; stroke-width: 2; }
+    .growth-svg .axis-lbl { fill: #8a857b; font-size: 12px; font-style: italic; }
+    .growth-svg .curve { fill: none; stroke-width: 3; }
+    .growth-svg .curve-lbl { font-size: 12px; font-weight: 700; }
+    .growth-svg .c1 { stroke: #4a8f5b; } .growth-svg .c1-t { fill: #4a8f5b; }
+    .growth-svg .c2 { stroke: #2f7d9e; } .growth-svg .c2-t { fill: #2f7d9e; }
+    .growth-svg .c3 { stroke: var(--gold); } .growth-svg .c3-t { fill: #9a7d2e; }
+    .growth-svg .c4 { stroke: #b5652a; } .growth-svg .c4-t { fill: #b5652a; }
+    .growth-svg .c5 { stroke: var(--maroon); } .growth-svg .c5-t { fill: var(--maroon); }

@@ -1,0 +1,34 @@
+---
+title: "Assignment 10: Binary Search Trees"
+subtitle: "Week 11 · Nov 16 – Nov 21"
+---
+
+::: {.callout-note}
+**Not published yet.** This page fills in before week 11 begins. The outline below
+is what the assignment is being built to cover — a preview, not a specification.
+:::
+
+## What this assignment will cover
+
+- Articulate the operations one can perform on a BST.
+- Reason about the time complexity of BST operations in best and worst cases.
+- Define what makes a BST balanced.
+- Describe the algorithm for finding the max node in a left subtree and min in a right subtree.
+- Implement insert, contains, remove, getHeight, and tree traversals.
+
+## Course skills
+
+Primary practice for skills **F1, F2**. See
+[Skills & Check-Ins](../checkins.html) for what each one means and when it is assessed.
+
+## Getting the code
+
+You will accept the assignment through Classroom 50, which creates your own private
+repository from the starter code. The accept link appears here when the assignment
+is published.
+
+## Submitting
+
+Commit and push to `main`. Every push is graded automatically — check the **Actions**
+tab of your repository for the run and **Releases** for your score. Your most recent
+submission before the deadline is the one that counts.

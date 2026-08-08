@@ -47,9 +47,11 @@ a:hover {
 }
 .bloom-remember   { background-color: #adb5bd; color: #000; }
 .bloom-understand { background-color: #0dcaf0; color: #000; }
-.bloom-apply      { background-color: #198754; color: #fff; }
+.bloom-apply      { background-color: #146c43; color: #fff; }
 .bloom-analyze    { background-color: #ffc107; color: #000; }
-.bloom-evaluate   { background-color: #fd7e14; color: #fff; }
+/* Orange is a light fill, so it takes dark text like amber does. White on
+   #fd7e14 measured 2.57:1 — below the 4.5 AA floor, in both light and dark. */
+.bloom-evaluate   { background-color: #fd7e14; color: #000; }
 .bloom-create     { background-color: #6f42c1; color: #fff; }
 
 /* ── Current week highlight ─────────────────────────────────── */
@@ -112,4 +114,90 @@ a:hover {
 }
 .quarto-dark .sidebar-title > a {
   color: var(--calvin-gold) !important;
+}
+
+/* ── Flush tables inside bordered cards ─────────────────────
+   Quarto strips the style attribute from raw-HTML tables and applies
+   `table, table.table { margin: .5rem 0 }`. Inside a card that has its own
+   border and `overflow:hidden`, that margin shows as a white sliver above
+   and below the table. Put .flush-table on the wrapper div to remove it.  */
+div.flush-table > table {
+  margin: 0;
+}
+
+/* ── Dark-mode secondary surface ────────────────────────────
+   The darkly theme flips --bs-secondary-color to near-white but leaves
+   --bs-secondary-bg light grey (#ebebeb). Anything pairing the two — zebra
+   table rows, the break-week row, room pills, the check-in timeline — renders
+   white-on-near-white (measured contrast 1.19, AA needs 4.5). Re-point the
+   surface variable so every existing usage is fixed at once.              */
+.quarto-dark {
+  --bs-secondary-bg: #2f2f2f;
+}
+
+/* ── Active sidebar link ────────────────────────────────────
+   Every sidebar link picks up the Calvin colours above, but the *active* one
+   falls through to the theme's own link colour — darkly's teal (#1AC398),
+   which reads as a stray green against the maroon/gold palette.
+
+   Rather than a third hue, the current page is simply the most legible item:
+   near-black on light, warm white on dark. A thin gold rule carries the brand
+   cue, so "you are here" survives for anyone who can't distinguish the colour. */
+.sidebar-link.active,
+.sidebar-item .sidebar-link.active {
+  color: #1f1d1a !important;
+  border-left: 2px solid var(--calvin-maroon);
+  padding-left: 0.5rem;
+  margin-left: -0.65rem;
+  border-radius: 0;
+}
+.quarto-dark .sidebar-link.active,
+.quarto-dark .sidebar-item .sidebar-link.active {
+  color: #f2efe8 !important;
+  border-left-color: var(--calvin-gold);
+}
+
+/* ── Muted text ─────────────────────────────────────────────
+   Bootstrap's .text-secondary is inverted under this theme pair: it renders
+   #adb5bd (light grey) on white in light mode — 2.07:1 — and #434343 (dark
+   grey) on #222 in dark mode — 1.61:1. Both fail the 4.5 AA floor, and the
+   dark case is effectively invisible. Set both explicitly.                 */
+.text-secondary {
+  color: #5c5a55 !important;
+}
+.quarto-dark .text-secondary {
+  color: #b8b5ac !important;
+}
+
+/* ── Dark-mode leftovers from the light theme ───────────────
+   Three Bootstrap defaults stay light-on-light under .quarto-dark.        */
+
+/* Expanded accordion headers kept a light fill, so inline <code> inside a
+   week topic (e.g. STL `set` and `map`) rendered white-on-#f8f9fa at 1.05:1. */
+.quarto-dark .accordion-button:not(.collapsed) {
+  background-color: #2f2f2f;
+  color: #f2efe8;
+}
+.quarto-dark .accordion-button:not(.collapsed)::after {
+  filter: invert(1) grayscale(100%) brightness(1.6);
+}
+
+/* alert-warning is white on #f39c12 — 2.19:1. Orange is a light fill and
+   takes dark text, same as the Evaluate badge above. */
+.quarto-dark .alert-warning,
+.quarto-dark .alert-warning * {
+  color: #2b1d02;
+}
+
+/* Sidebar chapter titles sat at 4.41:1 against the hover fill. */
+.quarto-dark .chapter-title {
+  color: #d5d2ca;
+}
+
+/* Inline <code> inside an accordion header keeps a light #f8f9fa fill in dark
+   mode while its text is white — 1.05:1. Affects the week 13 topic, "STL
+   `set` and `map` containers". */
+.quarto-dark .accordion-button code {
+  background-color: rgba(255, 255, 255, 0.13);
+  color: #f2efe8;
 }

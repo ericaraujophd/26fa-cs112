@@ -4,8 +4,8 @@ subtitle: "Variables, memory, control structures, and functions — in C++"
 ---
 
 ::: {.callout-note}
-Accept the assignment invitation on Moodle to get your personal GitHub repository,
-then clone it and open it in VS Code.
+Accept the assignment to get your own private GitHub repository (see
+[Getting the code](#getting-the-code) below), then clone it and open it in VS Code.
 
 **Plan to set aside about 2 to 2.5 hours.** The first part (character sheet) is
 designed to be started in lab with your class; the adventure system and function
@@ -67,7 +67,32 @@ Two things to notice: C++ needs a semicolon at the end of every statement, and
 
 ---
 
-## 2. The File You Will Edit
+## 2. Getting the Code
+
+Accept the assignment. This creates a private GitHub repository that belongs to you,
+already containing the starter code:
+
+::: {.callout-note}
+**Accept link:** *(added when the assignment is published)*
+:::
+
+Then clone it, replacing `YOURUSERNAME` with your GitHub username:
+
+```bash
+git clone https://github.com/26fa-cs112/cs112-a01-YOURUSERNAME.git
+cd cs112-a01-YOURUSERNAME
+```
+
+Open the folder in VS Code and you are ready to start.
+
+::: {.callout-tip}
+Prefer the terminal? `gh student accept 26fa-cs112 cs112 a01` does the same thing.
+Install it once with `gh extension install foundation50/gh-student`.
+:::
+
+---
+
+## 3. The File You Will Edit
 
 Open **`functions.cpp`** in VS Code. This is the only file you need to edit.
 `functions.h` and `main.cpp` are already complete — read through them to
@@ -91,7 +116,7 @@ with hints when something is wrong. Work through failures one at a time.
 
 ---
 
-## 3. Part 1: The Character Sheet
+## 4. Part 1: The Character Sheet
 
 ### TODO 1a — Declare character variables
 
@@ -305,7 +330,7 @@ Test with `./a01 step4`, then `make test`.
 
 ---
 
-## 4. Part 2: The Adventure System
+## 5. Part 2: The Adventure System
 
 ### TODO 5 — Power tier rating (`if / else if / else`)
 
@@ -512,7 +537,7 @@ Test with `./a01 step9`, then `make test`.
 
 ---
 
-## 5. Part 3: Function Decomposition
+## 6. Part 3: Function Decomposition
 
 In TODO 6 you wrote `guild_cost()` as one big function. It does three
 distinct things: validates the guild name, reads the duration, and computes
@@ -597,7 +622,7 @@ what well-decomposed code looks like.
 
 ---
 
-## 6. Testing Your Work
+## 7. Testing Your Work
 
 After completing each TODO, run:
 
@@ -621,9 +646,19 @@ Results: 72/72 passed
 All tests passed! Your character sheet is complete.
 ```
 
+::: {.callout-warning}
+Your grade also includes **additional checks** that are not in `test.py`. They test
+the same requirements described on this page, using different inputs — so code that
+genuinely works will pass them. You will see exactly which ones failed in the
+release notes for each submission.
+
+Grading always runs the official test suite, not the copy in your repository.
+Editing `test.py` will not change your score.
+:::
+
 ---
 
-## 7. Submit
+## 8. Submit
 
 ::: {.callout-important}
 Before pushing, open `README.md` and add your name.
@@ -631,6 +666,15 @@ Before pushing, open `README.md` and add your name.
 
 In VS Code, click the **Source Control** icon in the left sidebar. You will see your
 changed files. Type a commit message (e.g., `"Complete a01"`), click the checkmark
-to commit, then sync to push to GitHub.
+to commit, then sync to push to GitHub. From the terminal, that is:
 
-Verify on github.com that your updated `functions.cpp` is visible in your repository.
+```bash
+git add .
+git commit -m "Complete a01"
+git push
+```
+
+**Every push is graded automatically.** Within a minute or two, the **Actions** tab
+of your repository shows the run, and a **Release** appears with your score and a
+per-check breakdown. Push as many times as you like before the deadline — the most
+recent submission is the one that counts.

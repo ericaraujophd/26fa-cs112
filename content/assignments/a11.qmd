@@ -1,0 +1,34 @@
+---
+title: "Assignment 11: AVL Trees"
+subtitle: "Week 12 · Nov 23 – Nov 28"
+---
+
+::: {.callout-note}
+**Not published yet.** This page fills in before week 12 begins. The outline below
+is what the assignment is being built to cover — a preview, not a specification.
+:::
+
+## What this assignment will cover
+
+- Identify an AVL tree as a self-balancing BST.
+- Articulate the importance of the balance factor in determining when to rebalance.
+- Name the four rotation cases: LL, RR, LR, RL.
+- Compute the balance factor for a node.
+- Implement AVL rotations to restore balance after insert or remove.
+
+## Course skills
+
+Primary practice for skill **F3**. See
+[Skills & Check-Ins](../checkins.html) for what each one means and when it is assessed.
+
+## Getting the code
+
+You will accept the assignment through Classroom 50, which creates your own private
+repository from the starter code. The accept link appears here when the assignment
+is published.
+
+## Submitting
+
+Commit and push to `main`. Every push is graded automatically — check the **Actions**
+tab of your repository for the run and **Releases** for your score. Your most recent
+submission before the deadline is the one that counts.

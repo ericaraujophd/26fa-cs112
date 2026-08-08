@@ -85,12 +85,13 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
           <h6>📖 Readings</h6>
           <p><a href="https://runestone.academy/runestone/books/published/cpp4python/index.html" target="_blank" rel="noopener">C++ for Python Programmers</a><br>Chapters 1, 2, Sec. 5.1–5.2</p>
           <h6>🖥️ Slides</h6>
-          <p><em>Coming soon</em></p>
+          <p><a href="../slides/week00.html" target="_blank" rel="noopener">Week 00 slides</a><br>
+             <a href="../slides/week00.pdf">PDF</a> &middot; <a href="../slides/week00-bw.pdf">PDF (b&amp;w)</a></p>
           <h6>🔗 Resources</h6>
           <p><a href="https://integer.exposed/#0x0008" target="_blank" rel="noopener">Binary Exposed</a></p>
           <h6>📝 Assignments</h6>
-          <p><a href="assignments/a00.html">a00</a><br>
-             <a href="assignments/a01.html">a01</a></p>
+                    <p><a href="assignments/gettingStarted.html">Getting Started <span class="text-secondary">(ungraded pre-lab)</span></a></p>
+          <p><a href="assignments/a01.html">a01 &mdash; RPG Character Creator <span class="text-secondary">(begins)</span></a></p>
         </div>
       </div>
     </div>
@@ -132,10 +133,10 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
           <p><a href="https://runestone.academy/runestone/books/published/cpp4python/index.html" target="_blank" rel="noopener">C++ for Python Programmers</a><br>Chapters 3 and 4<br>
           <a href="https://makefiletutorial.com/" target="_blank" rel="noopener">Makefile Tutorial</a></p>
           <h6>🖥️ Slides</h6>
-          <p><em>Coming soon</em></p>
+          <p><a href="../slides/week01.html" target="_blank" rel="noopener">Week 01 slides</a><br>
+             <a href="../slides/week01.pdf">PDF</a> &middot; <a href="../slides/week01-bw.pdf">PDF (b&amp;w)</a></p>
           <h6>📝 Assignments</h6>
-          <p><a href="assignments/a02.html">a02</a><br>
-             <a href="assignments/a03.html">a03</a></p>
+                    <p><a href="assignments/a01.html">a01 &mdash; RPG Character Creator <span class="text-secondary">(concludes)</span></a></p>
         </div>
       </div>
     </div>
@@ -174,10 +175,10 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
           <h6>📖 Readings</h6>
           <p><a href="https://runestone.academy/runestone/books/published/cpp4python/index.html" target="_blank" rel="noopener">C++ for Python Programmers</a><br>Chapters 6 and 7</p>
           <h6>🖥️ Slides</h6>
-          <p><em>Coming soon</em></p>
+          <p><a href="../slides/week02.html" target="_blank" rel="noopener">Week 02 slides</a><br>
+             <a href="../slides/week02.pdf">PDF</a> &middot; <a href="../slides/week02-bw.pdf">PDF (b&amp;w)</a></p>
           <h6>📝 Assignments</h6>
-          <p><a href="assignments/a04.html">a04</a><br>
-             <a href="assignments/a05.html">a05</a></p>
+                    <p><a href="assignments/a02.html">a02 &mdash; File I/O and 2D Arrays</a></p>
         </div>
       </div>
     </div>
@@ -218,10 +219,10 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
           <h6>📖 Readings</h6>
           <p><em>TBD</em></p>
           <h6>🖥️ Slides</h6>
-          <p><em>Coming soon</em></p>
+          <p><a href="../slides/week03.html" target="_blank" rel="noopener">Week 03 slides</a><br>
+             <a href="../slides/week03.pdf">PDF</a> &middot; <a href="../slides/week03-bw.pdf">PDF (b&amp;w)</a></p>
           <h6>📝 Assignments</h6>
-          <p><a href="assignments/a06.html">a06</a><br>
-             <a href="assignments/a07.html">a07</a></p>
+                    <p><a href="assignments/a03.html">a03 &mdash; Classes and Operator Overloading</a></p>
         </div>
       </div>
     </div>
@@ -262,10 +263,10 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
           <h6>📖 Readings</h6>
           <p><em>TBD</em></p>
           <h6>🖥️ Slides</h6>
-          <p><em>Coming soon</em></p>
+          <p><a href="../slides/week04.html" target="_blank" rel="noopener">Week 04 slides</a><br>
+             <a href="../slides/week04.pdf">PDF</a> &middot; <a href="../slides/week04-bw.pdf">PDF (b&amp;w)</a></p>
           <h6>📝 Assignments</h6>
-          <p><a href="assignments/a08.html">a08</a><br>
-             <a href="assignments/a09.html">a09</a></p>
+                    <p><a href="assignments/a04.html">a04 &mdash; Dynamic Arrays</a></p>
         </div>
       </div>
     </div>
@@ -305,10 +306,10 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
           <h6>📖 Readings</h6>
           <p><em>TBD</em></p>
           <h6>🖥️ Slides</h6>
-          <p><em>Coming soon</em></p>
+          <p><a href="../slides/week05.html" target="_blank" rel="noopener">Week 05 slides</a><br>
+             <a href="../slides/week05.pdf">PDF</a> &middot; <a href="../slides/week05-bw.pdf">PDF (b&amp;w)</a></p>
           <h6>📝 Assignments</h6>
-          <p><a href="assignments/a10.html">a10</a><br>
-             <a href="assignments/a11.html">a11</a></p>
+                    <p><a href="assignments/a05.html">a05 &mdash; Generic Containers</a></p>
         </div>
       </div>
     </div>
@@ -348,9 +349,10 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
           <h6>📖 Readings</h6>
           <p><em>TBD</em></p>
           <h6>🖥️ Slides</h6>
-          <p><em>Coming soon</em></p>
+          <p><a href="../slides/week06.html" target="_blank" rel="noopener">Week 06 slides</a><br>
+             <a href="../slides/week06.pdf">PDF</a> &middot; <a href="../slides/week06-bw.pdf">PDF (b&amp;w)</a></p>
           <h6>📝 Assignments</h6>
-          <p><a href="assignments/a12.html">a12</a></p>
+                    <p><a href="assignments/a06.html">a06 &mdash; Linked Lists</a></p>
         </div>
       </div>
     </div>
@@ -402,10 +404,10 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
           <h6>📖 Readings</h6>
           <p><em>TBD</em></p>
           <h6>🖥️ Slides</h6>
-          <p><em>Coming soon</em></p>
+          <p><a href="../slides/week08.html" target="_blank" rel="noopener">Week 08 slides</a><br>
+             <a href="../slides/week08.pdf">PDF</a> &middot; <a href="../slides/week08-bw.pdf">PDF (b&amp;w)</a></p>
           <h6>📝 Assignments</h6>
-          <p><a href="assignments/a13.html">a13</a><br>
-             <a href="assignments/a14.html">a14</a></p>
+                    <p><a href="assignments/a07.html">a07 &mdash; Algorithm Analysis</a></p>
         </div>
       </div>
     </div>
@@ -446,10 +448,10 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
           <h6>📖 Readings</h6>
           <p><em>TBD</em></p>
           <h6>🖥️ Slides</h6>
-          <p><em>Coming soon</em></p>
+          <p><a href="../slides/week09.html" target="_blank" rel="noopener">Week 09 slides</a><br>
+             <a href="../slides/week09.pdf">PDF</a> &middot; <a href="../slides/week09-bw.pdf">PDF (b&amp;w)</a></p>
           <h6>📝 Assignments</h6>
-          <p><a href="assignments/a15.html">a15</a><br>
-             <a href="assignments/a16.html">a16</a></p>
+                    <p><a href="assignments/a08.html">a08 &mdash; Stacks and Queues</a></p>
         </div>
       </div>
     </div>
@@ -490,10 +492,10 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
           <h6>📖 Readings</h6>
           <p><em>TBD</em></p>
           <h6>🖥️ Slides</h6>
-          <p><em>Coming soon</em></p>
+          <p><a href="../slides/week10.html" target="_blank" rel="noopener">Week 10 slides</a><br>
+             <a href="../slides/week10.pdf">PDF</a> &middot; <a href="../slides/week10-bw.pdf">PDF (b&amp;w)</a></p>
           <h6>📝 Assignments</h6>
-          <p><a href="assignments/a17.html">a17</a><br>
-             <a href="assignments/a18.html">a18</a></p>
+                    <p><a href="assignments/a09.html">a09 &mdash; Recursion</a></p>
         </div>
       </div>
     </div>
@@ -533,10 +535,10 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
           <h6>📖 Readings</h6>
           <p><em>TBD</em></p>
           <h6>🖥️ Slides</h6>
-          <p><em>Coming soon</em></p>
+          <p><a href="../slides/week11.html" target="_blank" rel="noopener">Week 11 slides</a><br>
+             <a href="../slides/week11.pdf">PDF</a> &middot; <a href="../slides/week11-bw.pdf">PDF (b&amp;w)</a></p>
           <h6>📝 Assignments</h6>
-          <p><a href="assignments/a19.html">a19</a><br>
-             <a href="assignments/a20.html">a20</a></p>
+                    <p><a href="assignments/a10.html">a10 &mdash; Binary Search Trees</a></p>
         </div>
       </div>
     </div>
@@ -578,9 +580,10 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
           <h6>📖 Readings</h6>
           <p><em>TBD</em></p>
           <h6>🖥️ Slides</h6>
-          <p><em>Coming soon</em></p>
+          <p><a href="../slides/week12.html" target="_blank" rel="noopener">Week 12 slides</a><br>
+             <a href="../slides/week12.pdf">PDF</a> &middot; <a href="../slides/week12-bw.pdf">PDF (b&amp;w)</a></p>
           <h6>📝 Assignments</h6>
-          <p><a href="assignments/a21.html">a21</a></p>
+                    <p><a href="assignments/a11.html">a11 &mdash; AVL Trees</a></p>
         </div>
       </div>
     </div>
@@ -621,9 +624,10 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
           <h6>📖 Readings</h6>
           <p><em>TBD</em></p>
           <h6>🖥️ Slides</h6>
-          <p><em>Coming soon</em></p>
+          <p><a href="../slides/week13.html" target="_blank" rel="noopener">Week 13 slides</a><br>
+             <a href="../slides/week13.pdf">PDF</a> &middot; <a href="../slides/week13-bw.pdf">PDF (b&amp;w)</a></p>
           <h6>📝 Assignments</h6>
-          <p><a href="assignments/a22.html">a22</a></p>
+                    <p><a href="assignments/a12.html">a12 &mdash; STL Sets and Maps</a></p>
         </div>
       </div>
     </div>
@@ -664,9 +668,10 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
           <h6>📖 Readings</h6>
           <p><em>TBD</em></p>
           <h6>🖥️ Slides</h6>
-          <p><em>Coming soon</em></p>
+          <p><a href="../slides/week14.html" target="_blank" rel="noopener">Week 14 slides</a><br>
+             <a href="../slides/week14.pdf">PDF</a> &middot; <a href="../slides/week14-bw.pdf">PDF (b&amp;w)</a></p>
           <h6>📝 Assignments</h6>
-          <p><a href="assignments/a23.html">a23</a></p>
+                    <p><a href="assignments/a13.html">a13 &mdash; Hash Tables and Sorting</a></p>
         </div>
       </div>
     </div>

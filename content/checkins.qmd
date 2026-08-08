@@ -200,7 +200,7 @@ Book each appointment when you feel ready — ideally after you have completed t
 A handful of skills are **in scope at every check-in window**, not just their home cluster. These are foundational habits that need to remain sharp as the course grows more complex — not just skills you demonstrate once and forget.
 
 ```{=html}
-<div style="margin:1rem 0;border:1px solid var(--bs-border-color);border-radius:.5rem;overflow:hidden;font-size:.875rem;">
+<div class="flush-table" style="margin:1rem 0;border:1px solid var(--bs-border-color);border-radius:.5rem;overflow:hidden;font-size:.875rem;">
   <div style="background:var(--calvin-maroon,#6E1C2E);color:#fff;padding:.6rem 1rem;font-weight:700;font-size:.8rem;letter-spacing:.04em;text-transform:uppercase;">
     Persistent Skills — assessed at any check-in window
   </div>

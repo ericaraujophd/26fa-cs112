@@ -1,0 +1,34 @@
+---
+title: "Assignment 08: Stacks and Queues"
+subtitle: "Week 09 · Nov 2 – Nov 7"
+---
+
+::: {.callout-note}
+**Not published yet.** This page fills in before week 09 begins. The outline below
+is what the assignment is being built to cover — a preview, not a specification.
+:::
+
+## What this assignment will cover
+
+- Enumerate the typical API for a Stack and a Queue.
+- Define an Abstract Data Type (ADT).
+- Reason about how to implement Stacks and Queues so all operations are O(1).
+- Describe how a circular array works.
+- Define a deque and explain how to implement it.
+
+## Course skills
+
+Primary practice for skills **C4, C5, C6**. See
+[Skills & Check-Ins](../checkins.html) for what each one means and when it is assessed.
+
+## Getting the code
+
+You will accept the assignment through Classroom 50, which creates your own private
+repository from the starter code. The accept link appears here when the assignment
+is published.
+
+## Submitting
+
+Commit and push to `main`. Every push is graded automatically — check the **Actions**
+tab of your repository for the run and **Releases** for your score. Your most recent
+submission before the deadline is the one that counts.
