@@ -17,7 +17,7 @@ By the end of this pre-lab, you will be able to:
 - Log in to Coder and use a Linux terminal.
 - Use basic Linux commands (`mkdir`, `cd`, `ls`, `pwd`).
 - Connect VS Code on your laptop to the Calvin Linux environment.
-- Create a GitHub account and accept a GitHub Classroom assignment.
+- Create a GitHub account, join the course organization, and accept an assignment.
 - Clone a repository and open it in VS Code.
 - Understand what a makefile does and how compilation works in C++.
 - Declare variables of type `string` and `int` in C++.
@@ -181,16 +181,22 @@ If you do not already have an account:
 
 Keep your GitHub tab open for the next step.
 
-## 8. Accept the GitHub Classroom Assignment and Clone Your Repo
+## 8. Accept the Assignment and Clone Your Repo
 
-Each assignment in CS112 is distributed through **GitHub Classroom**. When you accept an invitation, GitHub automatically creates a private repository just for you with the starter code already inside.
+Each assignment in CS112 is distributed through **Classroom 50**. When you accept an assignment, GitHub automatically creates a private repository just for you with the starter code already inside. Only you and the instructor can see it.
 
 ::: {.callout-important}
-Get the **Pre-Lab 00 GitHub Classroom invitation link from Moodle** and open it there.
+Get the **Getting Started accept link from Moodle** and open it there.
 
-All CS112 Classroom invitation links are distributed through Moodle so only Calvin students can access and accept assignments.
+All CS112 accept links are distributed through Moodle so that only Calvin students can accept assignments.
 
-After you accept, wait a few seconds and refresh until it says "You're ready to go!" Then click the repository link GitHub provides.
+You will need to be a member of the **26fa-cs112** GitHub organization first — you should have received an email invitation. Accept that invitation before using the link. If you never got one, tell the instructor which GitHub username you are using.
+
+After you accept, wait a few seconds and then click through to your new repository.
+:::
+
+::: {.callout-note}
+Your repository will be named `cs112-a00-YOURUSERNAME`. Every assignment this semester follows the same pattern: `cs112-<assignment>-<your username>`.
 :::
 
 **Get the repo URL:**

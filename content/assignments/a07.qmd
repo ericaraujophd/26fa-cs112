@@ -1,0 +1,34 @@
+---
+title: "Assignment 07: Algorithm Analysis"
+subtitle: "Week 08 · Oct 23 – Oct 31"
+---
+
+::: {.callout-note}
+**Not published yet.** This page fills in before week 08 begins. The outline below
+is what the assignment is being built to cover — a preview, not a specification.
+:::
+
+## What this assignment will cover
+
+- Describe the concept of Big-Oh notation for analyzing algorithmic complexity.
+- Reason about Big-Oh as an approximation: a·f(n) + b.
+- Identify typical Big-Oh curves (O(1), O(log n), O(n), O(n log n), O(n²)).
+- Classify the time complexity of a given algorithm using Big-Oh notation.
+- Compare the efficiency of two algorithms and justify the better choice.
+
+## Course skills
+
+Primary practice for skills **D1, D2, D3**. See
+[Skills & Check-Ins](../checkins.html) for what each one means and when it is assessed.
+
+## Getting the code
+
+You will accept the assignment through Classroom 50, which creates your own private
+repository from the starter code. The accept link appears here when the assignment
+is published.
+
+## Submitting
+
+Commit and push to `main`. Every push is graded automatically — check the **Actions**
+tab of your repository for the run and **Releases** for your score. Your most recent
+submission before the deadline is the one that counts.
