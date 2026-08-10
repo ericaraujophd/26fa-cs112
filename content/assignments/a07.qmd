@@ -1,34 +1,519 @@
 ---
-title: "Assignment 07: Algorithm Analysis"
-subtitle: "Week 08 · Oct 23 – Oct 31"
+title: "Assignment 07: Finish the List"
+subtitle: "Four methods, a template, and a chain of Nodes that frees itself"
 ---
 
 ::: {.callout-note}
-**Not published yet.** This page fills in before week 08 begins. The outline below
-is what the assignment is being built to cover — a preview, not a specification.
+Accept the assignment to get your own private GitHub repository (see
+[Getting the code](#getting-the-code) below), then clone it and open it in VS Code.
+
+**Plan to set aside about 2 to 2.5 hours.** This is the shortest assignment of
+the semester, deliberately — see the note below. `append` (§4) and the copy
+constructor (§6) are the two that take real thought.
 :::
 
-## What this assignment will cover
+## Objectives
 
-- Describe the concept of Big-Oh notation for analyzing algorithmic complexity.
-- Reason about Big-Oh as an approximation: a·f(n) + b.
-- Identify typical Big-Oh curves (O(1), O(log n), O(n), O(n log n), O(n²)).
-- Classify the time complexity of a given algorithm using Big-Oh notation.
-- Compare the efficiency of two algorithms and justify the better choice.
+By the end of this assignment, you will be able to:
 
-## Course skills
+- Add a Node to the end of a linked list in constant time, and say why keeping
+  `myLast` is what makes that possible
+- Walk a linked list with a `curr` pointer, and stop correctly at `nullptr`
+- Search a linked list and report a position, or report that there is none
+- Write a copy constructor for a structure built from pointers, and explain what
+  goes wrong without one
+- Compare two linked lists by walking both at once
+- Explain the destructor chain reaction: how deleting one Node frees the rest
+- Convert a pair of classes into class templates, and say which uses of a class
+  name change and which do not
+- Write your own Catch2 test cases, before the code they test
 
-Primary practice for skills **D1, D2, D3**. See
-[Skills & Check-Ins](../checkins.html) for what each one means and when it is assessed.
+This assignment covers course skill **C3** — *implement a linked list with
+correct pointer manipulation* — from cluster **C**, Linear Data Structures,
+assessed at **Window 2** on Nov 20.
 
-## Getting the code
+::: {.callout-important}
+**This one is deliberately small, and here is why.**
 
-You will accept the assignment through Classroom 50, which creates your own private
-repository from the starter code. The accept link appears here when the assignment
-is published.
+Fall Break runs **Oct 16–21**, and **Window 1 is Oct 23** — the Monday you come
+back. The break is when you prepare for your first check-in, and that check-in
+is the one that sets your expectations for the whole scheme.
 
-## Submitting
+So this assignment is built to be finished in the week, not carried into the
+break. If it is taking you much more than two and a half hours, something has
+gone wrong — come and find me rather than pushing through.
+:::
 
-Commit and push to `main`. Every push is graded automatically — check the **Actions**
-tab of your repository for the run and **Releases** for your score. Your most recent
-submission before the deadline is the one that counts.
+::: {.callout-note}
+**Lab and homework.** You start this in lab on Tuesday, when you will have had
+Monday's lecture on `Node`, `List` and traversing — enough for **§3 and §5**:
+reading the given code, and `getIndexOf`, which only ever walks the list.
+
+Wednesday covers `prepend`, `append`, the destructor chain reaction, and what
+each operation costs. **§4, §6 and §7** need it, so those are homework.
+
+**There is no Friday class** — Fall Break starts Oct 16.
+
+§8, the templatize step, needs nothing from this week at all. You did it last
+week to `Trace`.
+:::
+
+---
+
+## 1. Introduction
+
+A `vector` — and the `Trace` you built before it — keeps its items in one
+contiguous block. That is what makes `list[5000]` instant: the computer knows
+the address of the first item and how big each one is, so it can do arithmetic
+instead of searching.
+
+It is also what makes inserting at the front miserable. There is no room in
+front of the first item, so everything has to shift up one place to make some.
+On a list of a million, adding one item at the front means moving a million
+items.
+
+A linked list gives that up on purpose.
+
+```
+myFirst → [ 11 | •—]→[ 22 | •—]→[ 33 | / ]     myLast → the third Node
+```
+
+Each item lives in its own little block on the heap — a **Node** — and each Node
+holds the address of the next one. Nothing is contiguous. Nothing is indexed. To
+reach the fifth item you start at the front and follow four pointers.
+
+In exchange, adding at the front is three operations no matter how long the list
+is: make a Node, point it at the old front, move `myFirst`. Nothing shifts,
+because nothing is in anybody's way.
+
+Monday's lecture built the class. This week you finish it.
+
+::: {.callout-note}
+**Two classes, not one.** `Node` is one item and one pointer, and that is all it
+is — plumbing, with nothing to protect, which is why its members are public.
+`List` is the handle: it remembers where the chain starts, where it ends, and
+how long it is. Neither is useful without the other.
+:::
+
+---
+
+## 2. Getting the Code {#getting-the-code}
+
+Accept the assignment. This creates a private GitHub repository that belongs to
+you, already containing the starter code:
+
+::: {.callout-note}
+**Accept link:** *(added when the assignment is published)*
+:::
+
+Then clone it, replacing `YOURUSERNAME` with your GitHub username:
+
+```bash
+git clone https://github.com/26fa-cs112/cs112-a07-YOURUSERNAME.git
+cd cs112-a07-YOURUSERNAME
+```
+
+Open the folder in VS Code, then build it before you change anything:
+
+```bash
+make
+make test
+```
+
+`make` succeeds and `make test` reports **5 / 31**. Both are correct: the
+starter compiles, and the five that pass mostly pass because an empty answer
+happens to match an empty question.
+
+::: {.callout-tip}
+Prefer the terminal? `gh student accept 26fa-cs112 cs112 a07` does the same
+thing. Install it once with `gh extension install foundation50/gh-student`.
+:::
+
+---
+
+## 3. What You Were Given
+
+**You edit three files: `List.cpp`, `List.h` and `tests.cpp`** — and delete
+`List.cpp` at the end.
+
+| File | Yours? | What it is |
+|---|---|---|
+| `List.h` | **yes**, at step 5 | the two classes. Read it first. |
+| `List.cpp` | **yes** | steps 1–4. Step 5 **deletes** it. |
+| `tests.cpp` | **yes** | your own tests — a graded deliverable |
+| `makefile` | **yes**, at step 5 | `List.o` has to come out of it |
+| `checks.cpp` | no | the course's checks. Read them — they are the specification. |
+| `catch.hpp`, `catchmain.cpp` | no | the test framework |
+| `test.py` | no | the grader |
+
+Already written for you, from Monday's lecture: the `Node` constructor and
+destructor, the `List` constructor and destructor, `prepend`, `getSize` and
+`writeTo`.
+
+### Read the destructor first
+
+```cpp
+Node::~Node() {
+    delete myNext;
+    myNext = nullptr;
+}
+```
+
+Four words, and they are the most important four in the file. Deleting one Node
+deletes the one after it — which deletes the one after *that*, and so on to the
+end of the chain. So the `List` destructor does not need a loop:
+
+```cpp
+List::~List() {
+    delete myFirst;          // and the chain reaction takes the rest
+    ...
+}
+```
+
+One `delete`, and the whole list is gone.
+
+::: {.callout-warning}
+**The same mechanism is why a single lost pointer leaks everything behind it.**
+If any Node's `myNext` gets overwritten before the Node it pointed at is freed,
+every Node past that point becomes unreachable — nothing in the program knows
+where they are any more, so nothing can ever free them. Two of the checks run
+your list under a memory sanitizer for exactly this reason.
+:::
+
+### Read `prepend` second
+
+`prepend` is the worked example that `append` is meant to be read against, and
+it is the one Monday's slides animate.
+
+```cpp
+void List::prepend(const Item& it) {
+    Node* newNode = new Node(it, myFirst);   // built pointing at the old front
+
+    if (myFirst == nullptr) {                // the list was empty
+        myFirst = newNode;
+        myLast  = newNode;
+    } else {
+        myFirst = newNode;
+    }
+    mySize++;
+}
+```
+
+Notice that the new Node is created *already pointing at* the old first Node —
+that is what the second constructor argument is for. The only special case is
+the empty list, where the new Node is also the last one.
+
+---
+
+## 4. Step 1 — `append`
+
+Add an item to the **end** of the list.
+
+```
+before:   myFirst → [a] → [b] → nullptr           myLast → [b]
+after:    myFirst → [a] → [b] → [c] → nullptr     myLast → [c]
+```
+
+::: {.callout-tip}
+**DRAW PICTURES.** Or don't draw pictures, if you want this step to take much
+longer.
+
+Genuinely: sketch the three boxes and the arrows, then work out which arrows
+have to change and in what order. Every pointer bug in this assignment is a
+picture you did not draw.
+:::
+
+The new Node goes on the end, so nothing comes after it:
+
+```cpp
+Node* newNode = new Node(it, nullptr);
+```
+
+Then two cases. If the list is **empty**, the new Node is both the first and the
+last. If it is **not**, the Node that used to be last has to be told about the
+new one — `myLast->myNext = newNode;` — and then `myLast` moves to it. Either
+way `mySize` goes up by one.
+
+::: {.callout-warning}
+**You do not need a loop.**
+
+`myLast` is already the address of the last Node. That is the entire reason the
+class keeps it — it turns "add to the end" from a walk down the whole chain into
+two assignments.
+
+Walking from `myFirst` to find the end produces the right answer and will pass
+most of the append checks. One of them looks at your code and fails it anyway,
+because on a long list the difference is the whole point of storing `myLast` in
+the first place.
+:::
+
+The append tests are already written for you in `tests.cpp`. They are the shape
+the ones you write should take.
+
+---
+
+## 5. Step 2 — `getIndexOf`
+
+```cpp
+int getIndexOf(const Item& it) const;
+```
+
+Return the index of the first Node holding `it`, counting from 0 — or `-1` if it
+is not in the list.
+
+```
+list holds  11 22 33 22
+
+getIndexOf(11)  →  0
+getIndexOf(22)  →  1        the FIRST one
+getIndexOf(99)  → -1
+```
+
+An empty list returns `-1` for everything.
+
+### How to walk a list
+
+This is the traversal from Monday, and it is the pattern for every method that
+has to look at every Node:
+
+```cpp
+for (Node* curr = myFirst; curr != nullptr; curr = curr->myNext) {
+    ...
+}
+```
+
+`curr` starts at the front. `curr = curr->myNext` is the step. The loop ends
+when `curr` falls off the end and becomes `nullptr`. You will write this loop
+three more times before the semester is out.
+
+### Write the test first
+
+`tests.cpp` has an empty `TEST_CASE("lookfor")` waiting for you. **The name is
+required** — the grader looks for it.
+
+Fill it in *before* you write the method, and run it. It should fail.
+
+::: {.callout-note}
+**Why bother, when you know it will fail?**
+
+Because a test you have never seen fail is a test you have no reason to trust.
+A `REQUIRE` inside a `SECTION` you forgot to call, an assertion that compares a
+thing to itself — these pass silently and tell you nothing, and you cannot tell
+them apart from a real test by looking. Watching it go red once is the only
+cheap way to know it is wired up.
+:::
+
+Worth covering: an item at the front, one in the middle, one at the end, one
+that is not there at all, and an empty list.
+
+---
+
+## 6. Step 3 — The Copy Constructor
+
+You knew it was coming.
+
+`a04` taught you why: without one, copying a `List` copies the three members and
+leaves two Lists pointing at **one** chain of Nodes. Both destructors then run.
+The first frees the chain; the second frees it again, and the program dies
+somewhere unrelated with a message about heap corruption.
+
+### The algorithm
+
+Shorter than you might expect, because `append` already does the hard part:
+
+1. Set `myFirst`, `myLast` and `mySize` to the same defaults `List()` uses.
+2. Walk `original`'s chain, calling `append()` on each item as you go.
+
+That is the whole thing. Each `append` allocates a **new** Node on *this* list,
+which is exactly what makes the copy deep.
+
+::: {.callout-warning}
+**Step 1 is not optional.** An object under construction holds whatever happened
+to be in that memory until you put something there, and `append` is about to
+read `myFirst` and `myLast`. If they hold garbage, `append` will follow it.
+
+This is the single most common way to lose points on this step, and the symptom
+is a crash that looks nothing like the cause.
+:::
+
+Test case name: **`"copy"`**. Three sections are worth having — an empty list, a
+one-item list, and a longer one. The interesting assertion in all three is that
+the copy is **independent**: append to the original afterwards, and the copy
+should not change.
+
+---
+
+## 7. Step 4 — `operator==`
+
+Two lists are equal when they have the same number of items and the same items
+in the same order.
+
+Different sizes means not equal, and you can say so before comparing anything.
+After that, walk **both** lists at once:
+
+```cpp
+Node* a = myFirst;
+Node* b = rhs.myFirst;
+while (a != nullptr) {
+    if (a->myItem != b->myItem) { return false; }
+    a = a->myNext;
+    b = b->myNext;
+}
+return true;
+```
+
+Two `curr` pointers, advanced together. Once you know the sizes match, you know
+they run out at the same moment, so one test in the `while` is enough.
+
+Two empty lists are equal.
+
+::: {.callout-warning}
+**You are writing `==`, not `!=`.** So a test that two lists *differ* has to be
+written with the operator you have:
+
+```cpp
+REQUIRE( !(list1 == list2) );
+```
+
+And do not only test lists that are equal. Half the point of an equality
+operator is that it says no when it should — a version that always returns
+`true` passes every test that only checks for equality.
+:::
+
+Test case name: **`"equality"`**.
+
+---
+
+## 8. Step 5 — Templatize
+
+Last one, and it should be the quickest.
+
+`typedef int Item;` at the top of `List.h` is the same trick `a04` used and
+`a05` replaced. Replace it the same way: delete it, and put `template <class
+Item>` in front of the class.
+
+You have done this before. Nothing about it should surprise you.
+
+1. Delete the `typedef`. Put `template <class Item>` in front of **both**
+   classes — `Node` holds an `Item` too.
+2. Move every definition out of `List.cpp` and into `List.h`, between the
+   declarations and the `#endif`.
+3. Give each definition its own `template <class Item>` line, and qualify it
+   `Node<Item>::` or `List<Item>::`. `operator<<` is a free function and needs
+   its own template line too.
+4. Delete `List.cpp`, and take `List.o` out of the makefile — it is in three
+   places there.
+
+::: {.callout-warning}
+**One thing here is new.** Inside `class Node`, a bare `Node*` still means
+`Node<Item>*` — a class template can refer to itself by its own short name.
+
+Inside `class List` it does **not**. `Node` is a different class there, so every
+`Node*` member and every `Node*` local becomes `Node<Item>*`. The compiler's
+error message for this one is unhelpful; if `List` suddenly will not compile and
+`Node` will, this is why.
+:::
+
+Then update `tests.cpp` — `List` on its own has stopped being a type, so every
+one becomes `List<int>`, or whatever you are testing. Testing more than one type
+is a good idea for the same reason it was last week.
+
+::: {.callout-tip}
+Convert one method, compile, fix, move on. Do not convert all nine and then
+compile — you will get a screen of errors that all reference each other and none
+of which is the real one.
+:::
+
+::: {.callout-note}
+The course checks work **before and after** this step, so steps 1–4 are graded
+whether or not you have templatised yet. The makefile works out which state you
+are in on its own; you do not have to tell it anything.
+:::
+
+---
+
+## 9. Testing Your Work
+
+```bash
+make test
+```
+
+Thirty-one checks, in eight groups:
+
+| Group | What it looks at |
+|---|---|
+| **Step 1 — append** (5) | including one that reads your code to see whether you walked the list |
+| **Step 2 — getIndexOf** (4) | found at the front, middle and end; absent; empty |
+| **Step 3 — the copy constructor** (4) | 0, 1 and n items, and that the copy is independent |
+| **Step 4 — operator==** (5) | equal, different sizes, one different item, two empties |
+| **Step 5 — templatize** (5) | `List<int>` and `List<string>`, and that `List.cpp` is really gone |
+| **Your own tests** (4) | `"lookfor"`, `"copy"` and `"equality"` exist, assert, and pass |
+| **Memory** (2) | no crashes, no leaks |
+| **More cases** (2) | a longer list built while you are being graded |
+
+Every failure comes with a hint. Work the groups in order; they follow the steps.
+
+::: {.callout-note}
+**About the memory checks.** They build, copy and destroy several hundred lists
+under a memory sanitizer. That catches two things ordinary tests miss: freeing
+the same Node twice, and never freeing it at all.
+
+A leak does not make anything else fail — the program produces the right answers
+right up until it runs out of memory. That is precisely why the destructor and
+the copy constructor have to be reasoned about rather than guessed at.
+:::
+
+::: {.callout-tip}
+Focus on one check while you are fixing it:
+
+```bash
+make checks
+./checks "Append: onto an empty list"
+./checks "Copy: the copy is independent of the original"
+```
+
+A test name needs the full name, or a prefix with a `*` on the end. `./checks
+"Append:"` matches nothing, prints almost nothing, and exits successfully —
+which looks a lot like passing.
+:::
+
+::: {.callout-note}
+**There are no hidden tests.** What you run with `make test` is exactly what the
+grader runs — all 31 checks. If it passes here, it passes there.
+
+Grading always runs the official copies of `test.py` and `checks.cpp`, not the
+ones in your repository. Editing them will not change your score. Your `List.h`,
+`List.cpp`, `makefile` and `tests.cpp` are *not* restored — those are yours, and
+they are what is being graded.
+:::
+
+---
+
+## 10. Submit
+
+::: {.callout-important}
+Before pushing, open `README.md` and add your name. And check that `List.cpp` is
+really gone from the repository, not just from your folder:
+
+```bash
+git status
+git add -A
+```
+:::
+
+In VS Code, click the **Source Control** icon in the left sidebar, type a commit
+message, click the checkmark to commit, then sync. From the terminal:
+
+```bash
+git add -A
+git commit -m "Complete a07"
+git push
+```
+
+**Every push is graded automatically.** Within a minute or two the **Actions**
+tab of your repository shows the run, and a **Release** appears with your score
+and a per-check breakdown. Push as many times as you like; the most recent
+submission is the one that counts.
+
+Then enjoy the break. Window 1 is the Monday you get back — the grading page
+explains how to book.

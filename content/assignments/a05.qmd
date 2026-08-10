@@ -1,34 +1,731 @@
 ---
-title: "Assignment 05: Generic Containers"
-subtitle: "Week 05 · Oct 5 – Oct 10"
+title: "Assignment 05: Channels"
+subtitle: "One container, three types — turning last week's class into a template"
 ---
 
 ::: {.callout-note}
-**Not published yet.** This page fills in before week 05 begins. The outline below
-is what the assignment is being built to cover — a preview, not a specification.
+Accept the assignment to get your own private GitHub repository (see
+[Getting the code](#getting-the-code) below), then clone it and open it in VS Code.
+
+**Plan to set aside about 2 to 2.5 hours.** The conversion in §6 is most of it —
+about forty-five minutes of careful, mechanical editing across twenty method
+definitions. Everything after §7 is short by comparison.
 :::
 
-## What this assignment will cover
+## Objectives
 
-- Describe when appending to a dynamic array is inexpensive vs. expensive.
-- Reason about the difference between a dynamic array's size and capacity.
-- Explain what a class template is and why to use it instead of a class.
-- Reason about time complexity: linear, constant, and amortized constant time.
-- Implement a class template.
+By the end of this assignment, you will be able to:
 
-## Course skills
+- Explain why a `typedef` cannot give you a container of `int` and a container
+  of `double` in the same program
+- Write `template <class Item>` in front of a class declaration and say what
+  each of those three words is doing
+- Explain why a class template's method definitions have to live in the header,
+  and what happens at link time when they do not
+- Convert a class method into a method template, and state the rule for which
+  uses of the class name change and which do not
+- Update a makefile when a `.cpp` file stops existing
+- Write a function template, and call it on more than one instantiation
+- Recognise where a default element value is needed, and write `Item()` rather
+  than `0`
+- Use two channels of the same length together, indexing them in step
+- Test a template on more than one element type, and say why one is not enough
 
-Primary practice for skill **C2**. See
-[Skills & Check-Ins](../checkins.html) for what each one means and when it is assessed.
+This assignment covers course skill **C2** — *write and use a class template* —
+from cluster **C**, Linear Data Structures, assessed at **Window 2** on Nov 20.
 
-## Getting the code
+::: {.callout-note}
+**Lab and homework.** Everything here needs only Monday's lecture on class
+templates, so unusually there is nothing in this assignment you have to wait for.
 
-You will accept the assignment through Classroom 50, which creates your own private
-repository from the starter code. The accept link appears here when the assignment
-is published.
+Tuesday's lab is where you do §4 through §6 — the conversion itself. That is the
+part where having someone next to you is worth the most, because the errors are
+syntactic and a second pair of eyes finds them in seconds. §7 onward is
+homework, not because it needs later material but because it will not fit in the
+session.
 
-## Submitting
+**There is a second assignment this week.** `a06` starts after Wednesday's
+lecture on `vector` and iterators. This one is deliberately short to make room
+for it.
+:::
 
-Commit and push to `main`. Every push is graded automatically — check the **Actions**
-tab of your repository for the run and **Releases** for your score. Your most recent
-submission before the deadline is the one that counts.
+---
+
+## 1. Introduction
+
+Last week you built a `Trace` — an array of lap telemetry samples that owns its
+own memory, grows when it runs out of room, and copies itself properly. It works.
+You tested it. It is a genuinely useful class.
+
+It can also only ever hold one kind of thing at a time.
+
+Look at the top of `Trace.h` from a04:
+
+```cpp
+typedef double Sample;
+```
+
+That line is how the class avoided saying `double` forty times. Everything
+inside says `Sample`, and `Sample` is a `double` because that line says so.
+Change it to `typedef int Sample;`, recompile, and you have a trace of integers.
+One line. That is a real convenience, and it carried you through a04.
+
+Now here is a lap of telemetry, as the car actually logs it:
+
+| Channel | What it is | What it has to hold |
+|---|---|---|
+| **speed** | how fast the car is going, in km/h | a decimal |
+| **gear** | which gear is selected, 1 to 8 | a whole number |
+| **DRS** | whether the rear-wing flap is open | on or off |
+
+Three channels. One lap. **Three different types, in the same program, at the
+same time.**
+
+::: {.callout-important}
+**Before you read any further, answer this for yourself.**
+
+With `typedef double Sample;` at the top of `Trace.h`, what exactly would you
+have to do to get a trace of `double`, a trace of `int` and a trace of `bool`
+into the same program?
+
+Think it through properly — not "it would be annoying" but the actual mechanics.
+There is an answer, and it is bad enough to justify a whole week of syntax.
+:::
+
+The answer is that you would need three copies of the class. `TraceOfDouble`,
+`TraceOfInt`, `TraceOfBool`, in three pairs of files, differing by one line each
+— and every time you fixed a bug in `append` you would fix it three times, and
+sooner or later you would fix it twice.
+
+C++ has a better answer. This week you turn `Trace` into a **class template**,
+and the compiler writes those three classes for you.
+
+---
+
+## 2. Getting the Code {#getting-the-code}
+
+Accept the assignment. This creates a private GitHub repository that belongs to
+you, already containing the starter code:
+
+::: {.callout-note}
+**Accept link:** *(added when the assignment is published)*
+:::
+
+Then clone it, replacing `YOURUSERNAME` with your GitHub username:
+
+```bash
+git clone https://github.com/26fa-cs112/cs112-a05-YOURUSERNAME.git
+cd cs112-a05-YOURUSERNAME
+```
+
+Open the folder in VS Code, then build it before you change anything:
+
+```bash
+make
+make test
+```
+
+`make` succeeds and `make test` reports **1 / 51**. Both are correct: what you
+have been given is a complete, working, *un-converted* `Trace`, and the only
+check that passes is the one that says it compiles.
+
+::: {.callout-tip}
+Prefer the terminal? `gh student accept 26fa-cs112 cs112 a05` does the same
+thing. Install it once with `gh extension install foundation50/gh-student`.
+:::
+
+---
+
+## 3. The Shape of the Repository
+
+**You edit five files this week, and delete a sixth.**
+
+| File | Yours? | What it is |
+|---|---|---|
+| `Trace.h` | **yes** | a04's `Trace`, complete. TODOs 1–3 convert it. |
+| `Trace.cpp` | **delete it** | a04's method definitions. TODO 2 moves them into the header and gets rid of this file. |
+| `makefile` | **yes** | TODO 2 again — once `Trace.cpp` is gone there is nothing to compile it into. |
+| `Channels.cpp` | **yes** | TODOs 4 and 6 — `loadLap` and `speedAtUpshifts`. |
+| `Channels.h` | **yes** | TODO 5 — `countChanges`, a *function* template. |
+| `tests.cpp` | **yes** | TODO 7 — your own tests. This is graded. |
+| `main.cpp` | no | the application. Read it; it is short. |
+| `checks.cpp` | no | the course's checks. |
+| `catch.hpp`, `catchmain.cpp` | no | the test framework. |
+| `lap.txt` | no | the data. |
+| `truncated.txt` | no | a deliberately broken lap file, for the error path. |
+| `sample-output.txt` | no | what `./channels` prints when you are done. |
+
+::: {.callout-note}
+**Yes, `Trace.h` and `Trace.cpp` really are your a04 answers.** You are not
+being asked to rebuild them. If your own a04 ended up somewhere better than what
+you have been given, paste yours in — it has to behave the same way, because the
+same checks run against it.
+
+This is deliberate. If a04 gave you trouble, that is not allowed to block you
+here. This week is about templates.
+:::
+
+**The data is real.** `lap.txt` is Charles Leclerc's fastest qualifying lap at
+Monza in 2024 — a 1:19.461, fourth on the grid behind Norris, Piastri and
+Russell — as logged by the car at roughly four samples a second. 314 samples,
+three columns:
+
+```
+322.0 8 1
+325.0 8 1
+325.0 8 1
+...
+```
+
+speed in km/h, gear, and DRS as 1 for open and 0 for closed. The first sample is
+already at 322 km/h in eighth with the flap open, because a flying lap starts at
+the timing line at full speed with DRS already deployed on the main straight.
+
+### Four things to build
+
+```bash
+make            # ./tester   — YOUR tests, from tests.cpp
+make checks     # ./checks   — the course's checks, from checks.cpp
+make channels   # ./channels — the application
+make test       # the full grader
+```
+
+`make channels` and `make checks` will not work until §6 is done. That is
+expected: both are written in terms of `Trace<double>`, and until `Trace` is a
+template there is no such type. `sample-output.txt` shows you where you are
+going in the meantime.
+
+---
+
+## 4. Why a Typedef Is Not Enough
+
+A `typedef` gives a type a second name. That is all it does.
+
+```cpp
+typedef double Sample;      // "Sample" is now another word for "double"
+```
+
+It is a naming convenience, resolved once, at compile time, for the whole
+translation unit. There is exactly one `Sample` and it is exactly one type.
+
+So when you write
+
+```cpp
+Trace speed;                // a trace of... whatever the typedef says
+Trace gear;                 // ...the same thing. There is no other option.
+```
+
+both objects have the same element type, and no amount of cleverness at the call
+site changes that. The type is baked into the class.
+
+What you want to write is this:
+
+```cpp
+Trace<double> speed;
+Trace<int>    gear;
+Trace<bool>   drs;
+```
+
+— three different types, all built from one description of what a trace *is*.
+
+---
+
+## 5. What a Class Template Is
+
+A class template is **not a class**. It is a blueprint the compiler builds
+classes from.
+
+```cpp
+template <class Item>
+class Trace {
+    ...
+};
+```
+
+Three words, each doing a job:
+
+- `template` — what follows is a blueprint, not a class.
+- `<class Item>` — the blueprint takes one parameter, and it is a *type*.
+  (`class` here means "this parameter is a type"; it does not mean `Item` has to
+  be a class. `Trace<int>` is fine.)
+- `Item` — the name you chose for that parameter. You could call it anything.
+  `Item` is a good choice because it is exactly what the `typedef` was already
+  called in spirit, so most of the class does not have to change at all.
+
+Once the compiler has read that declaration, the name of the template is
+`Trace<Item>`.
+
+When it later meets
+
+```cpp
+Trace<double> speed;
+Trace<int>    gear;
+```
+
+it builds two classes from the blueprint — one with every `Item` replaced by
+`double`, one with every `Item` replaced by `int` — and uses them as the types
+of `speed` and `gear`. You wrote the class once. You get as many as you ask for.
+
+::: {.callout-tip}
+**The rule the lecture gives, worth repeating because it is why this assignment
+is shaped the way it is:** build the container with a `typedef` and test it
+thoroughly *first*, then convert it. Writing a template from scratch is where
+the syntax errors come from — you end up debugging the template machinery and
+the logic at the same time, and cannot tell which is which.
+
+You have already done step one. It was a04.
+:::
+
+---
+
+## 6. Converting `Trace` {#converting}
+
+This is the long section. Work through it in order, compiling constantly.
+
+### 6.1 — TODO 1: the class declaration
+
+Open `Trace.h`. Delete this line:
+
+```cpp
+typedef double Sample;
+```
+
+and put this immediately before `class Trace {`:
+
+```cpp
+template <class Item>
+class Trace {
+```
+
+Then every place the class said `Sample` as a *type* now says `Item`. Your
+editor's find-and-replace will do it — but read what it is about to change
+first, because **`getSample` and `setSample` are method names, not types.** They
+keep their names. Only the type changes.
+
+::: {.callout-warning}
+Inside the class declaration, `Trace` on its own still means `Trace<Item>` — so
+`Trace(const Trace& original);` is still correct in there and you do not have to
+touch it. That stops being true the moment you step *outside* the braces, which
+is §6.3.
+:::
+
+### 6.2 — TODO 2: the implementation file has to go
+
+Here is the awkward truth about templates: the compiler builds a class from the
+blueprint only when it sees `Trace<double>`, and to do that it needs to see the
+*whole* blueprint at that moment — declaration and every method definition. A
+`.cpp` file it compiled separately, hours ago, is no help at all.
+
+If you leave the definitions in `Trace.cpp`, the code will compile and then fail
+to **link**, with errors about undefined references to things you can see
+perfectly well with your own eyes. That error message is one of the two or three
+most confusing in C++, and this is the reason for it.
+
+So:
+
+1. In `Trace.cpp`, select every method definition and cut them.
+2. In `Trace.h`, paste them in between the closing `};` of the class declaration
+   and the `#endif`.
+3. Anything `Trace.cpp` `#include`d that `Trace.h` does not needs to come across
+   too. Look for `<stdexcept>`; it belongs up at the top with the other includes.
+4. Delete `Trace.cpp`.
+
+```bash
+rm Trace.cpp
+```
+
+::: {.callout-warning}
+**Delete it. Do not just empty it out.** One of the checks looks for the file,
+not for its contents. If you emptied it and then committed, git still has it.
+`git add -A` when you commit picks up the deletion; `git add .` alone may not.
+:::
+
+Then the makefile. `Trace.o` appears in it five times — three link lines and a
+dependency line — and every one has to go, because there is no longer anything
+to compile into it. `make` will tell you loudly if you miss one.
+
+::: {.callout-note}
+`Channels.cpp` stays. Those two functions are ordinary functions, not templates:
+the compiler can compile them once, on their own, and the linker will find them
+later. Only templates have to be visible at the point of use. That contrast is
+worth holding onto — the rule is not "put things in headers", it is "templates
+go in headers".
+:::
+
+### 6.3 — TODO 3: every method becomes a method template
+
+Now the mechanical part. For each definition you just pasted in, two changes:
+
+1. Put `template <class Item>` on the line before it.
+2. Replace every use of the class name **as a type** with `Trace<Item>`. Every
+   use *as the name of an operation* — a constructor, the destructor — stays
+   `Trace`.
+
+Worked example. The default constructor starts as:
+
+```cpp
+Trace::Trace() {
+    ...
+}
+```
+
+Add the template line:
+
+```cpp
+template <class Item>
+Trace::Trace() {
+    ...
+}
+```
+
+Then the qualifier `Trace::` is a use of the class name as a type, so it becomes
+`Trace<Item>::`. The constructor's own name, the second `Trace`, is the name of
+an operation, so it does not change:
+
+```cpp
+template <class Item>
+Trace<Item>::Trace() {
+    ...
+}
+```
+
+That is the whole rule. Apply it twenty times.
+
+The places it is easy to miss:
+
+| Definition | What changes |
+|---|---|
+| copy constructor | the *parameter*: `const Trace& original` → `const Trace<Item>& original`. The name `Trace(` does not. |
+| `operator=` | the **return type**: `Trace&` → `Trace<Item>&`. |
+| `operator+`, `operator-` | the **return type** `Trace` → `Trace<Item>`, *and* the local variable `Trace result(mySize);` inside. |
+| `operator<<` | it is a free function, not a method — it needs its own `template <class Item>` line, and its parameter becomes `const Trace<Item>&`. |
+| `getSample`, `setSample` | the return and parameter types become `Item`. The names do not change. |
+
+::: {.callout-tip}
+**Do not convert all twenty and then compile.** You will get a screen of errors
+that all reference each other and none of which is the real one.
+
+Convert one, compile, fix, move on. `make checks` is the fastest signal — it
+compiles everything against your header. The errors stay confined to the method
+you just touched, which is the whole point of doing it this way.
+:::
+
+### 6.4 — TODO 3, part two: `0` is not a default value
+
+The mechanical conversion gets you almost all the way. There are exactly two
+places it does not.
+
+Two methods assign a literal `0` to an element:
+
+```cpp
+mySamples[i] = 0;                                  // in Trace(unsigned n)
+resized[i] = (i < mySize) ? mySamples[i] : 0;      // in setSize
+```
+
+Both were perfectly reasonable when every `Item` was a `double`. Neither is
+reasonable now:
+
+- `Trace<string> names(3);` would assign `0` to a `string`. That is assigning a
+  null character pointer to it, which is undefined behaviour — usually a crash.
+- `setSize` is worse. `(i < mySize) ? mySamples[i] : 0` does not even *compile*
+  for a `string`, because `string` and `int` have no type in common for the
+  conditional operator to produce.
+
+The fix is two characters in two places:
+
+```cpp
+mySamples[i] = Item();
+resized[i] = (i < mySize) ? mySamples[i] : Item();
+```
+
+`Item()` is the default value of whatever `Item` turns out to be — `0` for a
+`double`, `0` for an `int`, `false` for a `bool`, `""` for a `string`. Nothing
+changes for the numeric types you already had.
+
+This is a small thing that makes a large point: a template is a promise that the
+code works for *any* type, and the compiler only checks that promise against the
+types you actually use. `Trace<double>` would never have caught this.
+
+---
+
+## 7. TODO 4 — Three Channels, One Program
+
+Open `Channels.cpp`. The first function is the one this whole week has been
+about:
+
+```cpp
+void loadLap(const string& filename,
+             Trace<double>& speed, Trace<int>& gear, Trace<bool>& drs);
+```
+
+Look at that parameter list before you write anything. Three traces, three
+element types, one function. This is the signature you could not have written a
+week ago.
+
+A lap file is one sample per line, three whitespace-separated columns. What to
+write:
+
+1. Open `filename` with an `ifstream`. If it will not open, throw
+   `invalid_argument("cannot open file: " + filename)`.
+
+2. Empty all three traces before you start — `speed.setSize(0);` and so on — so
+   that loading a second file over the top of a first does not append to it.
+
+3. Read the file a line at a time with `getline`. Skip any line that is blank or
+   only whitespace. For every other line, pull three values out of it:
+
+   ```cpp
+   istringstream in(line);
+   double s;  int g;  int d;
+   if (!(in >> s >> g >> d)) { /* throw */ }
+   ```
+
+   If a line does not yield three values, throw
+
+   ```cpp
+   invalid_argument("line " + to_string(lineNumber) + " of " + filename
+                    + " does not have three values")
+   ```
+
+   where `lineNumber` counts every line in the file from 1, blank ones included.
+
+4. Append each value to its own channel:
+
+   ```cpp
+   speed.append(s);
+   gear.append(g);
+   drs.append(d != 0);        // an int in the file becomes a bool in the trace
+   ```
+
+5. If the file held no samples at all, throw
+   `invalid_argument("no samples in " + filename)`.
+
+::: {.callout-tip}
+Reading with `>>` rather than splitting on spaces is what makes step 3 cope with
+the irregular spacing real data files are full of. `>>` skips any amount of
+whitespace and stops at the next one.
+:::
+
+---
+
+## 8. TODO 5 — `countChanges`, a Function Template
+
+Classes are not the only things that can be templates. Functions can be too, and
+this is the smallest possible demonstration of why you would want one.
+
+`countChanges` answers: **how many times does this channel's value differ from
+the one before it?**
+
+- on `gear`, that is how many times the driver changed gear
+- on `drs`, how many times the flap moved
+- on `speed`, how many samples differ from the previous one
+
+Three questions, three element types, **one function**:
+
+```cpp
+template <class Item>
+unsigned countChanges(const Trace<Item>& channel) {
+    ...
+}
+```
+
+Walk from index 1 to the end, compare each element with the one before it, and
+count the ones that differ. Index 0 does not count — there is nothing before it.
+An empty channel has 0 changes, and so does a channel with one sample; starting
+the loop at 1 handles both without a special case.
+
+It goes in `Channels.h`, not `Channels.cpp`, for exactly the reason `Trace`'s
+methods had to move into `Trace.h`.
+
+::: {.callout-warning}
+Use `channel[i]`, and note that `channel` is a **const reference**. That is what
+the `const` overload of `operator[]` is for — the one that felt redundant last
+week. This is where it earns its place.
+:::
+
+::: {.callout-note}
+Notice what `countChanges` never does: it never adds two `Item`s, never prints
+one, never assumes they are numbers. All it does is compare them with `!=`. That
+is precisely why it works on a `Trace<string>` as happily as on a
+`Trace<double>` — and one of the checks makes sure of it.
+:::
+
+---
+
+## 9. TODO 6 — Two Channels, Read Together
+
+`countChanges` looks at one channel at a time. This one needs two, lined up:
+sample *i* of the gear channel and sample *i* of the speed channel are the same
+instant in the lap.
+
+```cpp
+Trace<double> speedAtUpshifts(const Trace<int>& gear, const Trace<double>& speed);
+```
+
+An **upshift** is any index `i` where `gear[i] > gear[i-1]`. For each one, in
+order, the returned trace holds `speed[i]` — the speed at the moment of the
+shift.
+
+1. If the two channels are different lengths, throw
+   `invalid_argument("the two channels must be the same length")` before doing
+   anything else.
+2. Make an empty `Trace<double>` for the result.
+3. Walk `i` from 1 to the end; whenever you find an upshift, append `speed[i]`.
+4. Return it.
+
+::: {.callout-note}
+It returns **by value**, which means the copy constructor you wrote last week
+runs — now as a method template. If that still works, you converted it
+correctly. If it does not, you will find out here rather than in a week's time.
+:::
+
+Now build the application:
+
+```bash
+make channels
+./channels
+```
+
+You should see 314 samples, three channel rows, and eighteen upshifts. Compare
+the change counts down the three rows: speed changes constantly, gear
+thirty-odd times, DRS three. That spread is the answer to §1's question made
+visible — three channels that behave nothing like each other, in one program,
+out of one class.
+
+---
+
+## 10. TODO 7 — Your Own Tests
+
+`tests.cpp` is yours, and it is graded. Right now it holds one placeholder test
+written against the un-converted `Trace`; as soon as TODO 1 lands it will stop
+compiling, which is expected.
+
+Replace it. What is being checked:
+
+| | |
+|---|---|
+| at least six `TEST_CASE` or `SECTION` blocks | that actually assert something |
+| at least two different `Trace` instantiations | `Trace<int>` and `Trace<double>`, say |
+| `countChanges` tested more than once | on more than one instantiation |
+| they all pass | a failing test of your own is still information, but fix it |
+
+Worth testing, if you want a starting list:
+
+- a `Trace<int>` and a `Trace<double>` side by side, behaving identically
+- a `Trace<char>` or `Trace<string>`, which proves the class never assumed its
+  elements were numbers
+- `countChanges` on an empty channel, a one-sample channel, a channel that never
+  changes, and one that changes at every step
+- `speedAtUpshifts` on a short gear channel you write out by hand, including the
+  case where there are no upshifts at all
+- `loadLap` on a small file the test writes itself
+
+::: {.callout-note}
+**Why two instantiations and not one.** A template is a claim that one body of
+code works for every type. The compiler only checks that claim against the types
+you actually instantiate — so a template you have only ever used as
+`Trace<double>` has been tested exactly as thoroughly as a class with a
+`typedef`. You have proved nothing about the thing that makes it a template.
+
+§6.4 is the concrete version of this: the `0` bug is invisible until somebody
+writes `Trace<string>`.
+:::
+
+::: {.callout-tip}
+If your tests call `loadLap` or `speedAtUpshifts`, add `Channels.o` to the
+`tester` rule in the makefile — there is a comment there showing you where.
+`countChanges` needs nothing extra, because it is a template and comes along
+with the `#include`.
+:::
+
+---
+
+## 11. Testing Your Work
+
+```bash
+make test
+```
+
+Fifty-one checks, in ten groups:
+
+| Group | What it looks at |
+|---|---|
+| **Setup** (5) | that the conversion actually happened — `Trace.cpp` gone, makefile clean, template declared |
+| **The conversion** (10) | TODOs 1–3: everything a04 required, asked of `Trace<int>` and `Trace<double>` |
+| **Generic** (6) | the same class on four element types, including §6.4 |
+| **countChanges** (6) | TODO 5 |
+| **loadLap** (7) | TODO 4 |
+| **speedAtUpshifts** (5) | TODO 6 |
+| **The application** (4) | `./channels` end to end, on `lap.txt` and on a broken file |
+| **Your own tests** (4) | TODO 7 |
+| **Memory** (2) | no crashes, no leaks |
+| **More cases** (2) | a lap file generated *while you are being graded* |
+
+Every failure comes with a hint. Work the groups in order; they follow the TODOs.
+
+::: {.callout-note}
+**A failing build does not stop the checks this week.** You will spend a while
+mid-conversion with a class that does not compile, and the Setup group is more
+useful to you during that time than a wall of silence. Expect the class checks
+to fail with a compiler error until §6 is finished — the error is in the hint.
+:::
+
+::: {.callout-note}
+**About the "more cases" group.** Those two build a lap file from scratch, in a
+temporary directory, every time the grader runs — irregular spacing, blank lines
+scattered through it, values that appear nowhere in your repository. Code that
+happens to produce the right answers for `lap.txt` has to actually be right to
+produce the right answers for that one.
+:::
+
+::: {.callout-tip}
+Focus on one check while you are fixing it:
+
+```bash
+make checks
+./checks "Convert: capacity still doubles"
+./checks "Channels: countChanges counts gear changes"
+```
+
+A test name needs the full name, or a prefix with a `*` on the end. `./checks
+"Convert: capacity"` matches nothing, prints almost nothing, and exits
+successfully — which looks a lot like passing.
+:::
+
+::: {.callout-note}
+**There are no hidden tests.** What you run with `make test` is exactly what the
+grader runs — all 51 checks. If it passes here, it passes there.
+
+Grading always runs the official copies of `test.py` and `checks.cpp`, not the
+ones in your repository. Editing them will not change your score. Your
+`makefile`, `Trace.h`, `Channels.h`, `Channels.cpp` and `tests.cpp` are *not*
+restored — those are yours this week, and they are what is being graded.
+:::
+
+---
+
+## 12. Submit
+
+::: {.callout-important}
+Before pushing, open `README.md` and add your name. And check that `Trace.cpp`
+is really gone from the repository, not just from your folder:
+
+```bash
+git status
+git add -A
+```
+:::
+
+In VS Code, click the **Source Control** icon in the left sidebar, type a commit
+message, click the checkmark to commit, then sync. From the terminal:
+
+```bash
+git add -A
+git commit -m "Complete a05"
+git push
+```
+
+**Every push is graded automatically.** Within a minute or two the **Actions**
+tab of your repository shows the run, and a **Release** appears with your score
+and a per-check breakdown. Push as many times as you like; the most recent
+submission is the one that counts.

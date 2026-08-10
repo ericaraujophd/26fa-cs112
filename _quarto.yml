@@ -34,22 +34,7 @@ book:
         - policies/grading.qmd
         - policies/honesty.qmd
         - policies/classroom.qmd
-    - part: "Assignments"
-      chapters:
-        - content/assignments/gettingStarted.qmd
-        - content/assignments/a01.qmd
-        - content/assignments/a02.qmd
-        - content/assignments/a03.qmd
-        - content/assignments/a04.qmd
-        - content/assignments/a05.qmd
-        - content/assignments/a06.qmd
-        - content/assignments/a07.qmd
-        - content/assignments/a08.qmd
-        - content/assignments/a09.qmd
-        - content/assignments/a10.qmd
-        - content/assignments/a11.qmd
-        - content/assignments/a12.qmd
-        - content/assignments/a13.qmd
+    - content/assignments/index.qmd
 
 language:
   title-block-published: "Last Updated"

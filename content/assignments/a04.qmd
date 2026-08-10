@@ -1,34 +1,826 @@
 ---
-title: "Assignment 04: Dynamic Arrays"
-subtitle: "Week 04 · Sep 28 – Oct 3"
+title: "Assignment 04: Telemetry"
+subtitle: "A container that owns its memory — and what that costs"
 ---
 
 ::: {.callout-note}
-**Not published yet.** This page fills in before week 04 begins. The outline below
-is what the assignment is being built to cover — a preview, not a specification.
+Accept the assignment to get your own private GitHub repository (see
+[Getting the code](#getting-the-code) below), then clone it and open it in VS Code.
+
+**Plan to set aside about 3.75 to 4.25 hours.** `append` (§7) and the copy
+constructor (§10) are the two long sections. §9 is an experiment rather than a
+task — it takes about twenty minutes and it is the most important twenty minutes
+of the week.
 :::
 
-## What this assignment will cover
+## Objectives
 
-- Reason about the difference between shallow and deep copies of a data structure.
-- Explain when C++ calls the destructor on an object.
-- Explain when it is important to implement the destructor explicitly.
-- Understand how a dynamic array adapts its internal size.
-- Recognize and implement a copy constructor.
+By the end of this assignment, you will be able to:
 
-## Course skills
+- Allocate an array on the heap with `new[]` and release it with `delete[]`
+- Explain the difference between the stack and the heap, and say which one a
+  container has to put its data in
+- Keep `size` and `capacity` apart, and explain why that makes appending cheap
+- Grow an array by allocating a bigger one, copying, and freeing the old one
+- Write a destructor, and say exactly when C++ runs it
+- Explain what the compiler's default copy constructor does to a pointer member,
+  and why that is a disaster
+- Write a deep copy constructor and a deep assignment operator
+- Name the three situations that call a copy constructor
+- Guard an assignment operator against self-assignment, and explain what goes
+  wrong without it
+- Overload `operator[]` to return a reference, and say why a `const` version is
+  also needed
+- Recognise a double free and a use-after-free from the symptoms, and find one
+  in a debugger
 
-Primary practice for skills **B4, C1**. See
-[Skills & Check-Ins](../checkins.html) for what each one means and when it is assessed.
+These objectives map to course skills **A3** and **B4**, both of which are
+assessed at **Window 1** on Oct 23, and both of which are *persistent* — they can
+come back at any later check-in. This assignment also introduces **C1**, which
+you finish next week.
 
-## Getting the code
+::: {.callout-note}
+**Lab and homework.** You start this in lab on Tuesday, when you will have had
+Monday's lecture on `new`, `delete`, and the heap — enough for §3 through §6.
+Wednesday's lecture covers growing an array and the destructor, which is §7 and
+§8. Friday's covers copying, which is §10 onward.
 
-You will accept the assignment through Classroom 50, which creates your own private
-repository from the starter code. The accept link appears here when the assignment
-is published.
+**§9 is deliberately placed between Wednesday and Friday.** You will hit a
+problem there that Friday's lecture is the answer to. That is not a mistake in
+the ordering; it is the ordering.
+:::
 
-## Submitting
+---
 
-Commit and push to `main`. Every push is graded automatically — check the **Actions**
-tab of your repository for the run and **Releases** for your score. Your most recent
-submission before the deadline is the one that counts.
+## 1. Introduction
+
+An F1 car is covered in sensors. Over one qualifying lap it logs a stream of
+samples — speed, throttle, brake, steering, hundreds of channels — and the
+engineers in the garage compare this lap against the best lap of the session to
+find out where the time went. That comparison is the wiggling bar you see across
+the bottom of a broadcast: **the delta**.
+
+You are going to build the container that holds one lap of it.
+
+Here is the problem, and it is the whole reason this week exists. **Nobody knows
+how many samples a lap has until the file has been read.** A short street circuit
+and a long one differ by a factor of three. A different logging rate changes it
+again. And every array you have written so far in this course has had its size
+fixed when the program was *compiled*:
+
+```cpp
+char grid[64][128];        // a02 — decided by you, in advance
+Lap myLaps[10];            // a03 — decided by you, in advance
+Sample lap[???];           // a04 — decided by a file you have not read yet
+```
+
+There is no number you can put in those brackets that is right. Too small and
+the program is broken on the next circuit; too large and you are wasting most of
+it on every lap. You need an array whose size is decided while the program is
+*running*, and that is what `new[]` is for.
+
+The catch — and this is the part that takes a week — is that memory you ask for
+this way is **yours until you give it back**. Nothing cleans up after you. A
+`Trace` that forgets to give its array back leaks. A `Trace` that gives the same
+array back twice crashes. And a `Trace` that gets copied without thinking hard
+about it does both.
+
+::: {.callout-tip}
+**Everything you need to know about the sport**, again in three sentences.
+Drivers set timed laps, and the fastest lap wins, so a smaller number is better.
+A lap is divided into segments, and the time spent in each one is logged
+separately. Comparing this lap's segments against the best lap's shows exactly
+where a driver gained or lost time.
+:::
+
+### Where the data comes from
+
+`laps.txt` holds two lines of numbers. Each number is the time in seconds spent
+in one segment of the lap. Line 1 is the best lap of the session so far; line 2
+is the lap that has just finished.
+
+```
+2.959 4.479 2.63 4.217 3.099 ...      <- best lap, 24 segments
+3.038 4.307 2.772 4.086 3.157 ...     <- this lap
+```
+
+Subtract one from the other and you have the delta. Find the most negative
+number and you have the corner where the driver gained the most.
+
+---
+
+## 2. Getting the Code {#getting-the-code}
+
+Accept the assignment. This creates a private GitHub repository that belongs to
+you, already containing the starter code:
+
+::: {.callout-note}
+**Accept link:** *(added when the assignment is published)*
+:::
+
+Then clone it, replacing `YOURUSERNAME` with your GitHub username:
+
+```bash
+git clone https://github.com/26fa-cs112/cs112-a04-YOURUSERNAME.git
+cd cs112-a04-YOURUSERNAME
+```
+
+Open the folder in VS Code, then build it before you change anything:
+
+```bash
+make
+make test
+```
+
+`make` should succeed and `make test` should report **1 / 36**. Both are correct:
+the starter compiles, and almost nothing works yet.
+
+::: {.callout-tip}
+Prefer the terminal? `gh student accept 26fa-cs112 cs112 a04` does the same
+thing. Install it once with `gh extension install foundation50/gh-student`.
+:::
+
+---
+
+## 3. The Shape of the Repository
+
+**You edit two files: `Trace.cpp` and `Delta.cpp`.** That is all. Thirteen TODOs
+between them, in the order they appear in the files.
+
+| File | Yours? | What it is |
+|---|:--:|---|
+| **`Trace.cpp`** | ✎ | TODOs 1–11. The container. |
+| **`Delta.cpp`** | ✎ | TODOs 12–13. The application logic. |
+| `Trace.h` | | The class. **Read this first** — it is the whole design in one page. |
+| `Delta.h` | | What the three application functions promise |
+| `checks.cpp` | | The course's checks. Read them; they are the specification. |
+| `main.cpp` | | The application — reads `laps.txt`, prints the delta |
+| `experiment.cpp` | | The short program §9 asks you to run |
+| `laps.txt`, `broken.txt` | | Two laps, and two laps that do not match |
+| `makefile`, `test.py` | | Build and check |
+
+Two methods, `setSize` and `operator==`, are **written for you** in the middle of
+`Trace.cpp`. `setSize` is not there to save you time — it is there to be read.
+It is the same allocate-copy-delete pattern you are about to write in `append`,
+worked out in full, with the mistake that costs most people a mark called out in
+a comment.
+
+::: {.callout-important}
+**There are no hidden tests in this course.** Every check that decides your grade
+is in `test.py` and `checks.cpp`, in your repository, readable right now. What
+`make test` runs is exactly what the grader runs.
+
+Grading re-copies the official `test.py` and `checks.cpp` over yours before
+running, so editing them changes nothing about your score — and `make test`
+checks `checks.cpp` against its shipped fingerprint and warns you if it has been
+edited, because a local score that does not match your real one is worse than
+useless.
+:::
+
+---
+
+## 4. What a `Trace` Has to Remember
+
+Open **`Trace.h`**. Everything about the design is in there, and the three lines
+that matter are at the bottom:
+
+```cpp
+private:
+    Sample*  mySamples;      // the ADDRESS of an array on the heap
+    unsigned mySize;         // how many samples are in it
+    unsigned myCapacity;     // how many it has room for
+```
+
+Read `mySamples` carefully. It is a **pointer**. It does not contain any samples;
+it contains the address where the samples are. The samples themselves live in a
+block of memory that you will ask for with `new[]`, and that block is not part of
+the `Trace` object at all — it is somewhere else entirely, and the `Trace` just
+knows where.
+
+That is new. In a02 your grid *was* the array. In a03 `Lap myLaps[10]` *was* ten
+laps. Here the object is three small numbers, one of which is a signpost.
+
+### Why two counts?
+
+Because growing is expensive. Growing means allocating a bigger array, copying
+everything across, and freeing the old one — the cost of which is proportional to
+how much is already there. If the array were always exactly as big as the number
+of samples in it, **every single `append` would do all of that**.
+
+So `Trace` keeps slack. `myCapacity` is how big the array is; `mySize` is how
+much of it is in use. Most appends just write into a slot that is already there
+and bump the count: two operations, no matter how long the trace is. Only when
+the array is genuinely full does it grow — and then it **doubles**, so that the
+next growth is twice as far away as the last one.
+
+::: {.callout-tip}
+This is the single most important idea in the week, and it is why `vector` is
+fast. Next week you will do the arithmetic properly and put a name to it. This
+week, just get the feel of it: *appending is cheap because growing is rare.*
+:::
+
+---
+
+## 5. Making a `Trace`
+
+*(Tuesday.)*
+
+### TODO 1 — the default constructor
+
+An empty trace owns nothing:
+
+```cpp
+mySamples  = nullptr;      // deliberately pointing at nothing
+mySize     = 0;
+myCapacity = 0;
+```
+
+`nullptr` is not the same as leaving `mySamples` uninitialised. An uninitialised
+pointer holds whatever bytes happened to be in that memory, and a `delete[]` on
+that is a crash — usually somewhere else entirely, minutes later.
+
+### TODO 2 — the explicit-value constructor
+
+`Trace t(400);` should give 400 samples, all zero.
+
+```cpp
+mySize = myCapacity = n;
+if (n > 0) {
+    mySamples = new Sample[n];      // ask for the memory
+    // ... then set every element to 0
+} else {
+    mySamples = nullptr;
+}
+```
+
+`new Sample[n]` asks the operating system for room for `n` Samples and hands back
+the address of the first one. **`n` does not have to be known when the program is
+compiled** — which is the entire reason this class can exist.
+
+::: {.callout-warning}
+Every `new[]` is half of a promise. The other half is `delete[]`, and you write it
+in §7. Get into the habit now of not typing one without knowing where the other
+one is going to live.
+:::
+
+### TODO 3 — `getSize` and `getCapacity`
+
+Two one-line getters, both `const`.
+
+There is deliberately **no** getter for `mySamples`. Handing out the address of
+your array would let any code anywhere write into it, and the class could no
+longer promise anything about its own contents — including that `mySize` is
+still true.
+
+---
+
+## 6. Reading and Writing Samples
+
+*(Tuesday. This is the last section Monday's lecture unlocks.)*
+
+### TODO 4 — `getSample` and `setSample`
+
+Read and write one sample, with a bounds check:
+
+```cpp
+if (i >= mySize) {
+    throw range_error("your message here");
+}
+```
+
+::: {.callout-warning}
+**`i` is `unsigned`, and that is a trap rather than a convenience.** An unsigned
+number can never be negative — so if a caller passes `-1`, it does not arrive as
+`-1`. It arrives as `4294967295`, which sails straight past any `i < 0` test you
+might write and then indexes four billion elements past the end of your array.
+
+A single `i >= mySize` catches both a negative argument and a too-large one,
+which is why that is the only test you need. If you write `i < 0` as well and
+compile with `-Wextra`, the compiler will tell you it is always false — and it
+will be right.
+:::
+
+Note the bound is `mySize`, not `myCapacity`. The array may well have room for
+more samples than the trace is holding; those slots exist but they are not part
+of the trace, and handing one out would be handing out a number nobody stored.
+
+**Run `make test` now.** You should be passing Part 1 and the first half of
+Part 2 — the other two need the subscript operators, which are Wednesday's work.
+That is a good place to stop on Tuesday.
+
+---
+
+## 7. Growing, and Giving Memory Back
+
+*(Wednesday.)*
+
+**Before you write anything in this section, read the `setSize` that is already
+written in the middle of `Trace.cpp`.** It is the pattern you are about to use,
+spelled out, and the comments above it point at the mistake that cost spring's
+students more marks than anything else in the course.
+
+### TODO 5 — `append`
+
+Add one sample to the end, growing if there is no room:
+
+```
+if the array is full (mySize == myCapacity):
+    1. new capacity = 1 if capacity was 0, otherwise capacity * 2
+    2. allocate a new array of that size
+    3. copy the mySize samples you have into it
+    4. delete[] the old array
+    5. point mySamples at the new one; update myCapacity
+then, either way:
+    6. put the sample at index mySize, and increase mySize
+```
+
+::: {.callout-warning}
+**Steps 3 and 4 are in that order for a reason.** Delete the old array before
+you have copied out of it and you are copying from memory that is no longer
+yours. It will often appear to work — the bytes are usually still sitting there
+untouched — right up until the moment something else has reused them. Bugs that
+work by luck are the worst kind, because they pass your tests and fail in a
+demo.
+:::
+
+### TODO 6 — the destructor
+
+This is the second half of every `new[]` you have written.
+
+C++ runs an object's destructor when the object stops existing: when a local
+variable goes out of scope, when a temporary has been used, when something it
+was part of is destroyed. You never call it yourself. Its job is to give back
+whatever the object was holding.
+
+```cpp
+Trace::~Trace() {
+    delete[] mySamples;
+    mySamples  = nullptr;
+    mySize     = 0;
+    myCapacity = 0;
+}
+```
+
+::: {.callout-warning}
+**`delete[]`, with the brackets**, for anything that came from `new[]`. Plain
+`delete` on an array is undefined behaviour. On an array of `double` it usually
+appears to work; AddressSanitizer catches it as an `alloc-dealloc-mismatch`, and
+for an array of objects it would run only the first element's destructor.
+Undefined means you do not get to reason about what it does.
+:::
+
+Only the first line is strictly necessary; the object is about to cease to exist,
+so resetting its members changes nothing. Write them anyway. It costs nothing,
+and it converts one whole class of bug — using an object after it was destroyed —
+from silent corruption into an obvious zero.
+
+`delete[] nullptr;` is explicitly legal and does nothing, so an empty trace needs
+no special case.
+
+---
+
+## 8. Subscripts and Arithmetic
+
+*(Wednesday.)*
+
+### TODO 7 — `operator[]`, both of them
+
+`t[i]` with a bounds check, exactly like `getSample`. Two differences.
+
+**The first returns `Sample&` — a reference.** That is what makes this work:
+
+```cpp
+t[0] = 9.5;
+```
+
+Because `t[0]` returns a reference, it *names* the element in the array, so
+assigning to it assigns to the array. Return `Sample` by value instead and that
+line does not even compile, because you cannot assign to a copy that is about to
+be thrown away.
+
+**The second is the same code, `const` twice**: `const Sample&` coming back, and
+`const` after the parameter list. It exists for this:
+
+```cpp
+const Trace& frozen = someTrace;
+cout << frozen[2];                  // needs the const version
+```
+
+Only `const` methods can be called on a `const` object. Your own `operator+` and
+`operator<<` both take `const Trace&`, so without this overload they cannot read
+the trace they were handed. The two are not duplicates — they are the read-write
+door and the read-only door, and a class needs both.
+
+### TODO 8 — `operator+` and `operator-`
+
+Elementwise, and refusing traces of different lengths:
+
+```cpp
+throw invalid_argument("your message here");
+```
+
+Note the return type: `Trace`, **by value**. The result is a brand-new trace that
+did not exist before the call, so there is nothing to return a reference *to* —
+returning a reference to a local would be a reference to something that has just
+been destroyed.
+
+::: {.callout-important}
+**When these work, stop.** Do not start TODO 9. Go to §9 below, which asks you to
+predict something and then run it. The rest of the week only works if you meet
+the problem before you meet the answer.
+:::
+
+---
+
+## 9. The Experiment {#the-experiment}
+
+You now have a class that allocates memory, and a destructor that frees it. All
+five of the checks in Part 4 are still failing, and copying probably looks like
+the least of your worries.
+
+Your repository contains a short program called `experiment.cpp`. Open it. The
+middle of it is this:
+
+```cpp
+Trace a;   a.append(1);  a.append(2);  a.append(3);
+Trace b;   b.append(10); b.append(20); b.append(30);
+
+Trace sum;          // an empty trace
+sum = a + b;        // <- this line
+
+cout << "sum is  " << sum << endl;
+```
+
+**Write down your answer to this before you run anything:**
+
+> What does `sum is` print?
+
+You know what `operator+` does — you wrote it an hour ago. Write down the three
+numbers you expect.
+
+Now run it:
+
+```bash
+make experiment
+./experiment
+```
+
+::: {.callout-warning}
+If the numbers are the three you predicted **and** the program exits normally,
+run it two or three more times. Then run `make test` and look at Part 4. If
+those pass too, you have somehow already written a deep copy constructor and an
+assignment operator, which is not possible yet — come and find me, because
+something odd is going on.
+:::
+
+For almost everyone, `sum is` prints something like
+
+```
+sum is  4.67695e-310 1.74622e+142 33
+```
+
+and then the program dies:
+
+```
+free(): double free detected in tcache 2
+Aborted
+```
+
+**Nothing in your code is wrong.** Read `operator+` again — it is correct. Read
+`append` — it is correct. This is not a bug you can find by reading, which is
+exactly why you are being asked to find it another way.
+
+### What just happened
+
+Look at that one line again:
+
+```cpp
+sum = a + b;
+```
+
+Three things happen, in this order:
+
+1. `a + b` runs, and builds a `Trace` holding the array `{11, 22, 33}`. It is a
+   **temporary** — it has no name and it will not live past the end of this line.
+2. That temporary is **copied** into `sum` by `operator=`. Open `Trace.cpp` and
+   look at the one the starter shipped: it is the compiler's own version,
+   written out by hand so that you can see it. It copies each member exactly as
+   it finds it. `mySize` and `myCapacity` copy fine. `mySamples` is a pointer,
+   so what gets copied is **the address**.
+3. The line ends, so the temporary is destroyed, so your destructor runs — and
+   `delete[] mySamples` frees the array.
+
+Which array? The only one there ever was. `sum` is now holding the address of
+memory that has been given back to the system. Reading it prints whatever has
+landed there since. Destroying `sum` at the end of `main` frees the same block a
+second time, and *that* is the `double free` the program aborted on.
+
+Two objects. One array. Two destructors.
+
+### See it happen
+
+Do this — it takes five minutes and it is the difference between believing the
+paragraph above and knowing it.
+
+1. Put a breakpoint on the `delete[]` line in your destructor.
+2. Press **F5** and choose **Debug the §9 experiment**.
+3. When it stops, look at `mySamples` in the **Variables** panel. Write down the
+   address — it will look like `0x5555555592a0`.
+4. Press **F5** to continue. It will stop in the destructor again, and again,
+   as `a`, `b` and `sum` are destroyed at the end of `main`.
+
+**Compare the addresses.** One of them appears twice. That is the whole bug, in
+one number.
+
+::: {.callout-tip}
+**Why did none of your other tests catch this?** Make a scratch copy of
+`experiment.cpp` — call it anything you like, it is not graded — and add this
+line to the copy:
+
+```cpp
+Trace other = a + b;        // initialisation, not assignment
+```
+
+That one does *not* crash. When you initialise a new object from a function's
+return value, the compiler builds the result directly in the destination and
+skips the copy entirely — since C++17 it is required to, not merely allowed — so
+there is no second object, no second destructor, and no bug. It is called copy
+elision.
+
+This is worth knowing for a reason beyond passing the check: **the bug was
+always there, and one perfectly reasonable way of writing the test hid it.** The
+version in `checks.cpp` is deliberately written as two statements to make sure
+the copy really happens. Tests that appear to pass are not the same as code that
+works.
+:::
+
+---
+
+## 10. The Rule of Three
+
+*(Friday.)*
+
+The copy constructor and `operator=` in your `Trace.cpp` are the compiler's own,
+written out by hand so §9 could show you them failing. Both do the wrong thing
+for a class that owns memory. Replace them.
+
+### TODO 9 — the copy constructor
+
+A constructor whose job is to build a trace that is a separate, equal copy:
+
+```cpp
+Trace::Trace(const Trace& original) {
+    // 1. copy mySize and myCapacity
+    // 2. if the original owns an array:
+    //       allocate your own, of myCapacity Samples
+    //       copy the original's mySize samples into it
+    //    otherwise:
+    //       mySamples = nullptr;
+}
+```
+
+The word that matters is *own*. Every `Trace` must be the sole owner of its
+array, because every `Trace` is going to free that array when it dies.
+
+::: {.callout-warning}
+**The parameter is `const Trace&`, and it has to be a reference.** A by-value
+parameter would be copied on the way in — which would call the copy constructor
+— whose parameter would be copied on the way in — which would call the copy
+constructor…
+
+The compiler will not stop you. It compiles, runs, and overflows the stack.
+:::
+
+### TODO 10 — `operator=`
+
+Assignment does everything the copy constructor does, plus one thing before and
+one thing after:
+
+```cpp
+Trace& Trace::operator=(const Trace& rhs) {
+    if (this != &rhs) {          // 1. the self-assignment guard
+        delete[] mySamples;      // 2. free what we were holding
+        // 3. ... then exactly TODO 9
+    }
+    return *this;                // 4.
+}
+```
+
+**Step 1 is not paranoia.** Someone will eventually write `t = t`, almost always
+by accident, through two references or two pointers that turn out to name the
+same object. Without the guard, step 2 frees the array and step 3 then copies out
+of the memory it has just freed. `this` is a pointer to the object the method was
+called on, so `this != &rhs` is asking "are these actually two different
+objects?"
+
+**Step 4 is why the return type is `Trace&`.** It lets `a = b = c` work, the same
+way returning `ostream&` made `cout << a << b` work in week 3.
+
+### Now run the experiment again
+
+```bash
+make experiment
+./experiment
+```
+
+It prints `11 22 33` and exits cleanly. Nothing else changed.
+
+::: {.callout-important}
+**The rule of three.** A class that needs any one of
+
+- a destructor
+- a copy constructor
+- an assignment operator
+
+needs **all three**. They are the three ways an object can be duplicated or
+disposed of, and the compiler's versions of all three are fine right up until the
+class owns something — at which point leaving any of them to the compiler leaves
+a hole.
+
+Your `Trace` needed a destructor the moment it called `new[]`. Everything since
+§9 has been the consequence.
+:::
+
+### The three situations that copy
+
+Now that you have watched one of them, here are all three. A copy constructor
+runs when an object is:
+
+| | Looks like | You saw it in |
+|---|---|---|
+| **initialised from another** | `Trace b(a);` or `Trace b = a;` | Part 4's first check |
+| **passed to a by-value parameter** | `f(a)` where `f` takes `Trace` | Part 4's fourth check |
+| **returned by value** | `return result;` | §9 — or rather, §9's tip, where you saw the compiler skip it |
+
+`make test` should now clear Part 4 entirely. If Part 8 — the memory checks —
+is still red, the message will tell you whether the problem is a crash or a leak.
+
+---
+
+## 11. Streams
+
+*(Friday.)*
+
+### TODO 11 — `writeTo`, `readFrom`, `operator<<`
+
+`writeTo` sends every sample to the stream, each followed by **one space**,
+including the last. Nothing else — no size, no newline, no brackets:
+
+```
+1.5 2.5 3.5
+```
+
+`readFrom` replaces whatever the trace holds with everything the stream has:
+
+```cpp
+setSize(0);                 // empty this trace
+Sample s;
+while (in >> s) {
+    append(s);
+}
+```
+
+`in >> s` is true while it succeeds and false once the stream has nothing left,
+so the loop stops on its own. This is week 2's end-of-file idea again — and it is
+what lets a lap be any length at all. Nothing has to know the count in advance,
+which is the promise §1 made.
+
+`operator<<` is a free function that calls `writeTo` and returns the stream,
+exactly as in week 3.
+
+---
+
+## 12. Where the Time Went
+
+*(Friday.)*
+
+Open **`Delta.cpp`**.
+
+### TODO 12 — `deltaTrace`
+
+This lap minus the best lap, in that order. A negative delta means this lap was
+faster through that segment.
+
+It is one line, and that is the point of it. You already wrote elementwise
+subtraction, and you already made it refuse laps of different lengths. All this
+function does is give the operation a name that the rest of the program can read.
+
+Get the order right: `best - current` would flip the sign of every number on the
+timing screen, which is the sort of bug that looks entirely plausible until a
+driver is told they lost time on their best sector.
+
+### TODO 13 — `biggestGainAt` and `biggestLossAt`
+
+The index of the most negative delta, and the index of the most positive one.
+Both are the standard find-the-extreme loop: assume index 0, walk the rest, take
+over when you find something better.
+
+Three details the checks look at:
+
+- They return an **index**, not a value. The caller wants to know *where*.
+- **Ties go to the earlier segment.** Use a strict comparison and the first one
+  you met wins by default.
+- An **empty** delta has no answer, so `throw invalid_argument` rather than
+  inventing one. There is no best of nothing.
+
+A lap that was slower everywhere still has a biggest gain — it is just the least
+bad segment. Do not special-case it.
+
+### Now look at it
+
+```bash
+make telemetry
+./telemetry
+```
+
+```
+  TELEMETRY — 24 segments
+  best lap     80.230
+  this lap     79.535
+  delta        -0.695
+
+  SEG      BEST     THIS    DELTA
+    1     2.959    3.038   +0.079
+    2     4.479    4.307   -0.172
+    ...
+    8     4.589    4.177   -0.412   best gain
+    ...
+   19     2.604    2.981   +0.377   worst loss
+```
+
+Read `main.cpp` afterwards. It never allocates anything, never counts anything,
+never asks how long a lap is. It reads a line, hands it to `readFrom`, and lets
+the `Trace` be whatever size it needs to be. That is the payoff for the whole
+week.
+
+---
+
+## 13. Testing Your Work
+
+```bash
+make test
+```
+
+Thirty-six checks, in nine groups:
+
+| Group | What it looks at |
+|---|---|
+| **Construction** (4) | TODOs 1–2 |
+| **Element access** (4) | TODOs 4 and 7 |
+| **Growth** (4) | TODO 5, and the given `setSize` |
+| **Copying** (5) | TODOs 9–10 — the point of the week |
+| **Arithmetic** (4) | TODO 8, and the given `operator==` |
+| **Streams** (3) | TODO 11 |
+| **The delta application** (6) | TODOs 12–13, and the program end to end |
+| **Memory** (2) | no crashes, and no leaks |
+| **More cases** (4) | the same requirements on sizes and values you have not seen |
+
+::: {.callout-note}
+**About the memory checks.** They build a small program that creates, copies,
+assigns and destroys several thousand `Trace` objects, and run it under a memory
+sanitizer. That catches two things ordinary tests miss: freeing the same block
+twice, and never freeing it at all.
+
+A leak does not make a test fail on its own — the program still produces the
+right answers, right up until it runs out of memory. That is precisely why the
+destructor and the copy constructor have to be *reasoned about* rather than
+guessed at, and why this group exists.
+:::
+
+Every failure comes with a hint. Work the groups in order; they follow the TODOs.
+
+::: {.callout-tip}
+Focus on one group at a time with a tag:
+
+```bash
+./tester "[copy]"          # only the copying checks
+./tester "[growth]"        # only append and setSize
+```
+
+A tag needs its brackets. A test *name* needs the full name, or a prefix with a
+`*` on the end — `./tester "Copy: construct*"` works, and `./tester "Copy:
+construct"` matches nothing, prints almost nothing, and exits successfully,
+which looks a lot like passing.
+:::
+
+---
+
+## 14. Submit
+
+::: {.callout-important}
+Before pushing, open `README.md` and add your name.
+:::
+
+In VS Code, click the **Source Control** icon in the left sidebar, type a commit
+message, click the checkmark to commit, then sync. From the terminal:
+
+```bash
+git add .
+git commit -m "Complete a04"
+git push
+```
+
+**Every push is graded automatically.** Within a minute or two the **Actions**
+tab of your repository shows the run, and a **Release** appears with your score
+and a per-check breakdown. Push as many times as you like; the most recent
+submission is the one that counts.

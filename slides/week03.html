@@ -92,7 +92,7 @@
   <ul class="agenda-list">
     <li><div class="agenda-num">1</div> A class is a new type</li>
     <li><div class="agenda-num">2</div> Interface vs. implementation</li>
-    <li><div class="agenda-num">3</div> <code>public</code> and <code>private</code></li>
+    <li><div class="agenda-num">3</div> <code>public</code>, <code>private</code>, <code>const</code></li>
     <li><div class="agenda-num">4</div> Constructors and destructors</li>
     <li><div class="agenda-num">5</div> Test-driven development</li>
     <li><div class="agenda-num">6</div> Operator overloading <span class='badge'>KEY</span></li>
@@ -201,6 +201,21 @@ class XYZ {
 </section>
 
 <section>
+  <h2><code>const</code> Methods</h2>
+  <p style="font-size:0.72em">The third promise a class makes — right alongside <code>public</code> and <code>private</code>.</p>
+  <pre><code class="language-cpp" data-trim>
+Item getFirst() const;   // promises not to change it
+void setFirst(Item v);   // may change it
+  </code></pre>
+  <ul>
+    <li>The <code>const</code> goes <strong>after</strong> the parameter list</li>
+    <li>Inside a <code>const</code> method, assigning to a member is a compile error</li>
+    <li>Only <code>const</code> methods may be called on a <code>const</code> object</li>
+  </ul>
+  <div class="callout">Mark every method that only reads. It documents intent, and it's what lets your class be passed by const reference — the cheap, safe way from week 1. You'll see <code>const</code> on every getter from here on.</div>
+</section>
+
+<section>
   <h2>Constructors</h2>
   <pre><code class="language-cpp" data-trim>
 class Pair {
@@ -252,6 +267,26 @@ TEST_CASE("default Pair starts at zero") {
 }
   </code></pre>
   <div class="callout">Writing the test first forces the question <em>what should this class do?</em> before <em>how do I build it?</em> The tests become the specification — and they stay useful when you change the implementation.</div>
+</section>
+
+<section class="demo-slide" data-background-color="#6E1C2E">
+  <h1>Demo</h1>
+  <div class="demo-rule"></div>
+  <svg class="demo-art" viewBox="0 -34 320 246" xmlns="http://www.w3.org/2000/svg">
+    <path d="M254,12 C250,0 260,-6 256,-20 C270,-11 267,1 261,12 Z" fill="#E8873A"/>
+    <path d="M266,12 C264,4 270,0 268,-10 C277,-3 275,5 271,12 Z" fill="#F2CD00"/>
+    <path d="M243,12 C241,5 246,2 244,-6 C251,-1 250,6 247,12 Z" fill="#E8873A" opacity=".75"/>
+    <rect x="40" y="10" width="240" height="150" rx="9" fill="#1e1f1a" stroke="#C49A2C" stroke-width="3"/>
+    <text x="58" y="46" font-family="'Fira Code',Consolas,monospace" font-size="15.0" fill="#9be36b">$ make test</text>
+    <text x="58" y="76" font-family="'Fira Code',Consolas,monospace" font-size="11.2" fill="#ff7b72">Pair.h:12: error: 'myFirst'</text>
+    <text x="58" y="96" font-family="'Fira Code',Consolas,monospace" font-size="11.2" fill="#ff7b72">is private within this context</text>
+    <text x="58" y="134" font-family="'Fira Code',Consolas,monospace" font-size="15" fill="#9be36b">$</text>
+    <rect x="72" y="122" width="9" height="15" fill="#9be36b"/>
+    <path d="M22,168 L298,168 L314,196 L6,196 Z" fill="#eceae3" stroke="#8d8d86" stroke-width="2.5" stroke-linejoin="round"/>
+    <rect x="140" y="174" width="40" height="6" rx="3" fill="#cfcdc6"/>
+  </svg>
+  <p class="demo-cap">Building a class from its tests.</p>
+  <p class="demo-sub">(watch the compiler complain until the tests pass)</p>
 </section>
 
 <section>
@@ -321,26 +356,6 @@ cout &lt;&lt; p &lt;&lt; endl;       // ✓ now this works
   </div>
 </section>
 
-<section class="demo-slide" data-background-color="#6E1C2E">
-  <h1>Demo</h1>
-  <div class="demo-rule"></div>
-  <svg class="demo-art" viewBox="0 -34 320 246" xmlns="http://www.w3.org/2000/svg">
-    <path d="M254,12 C250,0 260,-6 256,-20 C270,-11 267,1 261,12 Z" fill="#E8873A"/>
-    <path d="M266,12 C264,4 270,0 268,-10 C277,-3 275,5 271,12 Z" fill="#F2CD00"/>
-    <path d="M243,12 C241,5 246,2 244,-6 C251,-1 250,6 247,12 Z" fill="#E8873A" opacity=".75"/>
-    <rect x="40" y="10" width="240" height="150" rx="9" fill="#1e1f1a" stroke="#C49A2C" stroke-width="3"/>
-    <text x="58" y="46" font-family="'Fira Code',Consolas,monospace" font-size="15" fill="#9be36b">$ make test</text>
-    <text x="58" y="76" font-family="'Fira Code',Consolas,monospace" font-size="13" fill="#ff7b72">Pair.h:12: error: 'myFirst'</text>
-    <text x="58" y="96" font-family="'Fira Code',Consolas,monospace" font-size="13" fill="#ff7b72">   is private within this context</text>
-    <text x="58" y="126" font-family="'Fira Code',Consolas,monospace" font-size="15" fill="#9be36b">$</text>
-    <rect x="72" y="114" width="9" height="15" fill="#9be36b"/>
-    <path d="M22,168 L298,168 L314,196 L6,196 Z" fill="#eceae3" stroke="#8d8d86" stroke-width="2.5" stroke-linejoin="round"/>
-    <rect x="140" y="174" width="40" height="6" rx="3" fill="#cfcdc6"/>
-  </svg>
-  <p class="demo-cap">Building a class from its tests.</p>
-  <p class="demo-sub">(watch the compiler complain until the tests pass)</p>
-</section>
-
 <section>
   <h2>Design One Together: <code>Enemy</code></h2>
   <div class="two-col">
@@ -364,20 +379,6 @@ cout &lt;&lt; p &lt;&lt; endl;       // ✓ now this works
   <div class="callout">With your neighbour: which members are <code>private</code>? Which methods are <code>const</code>? What is the <em>first test</em> you would write?</div>
 </section>
 
-<section>
-  <h2><code>const</code> Methods</h2>
-  <pre><code class="language-cpp" data-trim>
-Item getFirst() const;   // promises not to change it
-void setFirst(Item v);   // may change it
-  </code></pre>
-  <ul>
-    <li>The <code>const</code> goes <strong>after</strong> the parameter list</li>
-    <li>Inside a <code>const</code> method, assigning to a member is a compile error</li>
-    <li>Only <code>const</code> methods may be called on a <code>const</code> object</li>
-  </ul>
-  <div class="callout">Mark every method that only reads. It documents intent, and it's what lets your class be passed by const reference — the cheap, safe way from week 1.</div>
-</section>
-
 <section class="closing-slide" data-background-color="#6E1C2E">
   <h2>Week 03 Recap</h2>
   <ul style="font-size:0.72em; color:rgba(255,255,255,0.92)">
@@ -388,7 +389,7 @@ void setFirst(Item v);   // may change it
     <li>Write the tests first; they are the specification</li>
     <li>Return <code style='color:var(--gold)'>ostream&amp;</code> from <code style='color:var(--gold)'>operator&lt;&lt;</code> so output can chain</li>
   </ul>
-  <div class="next">Next: a06 &middot; a07 →</div>
+  <div class="next">Next: a03 →</div>
   <p class="credit-line">
     This deck stands on earlier CS112 materials by<br>
     <strong>Joel Adams</strong> and <strong>Victor Norman</strong> &middot; adapted and extended by <strong>Eric Ara&uacute;jo</strong>
