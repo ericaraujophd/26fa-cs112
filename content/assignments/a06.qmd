@@ -1,34 +1,554 @@
 ---
-title: "Assignment 06: Linked Lists"
-subtitle: "Week 06 · Oct 12 – Oct 15"
+title: "Assignment 06: Race Data"
+subtitle: "A season of results, and the container you did not have to write"
 ---
 
 ::: {.callout-note}
-**Not published yet.** This page fills in before week 06 begins. The outline below
-is what the assignment is being built to cover — a preview, not a specification.
+Accept the assignment to get your own private GitHub repository (see
+[Getting the code](#getting-the-code) below), then clone it and open it in VS Code.
+
+**Plan to set aside about 2 to 2.5 hours.** `readResults` (§6) and the menu (§9)
+are the two longest sections. §10 is yours to make as small or as large as you
+like.
 :::
 
-## What this assignment will cover
+## Objectives
 
-- Describe the organization of a linked list and how Nodes chain together.
-- Reason about the time complexity of prepend, append, remove, traverse, search, and indexing.
-- Explain how the Node destructor causes a chain reaction to delete all Nodes.
-- Compare and contrast a linked list vs. a dynamic array and choose the right one for a given scenario.
-- Write code to traverse a linked list.
+By the end of this assignment, you will be able to:
 
-## Course skills
+- Use `vector`'s `size()`, `operator[]` and `push_back()` on a container you did
+  not write
+- Explain what an iterator is, and what `begin()` and `end()` point at
+- Say what "past-the-end" means and why `find` returns `end()` when it fails
+- Search a `vector` with `std::find`, and sort one with `std::sort`
+- Build a sorted, de-duplicated list by accumulating and then sorting
+- Read a CSV file into a `vector` of records
+- Explain why a large container is passed by const reference, and what passing
+  it by value would cost
+- Design and write a query of your own against a real dataset
 
-Primary practice for skill **C3**. See
-[Skills & Check-Ins](../checkins.html) for what each one means and when it is assessed.
+This assignment covers course skills **C1** and **C2**, from cluster **C**,
+Linear Data Structures, assessed at **Window 2** on Nov 20.
 
-## Getting the code
+::: {.callout-note}
+**This one is homework.** `a05` is the assignment you start in Tuesday's lab.
+This one needs Wednesday's lecture on `vector` and iterators, so it opens after
+that.
 
-You will accept the assignment through Classroom 50, which creates your own private
-repository from the starter code. The accept link appears here when the assignment
-is published.
+Friday's lecture — what a dynamic array costs, and what "amortized constant
+time" means — is the other half of the story, and it is not needed for anything
+here. Nothing in this assignment asks you to measure anything.
+:::
 
-## Submitting
+---
 
-Commit and push to `main`. Every push is graded automatically — check the **Actions**
-tab of your repository for the run and **Releases** for your score. Your most recent
-submission before the deadline is the one that counts.
+## 1. Introduction
+
+You have spent two weeks building a container. `Trace` grew when it ran out of
+room, copied itself properly, freed what it owned, and last week became a
+template so it could hold anything. It is a real, working dynamic array, and you
+wrote every line of it.
+
+Now put it away.
+
+```cpp
+#include <vector>
+
+vector<double> speeds;
+speeds.push_back(322.0);
+```
+
+That is the C++ standard library's dynamic array. It does everything `Trace`
+does and rather more, it is written by people who have been arguing about it for
+thirty years, and it has been sitting in `<vector>` the entire time.
+
+::: {.callout-note}
+**So why did you build one?**
+
+Because `vector` is not magic, and now you know it is not. You know that
+`push_back` sometimes has to allocate a bigger array and copy everything across.
+You know why `size` and `capacity` are different numbers. You know that handing
+one to a function by value copies every element. You know what the destructor
+has to do.
+
+Someone who has only ever *used* `vector` knows none of that, and it shows the
+first time they write a loop that copies a big one on every iteration. This is
+the week you get to use the good one, and you get to use it with your eyes open.
+:::
+
+The data is a real Formula 1 season: every driver's result at every Grand Prix
+of 2024. 479 rows. You will read it into a `vector`, and then ask it questions.
+
+---
+
+## 2. Getting the Code {#getting-the-code}
+
+Accept the assignment. This creates a private GitHub repository that belongs to
+you, already containing the starter code:
+
+::: {.callout-note}
+**Accept link:** *(added when the assignment is published)*
+:::
+
+Then clone it, replacing `YOURUSERNAME` with your GitHub username:
+
+```bash
+git clone https://github.com/26fa-cs112/cs112-a06-YOURUSERNAME.git
+cd cs112-a06-YOURUSERNAME
+```
+
+Open the folder in VS Code, then build it before you change anything:
+
+```bash
+make
+make test
+```
+
+`make` succeeds and `make test` reports **10 / 40**. Both are correct: the
+starter compiles, and the ten that pass are mostly passing because an empty
+answer happens to match an empty question.
+
+::: {.callout-tip}
+Prefer the terminal? `gh student accept 26fa-cs112 cs112 a06` does the same
+thing. Install it once with `gh extension install foundation50/gh-student`.
+:::
+
+---
+
+## 3. The Shape of the Repository
+
+**You edit two files: `Season.cpp` and `main.cpp`.** Five TODOs between them.
+
+| File | Yours? | What it is |
+|---|---|---|
+| `Season.cpp` | **yes** | TODOs 1, 2, 3 and 5 |
+| `main.cpp` | **yes** | TODO 4 — the menu |
+| `Result.h` | no | one row of the file, as a `struct`. Read it first. |
+| `Season.h` | no | the specification for everything you write |
+| `season2024.csv` | no | the data |
+| `broken.csv` | no | a deliberately malformed file, for the error path |
+| `checks.cpp` | no | the course's checks. Read them — they are the specification. |
+| `catch.hpp`, `catchmain.cpp` | no | the test framework |
+| `sample-output.txt` | no | what `./season` looks like when you are done |
+| `makefile`, `test.py` | no | the build and the grader |
+
+### The data is real
+
+`season2024.csv` is every classified result of the 2024 Formula 1 season, pulled
+from the Ergast/Jolpica timing API. Real drivers, real teams, real circuits, real
+finishing positions and points. One header line and 479 result rows:
+
+```
+season,round,race,circuit,country,date,driver,team,grid,position,points,status
+2024,1,Bahrain Grand Prix,Bahrain International Circuit,Bahrain,2024-03-02,Max Verstappen,Red Bull,1,1,26.0,Finished
+```
+
+That matters more than it sounds. It means you can look the answers up. If your
+program says Ferrari fielded a driver who was never in the car, you will know,
+because the season actually happened.
+
+It also means the data is **messy in ways invented data never is**:
+
+- **Five teams used three drivers, not two.** Oliver Bearman stood in for Carlos
+  Sainz at Jeddah and then drove twice for Haas. Logan Sargeant was replaced by
+  Franco Colapinto mid-season, Daniel Ricciardo by Liam Lawson, and Jack Doohan
+  drove one race for Alpine at the end of the year.
+- **One driver appears under two teams.** Bearman raced for Ferrari *and* Haas
+  in the same season.
+- **Not every result is a finish.** `status` is `Finished`, `Lapped`, `Retired`,
+  `Did not start` or `Disqualified`.
+- **`grid` is sometimes 0**, which means a pit-lane start rather than a grid slot.
+
+That mess is the reason the functions below have to de-duplicate rather than
+assume. A tidy made-up season would not have taught you that.
+
+::: {.callout-warning}
+**One thing this file does not have.** These are race results only, so the
+`points` column does not include sprint points. Add up Max Verstappen's column
+and you get 399, not the 437 he finished the championship on — the missing 38
+came from the six sprint races. Nothing in this assignment depends on it, but if
+you go looking for the championship table, that is why your numbers are 20-odd
+points light.
+:::
+
+---
+
+## 4. The Container You Were Given
+
+Three operations do almost everything in this assignment.
+
+```cpp
+vector<string> teams;              // empty, owns nothing yet
+
+teams.push_back("Ferrari");        // add to the end; grows if it has to
+teams.push_back("McLaren");
+
+teams.size();                      // 2
+teams[0];                          // "Ferrari"
+teams[1] = "Mercedes";             // subscript works on both sides
+```
+
+You have written every one of these. `push_back` is `append`. `size()` is
+`getSize()`. `operator[]` is the one you had to write twice, once `const`.
+
+Two differences worth knowing:
+
+- **`vector` has no bounds checking on `operator[]`.** `teams[99]` on a vector of
+  two does not throw; it reads whatever is at that address. Your `Trace` threw a
+  `range_error` and was kinder than the real thing. (`vector::at()` does throw,
+  if you want it.)
+- **`vector<Result>` works** without you doing anything, because `vector` is a
+  template — the same mechanism you built last week, applied to a type someone
+  else wrote.
+
+---
+
+## 5. Iterators
+
+`push_back`, `size` and `[]` are the container. The *algorithms* — `find`,
+`sort`, and about ninety others — do not take a container at all. They take a
+pair of **iterators**.
+
+An iterator is a position in a container. `begin()` is the first element:
+
+```cpp
+teams.begin()          // points at teams[0]
+teams.end()            // points ONE PAST the last element
+```
+
+`end()` is the strange one, and it is worth being precise about. It does not
+point at the last element. It points at the position *after* the last element —
+somewhere you may never read from. It exists so that a range can be written as a
+pair, `[begin, end)`, and so that an empty container has `begin() == end()`
+without any special case.
+
+That is also why:
+
+```cpp
+if (find(teams.begin(), teams.end(), "Ferrari") == teams.end()) {
+    // not found
+}
+```
+
+reads the way it does. `find` walks the range and returns *where* it found the
+value. If it never found it, the only position left to return is the one past
+the end — so `== end()` means "not there".
+
+```cpp
+sort(teams.begin(), teams.end());     // the same pair, sorting the range
+```
+
+`sort` on a `vector<string>` puts them in alphabetical order without being told
+how, because `string` already knows how to compare itself.
+
+Both live in `<algorithm>`, which the starter already includes.
+
+---
+
+## 6. TODO 1 — Reading the File
+
+`readResults(filename)` turns the whole file into a `vector<Result>`.
+
+Open `Result.h` first. It is a `struct` — a class whose members are public by
+default — with twelve members in the same order as the file's columns. A
+`Result` has no behaviour; it is twelve values that travel together, so there is
+nothing to hide and nothing to enforce.
+
+You are given a helper:
+
+```cpp
+vector<string> splitOnCommas(const string& line);
+```
+
+Read it before you use it. It is four lines, and it is the same vector
+operations you are about to write: an empty vector, `push_back` in a loop, and
+the vector handed back by value.
+
+What `readResults` does:
+
+1. Open the file. If it will not open, throw
+   `invalid_argument("cannot open file: " + filename)`.
+2. Read the first line with `getline` and **throw it away** — it is the header.
+3. For every line after that: skip it if it is blank; split it; if you did not
+   get exactly 12 fields, throw; otherwise fill in a `Result` and `push_back` it.
+4. Return the vector.
+
+Four columns are numbers and arrive as text, so they need converting:
+
+```cpp
+r.season   = stoi(fields[0]);      // string → int
+r.grid     = stoi(fields[8]);
+r.position = stoi(fields[9]);
+r.points   = stod(fields[10]);     // string → double
+```
+
+The other eight go straight across: `r.race = fields[2];`
+
+::: {.callout-tip}
+**`return results;` is not expensive**, even though it looks like it copies 479
+Results out of the function. The compiler builds the vector directly in the
+caller's variable — it never exists twice. This is the one place you do not have
+to think about copying a big container, and it is why a function *can* just hand
+you a vector.
+
+Passing one *in* is a different story. That is §11.
+:::
+
+---
+
+## 7. TODO 2 — Every Team, Once
+
+`collectAllTeams(results)` returns every team that appears, in alphabetical
+order, with no duplicates. Ten teams are mentioned 479 times between them; you
+want the ten.
+
+The algorithm is: **accumulate, then sort.**
+
+```cpp
+vector<string> teams;
+
+for (unsigned i = 0; i < results.size(); i++) {
+    if (find(teams.begin(), teams.end(), results[i].team) == teams.end()) {
+        teams.push_back(results[i].team);
+    }
+}
+sort(teams.begin(), teams.end());
+return teams;
+```
+
+Two things to notice.
+
+**The `find` searches `teams`, not `results`.** You are asking "have I collected
+this one already?", so the range you search is the one you are building. Getting
+this backwards is the most common way to write this function wrong, and it
+usually still compiles.
+
+**The `sort` is outside the loop.** Sorting after each `push_back` gives the same
+answer and does the work over and over. Collect first; order once at the end.
+
+::: {.callout-note}
+This is deliberately not the shortest way to write it. `std::set` would
+de-duplicate and sort in one move, and later in the course you will use it. The
+point of doing it this way now is that `find` and `sort` over a pair of
+iterators is the shape almost every STL algorithm has, and it is worth writing
+by hand once before you let a container do it for you.
+:::
+
+---
+
+## 8. TODO 3 — One Team's Drivers
+
+`getDriversForTeam(results, team)` is the same shape with one extra condition:
+only look at results whose `team` matches the one you were asked about.
+
+- Match the whole string with `==`. `"Apple"` must not match `"Apple Junior"`.
+- A team nobody drove for gives an **empty vector**. That is an answer, not an
+  error — do not throw.
+- Do not assume two drivers. Five teams used three in 2024, and that is the
+  whole reason this function de-duplicates instead of just collecting the first
+  two names it sees.
+
+---
+
+## 9. TODO 4 — The Menu
+
+In `main.cpp`. Everything around this block is written for you; this is the part
+that talks to whoever is running the program.
+
+Print the numbered team list once, before the loop. Then loop: prompt, read a
+line, act on it.
+
+```
+  Teams
+   1  Alpine F1 Team
+   2  Aston Martin
+   ...
+  10  Williams
+
+  Team number (0 to quit): 3
+
+  Ferrari — 3 drivers
+    Carlos Sainz
+    Charles Leclerc
+    Oliver Bearman
+```
+
+Three strings are checked exactly as written. They are all in the TODO comment
+in `main.cpp`; copy them from there.
+
+| | |
+|---|---|
+| the prompt | `  Team number (0 to quit): ` — no `endl` after it |
+| a bad number | `  There is no team number 99.` |
+| a team's heading | `  Ferrari — 3 drivers` |
+
+::: {.callout-warning}
+**Read the whole line, then parse it.** Not `cin >> choice`.
+
+```cpp
+string line;
+if (!getline(cin, line)) { break; }        // input ran out
+
+int choice = 0;
+istringstream parse(line);
+if (!(parse >> choice)) { /* not a number */ }
+```
+
+Mixing `>>` and `getline` on the same stream is a classic C++ trap: `>>` stops
+at the newline and leaves it in the buffer, so the next `getline` reads an empty
+line instead of waiting for the person to type. Reading lines and parsing them
+separately sidesteps it entirely, and it is how you handle "they typed banana"
+without the stream going into a failed state you then have to clear.
+:::
+
+Two more things:
+
+- **The person types from 1; the vector is indexed from 0.** `teams[choice - 1]`.
+- **Check the range before you index.** `teams[98]` on a vector of ten does not
+  throw — it reads memory that is not yours and carries on as if nothing
+  happened. Check `choice` is between 1 and `teams.size()` first.
+
+---
+
+## 10. TODO 5 — Ask Your Own Question
+
+```cpp
+void myQuery(const vector<Result>& results, ostream& out);
+```
+
+This one is open. Ask the season something you actually want to know, work it
+out, and print the answer.
+
+Some starting points, if nothing comes to mind:
+
+- how many podium finishes each driver had
+- total points per team, ranked
+- which circuits a particular driver won at
+- the biggest gain from grid position to finishing position, and where
+- how many results were not classified as `Finished`, by team
+- which team used the most drivers
+
+**What is graded is not what it computes.** Five things:
+
+1. It is a real function with a real body.
+2. It prints at least two lines — to `out`, not to `cout`. (They are the same
+   stream when `main` calls it, but the checks hand it an `ostringstream` so
+   they can read what you wrote.)
+3. It actually reads the vector it was given. One check runs your query twice —
+   once on the 2024 season, once on a four-row made-up one — and expects the
+   answers to differ. A fixed string will not pass.
+4. It does not crash on 479 results.
+5. The `// MY QUESTION:` line above it says what you are asking, in a sentence.
+   Replace the placeholder text that is there.
+
+::: {.callout-tip}
+Write the question down first, in that comment, before you write any code. It is
+much easier to write a query when you have committed to what it answers — and if
+you cannot state it in a sentence, that is usually a sign the query is two
+questions rather than one.
+:::
+
+---
+
+## 11. Const References, and What They Cost
+
+Every function you have written today takes its vector like this:
+
+```cpp
+vector<string> collectAllTeams(const vector<Result>& results);
+                               ↑                   ↑
+                               |                   pass the address, not a copy
+                               promise not to change it
+```
+
+Neither word is decoration.
+
+**The `&`.** Without it, C++ copies the argument into the function. `results`
+holds 479 `Result` objects, and each one holds six `string`s. Passing it by
+value means allocating and copying nearly three thousand strings, on every
+call, to do a job that only ever reads them. With the `&`, the function works on
+the caller's vector and nothing is copied at all.
+
+**The `const`.** It says the function will not change what it was given, and the
+compiler holds you to it. That is worth having for its own sake — you can call
+`collectAllTeams` and know your `results` came back untouched — but it also
+means a caller with a `const vector<Result>` can use your function at all.
+
+::: {.callout-note}
+Two of the checks look for these signatures, and one of them fails if a
+`vector<Result>` is passed by value anywhere in `Season.cpp`. This is one of the
+habits the course cares most about: by the time containers are large enough for
+it to matter, the habit has to already be there.
+:::
+
+---
+
+## 12. Testing Your Work
+
+```bash
+make test
+```
+
+Forty checks, in eight groups:
+
+| Group | What it looks at |
+|---|---|
+| **The given code** (1) | `splitOnCommas` is still intact |
+| **readResults** (7) | TODO 1 |
+| **collectAllTeams** (4) | TODO 2 |
+| **getDriversForTeam** (6) | TODO 3 |
+| **The real season** (6) | TODOs 1–3 together, on `season2024.csv` |
+| **The menu** (6) | TODO 4, driven by piped input |
+| **Your own query** (5) | TODO 5 |
+| **The STL, used as asked** (5) | `find`, `sort`, `push_back`, and const references |
+
+Every failure comes with a hint. Work the groups in order; they follow the TODOs.
+
+::: {.callout-note}
+Most of the function checks build a small `vector<Result>` by hand rather than
+reading the file, so a broken `readResults` does not take everything else down
+with it. The six in **The real season** are the ones that use the actual CSV.
+:::
+
+::: {.callout-tip}
+Focus on one check while you are fixing it:
+
+```bash
+make checks
+./checks "Teams: collectAllTeams finds every team once and in order"
+```
+
+A test name needs the full name, or a prefix with a `*` on the end. `./checks
+"Teams: collectAllTeams"` matches nothing, prints almost nothing, and exits
+successfully — which looks a lot like passing.
+:::
+
+::: {.callout-note}
+**There are no hidden tests.** What you run with `make test` is exactly what the
+grader runs — all 40 checks. If it passes here, it passes there.
+
+Grading always runs the official test suite, not the copy in your repository.
+Editing `test.py` or `checks.cpp` will not change your score.
+:::
+
+---
+
+## 13. Submit
+
+::: {.callout-important}
+Before pushing, open `README.md` and add your name.
+:::
+
+In VS Code, click the **Source Control** icon in the left sidebar, type a commit
+message, click the checkmark to commit, then sync. From the terminal:
+
+```bash
+git add .
+git commit -m "Complete a06"
+git push
+```
+
+**Every push is graded automatically.** Within a minute or two the **Actions**
+tab of your repository shows the run, and a **Release** appears with your score
+and a per-check breakdown. Push as many times as you like; the most recent
+submission is the one that counts.

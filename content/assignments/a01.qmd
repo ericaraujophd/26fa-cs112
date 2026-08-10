@@ -630,7 +630,7 @@ After completing each TODO, run:
 make test
 ```
 
-You will see a PASS or FAIL for each of the 72 test cases. Read the hints on any
+You will see a PASS or FAIL for each of the 89 test cases. Read the hints on any
 FAILs — they tell you exactly which prompt string is missing, which boundary value
 is wrong, or which loop is behaving unexpectedly.
 
@@ -642,15 +642,13 @@ first. The error message tells you the file name and line number. Read it carefu
 When all tests pass:
 
 ```
-Results: 72/72 passed
+Results: 89/89 passed
 All tests passed! Your character sheet is complete.
 ```
 
-::: {.callout-warning}
-Your grade also includes **additional checks** that are not in `test.py`. They test
-the same requirements described on this page, using different inputs — so code that
-genuinely works will pass them. You will see exactly which ones failed in the
-release notes for each submission.
+::: {.callout-note}
+**There are no hidden tests.** What you run with `make test` is exactly what the
+grader runs — all 89 checks. If it passes here, it passes there.
 
 Grading always runs the official test suite, not the copy in your repository.
 Editing `test.py` will not change your score.
