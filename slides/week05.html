@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Week 05: Generic Containers — CS112</title>
+  <title>Week 05: Generic Containers · CS112</title>
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reset.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.css">
@@ -113,7 +113,7 @@ Vec names;                // also doubles ✗
     Want a <code>Vec</code> of doubles and a <code>Vec</code> of strings in one program? You'd need two copies
     of the class with different names.
   </div>
-  <div class="callout">Python never had this problem — a list holds anything. C++ needs types at compile time, so it needs another way.</div>
+  <div class="callout">Python never had this problem, a list holds anything. C++ needs types at compile time, so it needs another way.</div>
 </section>
 
 <section>
@@ -137,7 +137,7 @@ Vec&lt;string&gt;  names;       // a Vec of strings
 <section>
   <h2>Turning a Class Into a Template</h2>
   <ul style="font-size:0.66em">
-    <li>Build and debug it first with <code>typedef double Item;</code> — get it working</li>
+    <li>Build and debug it first with <code>typedef double Item;</code>: get it working</li>
     <li>Replace the typedef with <code>template &lt;typename Item&gt;</code> above the class</li>
     <li>In the <code>.cpp</code>, put that same line above <strong>every</strong> method</li>
     <li>Change each <code>Vec::</code> to <code>Vec&lt;Item&gt;::</code></li>
@@ -147,7 +147,7 @@ Vec&lt;string&gt;  names;       // a Vec of strings
 template &lt;typename Item&gt;
 void Vec&lt;Item&gt;::append(const Item &amp;it) { ... }
   </code></pre>
-  <div class="callout">Debug once as a concrete class, then generalise. Templated compiler errors are famously unfriendly — don't meet them and your own bugs at the same time.</div>
+  <div class="callout">Debug once as a concrete class, then generalise. Templated compiler errors are famously unfriendly, don't meet them and your own bugs at the same time.</div>
 </section>
 
 <section>
@@ -156,14 +156,14 @@ void Vec&lt;Item&gt;::append(const Item &amp;it) { ... }
     <strong>Why does a class template's implementation go in the header?</strong>
   </div>
   <ul class="pi-choices pi-compact">
-    <li><span class="letter">A.</span> Style — the committee preferred it that way</li>
+    <li><span class="letter">A.</span> Style, the committee preferred it that way</li>
     <li class="fragment correct" data-fragment-index="1"><span class="letter">B.</span> The compiler must see the code to generate a class for each type used</li>
     <li><span class="letter">C.</span> Headers compile faster than source files</li>
     <li><span class="letter">D.</span> So the linker can find it</li>
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>B.</strong> <code>Vec&lt;string&gt;</code> doesn't exist until someone writes it. The compiler generates the class on demand, which means the full body must be visible wherever it's used — so it lives in the header.
+    <strong>B.</strong> <code>Vec&lt;string&gt;</code> doesn't exist until someone writes it. The compiler generates the class on demand, which means the full body must be visible wherever it's used: so it lives in the header.
   </div>
 </section>
 
@@ -180,7 +180,7 @@ scores.push_back(85);
 cout &lt;&lt; scores.size();      // 2
 cout &lt;&lt; scores[0];          // 90
   </code></pre>
-  <div class="callout">The STL is a library of class templates: <code>vector</code>, <code>list</code>, <code>stack</code>, <code>queue</code>, <code>set</code>, <code>map</code>. You've just built a simplified <code>vector</code> — from here on you may use the real one.</div>
+  <div class="callout">The STL is a library of class templates: <code>vector</code>, <code>list</code>, <code>stack</code>, <code>queue</code>, <code>set</code>, <code>map</code>. You've just built a simplified <code>vector</code>: from here on you may use the real one.</div>
 </section>
 
 <section>
@@ -197,8 +197,8 @@ for (const string &amp;name : names) {    // the modern way
 }
   </code></pre>
   <ul>
-    <li><code>begin()</code> — points at the first element</li>
-    <li><code>end()</code> — points <em>just past</em> the last one</li>
+    <li><code>begin()</code>: points at the first element</li>
+    <li><code>end()</code>: points <em>just past</em> the last one</li>
     <li>Every STL container is walked the same way</li>
   </ul>
   <div class="callout">An iterator behaves like a pointer on purpose: <code>*it</code> to read, <code>++it</code> to advance.</div>
@@ -211,7 +211,7 @@ v[i]    →    *(myArray + i * sizeof(Item))
   </code></pre>
   <ul>
     <li>one multiply, one add, one dereference</li>
-    <li>three operations — <strong>whatever <em>i</em> is</strong></li>
+    <li>three operations: <strong>whatever <em>i</em> is</strong></li>
     <li>whatever the size of the array is</li>
   </ul>
   <div class="callout">Work that doesn't grow with <em>n</em> is <strong>constant time</strong>. Indexing an array is the classic example.</div>
@@ -238,7 +238,7 @@ delete old
       <p style="font-size:0.56em">≈ 3n + 5 → <strong>linear</strong></p>
     </div>
   </div>
-  <div class="callout callout-maroon">So which is it? The honest answer is "usually cheap, occasionally expensive" — and we need a way to talk about that.</div>
+  <div class="callout callout-maroon">So which is it? The honest answer is "usually cheap, occasionally expensive", and we need a way to talk about that.</div>
 </section>
 
 <section>
@@ -252,10 +252,10 @@ delete old
       <tr><td>3</td><td>2</td><td>2</td></tr>
       <tr><td>5</td><td>4</td><td>4</td></tr>
       <tr><td>9</td><td>8</td><td>8</td></tr>
-      <tr><td>the other 11</td><td>—</td><td>0</td></tr>
+      <tr><td>the other 11</td><td>none</td><td>0</td></tr>
     </tbody>
   </table>
-  <div class="callout">15 copies across 16 appends — under one copy each <em>on average</em>. Spread over the whole sequence, appending is <strong>amortized constant time</strong>: rarely expensive, cheap in the long run.</div>
+  <div class="callout">15 copies across 16 appends, under one copy each <em>on average</em>. Spread over the whole sequence, appending is <strong>amortized constant time</strong>: rarely expensive, cheap in the long run.</div>
 </section>
 
 <section>
@@ -264,9 +264,9 @@ delete old
     <strong>What is the time complexity of <code>append()</code> on a dynamic array?</strong>
   </div>
   <ul class="pi-choices pi-compact">
-    <li><span class="letter">A.</span> Constant — it's just two operations</li>
-    <li><span class="letter">B.</span> Linear — it might copy everything</li>
-    <li class="fragment correct" data-fragment-index="1"><span class="letter">C.</span> Amortized constant — usually two operations, occasionally n</li>
+    <li><span class="letter">A.</span> Constant; it's just two operations</li>
+    <li><span class="letter">B.</span> Linear; it might copy everything</li>
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">C.</span> Amortized constant, usually two operations, occasionally n</li>
     <li><span class="letter">D.</span> It depends on the Item type</li>
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
@@ -283,7 +283,7 @@ delete old
   <ul class="pi-choices pi-compact">
     <li><span class="letter">A.</span> Constant time</li>
     <li><span class="letter">B.</span> Amortized constant time</li>
-    <li class="fragment correct" data-fragment-index="1"><span class="letter">C.</span> Linear time — every element must shift up one</li>
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">C.</span> Linear time, every element must shift up one</li>
     <li><span class="letter">D.</span> Faster than appending</li>
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
@@ -309,7 +309,7 @@ delete old
     <rect x="140" y="174" width="40" height="6" rx="3" fill="#cfcdc6"/>
   </svg>
   <p class="demo-cap">One template, many types.</p>
-  <p class="demo-sub">(and the compiler error when Item doesn't support <<)</p>
+  <p class="demo-sub">(the template compiles fine. Item does not.)</p>
 </section>
 
 <section>

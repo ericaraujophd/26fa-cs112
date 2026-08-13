@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Week 11: Binary Search Trees — CS112</title>
+  <title>Week 11: Binary Search Trees and the STL set / map · CS112</title>
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reset.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.css">
@@ -80,7 +80,7 @@
       <p class="title-course">Introduction to Data Structures</p>
       <div class="title-rule"></div>
       <p class="title-week">Week 11</p>
-      <p class="title-topic">Binary Search Trees</p>
+      <p class="title-topic">Binary Search Trees and the STL set / map</p>
       <p class="title-author">Eric Ara&uacute;jo</p>
       <p class="title-meta">Calvin University &middot; Fall 2026</p>
     </div>
@@ -90,13 +90,13 @@
 <section>
   <h2>This Week</h2>
   <ul class="agenda-list">
-    <li><div class="agenda-num">1</div> Guessing games and binary search</li>
-    <li><div class="agenda-num">2</div> Tree vocabulary</li>
-    <li><div class="agenda-num">3</div> The BST property <span class='badge'>KEY</span></li>
-    <li><div class="agenda-num">4</div> insert and find</li>
-    <li><div class="agenda-num">5</div> Why shape decides speed</li>
-    <li><div class="agenda-num">6</div> Traversals</li>
-    <li><div class="agenda-num">7</div> Height and remove</li>
+    <li><div class="agenda-num">1</div> Binary search as a shape</li>
+    <li><div class="agenda-num">2</div> The BST property</li>
+    <li><div class="agenda-num">3</div> insert, contains, traversals</li>
+    <li><div class="agenda-num">4</div> Shape decides everything <span class='badge'>KEY</span></li>
+    <li><div class="agenda-num">5</div> remove: the three cases</li>
+    <li><div class="agenda-num">6</div> The STL set and map</li>
+    <li><div class="agenda-num">7</div> Choosing a container</li>
   </ul>
 </section>
 
@@ -104,11 +104,11 @@
   <h2>Seven Guesses</h2>
   <p style="font-size:0.72em">I'm thinking of a number between 1 and 128. You get seven guesses.</p>
   <ul>
-    <li>Guessing at random — under a 6% chance</li>
-    <li>Trying 1, 2, 3, … — you'd need up to 128 guesses</li>
-    <li>Guessing the <strong>middle</strong> each time — always wins, in 7</li>
+    <li>Guessing at random: under a 6% chance</li>
+    <li>Trying 1, 2, 3, … up to 128 guesses</li>
+    <li>Guessing the <strong>middle</strong> each time: always wins, in 7</li>
   </ul>
-  <div class="callout">Halving the search space each time is O(lg n): log₂128 = 7. The catch is that binary search needs the data <strong>sorted</strong> and <strong>indexable</strong> — an array, not a linked list.</div>
+  <div class="callout">Halving the search space each time is O(lg n): log₂128 = 7. The catch is that binary search needs the data <strong>sorted</strong> and <strong>indexable</strong>: an array, not a linked list.</div>
 </section>
 
 <section>
@@ -144,14 +144,14 @@
   <div class="two-col" style="font-size:0.56em">
     <div>
       <ul>
-        <li><strong>root</strong> — the top node, no parent (57)</li>
-        <li><strong>leaf</strong> — a node with no children (21, 42, 63, 91)</li>
+        <li><strong>root</strong>: the top node, no parent (57)</li>
+        <li><strong>leaf</strong>: a node with no children (21, 42, 63, 91)</li>
       </ul>
     </div>
     <div>
       <ul>
-        <li><strong>interior</strong> — has 1 or 2 children (36, 84)</li>
-        <li><strong>height</strong> — links from the root to the deepest node (2 here)</li>
+        <li><strong>interior</strong>: has 1 or 2 children (36, 84)</li>
+        <li><strong>height</strong>: links from the root to the deepest node (2 here)</li>
       </ul>
     </div>
   </div>
@@ -183,7 +183,7 @@
   </svg>
   <div class="callout callout-maroon">
     For <strong>every</strong> node: everything in its left subtree is smaller, everything in its right subtree is larger.
-    Not just its children — <em>everything below it</em>.
+    Not just its children, <em>everything below it</em>.
   </div>
 </section>
 
@@ -212,7 +212,7 @@ class BST {
       </code></pre>
     </div>
   </div>
-  <div class="callout">Same shape as the linked list: a public container hiding a private node type. A node now has <strong>two</strong> pointers instead of one — that's the entire structural difference.</div>
+  <div class="callout">Same shape as the linked list: a public container hiding a private node type. A node now has <strong>two</strong> pointers instead of one; that's the entire structural difference.</div>
 </section>
 
 <section>
@@ -228,7 +228,7 @@ void Node::insert(Item it) {
     }
 }
   </code></pre>
-  <div class="callout">Compare, go left or right, recurse. New nodes always arrive as <strong>leaves</strong> — which is why the Node constructor sets both children to <code>nullptr</code>.</div>
+  <div class="callout">Compare, go left or right, recurse. New nodes always arrive as <strong>leaves</strong>: which is why the Node constructor sets both children to <code>nullptr</code>.</div>
 </section>
 
 <section>
@@ -244,7 +244,7 @@ void Node::insert(Item it) {
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>B.</strong> The first value inserted becomes the root, so it must be 57. Sorted order (A) would give a tree that is really a linked list leaning right — same values, catastrophically different shape.
+    <strong>B.</strong> The first value inserted becomes the root, so it must be 57. Sorted order (A) would give a tree that is really a linked list leaning right: same values, catastrophically different shape.
   </div>
 </section>
 
@@ -259,7 +259,7 @@ bool Node::contains(Item it) const {
     return myRight != nullptr &amp;&amp; myRight-&gt;contains(it);
 }
   </code></pre>
-  <div class="callout">One comparison eliminates an entire subtree — the guessing game, in code. Every step down discards roughly half of what's left.</div>
+  <div class="callout">One comparison eliminates an entire subtree, the guessing game, in code. Every step down discards roughly half of what's left.</div>
 </section>
 
 <section>
@@ -294,7 +294,7 @@ bool Node::contains(Item it) const {
       <p style="font-size:0.55em">height = n &minus; 1 &rarr; <strong>O(n)</strong></p>
     </div>
   </div>
-  <div class="callout callout-maroon">Insert sorted data and every node goes right: you have built a linked list with extra steps. Same code, same values — the <em>order they arrived</em> ruined it. Fixing that is next week.</div>
+  <div class="callout callout-maroon">Insert sorted data and every node goes right: you have built a linked list with extra steps. Same code, same values, the <em>order they arrived</em> ruined it. Fixing that is next week.</div>
 </section>
 
 <section>
@@ -329,7 +329,7 @@ bool Node::contains(Item it) const {
       <tr><td>Post-order</td><td>left, right, visit</td><td>21 42 36 63 91 84 57</td></tr>
     </tbody>
   </table>
-  <div class="callout">In-order comes out <strong>sorted</strong> — that falls straight out of the BST property.</div>
+  <div class="callout">In-order comes out <strong>sorted</strong>: that falls straight out of the BST property.</div>
 </section>
 
 <section>
@@ -338,14 +338,14 @@ bool Node::contains(Item it) const {
     <strong>Which traversal must a BST destructor use?</strong>
   </div>
   <ul class="pi-choices pi-compact">
-    <li><span class="letter">A.</span> Pre-order — delete the root first</li>
-    <li><span class="letter">B.</span> In-order — delete in sorted order</li>
-    <li class="fragment correct" data-fragment-index="1"><span class="letter">C.</span> Post-order — delete both children before the node</li>
+    <li><span class="letter">A.</span> Pre-order, delete the root first</li>
+    <li><span class="letter">B.</span> In-order, delete in sorted order</li>
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">C.</span> Post-order, delete both children before the node</li>
     <li><span class="letter">D.</span> Any of them</li>
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>C — post-order.</strong> Delete a node before its children and you've thrown away the only pointers to them: an instant leak. Children first, parent last, is the only safe order.
+    <strong>C. post-order.</strong> Delete a node before its children and you've thrown away the only pointers to them: an instant leak. Children first, parent last, is the only safe order.
   </div>
 </section>
 
@@ -360,7 +360,7 @@ int Node::height() const {
   </code></pre>
   <ul>
     <li>An empty tree has height −1; a single node, 0</li>
-    <li>Computing it costs O(n) — you have to visit everything</li>
+    <li>Computing it costs O(n): you have to visit everything</li>
     <li>A <strong>full</strong> tree of height h holds 2^(h+1) − 1 nodes</li>
   </ul>
   <div class="callout">That last line is the payoff: a million nodes fit in a balanced tree of height 20. Twenty comparisons to find anything.</div>
@@ -369,9 +369,9 @@ int Node::height() const {
 <section>
   <h2>remove: Three Cases</h2>
   <ul>
-    <li><strong>A leaf</strong> — unlink it from its parent and delete. Easy.</li>
-    <li><strong>One child</strong> — hand the child up to the parent. Also easy.</li>
-    <li><strong>Two children</strong> — you can't just remove it; something must take its place.</li>
+    <li><strong>A leaf</strong>: unlink it from its parent and delete. Easy.</li>
+    <li><strong>One child</strong>: hand the child up to the parent. Also easy.</li>
+    <li><strong>Two children</strong>: you can't just remove it; something must take its place.</li>
   </ul>
   <div class="callout callout-maroon">Which value can replace it without breaking the BST property? It must be larger than everything on the left and smaller than everything on the right.</div>
 </section>
@@ -379,17 +379,17 @@ int Node::height() const {
 <section>
   <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
   <div class="pi-question">
-    <strong>Removing the root 57 (children 36 and 84) — which value replaces it?</strong>
+    <strong>Removing the root 57 (children 36 and 84): which value replaces it?</strong>
   </div>
   <ul class="pi-choices pi-compact">
-    <li><span class="letter">A.</span> 36 — the left child</li>
-    <li><span class="letter">B.</span> 84 — the right child</li>
-    <li class="fragment correct" data-fragment-index="1"><span class="letter">C.</span> 42 — the largest value in the left subtree</li>
-    <li><span class="letter">D.</span> 21 — the smallest value in the tree</li>
+    <li><span class="letter">A.</span> 36, the left child</li>
+    <li><span class="letter">B.</span> 84, the right child</li>
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">C.</span> 42, the largest value in the left subtree</li>
+    <li><span class="letter">D.</span> 21, the smallest value in the tree</li>
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>C — 42.</strong> The largest value in the left subtree is the closest one below 57, so it is still bigger than everything remaining on the left and smaller than everything on the right. (The smallest value in the <em>right</em> subtree, 63, works equally well.)
+    <strong>C. 42.</strong> The largest value in the left subtree is the closest one below 57, so it is still bigger than everything remaining on the left and smaller than everything on the right. (The smallest value in the <em>right</em> subtree, 63, works equally well.)
   </div>
 </section>
 
@@ -410,7 +410,7 @@ int Node::height() const {
     <rect x="140" y="174" width="40" height="6" rx="3" fill="#cfcdc6"/>
   </svg>
   <p class="demo-cap">Inserting sorted data into a BST.</p>
-  <p class="demo-sub">(and watching it degenerate into a list)</p>
+  <p class="demo-sub">(congratulations, you have reinvented the linked list)</p>
 </section>
 
 <section>
@@ -424,20 +424,241 @@ int Node::height() const {
       <tr><td>in-order listing</td><td>O(n)</td><td>O(n)</td><td>O(n)</td></tr>
     </tbody>
   </table>
-  <div class="callout">A balanced BST matches the sorted array on lookups and beats it badly on changes. Everything depends on that word <strong>balanced</strong> — which is exactly what AVL trees guarantee.</div>
+  <div class="callout">A balanced BST matches the sorted array on lookups and beats it badly on changes. Everything depends on that word <strong>balanced</strong>: which is exactly what AVL trees guarantee.</div>
+</section>
+
+<section>
+  <h2>You Built These by Hand</h2>
+  <p style="font-size:0.7em">Dynamic array, linked list, stack, queue, binary search tree, self-balancing tree. The STL ships all of them.</p>
+  <div class="callout callout-maroon">
+    Knowing what's inside is the point of the last twelve weeks. From here on, use the library, but now you know
+    <em>why</em> <code>set</code> is fast, and what it costs.
+  </div>
+</section>
+
+<section>
+  <h2><code>set</code>: Unique, Sorted, Fast</h2>
+  <pre><code class="language-cpp" data-trim>
+#include &lt;set&gt;
+
+set&lt;string&gt; enrolled;
+
+enrolled.insert("ada");
+enrolled.insert("grace");
+enrolled.insert("ada");        // ignored: already there
+
+cout &lt;&lt; enrolled.size();       // 2
+cout &lt;&lt; enrolled.count("ada"); // 1  (0 or 1, never more)
+  </code></pre>
+  <div class="callout">Two guarantees: <strong>no duplicates</strong>, and iteration comes out <strong>in sorted order</strong>. Both fall out of the balanced tree underneath.</div>
+</section>
+
+<section>
+  <h2>What's Underneath</h2>
+  <table>
+    <thead><tr><th>Operation</th><th>Complexity</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td><code>insert</code></td><td>O(lg n)</td><td>walk down the tree, rebalance</td></tr>
+      <tr><td><code>count</code> / <code>find</code></td><td>O(lg n)</td><td>the guessing game again</td></tr>
+      <tr><td><code>erase</code></td><td>O(lg n)</td><td>remove, then rebalance</td></tr>
+      <tr><td>iteration</td><td>O(n) total</td><td>in-order traversal</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">A balanced BST with a friendly interface. Every cost on this slide is one you derived yourself in weeks 11 and 12.</div>
+</section>
+
+<section>
+  <h2>Iterating</h2>
+  <pre style="font-size:0.6em"><code class="language-cpp" data-trim>
+for (const string &amp;name : enrolled) {      // sorted order
+    cout &lt;&lt; name &lt;&lt; endl;
+}
+
+set&lt;string&gt;::iterator it = enrolled.find("ada");
+if (it != enrolled.end()) {
+    cout &lt;&lt; *it &lt;&lt; " is enrolled" &lt;&lt; endl;
+}
+  </code></pre>
+  <div class="callout"><code>find</code> returns <code>end()</code> when there's no match, comparing against <code>end()</code> is how you ask "was it there?". Never dereference <code>end()</code>; it points past the last element, not at one.</div>
+</section>
+
+<section>
+  <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
+  <div class="pi-question">
+    <strong>What does this print?</strong>
+    <pre style="font-size:0.56em"><code class="language-cpp" data-trim>
+set&lt;int&gt; s;
+s.insert(7);
+s.insert(3);
+s.insert(7);
+s.insert(9);
+cout &lt;&lt; s.size();
+    </code></pre>
+  </div>
+  <ul class="pi-choices pi-compact">
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">A.</span> 3</li>
+    <li><span class="letter">B.</span> 4</li>
+    <li><span class="letter">C.</span> 2</li>
+    <li><span class="letter">D.</span> It won't compile</li>
+  </ul>
+  <div class="answer-box fragment" data-fragment-index="1">
+    <div class="ans-label">&#10003; Answer</div>
+    <strong>A. 3.</strong> The second <code>insert(7)</code> is silently ignored, because a set holds each value at most once. If you need duplicates, that's a <code>multiset</code>.
+  </div>
+</section>
+
+<section>
+  <h2><code>map</code>: Keys to Values</h2>
+  <pre><code class="language-cpp" data-trim>
+#include &lt;map&gt;
+
+map&lt;string, int&gt; scores;
+
+scores["ada"]   = 95;
+scores["grace"] = 98;
+
+cout &lt;&lt; scores["ada"];        // 95
+cout &lt;&lt; scores.size();        // 2
+  </code></pre>
+  <div class="callout">Python's dictionary, with two differences: the keys are kept <strong>sorted</strong>, and lookup is O(lg n) rather than average O(1).</div>
+</section>
+
+<section>
+  <h2>Walking a <code>map</code></h2>
+  <pre style="font-size:0.58em"><code class="language-cpp" data-trim>
+for (const auto &amp;entry : scores) {
+    cout &lt;&lt; entry.first &lt;&lt; ": " &lt;&lt; entry.second &lt;&lt; endl;
+}
+
+// ada: 95
+// grace: 98        ← always in key order
+  </code></pre>
+  <div class="callout">Each element is a <code>pair</code>: <code>.first</code> is the key, <code>.second</code> is the value. The keys come out sorted because a map is the same balanced tree, keyed on <code>.first</code>.</div>
+</section>
+
+<section>
+  <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
+  <div class="pi-question">
+    <strong>What does <code>scores.size()</code> report?</strong>
+    <pre style="font-size:0.56em"><code class="language-cpp" data-trim>
+map&lt;string, int&gt; scores;
+scores["ada"] = 95;
+
+if (scores["bob"] &gt; 90) {     // just a lookup?
+    cout &lt;&lt; "bob did well";
+}
+cout &lt;&lt; scores.size();
+    </code></pre>
+  </div>
+  <ul class="pi-choices pi-compact">
+    <li><span class="letter">A.</span> 1</li>
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">B.</span> 2</li>
+    <li><span class="letter">C.</span> 0</li>
+    <li><span class="letter">D.</span> It throws an exception</li>
+  </ul>
+  <div class="answer-box fragment" data-fragment-index="1">
+    <div class="ans-label">&#10003; Answer</div>
+    <strong>B. 2.</strong> Reading a missing key with <code>[]</code> <em>creates</em> it, value-initialised to 0. The lookup of "bob" silently inserted an entry. Use <code>.count(k)</code> or <code>.find(k)</code> to ask without inserting.
+  </div>
+</section>
+
+<section>
+  <h2>The <code>[]</code> Trap</h2>
+  <div class="two-col">
+    <div>
+      <h3>Inserts if absent</h3>
+      <pre style="font-size:0.46em"><code class="language-cpp" data-trim>
+m["missing"]     // creates it!
+      </code></pre>
+    </div>
+    <div>
+      <h3>Asks without inserting</h3>
+      <pre style="font-size:0.46em"><code class="language-cpp" data-trim>
+m.count("missing")
+m.find("missing") != m.end()
+      </code></pre>
+    </div>
+  </div>
+  <div class="callout callout-maroon">
+    This bites everyone once: a loop that only <em>reads</em> a map quietly doubles its size. The behaviour is deliberate, 
+    <code>m[k]++</code> as a word counter depends on it, but it means <code>[]</code> is not a read-only operation.
+  </div>
+</section>
+
+<section>
+  <h2>A Word Counter</h2>
+  <pre style="font-size:0.6em"><code class="language-cpp" data-trim>
+map&lt;string, int&gt; counts;
+string word;
+
+while (fin &gt;&gt; word) {
+    ++counts[word];        // creates it at 0, then increments
+}
+
+for (const auto &amp;entry : counts) {
+    cout &lt;&lt; entry.first &lt;&lt; " " &lt;&lt; entry.second &lt;&lt; endl;
+}
+  </code></pre>
+  <div class="callout">Eight lines, alphabetised output, O(lg n) per word. Try writing that with an array of structs and you'll appreciate the container.</div>
+</section>
+
+<section class="demo-slide" data-background-color="#6E1C2E">
+  <h1>Demo</h1>
+  <div class="demo-rule"></div>
+  <svg class="demo-art" viewBox="0 -34 320 246" xmlns="http://www.w3.org/2000/svg">
+    <path d="M254,12 C250,0 260,-6 256,-20 C270,-11 267,1 261,12 Z" fill="#E8873A"/>
+    <path d="M266,12 C264,4 270,0 268,-10 C277,-3 275,5 271,12 Z" fill="#F2CD00"/>
+    <path d="M243,12 C241,5 246,2 244,-6 C251,-1 250,6 247,12 Z" fill="#E8873A" opacity=".75"/>
+    <rect x="40" y="10" width="240" height="150" rx="9" fill="#1e1f1a" stroke="#C49A2C" stroke-width="3"/>
+    <text x="58" y="46" font-family="'Fira Code',Consolas,monospace" font-size="15.0" fill="#9be36b">$ ./wordcount moby.txt</text>
+    <text x="58" y="76" font-family="'Fira Code',Consolas,monospace" font-size="13.0" fill="#ff7b72">distinct words: 17231</text>
+    <text x="58" y="96" font-family="'Fira Code',Consolas,monospace" font-size="13.0" fill="#ff7b72">the: 14620</text>
+    <text x="58" y="134" font-family="'Fira Code',Consolas,monospace" font-size="15" fill="#9be36b">$</text>
+    <rect x="72" y="122" width="9" height="15" fill="#9be36b"/>
+    <path d="M22,168 L298,168 L314,196 L6,196 Z" fill="#eceae3" stroke="#8d8d86" stroke-width="2.5" stroke-linejoin="round"/>
+    <rect x="140" y="174" width="40" height="6" rx="3" fill="#cfcdc6"/>
+  </svg>
+  <p class="demo-cap">Counting words in a book with eight lines of code.</p>
+  <p class="demo-sub">(spoiler: 'the' wins, and it is not close)</p>
+</section>
+
+<section>
+  <h2>Ordered or Unordered?</h2>
+  <table>
+    <thead><tr><th></th><th><code>set</code> / <code>map</code></th><th><code>unordered_set</code> / <code>unordered_map</code></th></tr></thead>
+    <tbody>
+      <tr><td>Underneath</td><td>balanced tree</td><td>hash table</td></tr>
+      <tr><td>find / insert</td><td>O(lg n)</td><td>O(1) average, O(n) worst</td></tr>
+      <tr><td>Iteration order</td><td><strong>sorted</strong></td><td>unspecified</td></tr>
+      <tr><td>Needs</td><td><code>&lt;</code> on the key</td><td>a hash function</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">If you need sorted output or range queries, take the tree. If you only ever ask "is it there?", the hash table is faster, and that's next week.</div>
+</section>
+
+<section>
+  <h2>Choosing a Container</h2>
+  <ul style="font-size:0.66em">
+    <li>Index by position, mostly appending → <code>vector</code></li>
+    <li>Constant insert/remove at the ends → <code>deque</code>, <code>stack</code>, <code>queue</code></li>
+    <li>Membership, no duplicates, sorted → <code>set</code></li>
+    <li>Key to value, sorted keys → <code>map</code></li>
+    <li>Membership or lookup as fast as possible, order irrelevant → <code>unordered_*</code></li>
+  </ul>
+  <div class="callout">The question is never "which container is best?"; it's "which operations will I do a million times?"</div>
 </section>
 
 <section class="closing-slide" data-background-color="#6E1C2E">
   <h2>Week 11 Recap</h2>
   <ul style="font-size:0.72em; color:rgba(255,255,255,0.92)">
-    <li>A BST puts smaller values left, larger right — <strong>for every node</strong></li>
+    <li>A BST puts smaller values left, larger right, <strong>for every node</strong></li>
     <li>insert and find are the guessing game: compare, then discard half</li>
     <li>New nodes always arrive as <strong>leaves</strong></li>
     <li>In-order traversal comes out <strong>sorted</strong>; the destructor must be <strong>post-order</strong></li>
     <li>Balanced gives O(lg n); sorted input gives a list and O(n)</li>
     <li>Removing a two-child node: promote the max of the left subtree</li>
   </ul>
-  <div class="next">Next: a11 →</div>
+  <div class="next">Next: a13 →</div>
   <p class="credit-line">
     This deck stands on earlier CS112 materials by<br>
     <strong>Joel Adams</strong> and <strong>Victor Norman</strong> &middot; adapted and extended by <strong>Eric Ara&uacute;jo</strong>

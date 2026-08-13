@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Week 12: AVL Trees — CS112</title>
+  <title>Week 12: AVL Trees: a brief introduction · CS112</title>
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reset.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.css">
@@ -80,7 +80,7 @@
       <p class="title-course">Introduction to Data Structures</p>
       <div class="title-rule"></div>
       <p class="title-week">Week 12</p>
-      <p class="title-topic">AVL Trees</p>
+      <p class="title-topic">AVL Trees: a brief introduction</p>
       <p class="title-author">Eric Ara&uacute;jo</p>
       <p class="title-meta">Calvin University &middot; Fall 2026</p>
     </div>
@@ -90,13 +90,12 @@
 <section>
   <h2>This Week</h2>
   <ul class="agenda-list">
-    <li><div class="agenda-num">1</div> Why balance matters</li>
-    <li><div class="agenda-num">2</div> What 'balanced' means</li>
-    <li><div class="agenda-num">3</div> Balance factor <span class='badge'>KEY</span></li>
-    <li><div class="agenda-num">4</div> Rotations</li>
-    <li><div class="agenda-num">5</div> The four cases</li>
-    <li><div class="agenda-num">6</div> Cost of keeping balance</li>
-    <li><div class="agenda-num">7</div> When to use one</li>
+    <li><div class="agenda-num">1</div> Last week's problem</li>
+    <li><div class="agenda-num">2</div> A self-balancing BST</li>
+    <li><div class="agenda-num">3</div> Balance factor</li>
+    <li><div class="agenda-num">4</div> A rotation</li>
+    <li><div class="agenda-num">5</div> The four cases <span class='badge'>KEY</span></li>
+    <li><div class="agenda-num">6</div> What it costs</li>
   </ul>
 </section>
 
@@ -118,7 +117,7 @@
   <circle class="tree-node" cx="264" cy="158" r="21"/>
   <text class="tree-lbl" x="264" y="164" text-anchor="middle">40</text>
   </svg>
-      <p style="font-size:0.55em">height 3 — find is <strong>O(n)</strong></p>
+      <p style="font-size:0.55em">height 3, find is <strong>O(n)</strong></p>
     </div>
     <div>
       <h3>The same values, balanced</h3>
@@ -135,17 +134,17 @@
   <circle class="tree-node" cx="264" cy="143" r="21"/>
   <text class="tree-lbl" x="264" y="149" text-anchor="middle">40</text>
   </svg>
-      <p style="font-size:0.55em">height 2 — find is <strong>O(lg n)</strong></p>
+      <p style="font-size:0.55em">height 2, find is <strong>O(lg n)</strong></p>
     </div>
   </div>
-  <div class="callout callout-maroon">Sorted input is not exotic — it's the most natural way data arrives. A BST that degrades on sorted input degrades on real data.</div>
+  <div class="callout callout-maroon">Sorted input is not exotic; it's the most natural way data arrives. A BST that degrades on sorted input degrades on real data.</div>
 </section>
 
 <section>
   <h2>A Self-Balancing BST</h2>
   <p style="font-size:0.72em">An <strong>AVL tree</strong> is a BST that repairs its own shape after every insert and remove.</p>
   <ul>
-    <li>Still a BST — left smaller, right larger, all the old code still applies</li>
+    <li>Still a BST: left smaller, right larger, all the old code still applies</li>
     <li>Plus one rule it never breaks</li>
     <li>Named for Adelson-Velsky and Landis, who published it in 1962</li>
   </ul>
@@ -158,10 +157,10 @@
 balanceFactor(node) = height(node-&gt;left) - height(node-&gt;right)
   </code></pre>
   <ul>
-    <li><strong>0</strong> — both sides equally deep</li>
-    <li><strong>+1</strong> — the left is one deeper</li>
-    <li><strong>−1</strong> — the right is one deeper</li>
-    <li><strong>±2 or worse</strong> — the AVL rule is broken; fix it now</li>
+    <li><strong>0</strong>: both sides equally deep</li>
+    <li><strong>+1</strong>: the left is one deeper</li>
+    <li><strong>−1</strong>: the right is one deeper</li>
+    <li><strong>±2 or worse</strong>: the AVL rule is broken; fix it now</li>
   </ul>
   <div class="callout callout-maroon">The AVL invariant: <strong>every node's balance factor is −1, 0, or +1</strong>. Check it after each change, and repair the first place it fails on the way back up.</div>
 </section>
@@ -172,14 +171,14 @@ balanceFactor(node) = height(node-&gt;left) - height(node-&gt;right)
     <strong>A node's left subtree has height 3, its right subtree height 1. What now?</strong>
   </div>
   <ul class="pi-choices pi-compact">
-    <li><span class="letter">A.</span> Nothing — a difference of 2 is allowed</li>
+    <li><span class="letter">A.</span> Nothing: a difference of 2 is allowed</li>
     <li class="fragment correct" data-fragment-index="1"><span class="letter">B.</span> Balance factor is +2, so this node needs rotating</li>
     <li><span class="letter">C.</span> Balance factor is −2, so this node needs rotating</li>
     <li><span class="letter">D.</span> The whole tree must be rebuilt</li>
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>B.</strong> 3 − 1 = +2, which breaks the invariant, and the tree is left-heavy here. One rotation at this node fixes it — you never rebuild the whole tree.
+    <strong>B.</strong> 3 − 1 = +2, which breaks the invariant, and the tree is left-heavy here. One rotation at this node fixes it: you never rebuild the whole tree.
   </div>
 </section>
 
@@ -187,7 +186,7 @@ balanceFactor(node) = height(node-&gt;left) - height(node-&gt;right)
   <h2>A Rotation</h2>
   <div class="two-col">
     <div>
-      <h3>Before — left-heavy</h3>
+      <h3>Before: left-heavy</h3>
       <svg class="tree-svg" viewBox="0 0 330 190" xmlns="http://www.w3.org/2000/svg">
   <line class="tree-edge" x1="248" y1="50" x2="165" y2="60"/>
   <line class="tree-edge" x1="165" y1="100" x2="82" y2="110"/>
@@ -201,7 +200,7 @@ balanceFactor(node) = height(node-&gt;left) - height(node-&gt;right)
       <p style="font-size:0.55em">30 has balance factor +2</p>
     </div>
     <div>
-      <h3>After — rotate right</h3>
+      <h3>After: rotate right</h3>
       <svg class="tree-svg" viewBox="0 0 330 190" xmlns="http://www.w3.org/2000/svg">
   <line class="tree-edge" x1="165" y1="50" x2="82" y2="85"/>
   <line class="tree-edge" x1="165" y1="50" x2="248" y2="85"/>
@@ -215,7 +214,7 @@ balanceFactor(node) = height(node-&gt;left) - height(node-&gt;right)
       <p style="font-size:0.55em">20 rises; 30 becomes its right child</p>
     </div>
   </div>
-  <div class="callout">Three pointer assignments. The in-order sequence is unchanged — 10, 20, 30 either way — so it is still a valid BST, just shorter.</div>
+  <div class="callout">Three pointer assignments. The in-order sequence is unchanged, 10, 20, 30 either way, so it is still a valid BST, just shorter.</div>
 </section>
 
 <section>
@@ -230,7 +229,7 @@ Node* rotateRight(Node *p) {
     return newRoot;                 // caller re-links this in
 }
   </code></pre>
-  <div class="callout">Constant time — three pointers and two height updates, regardless of how big the subtrees are. That's why rebalancing is cheap.</div>
+  <div class="callout">Constant time, three pointers and two height updates, regardless of how big the subtrees are. That's why rebalancing is cheap.</div>
 </section>
 
 <section>
@@ -253,14 +252,14 @@ Node* rotateRight(Node *p) {
     <strong>Insert 10, then 30, then 20. Which case is this, and what fixes it?</strong>
   </div>
   <ul class="pi-choices pi-compact">
-    <li><span class="letter">A.</span> LL — one right rotation</li>
-    <li><span class="letter">B.</span> RR — one left rotation</li>
-    <li class="fragment correct" data-fragment-index="1"><span class="letter">C.</span> RL — right on the child, then left at the root</li>
+    <li><span class="letter">A.</span> LL, one right rotation</li>
+    <li><span class="letter">B.</span> RR, one left rotation</li>
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">C.</span> RL, right on the child, then left at the root</li>
     <li><span class="letter">D.</span> No rotation needed</li>
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>C — RL.</strong> 10 is the root, 30 goes right, 20 goes left of 30: a zig-zag. Rotate right at 30 to make it a straight line, then rotate left at 10. The result has 20 at the root.
+    <strong>C. RL.</strong> 10 is the root, 30 goes right, 20 goes left of 30: a zig-zag. Rotate right at 30 to make it a straight line, then rotate left at 10. The result has 20 at the root.
   </div>
 </section>
 
@@ -272,7 +271,7 @@ Node* rotateRight(Node *p) {
       <tr><td>find</td><td>O(n)</td><td><strong>O(lg n)</strong></td></tr>
       <tr><td>insert</td><td>O(n)</td><td><strong>O(lg n)</strong></td></tr>
       <tr><td>remove</td><td>O(n)</td><td><strong>O(lg n)</strong></td></tr>
-      <tr><td>extra memory</td><td>—</td><td>a height per node</td></tr>
+      <tr><td>extra memory</td><td>none</td><td>a height per node</td></tr>
       <tr><td>code complexity</td><td>modest</td><td>considerably more</td></tr>
     </tbody>
   </table>
@@ -282,7 +281,7 @@ Node* rotateRight(Node *p) {
 <section>
   <h2>Insert, the AVL Way</h2>
   <ul>
-    <li>Insert exactly as in a plain BST — it becomes a leaf</li>
+    <li>Insert exactly as in a plain BST: it becomes a leaf</li>
     <li>On the way back up the recursion, update each node's height</li>
     <li>At the <strong>first</strong> node whose balance factor hits ±2, rotate</li>
     <li>One rebalance is always enough after an insert</li>
@@ -307,7 +306,7 @@ Node* rotateRight(Node *p) {
     <rect x="140" y="174" width="40" height="6" rx="3" fill="#cfcdc6"/>
   </svg>
   <p class="demo-cap">Inserting sorted data into an AVL tree.</p>
-  <p class="demo-sub">(the same input that ruined the BST last week)</p>
+  <p class="demo-sub">(the rotations paid for themselves)</p>
 </section>
 
 <section>
@@ -330,7 +329,7 @@ Node* rotateRight(Node *p) {
       </ul>
     </div>
   </div>
-  <div class="callout">The STL's <code>map</code> and <code>set</code> are balanced trees — usually red-black rather than AVL, same guarantee, fewer rotations on insert. You'll meet them next week.</div>
+  <div class="callout">The STL's <code>map</code> and <code>set</code> are balanced trees, usually red-black rather than AVL, same guarantee, fewer rotations on insert. You'll meet them next week.</div>
 </section>
 
 <section class="closing-slide" data-background-color="#6E1C2E">
@@ -338,11 +337,11 @@ Node* rotateRight(Node *p) {
   <ul style="font-size:0.72em; color:rgba(255,255,255,0.92)">
     <li>An AVL tree is a BST that <strong>repairs its own shape</strong></li>
     <li>Balance factor = height(left) − height(right), and must stay in {−1, 0, +1}</li>
-    <li>A rotation is three pointer moves — <strong>constant time</strong></li>
+    <li>A rotation is three pointer moves: <strong>constant time</strong></li>
     <li>Straight line → one rotation; zig-zag → two</li>
     <li>Every operation becomes O(lg n) no matter what order the data arrives</li>
   </ul>
-  <div class="next">Next: a12 →</div>
+  <div class="next">Next: a14 →</div>
   <p class="credit-line">
     This deck stands on earlier CS112 materials by<br>
     <strong>Joel Adams</strong> and <strong>Victor Norman</strong> &middot; adapted and extended by <strong>Eric Ara&uacute;jo</strong>

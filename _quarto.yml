@@ -1,5 +1,5 @@
 project:
-  type: book
+  type: website
   output-dir: _book
   render:
     - "**/*.qmd"
@@ -7,34 +7,33 @@ project:
   resources:
     - "slides/"
 
-book:
+website:
   title: "CS 112 | Fall 2026"
-  subtitle: "Introduction to Data Structures"
-  author:
-    - name: Eric Araújo
-      email: eric.araujo@calvin.edu
-  date: last-modified
+  favicon: figures/logoCalvin-150-logo.png
   repo-url: https://github.com/ericaraujophd/26fa-cs112/
   repo-actions: [issue]
-  favicon: figures/logoCalvin-150-logo.png
-  # cover-image: figures/Calvin-150-logo.png
   search: true
 
+  # Only these appear in the sidebar. Every .qmd still renders
+  # (see project.render above) — assignment pages are reachable
+  # from the Assignments hub and from the Schedule.
   sidebar:
     logo: figures/Calvin-150-logo.png
     logo-alt: Calvin University
     pinned: true
-
-  chapters:
-    - index.qmd
-    - content/schedule.qmd
-    - content/checkins.qmd
-    - part: "Course Information"
-      chapters:
-        - policies/grading.qmd
-        - policies/honesty.qmd
-        - policies/classroom.qmd
-    - content/assignments/index.qmd
+    style: floating
+    search: true
+    contents:
+      - text: "Home"
+        href: index.qmd
+      - content/schedule.qmd
+      - content/checkins.qmd
+      - content/assignments/index.qmd
+      - section: "Course Information"
+        contents:
+          - policies/grading.qmd
+          - policies/honesty.qmd
+          - policies/classroom.qmd
 
 language:
   title-block-published: "Last Updated"
@@ -42,6 +41,8 @@ language:
 format:
   html:
     # include-before-body: _banner.html
+    include-in-header: _fontsize-head.html   # apply saved size before paint
+    include-after-body: _fontsize.html       # the switcher itself
     number-sections: false
     toc: false
     theme:

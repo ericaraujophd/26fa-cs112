@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Week 10: Recursion — CS112</title>
+  <title>Week 10: Recursion and Sorting · CS112</title>
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reset.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.css">
@@ -80,7 +80,7 @@
       <p class="title-course">Introduction to Data Structures</p>
       <div class="title-rule"></div>
       <p class="title-week">Week 10</p>
-      <p class="title-topic">Recursion</p>
+      <p class="title-topic">Recursion and Sorting</p>
       <p class="title-author">Eric Ara&uacute;jo</p>
       <p class="title-meta">Calvin University &middot; Fall 2026</p>
     </div>
@@ -94,9 +94,9 @@
     <li><div class="agenda-num">2</div> Base case and recursive case</li>
     <li><div class="agenda-num">3</div> The run-time stack <span class='badge'>KEY</span></li>
     <li><div class="agenda-num">4</div> Winding and unwinding</li>
-    <li><div class="agenda-num">5</div> When recursion is worth it</li>
-    <li><div class="agenda-num">6</div> Towers of Hanoi</li>
-    <li><div class="agenda-num">7</div> Counting the moves</li>
+    <li><div class="agenda-num">5</div> Towers of Hanoi</li>
+    <li><div class="agenda-num">6</div> Selection and insertion sort</li>
+    <li><div class="agenda-num">7</div> Why merge sort recurses</li>
   </ul>
 </section>
 
@@ -109,7 +109,7 @@ int sum(int a[], int n) {
     return a[0] + sum(a + 1, n - 1);     // the rest
 }
   </code></pre>
-  <div class="callout">The definition of the answer contains a smaller version of the same question. That's recursion — and it's why the code reads almost exactly like the sentence above it.</div>
+  <div class="callout">The definition of the answer contains a smaller version of the same question. That's recursion, and it's why the code reads almost exactly like the sentence above it.</div>
 </section>
 
 <section>
@@ -135,7 +135,7 @@ unsigned factorial(unsigned n) {
 }
   </code></pre>
   <div class="two-col" style="font-size:0.58em; margin-top:0.3em">
-    <div class="callout"><strong>Basis:</strong> 0! and 1! are 1 — no work needed.</div>
+    <div class="callout"><strong>Basis:</strong> 0! and 1! are 1, no work needed.</div>
     <div class="callout"><strong>Step:</strong> n! is n times a <em>smaller</em> factorial.</div>
   </div>
 </section>
@@ -158,7 +158,7 @@ unsigned factorial(unsigned n) {
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>B.</strong> <code>factorial(0)</code> would call <code>factorial(-1)</code> — and since the parameter is <code>unsigned</code>, that wraps around to a colossal number. Each call takes a stack frame; when the stack runs out, the program dies.
+    <strong>B.</strong> <code>factorial(0)</code> would call <code>factorial(-1)</code>: and since the parameter is <code>unsigned</code>, that wraps around to a colossal number. Each call takes a stack frame; when the stack runs out, the program dies.
   </div>
 </section>
 
@@ -172,14 +172,14 @@ unsigned factorial(unsigned n) {
     <div class="mem-row"><span class="mem-val">factorial(4)</span><span class="mem-addr">waiting on 3</span></div>
     <div class="mem-row"><span class="mem-val">main()</span><span class="mem-addr">waiting on 4</span></div>
   </div>
-  <div class="callout">It is literally a stack — the same LIFO structure from last week. The most recent call is the first to finish.</div>
+  <div class="callout">It is literally a stack, the same LIFO structure from last week. The most recent call is the first to finish.</div>
 </section>
 
 <section>
   <h2>Winding and Unwinding</h2>
   <div class="two-col">
     <div>
-      <h3>Winding — calls go down</h3>
+      <h3>Winding: calls go down</h3>
       <pre style="font-size:0.44em"><code class="language-cpp" data-trim>
 factorial(4)
  factorial(3)
@@ -188,7 +188,7 @@ factorial(4)
       </code></pre>
     </div>
     <div>
-      <h3>Unwinding — answers come back</h3>
+      <h3>Unwinding: answers come back</h3>
       <pre style="font-size:0.44em"><code class="language-cpp" data-trim>
    1
   2 * 1  = 2
@@ -197,7 +197,7 @@ factorial(4)
       </code></pre>
     </div>
   </div>
-  <div class="callout callout-maroon">Nothing is multiplied on the way <em>down</em>. All the arithmetic happens on the way back <em>up</em> — which is why every frame has to stay on the stack until the basis is reached.</div>
+  <div class="callout callout-maroon">Nothing is multiplied on the way <em>down</em>. All the arithmetic happens on the way back <em>up</em>: which is why every frame has to stay on the stack until the basis is reached.</div>
 </section>
 
 <section>
@@ -213,7 +213,7 @@ factorial(4)
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>C — O(n).</strong> It makes n−1 recursive calls, each doing one multiplication. It also uses O(n) <em>space</em> on the run-time stack, which the iterative version doesn't — recursion trades memory for expressiveness.
+    <strong>C. O(n).</strong> It makes n−1 recursive calls, each doing one multiplication. It also uses O(n) <em>space</em> on the run-time stack, which the iterative version doesn't: recursion trades memory for expressiveness.
   </div>
 </section>
 
@@ -250,7 +250,7 @@ unsigned f(unsigned n) {
 
 <section>
   <h2>When Recursion Earns Its Keep</h2>
-  <p style="font-size:0.68em">Printing a singly-linked list <strong>backwards</strong>. Iteratively that means walking the list once per item — O(n²) — because you can't step back.</p>
+  <p style="font-size:0.68em">Printing a singly-linked list <strong>backwards</strong>. Iteratively that means walking the list once per item, O(n²), because you can't step back.</p>
   <pre style="font-size:0.55em"><code class="language-cpp" data-trim>
 void Node::printReverse(ostream &amp;out) const {
     if (myNext != nullptr) {
@@ -259,7 +259,7 @@ void Node::printReverse(ostream &amp;out) const {
     out &lt;&lt; myItem &lt;&lt; " ";           // then me
 }
   </code></pre>
-  <div class="callout callout-maroon">One pass, O(n). The run-time stack remembers the way back for you — that's the data structure you'd otherwise have to build by hand.</div>
+  <div class="callout callout-maroon">One pass, O(n). The run-time stack remembers the way back for you; that's the data structure you'd otherwise have to build by hand.</div>
 </section>
 
 <section>
@@ -267,10 +267,10 @@ void Node::printReverse(ostream &amp;out) const {
   <p style="font-size:0.68em">Move a stack of disks from A to B using C. Never put a larger disk on a smaller one.</p>
   <div class="mem-diagram" style="max-width:600px">
     <div class="mem-row"><span class="mem-lbl">A</span><span class="mem-val">▁ ▃ ▅ ▇</span><span class="mem-addr">start</span></div>
-    <div class="mem-row"><span class="mem-lbl">B</span><span class="mem-val">—</span><span class="mem-addr">goal</span></div>
-    <div class="mem-row"><span class="mem-lbl">C</span><span class="mem-val">—</span><span class="mem-addr">spare</span></div>
+    <div class="mem-row"><span class="mem-lbl">B</span><span class="mem-val">(empty)</span><span class="mem-addr">goal</span></div>
+    <div class="mem-row"><span class="mem-lbl">C</span><span class="mem-val">(empty)</span><span class="mem-addr">spare</span></div>
   </div>
-  <div class="callout">Iteratively this is a nightmare. Recursively it's three lines — because the problem is recursive all the way down.</div>
+  <div class="callout">Iteratively this is a nightmare. Recursively it's three lines, because the problem is recursive all the way down.</div>
 </section>
 
 <section>
@@ -286,7 +286,7 @@ void move(int n, char src, char dest, char aux) {
     move(n - 1, aux, dest, src);    // bring the n-1 back on top
 }
   </code></pre>
-  <div class="callout">Notice we never say <em>how</em> to move n−1 disks. We assume it works and use it — the recursive leap of faith, justified by the basis.</div>
+  <div class="callout">Notice we never say <em>how</em> to move n−1 disks. We assume it works and use it, the recursive leap of faith, justified by the basis.</div>
 </section>
 
 <section>
@@ -302,7 +302,7 @@ void move(int n, char src, char dest, char aux) {
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>C — 2ⁿ − 1.</strong> Each level doubles the work: 1 disk is 1 move, 2 is 3, 3 is 7, 4 is 15. That's <strong>O(2ⁿ)</strong> — exponential, the one growth class that beats even n².
+    <strong>C. 2ⁿ − 1.</strong> Each level doubles the work: 1 disk is 1 move, 2 is 3, 3 is 7, 4 is 15. That's <strong>O(2ⁿ)</strong>: exponential, the one growth class that beats even n².
   </div>
 </section>
 
@@ -314,7 +314,7 @@ void move(int n, char src, char dest, char aux) {
     <li>A supercomputer printing 1,000,000 moves per second…</li>
     <li>…still needs about <strong>580,000 years</strong></li>
   </ul>
-  <div class="callout callout-maroon">Elegant code and fast code are different things. An exponential algorithm is unusable at almost any interesting size — no faster machine will save you.</div>
+  <div class="callout callout-maroon">Elegant code and fast code are different things. An exponential algorithm is unusable at almost any interesting size, no faster machine will save you.</div>
 </section>
 
 <section class="demo-slide" data-background-color="#6E1C2E">
@@ -334,7 +334,103 @@ void move(int n, char src, char dest, char aux) {
     <rect x="140" y="174" width="40" height="6" rx="3" fill="#cfcdc6"/>
   </svg>
   <p class="demo-cap">Tracing recursion in the debugger.</p>
-  <p class="demo-sub">(watch the call stack grow, then drain)</p>
+  <p class="demo-sub">(base case reached. patience not.)</p>
+</section>
+
+<section>
+  <h2>Why This Matters: Sorting</h2>
+  <p style="font-size:0.68em">Sorting those same million items:</p>
+  <table style="font-size:0.58em">
+    <thead><tr><th>Algorithm</th><th>Complexity</th><th>Rough operations</th></tr></thead>
+    <tbody>
+      <tr><td>Bubble sort</td><td>O(n²)</td><td>10¹², hours</td></tr>
+      <tr><td>Merge / quick sort</td><td>O(n lg n)</td><td>2 × 10⁷, under a second</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">Same computer, same data, same answer. The only difference is the shape of the growth curve, and it's the difference between a coffee break and a lunch break you never come back from.</div>
+</section>
+
+<section>
+  <h2>Selection Sort</h2>
+  <pre style="font-size:0.56em"><code class="language-cpp" data-trim>
+for (int i = 0; i &lt; n - 1; ++i) {
+    int smallest = i;
+    for (int j = i + 1; j &lt; n; ++j) {
+        if (a[j] &lt; a[smallest]) { smallest = j; }
+    }
+    swap(a[i], a[smallest]);
+}
+  </code></pre>
+  <p style="font-size:0.62em">Find the smallest of what's left, swap it into place, repeat.</p>
+  <div class="callout">Nested loops over n → <strong>O(n²)</strong>, always. It does the same work on sorted input as on random input, but it makes at most n−1 swaps.</div>
+</section>
+
+<section>
+  <h2>Insertion Sort</h2>
+  <pre style="font-size:0.56em"><code class="language-cpp" data-trim>
+for (int i = 1; i &lt; n; ++i) {
+    Item key = a[i];
+    int j = i - 1;
+    while (j &gt;= 0 &amp;&amp; a[j] &gt; key) {
+        a[j + 1] = a[j];      // shift right
+        --j;
+    }
+    a[j + 1] = key;           // drop it in
+}
+  </code></pre>
+  <p style="font-size:0.62em">Take the next item, slide it back until it's in place, the way you sort a hand of cards.</p>
+  <div class="callout">Worst case O(n²), but on <strong>already-sorted</strong> input the inner loop never runs: O(n).</div>
+</section>
+
+<section>
+  <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
+  <div class="pi-question">
+    <strong>Your data is almost sorted already. Which of the two is better?</strong>
+  </div>
+  <ul class="pi-choices pi-compact">
+    <li><span class="letter">A.</span> Selection sort; it always does the same work</li>
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">B.</span> Insertion sort; it approaches O(n) when little is out of place</li>
+    <li><span class="letter">C.</span> Identical, both are O(n²)</li>
+    <li><span class="letter">D.</span> Neither works on partly sorted data</li>
+  </ul>
+  <div class="answer-box fragment" data-fragment-index="1">
+    <div class="ans-label">&#10003; Answer</div>
+    <strong>B. insertion sort.</strong> Its inner loop stops as soon as the item is in place, so nearly-sorted input costs nearly nothing. This is why real library sorts fall back to insertion sort on small or nearly-ordered chunks.
+  </div>
+</section>
+
+<section>
+  <h2>Comparing the Two</h2>
+  <table>
+    <thead><tr><th></th><th>Selection sort</th><th>Insertion sort</th></tr></thead>
+    <tbody>
+      <tr><td>Best case</td><td>O(n²)</td><td><strong>O(n)</strong></td></tr>
+      <tr><td>Worst case</td><td>O(n²)</td><td>O(n²)</td></tr>
+      <tr><td>Swaps / writes</td><td><strong>O(n)</strong></td><td>O(n²)</td></tr>
+      <tr><td>Stable?</td><td>no</td><td><strong>yes</strong></td></tr>
+    </tbody>
+  </table>
+  <div class="callout">Neither is what you'd ship, <code>std::sort</code> is O(n lg n). But every fast sort is built from ideas you can now read, and both of these are the right choice for a small enough n.</div>
+</section>
+
+<section class="demo-slide" data-background-color="#6E1C2E">
+  <h1>Demo</h1>
+  <div class="demo-rule"></div>
+  <svg class="demo-art" viewBox="0 -34 320 246" xmlns="http://www.w3.org/2000/svg">
+    <path d="M254,12 C250,0 260,-6 256,-20 C270,-11 267,1 261,12 Z" fill="#E8873A"/>
+    <path d="M266,12 C264,4 270,0 268,-10 C277,-3 275,5 271,12 Z" fill="#F2CD00"/>
+    <path d="M243,12 C241,5 246,2 244,-6 C251,-1 250,6 247,12 Z" fill="#E8873A" opacity=".75"/>
+    <rect x="40" y="10" width="240" height="150" rx="9" fill="#1e1f1a" stroke="#C49A2C" stroke-width="3"/>
+    <text x="58" y="46" font-family="'Fira Code',Consolas,monospace" font-size="15.0" fill="#9be36b">$ ./sortbench 50000</text>
+    <text x="58" y="76" font-family="'Fira Code',Consolas,monospace" font-size="13.0" fill="#ff7b72">std::sort:      0.004 s</text>
+    <text x="58" y="96" font-family="'Fira Code',Consolas,monospace" font-size="13.0" fill="#ff7b72">selection:      3.918 s</text>
+    <text x="58" y="134" font-family="'Fira Code',Consolas,monospace" font-size="15" fill="#9be36b">$</text>
+    <rect x="72" y="122" width="9" height="15" fill="#9be36b"/>
+    <path d="M22,168 L298,168 L314,196 L6,196 Z" fill="#eceae3" stroke="#8d8d86" stroke-width="2.5" stroke-linejoin="round"/>
+    <rect x="140" y="174" width="40" height="6" rx="3" fill="#cfcdc6"/>
+  </svg>
+  <p class="demo-cap">Racing selection sort against std::sort.</p>
+  <p class="demo-sub">(selection sort is having a long afternoon)</p>
 </section>
 
 <section class="closing-slide" data-background-color="#6E1C2E">
@@ -342,11 +438,11 @@ void move(int n, char src, char dest, char aux) {
   <ul style="font-size:0.72em; color:rgba(255,255,255,0.92)">
     <li>A recursive function needs a <strong>basis</strong> and a step that <strong>shrinks</strong></li>
     <li>Every call takes a frame on the <strong>run-time stack</strong></li>
-    <li>Work happens on the way back up — that's the unwinding phase</li>
+    <li>Work happens on the way back up: that's the unwinding phase</li>
     <li>Iteration is usually faster; recursion is for recursive problems</li>
-    <li>Towers of Hanoi is O(2ⁿ) — elegant and completely impractical</li>
+    <li>Towers of Hanoi is O(2ⁿ), elegant and completely impractical</li>
   </ul>
-  <div class="next">Next: a10 →</div>
+  <div class="next">Next: a11 · a12 →</div>
   <p class="credit-line">
     This deck stands on earlier CS112 materials by<br>
     <strong>Joel Adams</strong> and <strong>Victor Norman</strong> &middot; adapted and extended by <strong>Eric Ara&uacute;jo</strong>

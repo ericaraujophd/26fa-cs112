@@ -92,7 +92,25 @@ A single question may touch more than one skill, and often will: removing a node
 
 ## Check-In Windows
 
-You book **one 25-minute appointment per window** — three across the semester, plus the Final Window. Each appointment covers every cluster in that window. The windows are not hard deadlines, but the instructor's available slots are limited: do not wait until the last two weeks to schedule an appointment that should have happened in Window 1.
+You book **one 25-minute appointment per window** — three across the semester, plus the Final Window. Each appointment covers every cluster in that window.
+
+::: {.callout-important}
+**Book early — earlier than you think.** The windows are not deadlines, but the
+instructor's calendar is real, and this semester it is unusually tight right
+after each window's reference date:
+
+- **Window 1 (ref. Oct 23)** — Fall Break runs Oct 16–21 and the instructor is
+  away Oct 24–30. Everything for clusters A and B is taught by Oct 3, so you are
+  ready three weeks early. **Book in the first half of October.**
+- **Window 2 (ref. Nov 20)** — the instructor is away Nov 21–24 and Thanksgiving
+  follows. There are no slots between Nov 21 and Nov 29. **Book on or before
+  Nov 20.**
+- **Window 3 (ref. Dec 2)** — clear, but it inherits anyone who slipped out of
+  Window 2.
+
+Everything closes on **Dec 9**, the last day of classes. Waiting is the single
+most common way students end up unable to get an appointment at all.
+:::
 
 ```{=html}
 <style>
@@ -308,21 +326,21 @@ Skills marked **†** are *persistent* — once taught, they can resurface in an
   <div class="crow">
     <div class="ccard" style="--cc:#6E1C2E;--ccd:#E08497">
       <div class="chead">A · C++ foundations <span class="ccount">6 skills</span></div>
-      <div class="srow"><span class="sid">A1</span><span class="sdesc">Compile, run, and debug a C++ program</span><span class="sasg">a00, a01</span></div>
+      <div class="srow"><span class="sid">A1</span><span class="sdesc">Compile, run, and debug a C++ program</span><span class="sasg">a00, a01, a02</span></div>
       <div class="srow"><span class="sid">A2</span><span class="sdesc">Use basic data types, variables, <code>const</code>, and operators</span><span class="sasg">a00, a01</span></div>
-      <div class="srow"><span class="sid">A3<span class="pmark">†</span></span><span class="sdesc">Work with pointers and dynamic memory (<code>new</code>, <code>delete</code>)</span><span class="sasg">a00, a01, a09</span></div>
-      <div class="srow"><span class="sid">A4<span class="pmark">†</span></span><span class="sdesc">Write control structures and functions with correct parameter passing</span><span class="sasg">a01, a02, a03</span></div>
-      <div class="srow"><span class="sid">A5</span><span class="sdesc">Read and write files; handle exceptions with <code>try</code>/<code>catch</code></span><span class="sasg">a04, a05</span></div>
-      <div class="srow"><span class="sid">A6</span><span class="sdesc">Define and manipulate 2D arrays</span><span class="sasg">a04, a05</span></div>
+      <div class="srow"><span class="sid">A3<span class="pmark">†</span></span><span class="sdesc">Work with pointers and dynamic memory (<code>new</code>, <code>delete</code>)</span><span class="sasg">a04</span></div>
+      <div class="srow"><span class="sid">A4<span class="pmark">†</span></span><span class="sdesc">Write control structures and functions with correct parameter passing</span><span class="sasg">a01</span></div>
+      <div class="srow"><span class="sid">A5</span><span class="sdesc">Read and write files; handle exceptions with <code>try</code>/<code>catch</code></span><span class="sasg">a02</span></div>
+      <div class="srow"><span class="sid">A6</span><span class="sdesc">Define and manipulate 2D arrays</span><span class="sasg">a02</span></div>
       <div class="sample"><b>A question might ask</b>Here is a struct definition. Write a function that takes a pointer to it, allocates a copy on the heap, and returns the pointer. Then show me where you would call <code>delete</code>.</div>
     </div>
     <div class="ccard" style="--cc:#8B4513;--ccd:#D89A62">
       <div class="chead">B · Object-oriented programming <span class="ccount">5 skills</span></div>
-      <div class="srow"><span class="sid">B1</span><span class="sdesc">Define a class split across <code>.h</code> and <code>.cpp</code> with correct access modifiers</span><span class="sasg">a06, a07</span></div>
-      <div class="srow"><span class="sid">B2<span class="pmark">†</span></span><span class="sdesc">Implement constructors, destructors, and methods</span><span class="sasg">a06, a07</span></div>
-      <div class="srow"><span class="sid">B3</span><span class="sdesc">Implement operator overloading</span><span class="sasg">a06, a07</span></div>
-      <div class="srow"><span class="sid">B4<span class="pmark">†</span></span><span class="sdesc">Implement a copy constructor; distinguish shallow from deep copy</span><span class="sasg">a08, a09</span></div>
-      <div class="srow"><span class="sid">B5</span><span class="sdesc">Apply test-driven development to a class</span><span class="sasg">a06, a07</span></div>
+      <div class="srow"><span class="sid">B1</span><span class="sdesc">Define a class split across <code>.h</code> and <code>.cpp</code> with correct access modifiers</span><span class="sasg">a03</span></div>
+      <div class="srow"><span class="sid">B2<span class="pmark">†</span></span><span class="sdesc">Implement constructors, destructors, and methods</span><span class="sasg">a03</span></div>
+      <div class="srow"><span class="sid">B3</span><span class="sdesc">Implement operator overloading</span><span class="sasg">a03</span></div>
+      <div class="srow"><span class="sid">B4<span class="pmark">†</span></span><span class="sdesc">Implement a copy constructor; distinguish shallow from deep copy</span><span class="sasg">a04</span></div>
+      <div class="srow"><span class="sid">B5</span><span class="sdesc">Apply test-driven development to a class</span><span class="sasg">a02, a03</span></div>
       <div class="sample"><b>A question might ask</b>This class has a raw array allocated on the heap. Write a copy constructor for it. Now tell me what would go wrong if we used the compiler-generated one.</div>
     </div>
   </div>
@@ -333,27 +351,27 @@ Skills marked **†** are *persistent* — once taught, they can resurface in an
   <div class="crow">
     <div class="ccard" style="--cc:#0a6e5e;--ccd:#4FC7AC">
       <div class="chead">C · Linear data structures <span class="ccount">7 skills</span></div>
-      <div class="srow"><span class="sid">C1</span><span class="sdesc">Implement a dynamic array with resize behavior</span><span class="sasg">a08, a09</span></div>
-      <div class="srow"><span class="sid">C2</span><span class="sdesc">Write and use a class template</span><span class="sasg">a10, a11</span></div>
-      <div class="srow"><span class="sid">C3</span><span class="sdesc">Implement a linked list with correct pointer manipulation</span><span class="sasg">a12</span></div>
-      <div class="srow"><span class="sid">C4</span><span class="sdesc">Compare linked list and dynamic array for a given use case</span><span class="sasg">a13</span></div>
-      <div class="srow"><span class="sid">C5</span><span class="sdesc">Implement a stack with O(1) push and pop</span><span class="sasg">a15, a16</span></div>
-      <div class="srow"><span class="sid">C6</span><span class="sdesc">Implement a queue with O(1) enqueue and dequeue</span><span class="sasg">a15, a16</span></div>
-      <div class="srow"><span class="sid">C7</span><span class="sdesc">Implement and use a hash table with a reasonable hash function</span><span class="sasg">a23</span></div>
+      <div class="srow"><span class="sid">C1</span><span class="sdesc">Implement a dynamic array with resize behavior</span><span class="sasg">a06</span></div>
+      <div class="srow"><span class="sid">C2</span><span class="sdesc">Write and use a class template</span><span class="sasg">a05, a06</span></div>
+      <div class="srow"><span class="sid">C3</span><span class="sdesc">Implement a linked list with correct pointer manipulation</span><span class="sasg">a07</span></div>
+      <div class="srow"><span class="sid">C4</span><span class="sdesc">Compare linked list and dynamic array for a given use case</span><span class="sasg">in class + a08 findings</span></div>
+      <div class="srow"><span class="sid">C5</span><span class="sdesc">Implement a stack with O(1) push and pop</span><span class="sasg">a09</span></div>
+      <div class="srow"><span class="sid">C6</span><span class="sdesc">Implement a queue with O(1) enqueue and dequeue</span><span class="sasg">a09, a12</span></div>
+      <div class="srow"><span class="sid">C7</span><span class="sdesc">Implement and use a hash table with a reasonable hash function</span><span class="sasg">a10</span></div>
       <div class="sample"><b>A question might ask</b>Here is a <code>Node</code> struct. Write a function that removes the node at a given index from a singly linked list. Handle the edge cases.</div>
     </div>
     <div class="ccard" style="--cc:#8A6A14;--ccd:#E8C255">
       <div class="chead">D · Algorithm analysis <span class="ccount">3 skills</span></div>
-      <div class="srow"><span class="sid">D1<span class="pmark">†</span></span><span class="sdesc">Classify the Big-O complexity of a given code snippet</span><span class="sasg">a13</span></div>
-      <div class="srow"><span class="sid">D2</span><span class="sdesc">Draw and compare Big-O growth curves</span><span class="sasg">a13, a14</span></div>
-      <div class="srow"><span class="sid">D3</span><span class="sdesc">Analyze best, worst, and amortized complexity</span><span class="sasg">a13, a14</span></div>
+      <div class="srow"><span class="sid">D1<span class="pmark">†</span></span><span class="sdesc">Classify the Big-O complexity of a given code snippet</span><span class="sasg">a08</span></div>
+      <div class="srow"><span class="sid">D2</span><span class="sdesc">Draw and compare Big-O growth curves</span><span class="sasg">a08</span></div>
+      <div class="srow"><span class="sid">D3</span><span class="sdesc">Analyze best, worst, and amortized complexity</span><span class="sasg">a08</span></div>
       <div class="sample"><b>A question might ask</b>Here are three code snippets. Classify each as O(1), O(log n), O(n), or O(n²) and explain your reasoning.</div>
     </div>
     <div class="ccard" style="--cc:#1a5fa8;--ccd:#7FB4EA">
       <div class="chead">E · Recursion <span class="ccount">3 skills</span></div>
-      <div class="srow"><span class="sid">E1</span><span class="sdesc">Identify base case and recursive case</span><span class="sasg">a17, a18</span></div>
-      <div class="srow"><span class="sid">E2</span><span class="sdesc">Trace the call stack (winding and unwinding)</span><span class="sasg">a17</span></div>
-      <div class="srow"><span class="sid">E3</span><span class="sdesc">Implement a recursive solution to a moderately complex problem</span><span class="sasg">a17, a18</span></div>
+      <div class="srow"><span class="sid">E1</span><span class="sdesc">Identify base case and recursive case</span><span class="sasg">a11</span></div>
+      <div class="srow"><span class="sid">E2</span><span class="sdesc">Trace the call stack (winding and unwinding)</span><span class="sasg">a11</span></div>
+      <div class="srow"><span class="sid">E3</span><span class="sdesc">Implement a recursive solution to a moderately complex problem</span><span class="sasg">a11</span></div>
       <div class="sample"><b>A question might ask</b>Here is a recursive function. Trace the call stack for input <code>n = 4</code> — show me the winding and the unwinding.</div>
     </div>
   </div>
@@ -364,19 +382,19 @@ Skills marked **†** are *persistent* — once taught, they can resurface in an
   <div class="crow">
     <div class="ccard" style="--cc:#5a3e7a;--ccd:#B49BDA">
       <div class="chead">F · Trees <span class="ccount">5 skills</span></div>
-      <div class="srow"><span class="sid">F1</span><span class="sdesc">Implement BST insertion and traversals</span><span class="sasg">a19, a20</span></div>
-      <div class="srow"><span class="sid">F2</span><span class="sdesc">Implement BST <code>contains</code> and <code>remove</code></span><span class="sasg">a19, a20</span></div>
-      <div class="srow"><span class="sid">F3</span><span class="sdesc">Analyze BST complexity for best and worst cases</span><span class="sasg">a20, a21</span></div>
-      <div class="srow"><span class="sid">F4</span><span class="sdesc">Compute balance factors; identify when AVL rebalancing is needed</span><span class="sasg">a21</span></div>
-      <div class="srow"><span class="sid">F5</span><span class="sdesc">Implement or trace AVL tree rotations</span><span class="sasg">a21</span></div>
+      <div class="srow"><span class="sid">F1</span><span class="sdesc">Implement BST insertion and traversals</span><span class="sasg">a13</span></div>
+      <div class="srow"><span class="sid">F2</span><span class="sdesc">Implement BST <code>contains</code> and <code>remove</code></span><span class="sasg">in class (wk11)</span></div>
+      <div class="srow"><span class="sid">F3</span><span class="sdesc">Analyze BST complexity for best and worst cases</span><span class="sasg">in class (wk12)</span></div>
+      <div class="srow"><span class="sid">F4</span><span class="sdesc">Compute balance factors; identify when AVL rebalancing is needed</span><span class="sasg">in class (wk12)</span></div>
+      <div class="srow"><span class="sid">F5</span><span class="sdesc">Implement or trace AVL tree rotations</span><span class="sasg">in class (wk12)</span></div>
       <div class="sample"><b>A question might ask</b>Insert the values 5, 3, 7, 1, 4 into an empty BST. Draw the result, then give me the in-order traversal.</div>
     </div>
     <div class="ccard" style="--cc:#2c5f2e;--ccd:#86C98A">
       <div class="chead">G · STL and sorting <span class="ccount">4 skills</span></div>
-      <div class="srow"><span class="sid">G1</span><span class="sdesc">Use <code>vector</code>, <code>list</code>, <code>stack</code>, <code>queue</code> correctly</span><span class="sasg">a15, a16</span></div>
-      <div class="srow"><span class="sid">G2</span><span class="sdesc">Use <code>set</code> and <code>map</code> with iterators</span><span class="sasg">a22</span></div>
-      <div class="srow"><span class="sid">G3</span><span class="sdesc">Describe and implement insertion sort and selection sort</span><span class="sasg">a23</span></div>
-      <div class="srow"><span class="sid">G4</span><span class="sdesc">Identify the time complexity of common sorting algorithms</span><span class="sasg">a23</span></div>
+      <div class="srow"><span class="sid">G1</span><span class="sdesc">Use <code>vector</code>, <code>list</code>, <code>stack</code>, <code>queue</code> correctly</span><span class="sasg">a13</span></div>
+      <div class="srow"><span class="sid">G2</span><span class="sdesc">Use <code>set</code> and <code>map</code> with iterators</span><span class="sasg">a13</span></div>
+      <div class="srow"><span class="sid">G3</span><span class="sdesc">Describe and implement insertion sort and selection sort</span><span class="sasg">in class (wk10)</span></div>
+      <div class="srow"><span class="sid">G4</span><span class="sdesc">Identify the time complexity of common sorting algorithms</span><span class="sasg">in class (wk10)</span></div>
       <div class="sample"><b>A question might ask</b>You need to count how many times each word appears in a file. Which STL container would you reach for, and why that one?</div>
     </div>
   </div>
@@ -385,7 +403,7 @@ Skills marked **†** are *persistent* — once taught, they can resurface in an
 </div>
 ```
 
-The assignment codes on the right of each row are the ones that build that skill. They are your preparation — and you must have submitted at least two per cluster before booking that window.
+The codes on the right of each row show where that skill is built — an assignment, or class time where it is coded together. They are your preparation. Come to a check-in when you have done the work behind that window's clusters and feel ready; there is no minimum number of assignments to unlock a booking.
 
 ---
 

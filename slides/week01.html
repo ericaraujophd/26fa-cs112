@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Week 01: Control Structures, Functions, Parameter Passing — CS112</title>
+  <title>Week 01: Control Structures, Functions, Parameter Passing · CS112</title>
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reset.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.css">
@@ -112,9 +112,9 @@ if (hp &lt;= 0) {
 }
   </code></pre>
   <ul>
-    <li>Braces are optional for one statement — <strong>use them anyway</strong></li>
+    <li>Braces are optional for one statement: <strong>use them anyway</strong></li>
     <li>Boolean operators: <code>==</code> <code>!=</code> <code>&amp;&amp;</code> <code>||</code> <code>!</code></li>
-    <li><code>=</code> is assignment, <code>==</code> is comparison — the classic C++ bug</li>
+    <li><code>=</code> is assignment, <code>==</code> is comparison: the classic C++ bug</li>
   </ul>
   <div class="callout">Format as you go: in VS Code, <strong>F1 → Format Document</strong>. Readable code is hospitality toward whoever reads it next.</div>
 </section>
@@ -154,11 +154,11 @@ default:
     <li class="fragment correct" data-fragment-index="1"><span class="letter">A.</span> Critical hit!</li>
     <li><span class="letter">B.</span> Critical hit! then A normal swing.</li>
     <li><span class="letter">C.</span> A normal swing.</li>
-    <li><span class="letter">D.</span> Nothing — case 19 is empty.</li>
+    <li><span class="letter">D.</span> Nothing: case 19 is empty.</li>
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>A — Critical hit!</strong> An empty <code>case</code> falls through to the next one, so 19 and 20 run the same code. The <code>break</code> then stops it before <code>default</code>.
+    <strong>A. Critical hit!</strong> An empty <code>case</code> falls through to the next one, so 19 and 20 run the same code. The <code>break</code> then stops it before <code>default</code>.
   </div>
 </section>
 
@@ -200,7 +200,7 @@ while (i &lt; 4) {
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>B — 3, 14, 22, 26.</strong> <code>i</code> starts at 1, so <code>arr[0]</code> is never touched; the loop stops after <code>i == 3</code>, so the last element <em>is</em> doubled.
+    <strong>B. 3, 14, 22, 26.</strong> <code>i</code> starts at 1, so <code>arr[0]</code> is never touched; the loop stops after <code>i == 3</code>, so the last element <em>is</em> doubled.
   </div>
 </section>
 
@@ -223,14 +223,14 @@ for (int i = 1; i &lt; 4; ++i) {
     arr[i] = arr[i] * 2;
 }
   </code></pre>
-  <div class="callout">Same loop, one line of bookkeeping. <code>i</code> now lives <em>only</em> inside the loop — using it afterwards is a compile error.</div>
+  <div class="callout">Same loop, one line of bookkeeping. <code>i</code> now lives <em>only</em> inside the loop, using it afterwards is a compile error.</div>
 </section>
 
 <section>
   <h2><code>break</code> and <code>continue</code></h2>
   <div class="two-col">
     <div>
-      <h3>break — leave the loop</h3>
+      <h3>break: leave the loop</h3>
       <pre style="font-size:0.5em"><code class="language-cpp" data-trim>
 for (int i = 0; i &lt; n; ++i) {
   if (party[i] == target) {
@@ -241,7 +241,7 @@ for (int i = 0; i &lt; n; ++i) {
       </code></pre>
     </div>
     <div>
-      <h3>continue — skip this pass</h3>
+      <h3>continue: skip this pass</h3>
       <pre style="font-size:0.5em"><code class="language-cpp" data-trim>
 for (int i = 0; i &lt; n; ++i) {
   if (hp[i] &lt;= 0) {
@@ -271,21 +271,21 @@ int main() {
 }
   </code></pre>
   <div class="two-col" style="font-size:0.6em; margin-top:0.3em">
-    <div class="callout"><strong>Parameters</strong> (line 1) — names with types, comma separated.</div>
-    <div class="callout"><strong>Arguments</strong> (line 11) — the actual values you pass in.</div>
+    <div class="callout"><strong>Parameters</strong> (line 1): names with types, comma separated.</div>
+    <div class="callout"><strong>Arguments</strong> (line 11): the actual values you pass in.</div>
   </div>
 </section>
 
 <section>
   <h2>Define Before You Call</h2>
-  <p style="font-size:0.7em">C++ reads top to bottom. Calling a function the compiler hasn't seen yet is an error — so we declare it first with a <strong>prototype</strong>.</p>
+  <p style="font-size:0.7em">C++ reads top to bottom. Calling a function the compiler hasn't seen yet is an error, so we declare it first with a <strong>prototype</strong>.</p>
   <div class="two-col">
     <div>
       <h3>dice.h</h3>
       <pre style="font-size:0.52em"><code class="language-cpp" data-trim>
 int rollDamage(int dice, int sides);
       </code></pre>
-      <p style="font-size:0.55em">Just the signature — <em>what</em> exists.</p>
+      <p style="font-size:0.55em">Just the signature, <em>what</em> exists.</p>
     </div>
     <div>
       <h3>dice.cpp</h3>
@@ -296,7 +296,7 @@ int rollDamage(int dice, int sides) {
     ...
 }
       </code></pre>
-      <p style="font-size:0.55em">The body — <em>how</em> it works.</p>
+      <p style="font-size:0.55em">The body, <em>how</em> it works.</p>
     </div>
   </div>
   <div class="callout">Every <code>.cpp</code> that calls it just does <code>#include "dice.h"</code>. This is the header/source split from week 0, now with a reason.</div>
@@ -318,7 +318,7 @@ void attack(const string &amp;spell);
   </code></pre>
   <ul>
     <li>Defaults go on the <strong>prototype</strong>, not the definition</li>
-    <li>Overloads must differ in <strong>parameters</strong> — return type alone is not enough</li>
+    <li>Overloads must differ in <strong>parameters</strong>: return type alone is not enough</li>
     <li>The compiler picks the match; ambiguity is a compile error</li>
   </ul>
 </section>
@@ -344,7 +344,7 @@ printParty(party, 3);               // nothing is copied
       <span class="mem-lbl">← just the address</span>
     </div>
   </div>
-  <div class="callout callout-maroon">An array argument decays to a <strong>pointer to its first element</strong>. The function gets an address, not a copy — which is why it must also be told the <code>size</code>.</div>
+  <div class="callout callout-maroon">An array argument decays to a <strong>pointer to its first element</strong>. The function gets an address, not a copy, which is why it must also be told the <code>size</code>.</div>
 </section>
 
 <section>
@@ -363,11 +363,11 @@ print2(vals, 3);
   <ul class="pi-choices">
     <li><span class="letter">A.</span> <code>print()</code> is more efficient</li>
     <li><span class="letter">B.</span> <code>print2()</code> is more efficient</li>
-    <li class="fragment correct" data-fragment-index="1"><span class="letter">C.</span> Neither — they are the same</li>
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">C.</span> Neither: they are the same</li>
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>C — identical.</strong> <code>int arr[]</code> in a parameter list <em>is</em> <code>int *arr</code>. Both calls pass one address; neither copies the array.
+    <strong>C. identical.</strong> <code>int arr[]</code> in a parameter list <em>is</em> <code>int *arr</code>. Both calls pass one address; neither copies the array.
   </div>
 </section>
 
@@ -385,14 +385,14 @@ print2(&amp;val, 1);
     </code></pre>
   </div>
   <ul class="pi-choices">
-    <li class="fragment correct" data-fragment-index="1"><span class="letter">A.</span> Yes — <code>&amp;val</code> is an address, and <code>int arr[]</code> takes an address</li>
-    <li><span class="letter">B.</span> No — <code>print2()</code> requires an actual array</li>
-    <li><span class="letter">C.</span> No — you cannot have an array of size 1</li>
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">A.</span> Yes: <code>&amp;val</code> is an address, and <code>int arr[]</code> takes an address</li>
+    <li><span class="letter">B.</span> No: <code>print2()</code> requires an actual array</li>
+    <li><span class="letter">C.</span> No: you cannot have an array of size 1</li>
     <li><span class="letter">D.</span> None of the above</li>
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>A — it compiles.</strong> The parameter is a pointer, and <code>&amp;val</code> is a valid <code>int*</code>. It compiles happily; passing a size larger than 1 would then read memory that isn't yours.
+    <strong>A. it compiles.</strong> The parameter is a pointer, and <code>&amp;val</code> is a valid <code>int*</code>. It compiles happily; passing a size larger than 1 would then read memory that isn't yours.
   </div>
 </section>
 
@@ -404,7 +404,7 @@ int totalHP(const int hp[], int size) {
     for (int i = 0; i &lt; size; ++i) {
         total += hp[i];
     }
-    // hp[0] = 99;   ❌ compile error — hp is const here
+    // hp[0] = 99;   ❌ compile error: hp is const here
     return total;
 }
   </code></pre>
@@ -427,17 +427,17 @@ int totalHP(const int hp[], int size) {
     <path d="M22,168 L298,168 L314,196 L6,196 Z" fill="#eceae3" stroke="#8d8d86" stroke-width="2.5" stroke-linejoin="round"/>
     <rect x="140" y="174" width="40" height="6" rx="3" fill="#cfcdc6"/>
   </svg>
-  <p class="demo-cap">Live coding. What could possibly go wrong?</p>
-  <p class="demo-sub">(the semicolon is always missing on line 12)</p>
+  <p class="demo-cap">Writing a function the linker can actually find.</p>
+  <p class="demo-sub">(declared with total confidence, defined never)</p>
 </section>
 
 <section>
   <h2>Which Way Does the Data Flow?</h2>
   <div class="two-col">
     <div>
-      <div class="callout" style="font-size:0.62em"><strong>IN</strong> — the function reads it, caller's value never changes</div>
-      <div class="callout" style="font-size:0.62em"><strong>OUT</strong> — the function fills it in; whatever was there is ignored</div>
-      <div class="callout" style="font-size:0.62em"><strong>IN/OUT</strong> — the function reads it <em>and</em> updates it</div>
+      <div class="callout" style="font-size:0.62em"><strong>IN</strong>: the function reads it, caller's value never changes</div>
+      <div class="callout" style="font-size:0.62em"><strong>OUT</strong>: the function fills it in; whatever was there is ignored</div>
+      <div class="callout" style="font-size:0.62em"><strong>IN/OUT</strong>: the function reads it <em>and</em> updates it</div>
     </div>
     <div>
       <pre style="font-size:0.5em"><code class="language-cpp" data-trim>
@@ -468,10 +468,10 @@ void applyDamage(int &amp;hp, int hit);
     </tbody>
   </table>
   <div class="two-col" style="font-size:0.6em; margin-top:0.5em">
-    <div class="callout"><strong>Small and IN?</strong> Pass by value — copying an <code>int</code> is free.</div>
-    <div class="callout"><strong>Big and IN?</strong> Pass by const reference — no copy, still safe.</div>
+    <div class="callout"><strong>Small and IN?</strong> Pass by value, copying an <code>int</code> is free.</div>
+    <div class="callout"><strong>Big and IN?</strong> Pass by const reference, no copy, still safe.</div>
   </div>
-  <div class="callout callout-maroon">Anything OUT or IN/OUT must be by <strong>plain reference</strong> — that's the only way the caller sees the change.</div>
+  <div class="callout callout-maroon">Anything OUT or IN/OUT must be by <strong>plain reference</strong>: that's the only way the caller sees the change.</div>
 </section>
 
 <section>
@@ -498,7 +498,7 @@ int main() {
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>A — In.</strong> <code>val</code> is a copy. <code>j()</code> changes its own copy and returns it; <code>x</code> back in <code>main()</code> is still 3.
+    <strong>A. In.</strong> <code>val</code> is a copy. <code>j()</code> changes its own copy and returns it; <code>x</code> back in <code>main()</code> is still 3.
   </div>
 </section>
 
@@ -525,7 +525,7 @@ int main() {
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>B — In/Out.</strong> <code>val</code> is a reference to <code>x</code>. The function <em>reads</em> the old value and <em>writes</em> a new one, so data flows both ways.
+    <strong>B. In/Out.</strong> <code>val</code> is a reference to <code>x</code>. The function <em>reads</em> the old value and <em>writes</em> a new one, so data flows both ways.
   </div>
 </section>
 
@@ -552,7 +552,7 @@ int main() {
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>C — Out.</strong> A reference again, but the old value is never read — it's overwritten. Data flows only outward.
+    <strong>C. Out.</strong> A reference again, but the old value is never read; it's overwritten. Data flows only outward.
   </div>
 </section>
 
@@ -575,7 +575,7 @@ dice.o: dice.cpp dice.h
 clean:
 	rm -f game *.o
   </code></pre>
-  <div class="callout callout-maroon">Those indents must be <strong>real tabs</strong>, not spaces — the one rule that bites everyone once.</div>
+  <div class="callout callout-maroon">Those indents must be <strong>real tabs</strong>, not spaces, the one rule that bites everyone once.</div>
 </section>
 
 <section>
@@ -586,17 +586,17 @@ clean:
     <li><code>make clean</code> throws away everything built, so you can start fresh</li>
     <li>Your whole build recipe lives in the repo, not in someone's memory</li>
   </ul>
-  <div class="callout">On a three-file project this saves seconds. On a big one it saves your afternoon — and it's how the autograder builds your code.</div>
+  <div class="callout">On a three-file project this saves seconds. On a big one it saves your afternoon, and it's how the autograder builds your code.</div>
 </section>
 
 <section class="closing-slide" data-background-color="#6E1C2E">
   <h2>Week 01 Recap</h2>
   <ul style="font-size:0.72em; color:rgba(255,255,255,0.92)">
-    <li><code style='color:var(--gold)'>if</code>/<code style='color:var(--gold)'>switch</code> and loops read the same as Python — the braces and types are new</li>
-    <li>A function must be <strong>declared before it is called</strong> — that's what headers are for</li>
+    <li><code style='color:var(--gold)'>if</code>/<code style='color:var(--gold)'>switch</code> and loops read the same as Python, the braces and types are new</li>
+    <li>A function must be <strong>declared before it is called</strong>: that's what headers are for</li>
     <li>Arrays are passed as <strong>addresses</strong>, so functions need the size too</li>
     <li>Choose the direction (in / out / in&#8202;/&#8202;out) first, then the mechanism</li>
-    <li><code style='color:var(--gold)'>make</code> rebuilds only what changed — and tabs matter</li>
+    <li><code style='color:var(--gold)'>make</code> rebuilds only what changed, and tabs matter</li>
   </ul>
   <div class="next">Next: a01 →</div>
   <p class="credit-line">

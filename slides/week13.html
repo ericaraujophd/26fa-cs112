@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Week 13: STL set and map — CS112</title>
+  <title>Week 13: Parallelism: Moore's law, fork-join, OpenMP · CS112</title>
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reset.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.css">
@@ -80,7 +80,7 @@
       <p class="title-course">Introduction to Data Structures</p>
       <div class="title-rule"></div>
       <p class="title-week">Week 13</p>
-      <p class="title-topic">STL set and map</p>
+      <p class="title-topic">Parallelism: Moore's law, fork-join, OpenMP</p>
       <p class="title-author">Eric Ara&uacute;jo</p>
       <p class="title-meta">Calvin University &middot; Fall 2026</p>
     </div>
@@ -90,235 +90,17 @@
 <section>
   <h2>This Week</h2>
   <ul class="agenda-list">
-    <li><div class="agenda-num">1</div> You've earned the STL</li>
-    <li><div class="agenda-num">2</div> <code>set</code> — unique and sorted</li>
-    <li><div class="agenda-num">3</div> Iterating a container</li>
-    <li><div class="agenda-num">4</div> <code>map</code> — keys to values</li>
-    <li><div class="agenda-num">5</div> The <code>[]</code> trap <span class='badge'>KEY</span></li>
-    <li><div class="agenda-num">6</div> Choosing a container</li>
-    <li><div class="agenda-num">7</div> Ordered vs. unordered</li>
+    <li><div class="agenda-num">1</div> Moore's law</li>
+    <li><div class="agenda-num">2</div> Why clock speed stopped</li>
+    <li><div class="agenda-num">3</div> The fork-join paradigm</li>
+    <li><div class="agenda-num">4</div> #pragma omp parallel for</li>
+    <li><div class="agenda-num">5</div> Memory access patterns</li>
   </ul>
 </section>
 
 <section>
-  <h2>You Built These by Hand</h2>
-  <p style="font-size:0.7em">Dynamic array, linked list, stack, queue, binary search tree, self-balancing tree. The STL ships all of them.</p>
-  <div class="callout callout-maroon">
-    Knowing what's inside is the point of the last twelve weeks. From here on, use the library — but now you know
-    <em>why</em> <code>set</code> is fast, and what it costs.
-  </div>
-</section>
-
-<section>
-  <h2><code>set</code>: Unique, Sorted, Fast</h2>
-  <pre><code class="language-cpp" data-trim>
-#include &lt;set&gt;
-
-set&lt;string&gt; enrolled;
-
-enrolled.insert("ada");
-enrolled.insert("grace");
-enrolled.insert("ada");        // ignored — already there
-
-cout &lt;&lt; enrolled.size();       // 2
-cout &lt;&lt; enrolled.count("ada"); // 1  (0 or 1, never more)
-  </code></pre>
-  <div class="callout">Two guarantees: <strong>no duplicates</strong>, and iteration comes out <strong>in sorted order</strong>. Both fall out of the balanced tree underneath.</div>
-</section>
-
-<section>
-  <h2>What's Underneath</h2>
-  <table>
-    <thead><tr><th>Operation</th><th>Complexity</th><th>Why</th></tr></thead>
-    <tbody>
-      <tr><td><code>insert</code></td><td>O(lg n)</td><td>walk down the tree, rebalance</td></tr>
-      <tr><td><code>count</code> / <code>find</code></td><td>O(lg n)</td><td>the guessing game again</td></tr>
-      <tr><td><code>erase</code></td><td>O(lg n)</td><td>remove, then rebalance</td></tr>
-      <tr><td>iteration</td><td>O(n) total</td><td>in-order traversal</td></tr>
-    </tbody>
-  </table>
-  <div class="callout">A balanced BST with a friendly interface. Every cost on this slide is one you derived yourself in weeks 11 and 12.</div>
-</section>
-
-<section>
-  <h2>Iterating</h2>
-  <pre style="font-size:0.6em"><code class="language-cpp" data-trim>
-for (const string &amp;name : enrolled) {      // sorted order
-    cout &lt;&lt; name &lt;&lt; endl;
-}
-
-set&lt;string&gt;::iterator it = enrolled.find("ada");
-if (it != enrolled.end()) {
-    cout &lt;&lt; *it &lt;&lt; " is enrolled" &lt;&lt; endl;
-}
-  </code></pre>
-  <div class="callout"><code>find</code> returns <code>end()</code> when there's no match — comparing against <code>end()</code> is how you ask "was it there?". Never dereference <code>end()</code>; it points past the last element, not at one.</div>
-</section>
-
-<section>
-  <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
-  <div class="pi-question">
-    <strong>What does this print?</strong>
-    <pre style="font-size:0.56em"><code class="language-cpp" data-trim>
-set&lt;int&gt; s;
-s.insert(7);
-s.insert(3);
-s.insert(7);
-s.insert(9);
-cout &lt;&lt; s.size();
-    </code></pre>
-  </div>
-  <ul class="pi-choices pi-compact">
-    <li class="fragment correct" data-fragment-index="1"><span class="letter">A.</span> 3</li>
-    <li><span class="letter">B.</span> 4</li>
-    <li><span class="letter">C.</span> 2</li>
-    <li><span class="letter">D.</span> It won't compile</li>
-  </ul>
-  <div class="answer-box fragment" data-fragment-index="1">
-    <div class="ans-label">&#10003; Answer</div>
-    <strong>A — 3.</strong> The second <code>insert(7)</code> is silently ignored, because a set holds each value at most once. If you need duplicates, that's a <code>multiset</code>.
-  </div>
-</section>
-
-<section>
-  <h2><code>map</code>: Keys to Values</h2>
-  <pre><code class="language-cpp" data-trim>
-#include &lt;map&gt;
-
-map&lt;string, int&gt; scores;
-
-scores["ada"]   = 95;
-scores["grace"] = 98;
-
-cout &lt;&lt; scores["ada"];        // 95
-cout &lt;&lt; scores.size();        // 2
-  </code></pre>
-  <div class="callout">Python's dictionary, with two differences: the keys are kept <strong>sorted</strong>, and lookup is O(lg n) rather than average O(1).</div>
-</section>
-
-<section>
-  <h2>Walking a <code>map</code></h2>
-  <pre style="font-size:0.58em"><code class="language-cpp" data-trim>
-for (const auto &amp;entry : scores) {
-    cout &lt;&lt; entry.first &lt;&lt; ": " &lt;&lt; entry.second &lt;&lt; endl;
-}
-
-// ada: 95
-// grace: 98        ← always in key order
-  </code></pre>
-  <div class="callout">Each element is a <code>pair</code>: <code>.first</code> is the key, <code>.second</code> is the value. The keys come out sorted because a map is the same balanced tree, keyed on <code>.first</code>.</div>
-</section>
-
-<section>
-  <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
-  <div class="pi-question">
-    <strong>What does <code>scores.size()</code> report?</strong>
-    <pre style="font-size:0.56em"><code class="language-cpp" data-trim>
-map&lt;string, int&gt; scores;
-scores["ada"] = 95;
-
-if (scores["bob"] &gt; 90) {     // just a lookup?
-    cout &lt;&lt; "bob did well";
-}
-cout &lt;&lt; scores.size();
-    </code></pre>
-  </div>
-  <ul class="pi-choices pi-compact">
-    <li><span class="letter">A.</span> 1</li>
-    <li class="fragment correct" data-fragment-index="1"><span class="letter">B.</span> 2</li>
-    <li><span class="letter">C.</span> 0</li>
-    <li><span class="letter">D.</span> It throws an exception</li>
-  </ul>
-  <div class="answer-box fragment" data-fragment-index="1">
-    <div class="ans-label">&#10003; Answer</div>
-    <strong>B — 2.</strong> Reading a missing key with <code>[]</code> <em>creates</em> it, value-initialised to 0. The lookup of "bob" silently inserted an entry. Use <code>.count(k)</code> or <code>.find(k)</code> to ask without inserting.
-  </div>
-</section>
-
-<section>
-  <h2>The <code>[]</code> Trap</h2>
-  <div class="two-col">
-    <div>
-      <h3>Inserts if absent</h3>
-      <pre style="font-size:0.46em"><code class="language-cpp" data-trim>
-m["missing"]     // creates it!
-      </code></pre>
-    </div>
-    <div>
-      <h3>Asks without inserting</h3>
-      <pre style="font-size:0.46em"><code class="language-cpp" data-trim>
-m.count("missing")
-m.find("missing") != m.end()
-      </code></pre>
-    </div>
-  </div>
-  <div class="callout callout-maroon">
-    This bites everyone once: a loop that only <em>reads</em> a map quietly doubles its size. The behaviour is deliberate —
-    <code>m[k]++</code> as a word counter depends on it — but it means <code>[]</code> is not a read-only operation.
-  </div>
-</section>
-
-<section>
-  <h2>A Word Counter</h2>
-  <pre style="font-size:0.6em"><code class="language-cpp" data-trim>
-map&lt;string, int&gt; counts;
-string word;
-
-while (fin &gt;&gt; word) {
-    ++counts[word];        // creates it at 0, then increments
-}
-
-for (const auto &amp;entry : counts) {
-    cout &lt;&lt; entry.first &lt;&lt; " " &lt;&lt; entry.second &lt;&lt; endl;
-}
-  </code></pre>
-  <div class="callout">Eight lines, alphabetised output, O(lg n) per word. Try writing that with an array of structs and you'll appreciate the container.</div>
-</section>
-
-<section class="demo-slide" data-background-color="#6E1C2E">
-  <h1>Demo</h1>
-  <div class="demo-rule"></div>
-  <svg class="demo-art" viewBox="0 -34 320 246" xmlns="http://www.w3.org/2000/svg">
-    <path d="M254,12 C250,0 260,-6 256,-20 C270,-11 267,1 261,12 Z" fill="#E8873A"/>
-    <path d="M266,12 C264,4 270,0 268,-10 C277,-3 275,5 271,12 Z" fill="#F2CD00"/>
-    <path d="M243,12 C241,5 246,2 244,-6 C251,-1 250,6 247,12 Z" fill="#E8873A" opacity=".75"/>
-    <rect x="40" y="10" width="240" height="150" rx="9" fill="#1e1f1a" stroke="#C49A2C" stroke-width="3"/>
-    <text x="58" y="46" font-family="'Fira Code',Consolas,monospace" font-size="15.0" fill="#9be36b">$ ./wordcount moby.txt</text>
-    <text x="58" y="76" font-family="'Fira Code',Consolas,monospace" font-size="13.0" fill="#ff7b72">distinct words: 17231</text>
-    <text x="58" y="96" font-family="'Fira Code',Consolas,monospace" font-size="13.0" fill="#ff7b72">the: 14620</text>
-    <text x="58" y="134" font-family="'Fira Code',Consolas,monospace" font-size="15" fill="#9be36b">$</text>
-    <rect x="72" y="122" width="9" height="15" fill="#9be36b"/>
-    <path d="M22,168 L298,168 L314,196 L6,196 Z" fill="#eceae3" stroke="#8d8d86" stroke-width="2.5" stroke-linejoin="round"/>
-    <rect x="140" y="174" width="40" height="6" rx="3" fill="#cfcdc6"/>
-  </svg>
-  <p class="demo-cap">Counting words in a book with eight lines of code.</p>
-  <p class="demo-sub">(and finding out how often 'the' appears)</p>
-</section>
-
-<section>
-  <h2>Ordered or Unordered?</h2>
-  <table>
-    <thead><tr><th></th><th><code>set</code> / <code>map</code></th><th><code>unordered_set</code> / <code>unordered_map</code></th></tr></thead>
-    <tbody>
-      <tr><td>Underneath</td><td>balanced tree</td><td>hash table</td></tr>
-      <tr><td>find / insert</td><td>O(lg n)</td><td>O(1) average, O(n) worst</td></tr>
-      <tr><td>Iteration order</td><td><strong>sorted</strong></td><td>unspecified</td></tr>
-      <tr><td>Needs</td><td><code>&lt;</code> on the key</td><td>a hash function</td></tr>
-    </tbody>
-  </table>
-  <div class="callout">If you need sorted output or range queries, take the tree. If you only ever ask "is it there?", the hash table is faster — and that's next week.</div>
-</section>
-
-<section>
-  <h2>Choosing a Container</h2>
-  <ul style="font-size:0.66em">
-    <li>Index by position, mostly appending → <code>vector</code></li>
-    <li>Constant insert/remove at the ends → <code>deque</code>, <code>stack</code>, <code>queue</code></li>
-    <li>Membership, no duplicates, sorted → <code>set</code></li>
-    <li>Key to value, sorted keys → <code>map</code></li>
-    <li>Membership or lookup as fast as possible, order irrelevant → <code>unordered_*</code></li>
-  </ul>
-  <div class="callout">The question is never "which container is best?" — it's "which operations will I do a million times?"</div>
+  <h2>Deck not yet written</h2>
+  <div class="callout callout-maroon">This deck has NOT been written yet. Its content comes from archive/26sp-slides/CS112-Multiprocessing.pptx and Joel Adams' matrix lab (archive/26sp-cs112/content/week12/matrix-mult-lab.md).</div>
 </section>
 
 <section class="closing-slide" data-background-color="#6E1C2E">
@@ -327,10 +109,10 @@ for (const auto &amp;entry : counts) {
     <li><code style='color:var(--gold)'>set</code> and <code style='color:var(--gold)'>map</code> are balanced trees with a friendly interface</li>
     <li>Both keep keys <strong>sorted</strong>; both are O(lg n) per operation</li>
     <li>A set holds each value once; a map holds each key once</li>
-    <li><code style='color:var(--gold)'>m[k]</code> <strong>inserts</strong> when the key is missing — use <code style='color:var(--gold)'>count</code> to ask</li>
+    <li><code style='color:var(--gold)'>m[k]</code> <strong>inserts</strong> when the key is missing: use <code style='color:var(--gold)'>count</code> to ask</li>
     <li>Need order? tree. Need raw speed? hash table</li>
   </ul>
-  <div class="next">Next: Window 3 check-in &middot; Dec 2 →</div>
+  <div class="next">Next: a14 →</div>
   <p class="credit-line">
     This deck stands on earlier CS112 materials by<br>
     <strong>Joel Adams</strong> and <strong>Victor Norman</strong> &middot; adapted and extended by <strong>Eric Ara&uacute;jo</strong>

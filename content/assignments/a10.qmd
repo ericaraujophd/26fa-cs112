@@ -1,34 +1,493 @@
 ---
-title: "Assignment 10: Binary Search Trees"
-subtitle: "Week 11 · Nov 16 – Nov 21"
+title: "Assignment 10: HashTable"
+subtitle: "Stop searching for the index. Compute it."
 ---
 
 ::: {.callout-note}
-**Not published yet.** This page fills in before week 11 begins. The outline below
-is what the assignment is being built to cover — a preview, not a specification.
+Accept the assignment to get your own private GitHub repository (see
+[Getting the code](#getting-the-code) below), then clone it and open it in VS Code.
+
+**Plan to set aside about 2 to 2.5 hours.** TODOs 1–5 are short and get the
+machinery working. **TODO 6 is the assignment** — it is where you make the hash
+function good, and it is the part that can run long. Spring's rule was a good
+one: stop after an hour of tuning.
 :::
 
-## What this assignment will cover
+## Objectives
 
-- Articulate the operations one can perform on a BST.
-- Reason about the time complexity of BST operations in best and worst cases.
-- Define what makes a BST balanced.
-- Describe the algorithm for finding the max node in a left subtree and min in a right subtree.
-- Implement insert, contains, remove, getHeight, and tree traversals.
+By the end of this assignment, you will be able to:
 
-## Course skills
+- Explain what a hash function is for, and why an array subscript cannot take a
+  string
+- Write a hash function that is deterministic, in range, and independent of how
+  much is in the table
+- Explain why chaining makes collisions survivable rather than fatal
+- Measure how evenly a hash function distributes real data, and improve it from
+  the measurement
+- Say what a load factor is, and name the trade it describes
+- Compare membership testing in a hash table against a linear scan, with numbers
 
-Primary practice for skills **F1, F2**. See
-[Skills & Check-Ins](../checkins.html) for what each one means and when it is assessed.
+---
 
-## Getting the code
+This assignment covers course skill **C7** (implement and use a hash table with
+a reasonable hash function), from cluster **C**, assessed at **Window 2** on
+Nov 20. It is the second of week 9's two assignments; a09 was the first.
 
-You will accept the assignment through Classroom 50, which creates your own private
-repository from the starter code. The accept link appears here when the assignment
-is published.
+::: {.callout-note}
+**This one is homework, not lab.** The hash table is **Friday's** lecture
+(Nov 6), so this assignment starts after it. Tuesday's lab session belongs to
+a09.
 
-## Submitting
+Nothing here depends on a09 — different container, different question — so if
+a09 is still giving you trouble, it is fine to do these in either order.
+:::
 
-Commit and push to `main`. Every push is graded automatically — check the **Actions**
-tab of your repository for the run and **Releases** for your score. Your most recent
-submission before the deadline is the one that counts.
+---
+
+## 1. Introduction
+
+Every container you have built this semester answers the same question in
+different ways: **what is at position `i`?**
+
+`Vec` answers it by arithmetic — the address of element `i` is the start plus
+`i` times the element size, so it is instant. `List` answers it by walking. A
+`Stack` and a `Queue` answer it only for one particular `i` and refuse the rest.
+All of them are about **order**.
+
+This week's container answers a different question, and has no order at all:
+
+> **Is this here?**
+
+You already know how to answer that with what you have: walk the container and
+compare. For 73,419 words, that is up to 73,419 string comparisons for every
+question you ask — and every one of them for a word that turns out *not* to be
+there, since you only know it is absent once you have looked everywhere.
+
+A hash table answers the same question by looking in **one** place. Not by
+searching faster. By not searching.
+
+::: {.callout-note}
+**Why string keys are the whole justification.**
+
+If your keys were numbers 0 to 99, you would not need any of this — you would
+use an array of 100 slots, put item 47 at index 47, and go straight there.
+That is what an array *is*.
+
+The trouble is that `myArray["gargoyle"]` is not a thing. A subscript has to be
+a number, and a word is not one. And you cannot make an array with one slot per
+possible spelling: at 22 letters, there are more of those than there are atoms
+worth of memory.
+
+So: **manufacture a number out of the word.** Something small, something
+repeatable, something that spreads different words to different slots. That
+function is the hash function, and this entire assignment is about how hard the
+last of those three is.
+:::
+
+---
+
+## 2. Getting the Code {#getting-the-code}
+
+Accept the assignment. This creates a private GitHub repository that belongs to
+you, already containing the starter code:
+
+::: {.callout-note}
+**Accept link:** *(added when the assignment is published)*
+:::
+
+Then clone it, replacing `YOURUSERNAME` with your GitHub username:
+
+```bash
+git clone https://github.com/26fa-cs112/cs112-a10-YOURUSERNAME.git
+cd cs112-a10-YOURUSERNAME
+```
+
+Open the folder in VS Code, then build it and run it before you change anything:
+
+```bash
+make
+./a10
+make test
+```
+
+`make` succeeds, `./a10` stops immediately and tells you to do TODO 1, and
+`make test` reports **8 / 30**.
+
+::: {.callout-tip}
+Prefer the terminal? `gh student accept 26fa-cs112 cs112 a10` does the same
+thing.
+:::
+
+---
+
+## 3. What You Were Given
+
+**You edit two files: `HashTable.cpp` and `findings.txt`.** Seven TODOs between
+them.
+
+| File | Yours? | What it is |
+|---|---|---|
+| `HashTable.cpp` | **yes** | TODOs 1–6 |
+| `findings.txt` | **yes** | TODO 7 — what you measured |
+| `HashTable.h` | no | the specification. Read this first. |
+| `main.cpp` | no | the experiment: load, describe, race |
+| `Timer.h` | no | a08's stopwatch, unchanged |
+| `words.txt` | no | 73,419 words |
+| `checks.cpp` | no | the course's checks |
+| `catch.hpp`, `catchmain.cpp`, `makefile`, `test.py` | no | framework, build, grader |
+
+### The dictionary
+
+`words.txt` is a real spell-checker word list — SCOWL, filtered to 73,419
+lowercase words made only of letters. `WORDS-LICENSE.txt` records exactly where
+it came from, what was done to it, and the licence that permits it to be here.
+Read it; knowing the provenance of your data is part of the job.
+
+Being a real word list, it contains proper nouns, brand names, and the odd word
+you would not choose. It was not hand-curated. It is data to be hashed.
+
+### Chaining
+
+Each bucket in the table is a `list<string>`, and words that hash to the same
+bucket simply live in the same list. That is **chaining**, and it is why a
+collision is not an error:
+
+```
+                  ┌──────────────────────────────────────┐
+    bucket 0   →  │ "gargoyle" → "meridian" → "plimth"    │
+                  ├──────────────────────────────────────┤
+    bucket 1   →  │ "banjo"                               │
+                  ├──────────────────────────────────────┤
+    bucket 2   →  │ (empty)                               │
+                  ├──────────────────────────────────────┤
+    bucket 3   →  │ "juniper" → "obsidian"                │
+                  └──────────────────────────────────────┘
+```
+
+`contains("meridian")` hashes once to get **0**, then walks bucket 0 — three
+entries — and stops. It never looks at buckets 1, 2 or 3, and it would not look
+at bucket 500 either.
+
+So the cost of a lookup is **the length of one bucket**. Which is why the
+question "how evenly does my hash spread things out?" is not an aesthetic one.
+It is the only question that matters.
+
+---
+
+## 4. TODOs 1 to 5 — get it working
+
+None of these five is hard, and none of them is the point. They exist to get you
+to the place where you can *see* what your hash function is doing.
+
+**TODO 1 — the constructor.** Two lines: `myTable.resize(TABLE_SIZE)` and set
+`mySize`.
+
+::: {.callout-warning}
+**Do TODO 1 before TODO 3.** A table whose constructor has not run has an empty
+`myTable`, and `myTable[b]` on a bucket that does not exist does not politely
+fail — it writes over memory belonging to something else, and the crash turns
+up somewhere unrelated half an hour later. `main.cpp` checks for this and stops
+rather than letting it happen.
+:::
+
+**TODO 2 — `hash`.** Write the **simplest** thing that obeys the three rules in
+the spec. The one from Friday's slides — add the first character to the last
+character, then `% TABLE_SIZE` — obeys all three. It is also a bad hash
+function, as you are about to measure, and that is exactly why you start with
+it.
+
+**TODO 3 — `insert`.** Hash, `push_back` onto that bucket, increment `mySize`.
+You do **not** need to check whether the word is already there; the dictionary
+has no duplicates and the spec says so.
+
+**TODO 4 — `contains`.** Hash, walk that one bucket, compare. Note what it does
+not do: it never looks in another bucket, and it never looks at `mySize`.
+
+**TODO 5 — `writeStats`.** The exact output format is in the comment in
+`HashTable.cpp`, and the checks compare against it line for line. This is the
+instrument. Until it exists you are guessing.
+
+Run `./a10` at this point. Keep the output; you are about to improve on it.
+
+---
+
+## 5. What you will see, and why it is bad {#what-you-will-see}
+
+With the first-plus-last-character hash and `TABLE_SIZE` at 200, `stats.txt`
+says something close to this:
+
+```
+words: 73419
+buckets: 200
+empty buckets: 150
+largest bucket: 4233
+average per bucket: 367.10
+```
+
+**Three quarters of the table is empty**, and one bucket holds 4,233 words —
+eleven times what it should. A lookup that lands there compares against all
+4,233 of them.
+
+Here is why, and the reason is worth more than the fix.
+
+A lowercase letter is a number between 97 and 122. So `word[0] + word[last]` is
+somewhere between 194 and 244 — **fifty-one possible values, for every word in
+the English language.** Taking `% 200` of a number in that range does nothing at
+all: 194 through 199 stay put, 200 through 244 wrap to 0 through 44. Buckets 45
+to 193 can never be reached, no matter how many words you insert or how big you
+make the table.
+
+::: {.callout-important}
+**Making `TABLE_SIZE` bigger cannot fix this.** At 250 buckets the same hash
+reaches even fewer of them, because the range of values it produces did not
+change. A hash function that only produces fifty different answers can only ever
+use fifty buckets.
+
+That is the trap this section exists to spring. The problem is not the size of
+the table. The problem is that the hash function is throwing away almost all of
+the word.
+:::
+
+Notice what it throws away. `word[0]` and `word[last]` — everything in between
+is ignored, so "gargoyle" and "gale" and "guacamole" are indistinguishable to
+it. And the two characters it does look at are **added**, so "on" and "no" get
+the same answer, as do "stop", "spot", "pots" and "tops".
+
+---
+
+## 6. TODO 6 — make it good {#make-it-good}
+
+Two dials, and they interact:
+
+- the arithmetic inside `hash`
+- `TABLE_SIZE`, the constant at the top of `HashTable.cpp`
+
+### The bar
+
+Both numbers come straight out of your own `stats.txt`, so you can tell whether
+you have cleared it before you push:
+
+| | |
+|---|---|
+| **empty buckets** | at most **2** |
+| **largest bucket** | at most **3 ×** the average |
+
+The average is words divided by buckets, so at `TABLE_SIZE = 200` it is 367 and
+the largest bucket must be under about 1,100. A good hash gets the largest
+bucket under **1.5 ×** the average without much trouble; that is not required,
+but it is what you are aiming at, and it is a much better target than "3".
+
+::: {.callout-warning}
+**`TABLE_SIZE` must stay between 100 and 250.** There is a check.
+
+That cap is the exercise. With 73,419 words and 250 buckets you *cannot* avoid
+collisions — roughly three hundred words per bucket is the best anyone can do.
+A hash function that only looks good when there is room to spare has not solved
+anything; it has just been given enough space to hide in.
+:::
+
+### Where to look
+
+Do not go and find a famous hash function to paste in. Reason from §5 — the
+naive hash fails for two specific reasons, and fixing either one helps:
+
+**It ignores most of the word.** A hash that adds up *every* character sees the
+whole word. That alone gets you from fifty possible values to several hundred,
+and it clears the bar. Try it; it takes one line, and it is a big improvement.
+
+**Addition does not care about order.** Once every character is in the sum,
+"stop" and "pots" still collide, because addition throws the ordering away. To
+fix that you need each character's **position** to change its contribution —
+multiply the running total by something before adding the next character, or
+weight each character by its index. That is what takes the largest bucket from
+about 1.6 × the average down to about 1.1 ×.
+
+::: {.callout-tip}
+**Watch out for overflow — but do not be afraid of it.** Multiply a running
+total by a number for every character of a long word and you will exceed what an
+`unsigned` can hold. That is fine: unsigned arithmetic in C++ wraps around
+cleanly rather than being undefined, and wrapping is a perfectly good way to mix
+bits. Use `unsigned long long` for the running total if you like the extra room.
+
+What you must not do is take `% TABLE_SIZE` in the middle of the loop. Do the
+arithmetic, then take the remainder once, at the end.
+:::
+
+::: {.callout-tip}
+**The two dials really do interact.** If your multiplier and your `TABLE_SIZE`
+share a factor, the multiplication stops mattering and the distribution collapses
+— a table size of 217 with a multiplier of 31 is much worse than 216 or 218,
+because 217 is 7 × 31. If a hash you believe in is producing a bad distribution,
+change `TABLE_SIZE` before you change the hash. A prime is a safe choice, and
+241 is prime.
+:::
+
+Finally, fill in the `MY HASH:` line inside `hash` — what your final algorithm
+is, and why you think it distributes well. That line is graded: not the prose,
+but that a real explanation is there.
+
+**Stop after an hour of tuning.** You are looking for a hash that is clearly
+good, not the best hash function in the world.
+
+---
+
+## 7. The race, and what it costs {#the-race}
+
+Once the table is built, `./a10` asks forty membership questions three ways and
+prints something like this:
+
+```
+Asked 800 membership questions, three ways:
+
+  linear scan of the vector:      138.121 microseconds per question    (no buckets at all)
+  your HashTable:                   5.204 microseconds per question    (241 buckets)
+  std::unordered_set:               0.044 microseconds per question    (85229 buckets)
+
+  yours was 26.5 times faster than the linear scan.
+  your load factor — words per bucket — is 304.6, against the STL's 0.9.
+```
+
+Twenty of those forty words are in the dictionary and twenty are not, on
+purpose. A **failed** lookup is the interesting one: the linear scan has to look
+at all 73,419 words before it can say no, while your table looks in one bucket
+and says no immediately.
+
+### Why only twenty-six times, and not seventy-three thousand?
+
+Because your table is **three hundred words deep**. You hash once — instant —
+and then walk a list of three hundred strings. You have replaced 73,419
+comparisons with about 150, which is a factor of a few hundred, not a factor of
+73,419.
+
+That number has a name. **Load factor** is items divided by buckets, and it is
+the single number that says how fast a hash table will be. Yours is about 300.
+The Standard Library's is about 0.9 — it keeps roughly one word per bucket, so
+its bucket walk is one comparison and it is another hundred times faster than
+yours.
+
+::: {.callout-note}
+**This is the time-space trade-off, and you can see all three points on it.**
+
+| | buckets | memory for buckets | per question |
+|---|---|---|---|
+| linear scan | none | none | ~138 µs |
+| your table | 241 | tiny | ~5 µs |
+| `std::unordered_set` | 85,229 | substantial | ~0.04 µs |
+
+The STL's table is faster because it **bought** speed with memory, and it keeps
+buying: when the load factor creeps above 1 it allocates a bigger array and
+rehashes everything into it. That is what "resize" means for a hash table, and
+it is why real ones are fast.
+
+Your table is capped at 250 buckets so that you have to face the distribution
+problem instead of dodging it with space. Given the constraint, twenty-six times
+faster than searching is the honest answer, and it is worth knowing that the
+constraint — not your hash — is what is holding the number down.
+:::
+
+You are not asked to implement resizing, and `std::unordered_set` is there only
+to show you the far end of the trade. Do not try to beat it.
+
+---
+
+## 8. TODO 7 — `findings.txt`
+
+Five numbers and three sentences.
+
+The three counts — `table-size`, `empty-buckets`, `largest-bucket` — come
+straight out of **your own** `stats.txt`, and they are checked against it. If
+you change your hash or your table size after writing them down, run `./a10`
+again and copy the new ones.
+
+The two timings come from what `./a10` prints at the end. They are graded only
+for being present and positive.
+
+::: {.callout-note}
+**Why the timings are not graded against a target.** The grading machine is
+shared with other jobs and is not your laptop. Your microseconds are true about
+your computer at that moment; the *distribution* of your hash is true
+everywhere. So the distribution is what carries the marks, and the timings are
+graded the way a08's were — that you ran the experiment and wrote down what you
+saw.
+:::
+
+The three sentences want at least twelve words each. Nobody is marking the
+prose. The third one — why an array indexed by the word itself is not an
+option — is the one worth thinking about, because it is the reason this whole
+data structure exists.
+
+---
+
+## 9. Testing Your Work
+
+```bash
+make test         # all 30 checks
+```
+
+::: {.callout-important}
+**There are no hidden tests.** What you run with `make test` is exactly what the
+grader runs — all 30 checks, every one of them in a file in your repository.
+:::
+
+| | |
+|---|---|
+| 9 | the table: insert, contains, getSize, buckets |
+| 6 | collisions, and the hash function's three rules |
+| 5 | `writeStats` |
+| 5 | the experiment against the real dictionary, including the two distribution checks |
+| 5 | `findings.txt` and the `MY HASH` line |
+
+Each check runs in its own process, so a crash costs you that check rather than
+the whole run.
+
+::: {.callout-note}
+**Nothing in `checks.cpp` says what your hash must be.** It cannot — choosing
+one is TODO 6. What it checks is that whatever you chose obeys the three rules,
+and that the table built on top of it gives the right answers. The two
+distribution checks live in `test.py` instead, because they need the whole
+73,419-word file.
+:::
+
+Run one on its own while you are debugging:
+
+```bash
+make checks
+./checks "Hash: the answer is always a real bucket number"
+```
+
+---
+
+## 10. Submit
+
+```bash
+git add .
+git commit -m "Complete a10"
+git push
+```
+
+`findings.txt` needs to be committed. `stats.txt` does not — the grader runs
+`./a10` itself.
+
+::: {.callout-important}
+Put your name at the top of `README.md` before your final push.
+:::
+
+Every push is graded automatically. Push as often as you like — the most recent
+submission counts, and there is no deadline on this assignment beyond the last
+day of classes.
+
+---
+
+::: {.callout-note}
+## The container you did not have to write
+
+`std::unordered_set` in `main.cpp` is the Standard Library's version of what you
+just built: the same idea, chaining and all, with resizing added and thirty
+years of tuning on top.
+
+In week 11 you will use `std::set` and `std::map` properly, and one of the first
+questions you will have to answer about each is whether you want the ordered
+version or the hashed one. Having built the hashed one by hand, you already know
+what you are choosing between — and, more usefully, what a bad hash function
+would do to your program if you ever have to supply one for a type of your own.
+:::

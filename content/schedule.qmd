@@ -452,6 +452,7 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
 </div>
 
 <!-- ══════════════════════════════════════════════════════════
+<!-- ══════════════════════════════════════════════════════════
      WEEK 08 — Algorithm Analysis and Big-Oh
      ══════════════════════════════════════════════════════════ -->
 <div class="accordion-item">
@@ -472,7 +473,7 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
         <div class="res-label">🖥️ Slides</div>
         <div class="res-val"><a href="../slides/week08.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week08.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week08-bw.pdf">print version</a></div>
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><span class="res-tbd">Algorithm Analysis &mdash; assignment to be announced</span></div>
+        <div class="res-val"><a class="res-todo" href="assignments/a08.html">a08 &mdash; Stopwatch</a></div>
       </div>
 
       <div class="slo-cols">
@@ -482,6 +483,7 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
             <li><span class="bloom-dot bloom-understand" title="Understand"></span>Describe the concept of Big-Oh notation for analyzing algorithmic complexity.</li>
             <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Reason about Big-Oh as an approximation: <em>a·f(n) + b</em>.</li>
             <li><span class="bloom-dot bloom-remember" title="Remember"></span>Identify typical Big-Oh curves (O(1), O(log n), O(n), O(n log n), O(n²)).</li>
+            <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Analyse best, worst and amortized complexity.</li>
           </ul>
         </div>
         <div>
@@ -492,13 +494,14 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
           </ul>
         </div>
       </div>
+      <p style="font-size:.85em;opacity:.75;margin-top:.9rem">Friday Oct 23 is a <strong>POGIL</strong> — classifying the complexity of code snippets, in groups.</p>
 
     </div>
   </div>
 </div>
 
 <!-- ══════════════════════════════════════════════════════════
-     WEEK 09 — Stacks and Queues
+     WEEK 09 — Stacks, Queues, and Hash Tables
      ══════════════════════════════════════════════════════════ -->
 <div class="accordion-item">
   <h2 class="accordion-header">
@@ -506,7 +509,7 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
             data-bs-toggle="collapse" data-bs-target="#w09">
       <span class="week-num">Week 09</span>
       <span class="week-dates">Nov 2 – Nov 7</span>
-      <span class="week-topic">Stacks and Queues</span>
+      <span class="week-topic">Stacks, Queues, and Hash Tables</span>
     </button>
   </h2>
   <div id="w09" class="accordion-collapse collapse" data-bs-parent="#scheduleAccordion">
@@ -518,7 +521,7 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
         <div class="res-label">🖥️ Slides</div>
         <div class="res-val"><a href="../slides/week09.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week09.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week09-bw.pdf">print version</a></div>
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><span class="res-tbd">Stacks and Queues &mdash; assignment to be announced</span></div>
+        <div class="res-val"><a class="res-todo" href="assignments/a09.html">a09 &mdash; Stack and Queue</a><span class="res-sep">·</span><a class="res-todo" href="assignments/a10.html">a10 &mdash; HashTable</a></div>
       </div>
 
       <div class="slo-cols">
@@ -527,16 +530,16 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
           <ul class="slo-list">
             <li><span class="bloom-dot bloom-remember" title="Remember"></span>Enumerate the typical API for a Stack and a Queue.</li>
             <li><span class="bloom-dot bloom-understand" title="Understand"></span>Define an Abstract Data Type (ADT).</li>
-            <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Reason about how to implement Stacks and Queues so all operations are O(1).</li>
-            <li><span class="bloom-dot bloom-understand" title="Understand"></span>Describe how a circular array works.</li>
-            <li><span class="bloom-dot bloom-understand" title="Understand"></span>Define a deque and explain how to implement it.</li>
+            <li><span class="bloom-dot bloom-understand" title="Understand"></span>Describe how a circular array works, and how hashing computes an index.</li>
+            <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Reason about collisions, load factor, and the time-space trade-off in a hash table.</li>
           </ul>
         </div>
         <div>
           <p class="slo-section-label">🛠️ Skills</p>
           <ul class="slo-list">
-            <li><span class="bloom-dot bloom-create" title="Create"></span>Implement a Stack using a fixed-size array or linked list.</li>
-            <li><span class="bloom-dot bloom-create" title="Create"></span>Implement a Queue using a circular array.</li>
+            <li><span class="bloom-dot bloom-create" title="Create"></span>Implement a Stack with O(1) push and pop.</li>
+            <li><span class="bloom-dot bloom-create" title="Create"></span>Implement a Queue with O(1) enqueue and dequeue.</li>
+            <li><span class="bloom-dot bloom-create" title="Create"></span>Implement and use a hash table with a reasonable hash function.</li>
           </ul>
         </div>
       </div>
@@ -546,7 +549,7 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
 </div>
 
 <!-- ══════════════════════════════════════════════════════════
-     WEEK 10 — Recursion
+     WEEK 10 — Recursion and Sorting
      ══════════════════════════════════════════════════════════ -->
 <div class="accordion-item">
   <h2 class="accordion-header">
@@ -554,7 +557,7 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
             data-bs-toggle="collapse" data-bs-target="#w10">
       <span class="week-num">Week 10</span>
       <span class="week-dates">Nov 9 – Nov 14</span>
-      <span class="week-topic">Recursion</span>
+      <span class="week-topic">Recursion and Sorting</span>
     </button>
   </h2>
   <div id="w10" class="accordion-collapse collapse" data-bs-parent="#scheduleAccordion">
@@ -566,25 +569,25 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
         <div class="res-label">🖥️ Slides</div>
         <div class="res-val"><a href="../slides/week10.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week10.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week10-bw.pdf">print version</a></div>
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><span class="res-tbd">Recursion &mdash; assignment to be announced</span></div>
+        <div class="res-val"><a class="res-todo" href="assignments/a11.html">a11 &mdash; Three Ways Through a Maze</a><span class="res-sep">·</span><a class="res-todo" href="assignments/a12.html">a12 &mdash; Snake</a></div>
       </div>
 
       <div class="slo-cols">
         <div>
           <p class="slo-section-label">🧠 Understanding</p>
           <ul class="slo-list">
-            <li><span class="bloom-dot bloom-understand" title="Understand"></span>Define the structure of a recursive solution: base case and recursive case.</li>
-            <li><span class="bloom-dot bloom-remember" title="Remember"></span>Correctly use the terms "winding phase" and "unwinding phase".</li>
-            <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Argue why a recursive solution is generally less efficient than an iterative one.</li>
-            <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Describe the role the runtime stack plays in recursive execution.</li>
-            <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Reason about the time complexity of the Towers of Hanoi problem.</li>
+            <li><span class="bloom-dot bloom-understand" title="Understand"></span>Explain how a recursive function calls itself, and how it terminates.</li>
+            <li><span class="bloom-dot bloom-understand" title="Understand"></span>Describe the run-time stack, and the winding and unwinding phases.</li>
+            <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Reason about the complexity of Towers of Hanoi.</li>
+            <li><span class="bloom-dot bloom-understand" title="Understand"></span>Identify the time complexity of common sorting algorithms.</li>
           </ul>
         </div>
         <div>
           <p class="slo-section-label">🛠️ Skills</p>
           <ul class="slo-list">
-            <li><span class="bloom-dot bloom-apply" title="Apply"></span>Implement a basic recursive function (e.g., factorial, Fibonacci).</li>
-            <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Trace through a recursive call stack step by step.</li>
+            <li><span class="bloom-dot bloom-create" title="Create"></span>Design and implement a recursive solution to a problem.</li>
+            <li><span class="bloom-dot bloom-create" title="Create"></span>Implement insertion sort and selection sort, and compare them.</li>
+            <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Explain why merge sort is tractable only because it is recursive.</li>
           </ul>
         </div>
       </div>
@@ -594,7 +597,7 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
 </div>
 
 <!-- ══════════════════════════════════════════════════════════
-     WEEK 11 — Binary Search Trees
+     WEEK 11 — Binary Search Trees and the STL set / map
      ══════════════════════════════════════════════════════════ -->
 <div class="accordion-item">
   <h2 class="accordion-header">
@@ -602,7 +605,7 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
             data-bs-toggle="collapse" data-bs-target="#w11">
       <span class="week-num">Week 11</span>
       <span class="week-dates">Nov 16 – Nov 21</span>
-      <span class="week-topic">Binary Search Trees</span>
+      <span class="week-topic">Binary Search Trees and the STL set / map</span>
     </button>
   </h2>
   <div id="w11" class="accordion-collapse collapse" data-bs-parent="#scheduleAccordion">
@@ -614,34 +617,35 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
         <div class="res-label">🖥️ Slides</div>
         <div class="res-val"><a href="../slides/week11.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week11.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week11-bw.pdf">print version</a></div>
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><span class="res-tbd">Binary Search Trees &mdash; assignment to be announced</span></div>
+        <div class="res-val"><a class="res-todo" href="assignments/a13.html">a13 &mdash; Index</a></div>
       </div>
 
       <div class="slo-cols">
         <div>
           <p class="slo-section-label">🧠 Understanding</p>
           <ul class="slo-list">
-            <li><span class="bloom-dot bloom-understand" title="Understand"></span>Articulate the operations one can perform on a BST.</li>
-            <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Reason about the time complexity of BST operations in best and worst cases.</li>
-            <li><span class="bloom-dot bloom-understand" title="Understand"></span>Define what makes a BST <strong>balanced</strong>.</li>
-            <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Describe the algorithm for finding the max node in a left subtree and min in a right subtree.</li>
+            <li><span class="bloom-dot bloom-remember" title="Remember"></span>Articulate the operations one can perform on a Binary Search Tree.</li>
+            <li><span class="bloom-dot bloom-understand" title="Understand"></span>Understand insert, contains, remove, getHeight, the destructor and traversals.</li>
+            <li><span class="bloom-dot bloom-understand" title="Understand"></span>Describe the characteristics and complexity of the STL <code>set</code> and <code>map</code>.</li>
           </ul>
         </div>
         <div>
           <p class="slo-section-label">🛠️ Skills</p>
           <ul class="slo-list">
-            <li><span class="bloom-dot bloom-create" title="Create"></span>Implement <code>insert</code>, <code>contains</code>, <code>remove</code>, <code>getHeight</code>, and tree traversals.</li>
-            <li><span class="bloom-dot bloom-apply" title="Apply"></span>Implement the BST destructor using recursive node deletion.</li>
+            <li><span class="bloom-dot bloom-create" title="Create"></span>Implement a BST with insert, contains and traversals.</li>
+            <li><span class="bloom-dot bloom-apply" title="Apply"></span>Write code using iterators to traverse a <code>set</code> or a <code>map</code>.</li>
           </ul>
         </div>
       </div>
+      <p style="font-size:.85em;opacity:.75;margin-top:.9rem">The STL <code>set</code> and <code>map</code> are trees underneath — you meet the library's version the same week you build one by hand.</p>
 
     </div>
   </div>
 </div>
 
+
 <!-- ══════════════════════════════════════════════════════════
-     WEEK 12 — AVL Trees
+     WEEK 12 — AVL Trees — a brief introduction
      ══════════════════════════════════════════════════════════ -->
 <div class="accordion-item">
   <h2 class="accordion-header">
@@ -649,7 +653,7 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
             data-bs-toggle="collapse" data-bs-target="#w12">
       <span class="week-num">Week 12</span>
       <span class="week-dates">Nov 23 – Nov 28</span>
-      <span class="week-topic">AVL Trees</span>
+      <span class="week-topic">AVL Trees — a brief introduction</span>
     </button>
   </h2>
   <div id="w12" class="accordion-collapse collapse" data-bs-parent="#scheduleAccordion">
@@ -661,7 +665,7 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
         <div class="res-label">🖥️ Slides</div>
         <div class="res-val"><a href="../slides/week12.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week12.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week12-bw.pdf">print version</a></div>
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><span class="res-tbd">AVL Trees &mdash; assignment to be announced</span></div>
+        <div class="res-val"><span class="res-tbd">no assignment &mdash; a14 spans weeks 13&ndash;14</span></div>
       </div>
 
       <div class="alert alert-warning py-1 px-2 mb-3" style="font-size:0.85rem;">
@@ -691,7 +695,8 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
 </div>
 
 <!-- ══════════════════════════════════════════════════════════
-     WEEK 13 — STL set and map
+<!-- ══════════════════════════════════════════════════════════
+     WEEK 13 — Parallelism — Moore's law, fork-join, OpenMP
      ══════════════════════════════════════════════════════════ -->
 <div class="accordion-item">
   <h2 class="accordion-header">
@@ -699,7 +704,7 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
             data-bs-toggle="collapse" data-bs-target="#w13">
       <span class="week-num">Week 13</span>
       <span class="week-dates">Nov 30 – Dec 5</span>
-      <span class="week-topic">STL <code>set</code> and <code>map</code></span>
+      <span class="week-topic">Parallelism — Moore's law, fork-join, OpenMP</span>
     </button>
   </h2>
   <div id="w13" class="accordion-collapse collapse" data-bs-parent="#scheduleAccordion">
@@ -709,37 +714,35 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
         <div class="res-label">📖 Read</div>
         <div class="res-val"><span class="res-tbd">to be announced</span></div>
         <div class="res-label">🖥️ Slides</div>
-        <div class="res-val"><a href="../slides/week13.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week13.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week13-bw.pdf">print version</a></div>
+        <div class="res-val"><span class="res-tbd">being written</span></div>
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><span class="res-tbd">STL Sets and Maps &mdash; assignment to be announced</span></div>
+        <div class="res-val"><a class="res-todo" href="assignments/a14.html">a14 &mdash; Matrix Operations and OpenMP</a></div>
       </div>
 
       <div class="slo-cols">
         <div>
           <p class="slo-section-label">🧠 Understanding</p>
           <ul class="slo-list">
-            <li><span class="bloom-dot bloom-understand" title="Understand"></span>Describe the unique characteristics of the STL <code>set</code> (unique values, sorted order).</li>
-            <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Identify the time complexity of <code>set</code> and <code>map</code> operations.</li>
-            <li><span class="bloom-dot bloom-understand" title="Understand"></span>Explain the behavior of an iterator.</li>
-            <li><span class="bloom-dot bloom-understand" title="Understand"></span>Describe the unique characteristics of the STL <code>map</code> (key-value pairs, unique keys).</li>
-            <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Reason about the unique behavior of indexing (<code>[]</code>) in a <code>map</code>.</li>
+            <li><span class="bloom-dot bloom-understand" title="Understand"></span>Describe Moore&rsquo;s law, and why manufacturers stopped raising clock speed.</li>
+            <li><span class="bloom-dot bloom-understand" title="Understand"></span>Describe the fork-join paradigm.</li>
+            <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Reason about how memory access patterns affect parallel speed-up.</li>
           </ul>
         </div>
         <div>
           <p class="slo-section-label">🛠️ Skills</p>
           <ul class="slo-list">
-            <li><span class="bloom-dot bloom-apply" title="Apply"></span>Write code using iterators to traverse all items in a <code>set</code> or <code>map</code>.</li>
-            <li><span class="bloom-dot bloom-apply" title="Apply"></span>Use <code>set</code> and <code>map</code> to solve practical problems.</li>
+            <li><span class="bloom-dot bloom-apply" title="Apply"></span>Use <code>#pragma omp parallel for</code> to parallelise a loop.</li>
           </ul>
         </div>
       </div>
+      <p style="font-size:.85em;opacity:.75;margin-top:.9rem"><strong>Window 3</strong> reference date is Dec 2, in this week.</p>
 
     </div>
   </div>
 </div>
 
 <!-- ══════════════════════════════════════════════════════════
-     WEEK 14 — Hash Tables & Sorting
+     WEEK 14 — Parallelism — experiments, and course recap
      ══════════════════════════════════════════════════════════ -->
 <div class="accordion-item">
   <h2 class="accordion-header">
@@ -747,7 +750,7 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
             data-bs-toggle="collapse" data-bs-target="#w14">
       <span class="week-num">Week 14</span>
       <span class="week-dates">Dec 7 – Dec 9</span>
-      <span class="week-topic">Hash Tables &amp; Sorting Algorithms</span>
+      <span class="week-topic">Parallelism — experiments, and course recap</span>
     </button>
   </h2>
   <div id="w14" class="accordion-collapse collapse" data-bs-parent="#scheduleAccordion">
@@ -757,34 +760,32 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
         <div class="res-label">📖 Read</div>
         <div class="res-val"><span class="res-tbd">to be announced</span></div>
         <div class="res-label">🖥️ Slides</div>
-        <div class="res-val"><a href="../slides/week14.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week14.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week14-bw.pdf">print version</a></div>
+        <div class="res-val"><span class="res-tbd">being written</span></div>
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><span class="res-tbd">Hash Tables and Sorting &mdash; assignment to be announced</span></div>
+        <div class="res-val"><span class="res-tbd">a14 continues</span></div>
       </div>
 
       <div class="slo-cols">
         <div>
           <p class="slo-section-label">🧠 Understanding</p>
           <ul class="slo-list">
-            <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Reason about the properties of a good hash algorithm.</li>
-            <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Identify the time complexity of hash table operations.</li>
-            <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Reason about the time-space trade-off in a hash table.</li>
-            <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Identify the time complexity of Insertion Sort and Selection Sort in best and worst cases.</li>
-            <li><span class="bloom-dot bloom-evaluate" title="Evaluate"></span>Compare Insertion Sort and Selection Sort and justify which is preferable for a given input.</li>
+            <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Explain the speed-up you measured, and when parallelism does <em>not</em> help.</li>
           </ul>
         </div>
         <div>
           <p class="slo-section-label">🛠️ Skills</p>
           <ul class="slo-list">
-            <li><span class="bloom-dot bloom-create" title="Create"></span>Implement the basic data structure for a hash table.</li>
-            <li><span class="bloom-dot bloom-apply" title="Apply"></span>Implement Insertion Sort and Selection Sort.</li>
+            <li><span class="bloom-dot bloom-evaluate" title="Evaluate"></span>Compare timings across scheduling strategies and justify the difference.</li>
           </ul>
         </div>
       </div>
+      <p style="font-size:.85em;opacity:.75;margin-top:.9rem"><strong>Dec 9 is the last day of classes</strong> — all work and all check-in bookings close.</p>
 
     </div>
   </div>
 </div>
+
+
 
 </div><!-- end accordion -->
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Week 03: Classes and Operator Overloading — CS112</title>
+  <title>Week 03: Classes and Operator Overloading · CS112</title>
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reset.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.css">
@@ -119,14 +119,14 @@ Enemy goblin("green", 3);
       </code></pre>
     </div>
   </div>
-  <div class="callout">A class bundles <strong>data</strong> with the <strong>operations</strong> that make sense on it — and hides how the data is actually stored.</div>
+  <div class="callout">A class bundles <strong>data</strong> with the <strong>operations</strong> that make sense on it, and hides how the data is actually stored.</div>
 </section>
 
 <section>
   <h2>Interface and Implementation</h2>
   <div class="two-col">
     <div>
-      <h3>Pair.h — what exists</h3>
+      <h3>Pair.h: what exists</h3>
       <pre style="font-size:0.44em"><code class="language-cpp" data-trim>
 class Pair {
  public:
@@ -141,7 +141,7 @@ class Pair {
       </code></pre>
     </div>
     <div>
-      <h3>Pair.cpp — how it works</h3>
+      <h3>Pair.cpp: how it works</h3>
       <pre style="font-size:0.44em"><code class="language-cpp" data-trim>
 #include "Pair.h"
 
@@ -156,19 +156,19 @@ Item Pair::getFirst() const {
       </code></pre>
     </div>
   </div>
-  <div class="callout"><code>Pair::</code> says "this function belongs to Pair". The header is what other files <code>#include</code> — the same split you met in week 0.</div>
+  <div class="callout"><code>Pair::</code> says "this function belongs to Pair". The header is what other files <code>#include</code>: the same split you met in week 0.</div>
 </section>
 
 <section>
   <h2><code>public</code> and <code>private</code></h2>
   <ul>
-    <li><strong>public</strong> — anyone may use it. This is your promise to the outside world.</li>
-    <li><strong>private</strong> — only the class's own methods may touch it. Default for data.</li>
+    <li><strong>public</strong>: anyone may use it. This is your promise to the outside world.</li>
+    <li><strong>private</strong>: only the class's own methods may touch it. Default for data.</li>
   </ul>
   <pre style="font-size:0.6em"><code class="language-cpp" data-trim>
 Pair p(7, 11);
 p.getFirst();     // ✓ public
-p.myFirst;        // ❌ compile error — private
+p.myFirst;        // ❌ compile error: private
   </code></pre>
   <div class="callout callout-maroon">Data stays private so you can <em>change how it's stored</em> later without breaking every program that uses your class. That freedom is the whole point.</div>
 </section>
@@ -189,20 +189,20 @@ class XYZ {
     </code></pre>
   </div>
   <ul class="pi-choices pi-compact">
-    <li class="fragment correct" data-fragment-index="1"><span class="letter">A.</span> Yes — a method may touch private data of any object of its own class</li>
-    <li><span class="letter">B.</span> No — <code>x</code> is private, so only <code>this</code> object's <code>x</code> is reachable</li>
-    <li><span class="letter">C.</span> No — you cannot pass an object of the class to its own method</li>
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">A.</span> Yes: a method may touch private data of any object of its own class</li>
+    <li><span class="letter">B.</span> No: <code>x</code> is private, so only <code>this</code> object's <code>x</code> is reachable</li>
+    <li><span class="letter">C.</span> No: you cannot pass an object of the class to its own method</li>
     <li><span class="letter">D.</span> Only if <code>copyXTo</code> is declared a friend</li>
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>A — it's legal.</strong> Access control is per <em>class</em>, not per object. Inside a <code>XYZ</code> method, every <code>XYZ</code> object is an open book. This is what makes copy constructors and <code>operator==</code> possible.
+    <strong>A. it's legal.</strong> Access control is per <em>class</em>, not per object. Inside a <code>XYZ</code> method, every <code>XYZ</code> object is an open book. This is what makes copy constructors and <code>operator==</code> possible.
   </div>
 </section>
 
 <section>
   <h2><code>const</code> Methods</h2>
-  <p style="font-size:0.72em">The third promise a class makes — right alongside <code>public</code> and <code>private</code>.</p>
+  <p style="font-size:0.72em">The third promise a class makes, right alongside <code>public</code> and <code>private</code>.</p>
   <pre><code class="language-cpp" data-trim>
 Item getFirst() const;   // promises not to change it
 void setFirst(Item v);   // may change it
@@ -212,7 +212,7 @@ void setFirst(Item v);   // may change it
     <li>Inside a <code>const</code> method, assigning to a member is a compile error</li>
     <li>Only <code>const</code> methods may be called on a <code>const</code> object</li>
   </ul>
-  <div class="callout">Mark every method that only reads. It documents intent, and it's what lets your class be passed by const reference — the cheap, safe way from week 1. You'll see <code>const</code> on every getter from here on.</div>
+  <div class="callout">Mark every method that only reads. It documents intent, and it's what lets your class be passed by const reference, the cheap, safe way from week 1. You'll see <code>const</code> on every getter from here on.</div>
 </section>
 
 <section>
@@ -231,7 +231,7 @@ Pair b(7, 11);                  // calls Pair(Item, Item)
   <ul>
     <li>Same name as the class, <strong>no return type</strong></li>
     <li>Runs automatically when the object is created</li>
-    <li>Its job: leave the object in a valid state — no uninitialized members</li>
+    <li>Its job: leave the object in a valid state: no uninitialized members</li>
   </ul>
 </section>
 
@@ -249,7 +249,7 @@ class Pair {
     <li>a <code>delete</code> is called on it</li>
     <li>the object it lives inside is destroyed</li>
   </ul>
-  <div class="callout">For <code>Pair</code> you don't need to write one. Next week, when objects start owning memory from <code>new</code>, you will — and forgetting it leaks.</div>
+  <div class="callout">For <code>Pair</code> you don't need to write one. Next week, when objects start owning memory from <code>new</code>, you will, and forgetting it leaks.</div>
 </section>
 
 <section>
@@ -266,7 +266,7 @@ TEST_CASE("default Pair starts at zero") {
     REQUIRE(p.getFirst() == 0);
 }
   </code></pre>
-  <div class="callout">Writing the test first forces the question <em>what should this class do?</em> before <em>how do I build it?</em> The tests become the specification — and they stay useful when you change the implementation.</div>
+  <div class="callout">Writing the test first forces the question <em>what should this class do?</em> before <em>how do I build it?</em> The tests become the specification, and they stay useful when you change the implementation.</div>
 </section>
 
 <section class="demo-slide" data-background-color="#6E1C2E">
@@ -286,7 +286,7 @@ TEST_CASE("default Pair starts at zero") {
     <rect x="140" y="174" width="40" height="6" rx="3" fill="#cfcdc6"/>
   </svg>
   <p class="demo-cap">Building a class from its tests.</p>
-  <p class="demo-sub">(watch the compiler complain until the tests pass)</p>
+  <p class="demo-sub">(private means private, even to the person who typed it)</p>
 </section>
 
 <section>
@@ -306,7 +306,7 @@ cout &lt;&lt; p &lt;&lt; endl;
       </code></pre>
     </div>
   </div>
-  <div class="callout">Your type gets to behave like the built-in ones. Same idea as Python's <code>__str__</code> and <code>__eq__</code> — C++ just spells it with operators.</div>
+  <div class="callout">Your type gets to behave like the built-in ones. Same idea as Python's <code>__str__</code> and <code>__eq__</code>: C++ just spells it with operators.</div>
 </section>
 
 <section data-auto-animate>
@@ -319,7 +319,7 @@ void operator&lt;&lt;(ostream &amp;out, const Pair &amp;p) {
 
 cout &lt;&lt; p;              // ✓ works
   </code></pre>
-  <div class="callout">Not a method — a free function. The left operand is the <code>ostream</code>, not your object.</div>
+  <div class="callout">Not a method, a free function. The left operand is the <code>ostream</code>, not your object.</div>
 </section>
 
 <section data-auto-animate>
@@ -345,14 +345,14 @@ cout &lt;&lt; p &lt;&lt; endl;       // ✓ now this works
     <strong>Why must <code>operator&lt;&lt;</code> return <code>ostream&amp;</code> rather than <code>ostream</code>?</strong>
   </div>
   <ul class="pi-choices pi-compact">
-    <li class="fragment correct" data-fragment-index="1"><span class="letter">A.</span> To avoid copying the stream — streams cannot be copied</li>
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">A.</span> To avoid copying the stream, streams cannot be copied</li>
     <li><span class="letter">B.</span> So that <code>endl</code> can be used</li>
     <li><span class="letter">C.</span> Because <code>cout</code> is global</li>
     <li><span class="letter">D.</span> It makes no difference</li>
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>A.</strong> Returning by value would try to copy the stream object, which C++ forbids — a stream is a unique handle on a device. The reference hands back <em>the same</em> stream, which is also what allows chaining.
+    <strong>A.</strong> Returning by value would try to copy the stream object, which C++ forbids: a stream is a unique handle on a device. The reference hands back <em>the same</em> stream, which is also what allows chaining.
   </div>
 </section>
 
@@ -385,7 +385,7 @@ cout &lt;&lt; p &lt;&lt; endl;       // ✓ now this works
     <li>A class is a <strong>new type</strong>: data plus the operations that belong with it</li>
     <li><code style='color:var(--gold)'>.h</code> declares the interface, <code style='color:var(--gold)'>.cpp</code> holds the implementation</li>
     <li><code style='color:var(--gold)'>private</code> data buys you the freedom to change how it's stored</li>
-    <li>Constructors run on creation, destructors on death — both automatically</li>
+    <li>Constructors run on creation, destructors on death: both automatically</li>
     <li>Write the tests first; they are the specification</li>
     <li>Return <code style='color:var(--gold)'>ostream&amp;</code> from <code style='color:var(--gold)'>operator&lt;&lt;</code> so output can chain</li>
   </ul>
