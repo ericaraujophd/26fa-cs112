@@ -1,34 +1,544 @@
 ---
-title: "Assignment 11: AVL Trees"
-subtitle: "Week 12 · Nov 23 – Nov 28"
+title: "Assignment 11: Three Ways Through a Maze"
+subtitle: "One algorithm, two containers, and then no container at all"
 ---
 
 ::: {.callout-note}
-**Not published yet.** This page fills in before week 12 begins. The outline below
-is what the assignment is being built to cover — a preview, not a specification.
+Accept the assignment to get your own private GitHub repository (see
+[Getting the code](#getting-the-code) below), then clone it and open it in VS Code.
+
+**Plan to set aside about 2.5 to 3 hours.** TODO 3 is the big one; TODO 4 is
+about ten minutes once TODO 3 works, and that is the whole point of it. TODO 5
+needs Wednesday's lecture.
 :::
 
-## What this assignment will cover
+## Objectives
 
-- Identify an AVL tree as a self-balancing BST.
-- Articulate the importance of the balance factor in determining when to rebalance.
-- Name the four rotation cases: LL, RR, LR, RL.
-- Compute the balance factor for a node.
-- Implement AVL rotations to restore balance after insert or remove.
+By the end of this assignment, you will be able to:
 
-## Course skills
+- Identify the base case and the recursive case of a problem, and write both
+- Trace what the run-time stack is doing while a recursive function runs
+- Implement depth-first search with an explicit Stack
+- Implement breadth-first search with an explicit Queue, and explain why it
+  finds the shortest route when depth-first search does not
+- Explain why a cell must be marked visited when it goes into the container
+  rather than when it comes out
+- Implement the same search recursively, with no container of your own, and say
+  what is doing the remembering instead
 
-Primary practice for skill **F3**. See
-[Skills & Check-Ins](../checkins.html) for what each one means and when it is assessed.
+---
 
-## Getting the code
+This assignment covers course skills **E1** (identify base case and recursive
+case), **E2** (trace the call stack, winding and unwinding) and **E3**
+(implement a recursive solution to a moderate problem), from cluster **E**,
+assessed at **Window 2** on Nov 20. It also puts both of week 9's containers to
+work — against each other, in the same program.
 
-You will accept the assignment through Classroom 50, which creates your own private
-repository from the starter code. The accept link appears here when the assignment
-is published.
+::: {.callout-note}
+**Lab and homework.** You start this in lab on **Tuesday Nov 10**, with Monday's
+lecture on what recursion is behind you.
 
-## Submitting
+**§4 and §5 are the lab** — the two warm-ups and depth-first search with a
+Stack. Both only need Monday.
 
-Commit and push to `main`. Every push is graded automatically — check the **Actions**
-tab of your repository for the run and **Releases** for your score. Your most recent
-submission before the deadline is the one that counts.
+**§7 onwards is homework.** TODO 4 needs nothing new and takes minutes. TODO 5
+is the recursive solver, and it lands after **Wednesday's** lecture on the
+run-time stack, which is the lecture it is an exercise in.
+:::
+
+---
+
+## 1. Introduction
+
+Here is a maze:
+
+```
+#####################
+#S............#.....#
+#.#######.###.###.#.#
+#.......#...#.....#.#
+#.#.#.#.###.#.#.###.#
+#...#.#...#...#.....#
+#.#.#.###.#.#.#.###.#
+#.#.....#...#.#...#.#
+#.#.#########.###.#.#
+#.#.........#.....#.#
+#.#.###.###.#####.#.#
+#.........#........E#
+#####################
+```
+
+You are going to write three programs that get from `S` to `E`. Two of them
+will be **the same program**, differing by one word. The third will have no
+container in it at all.
+
+That is the assignment. Not "can you solve a maze" — you can, and so can a
+five-year-old with a pencil. The question is what happens to an algorithm when
+you change the thing that remembers where you have not been yet.
+
+| | remembers with | finds |
+|---|---|---|
+| **depth first** | a `Stack` | *a* route — usually a long, wandering one |
+| **breadth first** | a `Queue` | the **shortest** route |
+| **depth first, recursively** | the run-time stack | *a* route, again |
+
+The first two differ by three identifiers. The third is a different-looking
+program that turns out to be doing exactly what the first one did, with the
+computer keeping the stack for you instead of you keeping it yourself.
+
+::: {.callout-note}
+**This is a search problem, and searching is most of what these containers are
+for.** Route-finding, solving a puzzle, working out which packages a package
+depends on, finding the shortest chain of friends between two people, a
+compiler deciding what to rebuild — all of them are this program with the maze
+swapped out. Learn it once here.
+:::
+
+---
+
+## 2. Getting the Code {#getting-the-code}
+
+Accept the assignment. This creates a private GitHub repository that belongs to
+you, already containing the starter code:
+
+::: {.callout-note}
+**Accept link:** *(added when the assignment is published)*
+:::
+
+Then clone it, replacing `YOURUSERNAME` with your GitHub username:
+
+```bash
+git clone https://github.com/26fa-cs112/cs112-a11-YOURUSERNAME.git
+cd cs112-a11-YOURUSERNAME
+```
+
+Open the folder in VS Code, then build it and run it before you change anything:
+
+```bash
+make
+./a11
+make test
+```
+
+`make` succeeds, `./a11` draws a maze with no route through it, and `make test`
+reports **6 / 32**.
+
+---
+
+## 3. What You Were Given
+
+**You edit one file: `Solver.cpp`.** Five TODOs.
+
+| File | Yours? | What it is |
+|---|---|---|
+| `Solver.cpp` | **yes** | TODOs 1–5 |
+| `Solver.h` | no | the specification. Read this first. |
+| `Maze.h`, `Maze.cpp` | no | the maze, and two helpers you should use |
+| `Stack.h`, `Queue.h` | **replaceable** | working containers — see below |
+| `main.cpp` | no | solves a maze three ways and draws the results |
+| `mazes/` | no | seven mazes |
+| `checks.cpp` | no | the course's checks |
+
+### Two helpers worth knowing about
+
+`Maze.h` ends with two functions that are given to you because they are fiddly
+and are not what this assignment is about:
+
+- **`openNeighbours(maze, cell)`** — the open cells next to `cell`, in a fixed
+  order: up, down, left, right. Walls and cells off the edge of the maze are
+  left out, so your solvers never check the boundaries themselves. The order is
+  fixed on purpose: it is what makes depth-first search produce the same answer
+  on every machine.
+- **`retrace(maze, parent)`** — turns a grid of parents into a `Path`. §5
+  explains what that means.
+
+### `Stack.h` and `Queue.h`
+
+The ones in the repository work, and they are **not the a09 answer key**. They
+are thin shells around `std::vector` and `std::deque` — no array, no `mySize`,
+nothing circular. They give nothing away about a09.
+
+If your own a09 containers work, copy your `Stack.h` and `Queue.h` over these
+and everything will keep compiling: same class, same methods, same exceptions.
+It is a good feeling to watch `Stack<Cell>` just work on a type you had never
+heard of when you wrote it. That is the ADT argument from week 9, cashed in.
+
+::: {.callout-note}
+**Grading always uses the shipped containers, whatever you leave in those
+files.** So dropping in your own cannot help your a11 score and a bug in them
+cannot hurt it. a11 grades your search; a09 already graded your containers, and
+one rough week should not cost you two.
+:::
+
+---
+
+## 4. TODOs 1 and 2 — two recursive warm-ups {#warm-ups}
+
+Before any maze, two small functions. Both must be **recursive**, and neither
+may contain a `for` or a `while`. There are checks that read your source, so a
+loop will not slip past — but the real reason is that Wednesday's lecture is
+about what the run-time stack does while these run, and a loop does not do it.
+
+Every recursive function is the same two questions:
+
+> **the base case** — what is so small that the answer is obvious?
+>
+> **the recursive case** — how do I make the problem one step smaller, and what
+> do I do with the answer to the smaller problem?
+
+**TODO 1 — `sumArray(values, n)`**, the sum of the first `n` elements.
+
+The base case is `n == 0`: the sum of no numbers is 0. That is a real answer,
+not a special case to apologise for.
+
+Trace it for `{5, 3, 8}` before you write it:
+
+```
+  sumArray(v, 3)  needs  sumArray(v, 2)  +  v[2]
+    sumArray(v, 2)  needs  sumArray(v, 1)  +  v[1]      ← winding
+      sumArray(v, 1)  needs  sumArray(v, 0)  +  v[0]
+        sumArray(v, 0)  =  0                            ← the base case
+      sumArray(v, 1)  =  0 + 5   =  5
+    sumArray(v, 2)  =  5 + 3   =  8                     ← unwinding
+  sumArray(v, 3)  =  8 + 8   =  16
+```
+
+Going down is the **winding** phase; coming back up is **unwinding**. Both of
+those are on Wednesday's slides, and it is much easier to see them on a
+three-element array than on a maze.
+
+**TODO 2 — `reverseArray(values, n)`**, in place.
+
+Swap the two ends, then the middle is a smaller version of the same problem.
+`values + 1` is the array starting one element later, which is how you hand the
+middle to the next call.
+
+::: {.callout-warning}
+Count carefully. If you swap the two ends of an `n`-element array, the middle
+has **n − 2** elements left in it, not n − 1. Getting that wrong gives you an
+array that is reversed almost everywhere.
+:::
+
+---
+
+## 5. The search, before either container {#the-search}
+
+All three solvers do the same three things. It is worth reading this once
+before writing any of them, because after this section TODO 3 is mostly typing.
+
+### Two grids beside the maze
+
+```cpp
+vector<vector<bool>> visited(maze.getRows(), vector<bool>(maze.getCols(), false));
+vector<vector<Cell>> parent(maze.getRows(),  vector<Cell>(maze.getCols()));
+```
+
+`visited[r][c]` — have I already discovered this cell?
+`parent[r][c]` — which cell was I standing on when I discovered it?
+
+::: {.callout-note}
+**No hash table here, and that is a deliberate choice.** A cell *is* a pair of
+indices, and the grid is bounded, so an array indexed by `[r][c]` goes straight
+to the right slot with no hashing at all. a10's hash function existed to
+manufacture a number out of a word, because a word is not a number. A cell
+already is one. Adding a hash table would be work that buys nothing.
+:::
+
+### The parents grid is how you get a path out
+
+The search visits cells in some order that has nothing to do with the route.
+What turns that into a route is the `parent` grid: each cell remembers who
+discovered it, so from the end you can walk backwards to the start.
+
+```
+   discovered from        so the parents point back this way
+   ─────────────────      ──────────────────────────────────
+     S → a → b → c            S ← a ← b ← c
+         ↘ d → E                  ↖ d ← E
+```
+
+Start at `E`, follow the arrows to `S`, and turn the list around. That is
+exactly what `retrace(maze, parent)` does — you record the parents, and it does
+the walk. It needs one thing from you: **the start's parent must be the start
+itself**, because that is how it knows where to stop.
+
+### The one mistake everybody makes {#mark-on-the-way-in}
+
+> **Mark a cell visited when you PUT IT IN the container, not when you take it
+> out.**
+
+Here is the difference, on one cell with three unvisited neighbours:
+
+```
+mark on the way IN                    mark on the way OUT
+
+  pop A                                 pop A, mark A
+  look at b, c, d                       look at b, c, d
+    b unmarked → mark it, push it         b unmarked → push it
+    c unmarked → mark it, push it         c unmarked → push it
+    d unmarked → mark it, push it         d unmarked → push it
+                                        ...later, pop b, mark b
+  container: b c d                        look at b's neighbours — which
+  each cell enters exactly once            include c and d, still unmarked,
+                                           so push both AGAIN
+                                        container: c d c d ...
+```
+
+Each cell going in exactly once is what makes a capacity of rows × cols the
+right size, and it is what makes the parent you record **the first way anybody
+found that cell** — which for breadth-first search is the whole ball game.
+
+::: {.callout-important}
+**With the Stack, marking on the way out is merely wasteful.** Cells go in
+several times, get expanded several times, and you still get a valid path out
+of the other end. Slower, but not wrong.
+
+**With the Queue it is fatal.** Breadth-first search expands an entire ring of
+cells before it takes any of them back out, so the duplicates pile up instead
+of being consumed: the queue overruns the capacity you gave it, and a cell's
+parent can be overwritten by a *longer* route before it is ever dequeued. There
+goes the shortest path — which was the only reason to use a Queue.
+:::
+
+---
+
+## 6. TODO 3 — depth first, with a Stack
+
+```
+make visited and parent, both the size of the maze
+make a Stack<Cell> with room for rows * cols cells
+mark the start visited, make it its own parent, push it
+
+while the stack is not empty:
+    pop a cell
+    if it is the end:  return retrace(maze, parent)
+    for each cell in openNeighbours(maze, that cell):
+        if it has not been visited:
+            mark it visited
+            record the cell you came from as its parent
+            push it
+
+return an empty Path        // the stack ran dry without reaching the end
+```
+
+An empty `Path` is an answer, not a failure. `mazes/nopath.txt` has no route
+through it and all three of your solvers have to say so cleanly.
+
+This is the longest of the three. Get it working on `mazes/tiny.txt` — three
+cells in a row — before you point it at anything larger.
+
+---
+
+## 7. TODO 4 — breadth first, with a Queue {#breadth-first}
+
+Copy TODO 3. Change three things:
+
+```
+Stack<Cell>  →  Queue<Cell>
+push         →  enqueue
+pop          →  dequeue
+```
+
+That is the entire difference. Same visited grid, same parents, same loop.
+
+And the answer changes completely:
+
+```bash
+./a11 mazes/room.txt
+```
+
+```
+  depth first (Stack)      breadth first (Queue)
+  ###############          ###############
+  #S************#          #S............#
+  #............*#          #*............#
+  #*************#          #*............#
+  #*............#          #*............#
+  #*************#          #*............#
+  #............E#          #************E#
+  ###############          ###############
+
+  42 cells                 18 cells
+```
+
+### Why one word does that
+
+A container decides **what you look at next**, and that is the only decision a
+search makes.
+
+A **Stack** hands back the most recent thing you put in. So you always continue
+from the cell you just discovered: you commit to one direction and follow it as
+far as it goes, only backing up when you hit a dead end. Deep first. When it
+finally stumbles into the end, the route it took is whatever wandering got it
+there.
+
+A **Queue** hands back the oldest thing you put in. So you finish every cell one
+step from the start before you look at anything two steps away, and every cell
+two steps away before anything three steps away. The search spreads out in
+rings:
+
+```
+        3 3 3 3 3
+        3 2 2 2 3          the ring of cells at distance 2 is
+        3 2 1 2 3          entirely finished before any cell at
+        3 2 1 S 3          distance 3 is looked at
+        3 3 3 3 3
+```
+
+The first time the end is discovered, it is discovered from the smallest ring
+that touches it. There is no shorter way in, because a shorter way would have
+been in an earlier ring, and the earlier rings are already done.
+
+**That is the guarantee, and it comes entirely from the order the container
+gives things back.** Neither search knows anything the other does not.
+
+::: {.callout-warning}
+Breadth-first search cannot be *longer* than depth-first search. If `./a11`
+tells you it is, something in TODO 4 is still behaving like TODO 3 — most
+likely the container.
+:::
+
+---
+
+## 8. TODO 5 — depth first, with no container {#recursively}
+
+Same search. No `Stack`.
+
+You will want a helper that calls itself:
+
+```cpp
+static bool explore(const Maze& maze, Cell here,
+                    vector<vector<bool>>& visited, Path& path);
+```
+
+which returns `true` if the end can be reached from `here`, and leaves the route
+from `here` onwards on the back of `path`.
+
+```
+mark here visited
+add here to the path
+if here is the end:  return true
+for each unvisited cell in openNeighbours(maze, here):
+    if explore(maze, that cell, visited, path):  return true
+take here back off the end of the path        ← do not forget this
+return false
+```
+
+::: {.callout-important}
+**That second-to-last line is the whole difference between a path and a
+wandering.** When a branch turns out to be a dead end, the cells you walked down
+it are not part of the answer and have to come back off. Leave them on and you
+get a "path" that teleports — and the checks will tell you so, because two cells
+in a row on it stop being next to each other.
+:::
+
+Note what you do **not** undo: `visited`. A cell that led nowhere still leads
+nowhere the second time. Un-marking it turns a fast search into one that
+explores every route in the maze separately.
+
+### What is doing the remembering
+
+There is no `Stack<Cell>` in this version, and yet the search still backs up out
+of dead ends and carries on where it left off. Something is keeping track.
+
+It is the **run-time stack** — Wednesday's lecture. Every call to `explore` gets
+its own frame holding its own `here` and its own position in the neighbour loop,
+stacked on top of the caller's. When a call returns, its frame is thrown away
+and the one underneath picks up exactly where it stopped.
+
+That is the same discipline you implemented by hand in TODO 3: last in, first
+out. In TODO 3 you allocated the storage and pushed and popped it yourself. Here
+the compiler does it, in the same shape, for free.
+
+::: {.callout-note}
+**And that is also this version's limitation.** Its depth is bounded by how much
+run-time stack the program has, which is not something you control. On these
+mazes it is nowhere near a problem. On a maze of a million cells it would be,
+and TODO 3 would still work — because a `Stack<Cell>` lives in the heap, where
+there is room.
+
+Knowing which of those two you are spending is part of knowing what recursion
+costs.
+:::
+
+---
+
+## 9. Testing Your Work
+
+```bash
+make test         # all 32 checks
+```
+
+::: {.callout-important}
+**There are no hidden tests.** What you run with `make test` is exactly what the
+grader runs — all 32 checks, every one of them in a file in your repository.
+:::
+
+| | |
+|---|---|
+| 7 | the two warm-ups |
+| 7 | depth first, with a Stack |
+| 4 | breadth first, with a Queue |
+| 6 | the recursive solver, and where all three must agree |
+| 5 | your source: which container each one uses, and what is recursive |
+| 3 | twelve mazes generated while you are being graded |
+
+::: {.callout-note}
+**Nothing compares your path against a stored answer.** Most of these mazes have
+more than one route, and depth-first search may find any of them, so a path is
+checked against the definition instead: starts at `S`, ends at `E`, every cell
+open, consecutive cells adjacent, no repeats.
+
+Breadth-first search gets one extra requirement — its **length** — and even that
+is measured against a shortest distance the checks compute for themselves, so
+any shortest route will do.
+:::
+
+Each check runs in its own process. A recursive function with no reachable base
+case will be killed when it runs out of stack; this way that costs you one check
+rather than the whole run.
+
+Run one on its own while you are debugging:
+
+```bash
+make checks
+./checks "Stack: it finds a valid path through room"
+```
+
+---
+
+## 10. Submit
+
+```bash
+git add .
+git commit -m "Complete a11"
+git push
+```
+
+::: {.callout-important}
+Put your name at the top of `README.md` before your final push.
+:::
+
+Every push is graded automatically. Push as often as you like — the most recent
+submission counts, and there is no deadline beyond the last day of classes.
+
+---
+
+::: {.callout-note}
+## Try this before you close the laptop
+
+```bash
+./a11 mazes/twisty.txt
+```
+
+`twisty.txt` is a **perfect maze**: exactly one route between any two cells.
+All three of your solvers return the same 157 cells, because there is nothing
+for them to disagree about.
+
+Then run `mazes/room.txt` again, where there are thousands of routes and the
+three answers share almost no cells at all.
+
+The difference between those two runs is the whole assignment. When there is
+only one answer, the container you use does not matter. When there are many,
+the container **is** the algorithm.
+:::

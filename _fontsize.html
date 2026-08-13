@@ -1,0 +1,74 @@
+<!-- Text-size switcher. Injected into the sidebar when one exists,
+     otherwise pinned to the bottom-right of the viewport. -->
+<template id="fs-switch-template">
+  <div class="fs-switch" role="group" aria-label="Text size">
+    <span class="fs-switch-label">Text size</span>
+    <div class="fs-switch-btns">
+      <button type="button" class="fs-btn fs-btn-s" data-size="small"  title="Small text (default)">A</button>
+      <button type="button" class="fs-btn fs-btn-m" data-size="medium" title="Medium text">A</button>
+      <button type="button" class="fs-btn fs-btn-l" data-size="large"  title="Large text">A</button>
+    </div>
+  </div>
+</template>
+
+<script>
+(function () {
+  var KEY   = 'cs112-fontsize';
+  var SIZES = ['small', 'medium', 'large'];
+
+  function read() {
+    try {
+      var v = window.localStorage.getItem(KEY);
+      return SIZES.indexOf(v) > -1 ? v : 'small';
+    } catch (e) { return 'small'; }
+  }
+
+  function write(v) {
+    try { window.localStorage.setItem(KEY, v); } catch (e) {}
+  }
+
+  function apply(size) {
+    document.documentElement.setAttribute('data-fontsize', size);
+    document.querySelectorAll('.fs-btn').forEach(function (b) {
+      var on = b.getAttribute('data-size') === size;
+      b.classList.toggle('active', on);
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  }
+
+  function build() {
+    var tpl = document.getElementById('fs-switch-template');
+    if (!tpl) return;
+
+    var node = tpl.content.firstElementChild.cloneNode(true);
+
+    // Prefer the sidebar; fall back to a floating control.
+    var sidebar = document.querySelector('#quarto-sidebar .sidebar-menu-container')
+               || document.querySelector('#quarto-sidebar nav')
+               || document.querySelector('#quarto-sidebar');
+
+    if (sidebar) {
+      sidebar.appendChild(node);
+    } else {
+      node.classList.add('fs-switch-float');
+      document.body.appendChild(node);
+    }
+
+    node.addEventListener('click', function (ev) {
+      var btn = ev.target.closest('.fs-btn');
+      if (!btn) return;
+      var size = btn.getAttribute('data-size');
+      write(size);
+      apply(size);
+    });
+
+    apply(read());
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', build);
+  } else {
+    build();
+  }
+})();
+</script>

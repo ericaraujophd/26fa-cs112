@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Week 02: File I/O, Exceptions, 2D Arrays — CS112</title>
+  <title>Week 02: File I/O, Exceptions, 2D Arrays · CS112</title>
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reset.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.css">
@@ -92,7 +92,7 @@
   <ul class="agenda-list">
     <li><div class="agenda-num">1</div> Streams: console and files</li>
     <li><div class="agenda-num">2</div> Opening, reading, closing</li>
-    <li><div class="agenda-num">3</div> End of file — how to detect it <span class='badge'>KEY</span></li>
+    <li><div class="agenda-num">3</div> End of file: how to detect it <span class='badge'>KEY</span></li>
     <li><div class="agenda-num">4</div> Writing to a file</li>
     <li><div class="agenda-num">5</div> Exceptions: <code>throw</code>, <code>try</code>, <code>catch</code></li>
     <li><div class="agenda-num">6</div> Stack unwinding</li>
@@ -125,7 +125,7 @@ fout &lt;&lt; n;      // out
       </code></pre>
     </div>
   </div>
-  <div class="callout">Same operators, different source. Learn one, you've learned both — a file stream just reads bytes from disk instead of the keyboard.</div>
+  <div class="callout">Same operators, different source. Learn one, you've learned both, a file stream just reads bytes from disk instead of the keyboard.</div>
 </section>
 
 <section>
@@ -142,7 +142,7 @@ fin2.open("numbers.txt");
 
 fin.close();                    // done with it
   </code></pre>
-  <div class="callout callout-maroon">A file that isn't there does <strong>not</strong> crash your program — the stream just quietly fails. Check <code>is_open()</code> or you'll debug a "wrong answer" that's really a missing file.</div>
+  <div class="callout callout-maroon">A file that isn't there does <strong>not</strong> crash your program, the stream just quietly fails. Check <code>is_open()</code> or you'll debug a "wrong answer" that's really a missing file.</div>
 </section>
 
 <section>
@@ -158,14 +158,14 @@ fin.close();                    // done with it
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>B — <code>ifstream</code>.</strong> Read it as <em>input file stream</em>. <code>fin</code> is just a variable name people conventionally use; <code>fstream</code> can do both directions.
+    <strong>B. <code>ifstream</code>.</strong> Read it as <em>input file stream</em>. <code>fin</code> is just a variable name people conventionally use; <code>fstream</code> can do both directions.
   </div>
 </section>
 
 <section>
   <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
   <div class="pi-question">
-    <strong>One way to open for reading is <code>ifstream fin("file");</code> — what is another?</strong>
+    <strong>One way to open for reading is <code>ifstream fin("file");</code>: what is another?</strong>
   </div>
   <ul class="pi-choices">
     <li><span class="letter">A.</span> <code>ifstream fin.open("file");</code></li>
@@ -212,7 +212,7 @@ while (getline(fin, line)) {     // read, THEN test
   </code></pre>
   <div class="callout callout-maroon">
     The read has to happen <strong>before</strong> the test. A stream only knows it hit the end
-    <em>after</em> a read fails — there is no "am I at the end?" you can trust beforehand.
+    <em>after</em> a read fails; there is no "am I at the end?" you can trust beforehand.
   </div>
 </section>
 
@@ -238,7 +238,7 @@ while (true) {
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>E — the last line prints twice.</strong> The final <code>getline</code> fails and leaves <code>s</code> holding the previous line, but <code>cout</code> runs before the check. Test the read <em>immediately</em>: <code>while (getline(fin, s))</code>.
+    <strong>E. the last line prints twice.</strong> The final <code>getline</code> fails and leaves <code>s</code> holding the previous line, but <code>cout</code> runs before the check. Test the read <em>immediately</em>: <code>while (getline(fin, s))</code>.
   </div>
 </section>
 
@@ -254,20 +254,52 @@ for (int i = 0; i &lt; n; ++i) {
 fout.close();       // flushes buffered output to disk
   </code></pre>
   <ul>
-    <li>Opening for writing <strong>erases</strong> the file — use <code>ios::app</code> to append instead</li>
+    <li>Opening for writing <strong>erases</strong> the file: use <code>ios::app</code> to append instead</li>
     <li><code>endl</code> also flushes; <code>"\n"</code> is cheaper in a loop</li>
     <li>Forgetting <code>close()</code> can leave the last writes in the buffer</li>
   </ul>
 </section>
 
 <section>
+  <h2><code>\n</code>, <code>endl</code>, <code>flush</code></h2>
+  <p style="font-size:0.66em">Output is <strong>buffered</strong>: characters wait in memory until something pushes them out.</p>
+  <table style="font-size:0.54em">
+    <thead><tr><th>You write</th><th>Newline?</th><th>Flushes?</th><th>Use it when</th></tr></thead>
+    <tbody>
+      <tr><td><code>&lt;&lt; "\n"</code></td><td>yes</td><td><strong>no</strong></td><td>almost always</td></tr>
+      <tr><td><code>&lt;&lt; endl</code></td><td>yes</td><td><strong>yes</strong></td><td>you need it on disk <em>now</em></td></tr>
+      <tr><td><code>&lt;&lt; flush</code></td><td><strong>no</strong></td><td>yes</td><td>mid-line prompts, progress dots</td></tr>
+    </tbody>
+  </table>
+  <div class="callout"><code>endl</code> is exactly <code>"\n"</code> followed by <code>flush</code>. That is the whole difference.</div>
+</section>
+
+<section>
+  <h2>Proof, in Bytes</h2>
+  <p style="font-size:0.64em">Print one word, then sleep 3 seconds. Check the file <em>while the program is still running</em>:</p>
+  <table style="font-size:0.54em">
+    <thead><tr><th>Program prints</th><th>File after 1 second</th><th>After the program exits</th></tr></thead>
+    <tbody>
+      <tr><td><code>"hello" &lt;&lt; "\n"</code></td><td><strong>0 bytes</strong>, nothing yet</td><td>6 bytes</td></tr>
+      <tr><td><code>"hello" &lt;&lt; endl</code></td><td><strong>6 bytes</strong>, <code>hello\n</code></td><td>6 bytes</td></tr>
+      <tr><td><code>"hello" &lt;&lt; flush</code></td><td><strong>5 bytes</strong>, <code>hello</code> (no newline)</td><td>5 bytes</td></tr>
+    </tbody>
+  </table>
+  <div class="callout callout-maroon">
+    On a <strong>terminal</strong> you would see no difference: consoles are line-buffered, so <code>"\n"</code> flushes anyway.
+    Redirect to a <strong>file</strong> and the buffer holds everything until it fills, you flush, or the program ends.
+    That is why a crashed program often loses its last output.
+  </div>
+</section>
+
+<section>
   <h2>When a Function Can't Do Its Job</h2>
   <p style="font-size:0.7em">A function that hits bad input has three bad options and one good one.</p>
   <ul>
-    <li><s>Print an error</s> — libraries shouldn't decide how to talk to the user</li>
-    <li><s>Return a magic value</s> — <code>-1</code> is a real answer sometimes</li>
-    <li><s>Carry on regardless</s> — the caller never learns anything went wrong</li>
-    <li><strong>Throw an exception</strong> — the caller decides what to do</li>
+    <li><s>Print an error</s>: libraries shouldn't decide how to talk to the user</li>
+    <li><s>Return a magic value</s>: <code>-1</code> is a real answer sometimes</li>
+    <li><s>Carry on regardless</s>: the caller never learns anything went wrong</li>
+    <li><strong>Throw an exception</strong>: the caller decides what to do</li>
   </ul>
   <div class="callout">An exception is a function's way of saying: <em>I can't finish, and this is why.</em></div>
 </section>
@@ -288,7 +320,7 @@ try {
     cerr &lt;&lt; "cannot do that: " &lt;&lt; e.what() &lt;&lt; endl;
 }
   </code></pre>
-  <div class="callout">Needs <code>#include &lt;stdexcept&gt;</code>. Catch by <strong>reference</strong> — catching by value slices the exception object.</div>
+  <div class="callout">Needs <code>#include &lt;stdexcept&gt;</code>. Catch by <strong>reference</strong>: catching by value slices the exception object.</div>
 </section>
 
 <section>
@@ -344,7 +376,7 @@ int main() { cout &lt;&lt; "d"; g(); f(); cout &lt;&lt; "e"; }
     <rect x="140" y="174" width="40" height="6" rx="3" fill="#cfcdc6"/>
   </svg>
   <p class="demo-cap">Reading a file that isn't there.</p>
-  <p class="demo-sub">(and then reading one that is)</p>
+  <p class="demo-sub">(the file was right there. in the other folder.)</p>
 </section>
 
 <section>
@@ -366,7 +398,7 @@ for (unsigned r = 0; r &lt; ROWS; ++r) {
 
 <section>
   <h2>How 2D Arrays Really Sit in Memory</h2>
-  <p style="font-size:0.68em"><code>int grid[2][4]</code> is not a grid — it is 8 ints in a row.</p>
+  <p style="font-size:0.68em"><code>int grid[2][4]</code> is not a grid; it is 8 ints in a row.</p>
   <div class="mem-diagram" style="max-width:660px">
     <div class="mem-row">
       <span class="mem-lbl">row 0</span>
@@ -381,7 +413,7 @@ for (unsigned r = 0; r &lt; ROWS; ++r) {
       <span class="mem-val">one contiguous block, row after row</span>
     </div>
   </div>
-  <div class="callout">This is why a pointer walking the array crosses from the end of one row into the start of the next — and why the compiler needs the column count to do the arithmetic.</div>
+  <div class="callout">This is why a pointer walking the array crosses from the end of one row into the start of the next, and why the compiler needs the column count to do the arithmetic.</div>
 </section>
 
 <section>
@@ -394,7 +426,7 @@ void printBoard(char b[][COLS], unsigned rows) {
 }
   </code></pre>
   <ul>
-    <li>You may leave the <strong>row</strong> count off — pass it as a separate argument</li>
+    <li>You may leave the <strong>row</strong> count off: pass it as a separate argument</li>
     <li>You may <strong>not</strong> leave the column count off</li>
     <li>Without the columns, <code>b[r][c]</code> can't be turned into an address</li>
   </ul>
@@ -405,11 +437,11 @@ void printBoard(char b[][COLS], unsigned rows) {
   <h2>Week 02 Recap</h2>
   <ul style="font-size:0.72em; color:rgba(255,255,255,0.92)">
     <li>File streams use the <strong>same operators</strong> as <code style='color:var(--gold)'>cin</code>/<code style='color:var(--gold)'>cout</code></li>
-    <li>Always check <code style='color:var(--gold)'>is_open()</code> — a missing file fails silently</li>
+    <li>Always check <code style='color:var(--gold)'>is_open()</code>: a missing file fails silently</li>
     <li><strong>Read, then test</strong>: <code style='color:var(--gold)'>while (getline(fin, line))</code></li>
     <li><code style='color:var(--gold)'>throw</code> hands the problem to whoever can decide what to do</li>
     <li>An uncaught exception unwinds every frame, then terminates</li>
-    <li>2D arrays are one contiguous block — the column count is not optional</li>
+    <li>2D arrays are one contiguous block, the column count is not optional</li>
   </ul>
   <div class="next">Next: a02 →</div>
   <p class="credit-line">

@@ -66,13 +66,23 @@
     }
 
     /* ── Inline code ── */
-    .reveal p code, .reveal li code, .reveal td code, .reveal th code {
+    .reveal p code, .reveal li code, .reveal td code, .reveal th code,
+    .reveal .callout code, .reveal .def-txt code, .reveal .err-why code {
       background: #f0e8d8;
       color: var(--maroon);
       padding: 0.1em 0.35em;
       border-radius: 4px;
       font-size: 0.82em;
       font-family: 'Fira Code', 'Consolas', monospace;
+    }
+
+    .reveal h2 code, .reveal h1 code {
+      font-family: 'Fira Code', 'Consolas', monospace;
+      background: #f3ece0;
+      border: 1px solid #e2d5bf;
+      border-radius: 6px;
+      padding: 0 0.18em;
+      font-size: 0.86em;
     }
 
     /* ── Bullets ── */
@@ -108,9 +118,9 @@
     .pi-badge {
       background: var(--maroon);
       color: white;
-      padding: 0.2em 0.7em;
-      border-radius: 5px;
-      font-size: 0.4em;
+      padding: 0.25em 0.75em;
+      border-radius: 6px;
+      font-size: 0.58em;
       display: inline-block;
       margin-bottom: 0.4em;
       font-weight: 700;
@@ -201,6 +211,150 @@
       color: #2f6f43;
       margin-bottom: 0.25em;
     }
+
+    /* ── Rocky / bases slide ── */
+    .rk-svg, .rk-tbl { width: 100%; height: auto; display: block;
+                       font-family: 'Segoe UI', system-ui, sans-serif; }
+    .rk-shell { fill: #cbbfa6; stroke: #6e6350; stroke-width: 3; stroke-linejoin: round; }
+    .rk-plate { fill: #b9ab8c; stroke: #6e6350; stroke-width: 2; stroke-linejoin: round; }
+    .rk-speck { fill: #a2947a; }
+    .rk-leg   { stroke: #6e6350; stroke-width: 8; stroke-linecap: round; stroke-linejoin: round; }
+    .rk-claw  { stroke: #6e6350; stroke-width: 6; stroke-linecap: round; }
+    .rk-arm    { stroke: #6e6350; stroke-width: 9; stroke-linecap: round; fill: none; }
+    .rk-finger { stroke: #6e6350; stroke-width: 5; stroke-linecap: round; }
+    .rk-tip    { fill: #6e6350; }
+    .rk-wrist  { fill: #8a7c66; }
+    .rk-note  { fill: #8a857b; font-style: italic; }
+    .rk-cap   { font-size: 0.46em; color: #8a857b; font-style: italic; margin: 0.1em 0 0; }
+    .rk-hdr   { fill: #a8a49b; font-weight: 700; }
+    .rk-row   { fill: #3a3630; font-weight: 600; }
+    .rk-cell  { fill: #f4f3f0; stroke: #d5d2cb; stroke-width: 1.4; }
+    .rk-hot   { fill: #fbf1d8; stroke: var(--gold); stroke-width: 2.2; }
+    .rk-num   { font-family: 'Fira Code','Consolas',monospace; fill: #4a4740; }
+    .rk-num-hot { font-family: 'Fira Code','Consolas',monospace; fill: #6b5416; font-weight: 700; }
+    .rk-carry { fill: #8a857b; font-style: italic; }
+
+    /* ── File I/O figure ── */
+    .fio-wrap { margin: 0.1em auto 0.2em; width: 93%; }
+    .fio-svg  { width: 100%; height: auto; display: block;
+                font-family: 'Segoe UI', system-ui, sans-serif; }
+    .fio-doc  { fill: #faf7f1; stroke: var(--maroon); stroke-width: 1.8; }
+    .fio-fold { fill: #efe3e6; stroke: var(--maroon); stroke-width: 1.4; }
+    .fio-stream { fill: #f7f5f0; stroke: #7d7a73; stroke-width: 1.8; }
+    .fio-bar   { fill: #e6e3dc; stroke: none; }
+    .fio-var   { fill: #fbf1d8; stroke: var(--gold); stroke-width: 1.8; }
+    .fio-cell  { fill: #ffffff; stroke: var(--gold); stroke-width: 1.4; }
+    .fio-cell-used { fill: #ebe9e4; stroke: #c2beb4; stroke-width: 1.2; }
+    .fio-ch    { font-family: 'Fira Code','Consolas',monospace; font-weight: 700; fill: #6b5416; }
+    .fio-ch-used { font-family: 'Fira Code','Consolas',monospace; fill: #b4afa5; }
+    .fio-code  { font-family: 'Fira Code','Consolas',monospace; fill: #3a3630; }
+    .fio-name  { font-family: 'Fira Code','Consolas',monospace; font-weight: 700; fill: var(--maroon); }
+    .fio-title { font-family: 'Fira Code','Consolas',monospace; font-weight: 700; fill: #3a3630; }
+    .fio-val   { font-family: 'Fira Code','Consolas',monospace; font-weight: 700; fill: #6b5416; }
+    .fio-label { font-family: 'Fira Code','Consolas',monospace; font-weight: 700; fill: var(--maroon); }
+    .fio-note  { fill: #8a857b; font-style: italic; }
+    .fio-caret { fill: var(--maroon); }
+    .fio-head  { fill: var(--maroon); }
+    .fio-headt { font-family: 'Fira Code','Consolas',monospace; font-weight: 700; fill: #fdf8f0; }
+    .fio-arrow { stroke: var(--gold); stroke-width: 2.4; }
+    .fio-dashed { stroke: var(--gold); stroke-width: 2; stroke-dasharray: 5 4; }
+    .fio-screen { fill: #1e1f1a; stroke: #7d7a73; stroke-width: 1.6; }
+    .fio-scr    { font-family: 'Fira Code','Consolas',monospace; fill: #9be36b; }
+    .fio-caretbox { fill: #9be36b; }
+
+    /* ── Stream diagram ── */
+    .st-wrap { margin: 0.15em auto 0.25em; width: 97%; }
+    .st-svg  { width: 100%; height: auto; display: block;
+               font-family: 'Segoe UI', system-ui, sans-serif; }
+    .st-prog { fill: #faf7f1; stroke: var(--maroon); stroke-width: 2.2; }
+    .st-src  { fill: #f2ede4; stroke: #8a7a52; stroke-width: 1.8; }
+    .st-dst  { fill: #eceae6; stroke: #7d7a73; stroke-width: 1.8; }
+    .st-title { font-family: 'Fira Code','Consolas',monospace; font-weight: 700; fill: #3a3630; }
+    .st-sub   { fill: #8a857b; font-style: italic; }
+    .st-char-box { fill: #fbf1d8; stroke: var(--gold); stroke-width: 1.4; }
+    .st-char  { font-family: 'Fira Code','Consolas',monospace; font-weight: 700; fill: #6b5416; }
+    .st-label { font-family: 'Fira Code','Consolas',monospace; font-weight: 700; fill: var(--maroon); }
+    .st-note  { fill: #8a857b; font-style: italic; }
+    .st-arrow { stroke: var(--gold); stroke-width: 2.4; }
+    .st-kbd    { fill: #eceae6; stroke: #7d7a73; stroke-width: 1.8; }
+    .st-key    { fill: #fbfaf8; stroke: #b9b6ae; stroke-width: 1; }
+    .st-bezel  { fill: #dedbd5; stroke: #7d7a73; stroke-width: 1.8; }
+    .st-screen { fill: #1e1f1a; }
+    .st-led    { fill: #b9b6ae; }
+    .st-stand  { fill: #dedbd5; stroke: #7d7a73; stroke-width: 1.6; }
+    .st-scr-out { font-family: 'Fira Code','Consolas',monospace; fill: #9be36b; }
+    .st-scr-err { font-family: 'Fira Code','Consolas',monospace; fill: #ff9d94; }
+    .st-scr-dim { font-family: 'Fira Code','Consolas',monospace; fill: #8f8a80; font-style: italic; }
+    .st-caret   { fill: #9be36b; }
+
+    /* ── Terminal panel: real program output ── */
+    .term {
+      background: #1e1f1a;
+      border: 2px solid var(--gold);
+      border-radius: 8px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.18);
+      padding: 0.5em 0.85em;
+      margin: 0.45em auto 0;
+      font-family: 'Fira Code','Consolas',monospace;
+      font-size: 0.46em;
+      line-height: 1.55;
+      text-align: left;
+    }
+    .term .t-row { display: flex; justify-content: space-between; gap: 1.5em; }
+    .term .t-cmd  { color: #9be36b; }
+    .term .t-out  { color: #e8e6e0; }
+    .term .t-warn { color: #ff9d94; }
+    .term .t-note { color: #8f8a80; font-style: italic; white-space: nowrap; }
+
+    /* ── Variable model: Python Tutor / C++ Tutor style ── */
+    .vm-svg { width: 100%; height: auto; display: block; margin-top: 0.1em;
+              font-family: 'Segoe UI', system-ui, sans-serif; }
+    .vm-frame { fill: #eef2f8; stroke: #9fb2cc; stroke-width: 1.6; }
+    .vm-bar   { fill: #dbe4f0; stroke: none; }
+    .vm-title { font-family: 'Fira Code','Consolas',monospace; fill: #3c4c63; font-weight: 700; }
+    .vm-var   { font-family: 'Fira Code','Consolas',monospace; fill: #2f2f2f; font-weight: 700; }
+    .vm-slot  { fill: #ffffff; stroke: #9fb2cc; stroke-width: 1.4; }
+    .vm-box   { fill: #ffffff; stroke: #9fb2cc; stroke-width: 1.4; }
+    .vm-dot   { fill: #2b6ea8; }
+    .vm-arrow { stroke: #2b6ea8; stroke-width: 2.2; }
+    .vm-type  { font-family: 'Fira Code','Consolas',monospace; fill: #7a756b; }
+    .vm-addr  { font-family: 'Fira Code','Consolas',monospace; fill: #a8a49b; }
+    .vm-val   { font-family: 'Fira Code','Consolas',monospace; fill: #1a1a1a; font-weight: 700; }
+    .vm-col   { fill: #6a655c; font-weight: 700; }
+    .vm-note  { fill: #8a857b; font-style: italic; }
+    .vm-empty { fill: none; stroke: #cfcabf; stroke-width: 1.4; stroke-dasharray: 5 4; }
+    .vm-faint { fill: #b4afa5; }
+    .vm-gone  { fill: #b4afa5; font-family: 'Fira Code','Consolas',monospace; }
+    .vm-strike { stroke: #c9a0a0; stroke-width: 1.8; }
+    .vm-changed { stroke: var(--gold); stroke-width: 2.4; }
+    .vm-warn  { fill: #fff8e1; stroke: var(--gold); stroke-width: 1.4; }
+    .vm-warn-t { fill: #8a6d18; }
+
+    /* ── Byte ruler: one square per byte ── */
+    .tb-wrap { margin: 0.1em auto 0.2em; width: 96%; }
+    .tb-svg  { width: 100%; height: auto; display: block; font-family: 'Segoe UI', system-ui, sans-serif; }
+    .tb-cell { stroke-width: 1.6; }
+    .tb-int  { fill: #f6e2e6; stroke: var(--maroon); }
+    .tb-real { fill: #fbf1d8; stroke: var(--gold); }
+    .tb-unit { fill: #eceae6; stroke: #7d7a73; }
+    .tb-var  { fill: #eef0ec; stroke: #6b8570; }
+    .tb-ghost { fill: none; stroke: #6b8570; stroke-dasharray: 4 3; stroke-width: 1.4; }
+    .tb-name  { font-family: 'Fira Code','Consolas',monospace; font-weight: 700; fill: var(--maroon); }
+    .tb-size  { font-family: 'Fira Code','Consolas',monospace; fill: #4a4740; }
+    .tb-range { fill: #8a857b; font-style: italic; }
+    .tb-axis  { fill: #a8a49b; }
+    .tb-legend {
+      display: flex; justify-content: center; gap: 1.4em;
+      font-size: 0.42em; color: #6a655c; margin-top: 0.1em;
+    }
+    .tb-legend i {
+      display: inline-block; width: 0.85em; height: 0.85em; border-radius: 3px;
+      border: 1.5px solid #999; margin-right: 0.4em; vertical-align: -0.1em;
+    }
+    .tb-sw.tb-int  { background: #f6e2e6; border-color: var(--maroon); }
+    .tb-sw.tb-real { background: #fbf1d8; border-color: var(--gold); }
+    .tb-sw.tb-unit { background: #eceae6; border-color: #7d7a73; }
+    .tb-sw.tb-var  { background: #eef0ec; border-color: #6b8570; }
 
     /* ── Data type grid ── */
     .type-grid {
@@ -376,15 +530,56 @@
     /* ── Pipeline diagram ── */
     .pipe-wrap { margin: 0.1em auto 0.55em; width: 100%; }
     .pipe-svg { width: 100%; height: auto; display: block; font-family: 'Segoe UI', system-ui, sans-serif; }
-    .pipe-file  { fill: var(--cream); stroke: var(--maroon); stroke-width: 2; }
-    .pipe-obj   { fill: #ecebe7; stroke: #8d8d86; stroke-width: 2; }
-    .pipe-exe   { fill: #fbf3dd; stroke: var(--gold); stroke-width: 2.5; }
-    .pipe-name  { font-family: 'Fira Code','Consolas',monospace; font-weight: 700; fill: var(--maroon); }
-    .pipe-name-o{ font-family: 'Fira Code','Consolas',monospace; font-weight: 700; fill: #4a4a45; }
+    .pipe-hdr   { fill: #f2ede4; stroke: #8a7a52; stroke-width: 1.8; }
+    .pipe-file  { fill: #faf7f1; stroke: var(--maroon); stroke-width: 1.8; }
+    .pipe-obj   { fill: #eceae6; stroke: #7d7a73; stroke-width: 1.8; }
+    .pipe-exe   { fill: #fbf1d8; stroke: var(--gold); stroke-width: 1.8; }
+    .pipe-hdr-bar  { fill: #e6dcc8; stroke: none; }
+    .pipe-file-bar { fill: #efe3e6; stroke: none; }
+    .pipe-obj-bar  { fill: #dedbd5; stroke: none; }
+    .pipe-exe-bar  { fill: #f3e2b6; stroke: none; }
+    .pipe-name, .pipe-name-o, .pipe-name-h, .pipe-name-e {
+      font-family: 'Fira Code','Consolas',monospace; font-weight: 700;
+    }
+    .pipe-name  { fill: var(--maroon); }
+    .pipe-name-o{ fill: #4a4740; }
+    .pipe-name-h{ fill: #6b5c34; }
+    .pipe-name-e{ fill: #8a6d18; }
+    .pipe-code  { font-family: 'Fira Code','Consolas',monospace; fill: #2f2f2f; }
+    .pipe-cmd   { font-family: 'Fira Code','Consolas',monospace; fill: #8a857b; }
+    .pipe-col   { fill: #8a857b; font-weight: 800; letter-spacing: .1em; }
+    .pipe-inc-key { font-family: 'Fira Code','Consolas',monospace; font-weight: 700; fill: #9a7d2e; }
     .pipe-kind  { fill: #8a8a82; }
     .pipe-stage { fill: var(--maroon); font-weight: 800; letter-spacing: .09em; }
-    .pipe-sub   { fill: #7a7a72; font-style: italic; }
+    .pipe-sub   { fill: #a89b7d; font-style: italic; }
     .pipe-inc   { fill: #9a7d2e; font-style: italic; }
+    /* ── Build model diagram: light boxes are files, maroon pills are tools ── */
+    .bm-wrap { margin: 0.05em auto 0.2em; width: 91%; }
+    .bm-svg  { width: 100%; height: auto; display: block; font-family: 'Segoe UI', system-ui, sans-serif; }
+    .bm-cpp { fill: #faf7f1; stroke: var(--maroon); stroke-width: 1.8; }
+    .bm-h   { fill: #f2ede4; stroke: #8a7a52; stroke-width: 1.8; }
+    .bm-obj { fill: #eceae6; stroke: #7d7a73; stroke-width: 1.8; }
+    .bm-exe { fill: #fbf1d8; stroke: var(--gold); stroke-width: 2; }
+    .bm-lib { fill: #eceae6; stroke: #7d7a73; stroke-width: 1.6; }
+    .bm-pill   { fill: var(--maroon); stroke: none; }
+    .bm-pill-t { fill: #fdf8f0; font-weight: 700; letter-spacing: .04em; }
+    .bm-name   { font-family: 'Fira Code','Consolas',monospace; font-weight: 700; fill: #3a3630; }
+    .bm-note   { fill: #8a857b; font-style: italic; }
+    .bm-inc    { font-family: 'Fira Code','Consolas',monospace; font-weight: 700; fill: #9a7d2e; }
+    .bm-dot    { fill: #b8b3a8; }
+    .bm-arrow  { stroke: var(--gold); stroke-width: 2.4; }
+    .bm-inc-arrow { stroke: #9a7d2e; stroke-width: 1.6; stroke-dasharray: 4 3; }
+
+    /* ── Definition cards ── */
+    .def-row { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+               gap: 1em; text-align: left; margin-bottom: 0.15em; }
+    .def-card { background: #f7f3ec; border-top: 3px solid var(--gold);
+                border-radius: 0 0 6px 6px; padding: 0.4em 0.7em 0.5em; }
+    .def-name { font-family: 'Fira Code','Consolas',monospace; font-size: 0.52em;
+                font-weight: 800; color: var(--maroon); }
+    .def-name code { background: none; color: inherit; padding: 0; }
+    .def-txt  { font-size: 0.5em; color: #444; margin: 0.15em 0 0; line-height: 1.35; }
+
     .err-row { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 1.1em; text-align: left; }
     .err-card {
       background: #fdf0f2; border-left: 4px solid #b3261e;

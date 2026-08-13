@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Week 08: Algorithm Analysis and Big-Oh — CS112</title>
+  <title>Week 08: Algorithm Analysis and Big-Oh · CS112</title>
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reset.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.css">
@@ -96,7 +96,7 @@
     <li><div class="agenda-num">4</div> Why constants drop out</li>
     <li><div class="agenda-num">5</div> The curves that matter <span class='badge'>KEY</span></li>
     <li><div class="agenda-num">6</div> Reading complexity off code</li>
-    <li><div class="agenda-num">7</div> Why it matters at scale</li>
+    <li><div class="agenda-num">7</div> Best, worst, and amortized</li>
   </ul>
 </section>
 
@@ -110,7 +110,7 @@ v.push_back(it)         // 5 operations if there's room
 
 list.push_front(it)     // 4 operations, always
   </code></pre>
-  <div class="callout">Counting exact operations is honest but useless for comparing algorithms — the number depends on the compiler, the machine, the mood of the cache. What we actually care about is <strong>how the cost changes as <em>n</em> grows</strong>.</div>
+  <div class="callout">Counting exact operations is honest but useless for comparing algorithms, the number depends on the compiler, the machine, the mood of the cache. What we actually care about is <strong>how the cost changes as <em>n</em> grows</strong>.</div>
 </section>
 
 <section>
@@ -137,7 +137,7 @@ n² + 50n + 700
 
 <section>
   <h2>Big-Oh Notation</h2>
-  <p style="font-size:0.72em">We write <strong>O( f(n) )</strong> — "on the order of f of n".</p>
+  <p style="font-size:0.72em">We write <strong>O( f(n) )</strong>: "on the order of f of n".</p>
   <table style="font-size:0.56em">
     <thead><tr><th>Exact count</th><th>Big-Oh</th><th>Name</th></tr></thead>
     <tbody>
@@ -170,7 +170,7 @@ n² + 50n + 700
   <text class="curve-lbl c2-t" x="651" y="236">O(lg n)</text>
   <text class="curve-lbl c1-t" x="651" y="253">O(1)</text>
   </svg>
-  <div class="callout">Near the origin the differences look academic. That is exactly why they surprise people in production — the gap only opens up once the data gets big.</div>
+  <div class="callout">Near the origin the differences look academic. That is exactly why they surprise people in production, the gap only opens up once the data gets big.</div>
 </section>
 
 <section>
@@ -186,7 +186,7 @@ n² + 50n + 700
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>B — O(n).</strong> Constant multipliers and added constants both drop out. <code>4n + 200</code>, <code>n</code>, and <code>1000n + 5</code> are all O(n): double the input, roughly double the work.
+    <strong>B. O(n).</strong> Constant multipliers and added constants both drop out. <code>4n + 200</code>, <code>n</code>, and <code>1000n + 5</code> are all O(n): double the input, roughly double the work.
   </div>
 </section>
 
@@ -233,7 +233,7 @@ for (int i = 1; i &lt; n; i = i * 2) {
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>C — O(lg n).</strong> <code>i</code> doubles every pass, so it reaches n after about log₂ n steps. Any loop that <em>multiplies or divides</em> its counter is logarithmic — this is why binary search is so fast.
+    <strong>C. O(lg n).</strong> <code>i</code> doubles every pass, so it reaches n after about log₂ n steps. Any loop that <em>multiplies or divides</em> its counter is logarithmic: this is why binary search is so fast.
   </div>
 </section>
 
@@ -263,20 +263,7 @@ for (int i = 1; i &lt; n; i = i * 2) {
       <tr><td>Binary search (sorted)</td><td>O(lg n)</td><td>about <strong>20</strong></td></tr>
     </tbody>
   </table>
-  <div class="callout callout-maroon">Fifty thousand times less work — from the same data, just organised differently. That is the entire argument for this course.</div>
-</section>
-
-<section>
-  <h2>Why This Matters: Sorting</h2>
-  <p style="font-size:0.68em">Sorting those same million items:</p>
-  <table style="font-size:0.58em">
-    <thead><tr><th>Algorithm</th><th>Complexity</th><th>Rough operations</th></tr></thead>
-    <tbody>
-      <tr><td>Bubble sort</td><td>O(n²)</td><td>10¹² — hours</td></tr>
-      <tr><td>Merge / quick sort</td><td>O(n lg n)</td><td>2 × 10⁷ — under a second</td></tr>
-    </tbody>
-  </table>
-  <div class="callout">Same computer, same data, same answer. The only difference is the shape of the growth curve — and it's the difference between a coffee break and a lunch break you never come back from.</div>
+  <div class="callout callout-maroon">Fifty thousand times less work, from the same data, just organised differently. That is the entire argument for this course.</div>
 </section>
 
 <section class="demo-slide" data-background-color="#6E1C2E">
@@ -296,7 +283,7 @@ for (int i = 1; i &lt; n; i = i * 2) {
     <rect x="140" y="174" width="40" height="6" rx="3" fill="#cfcdc6"/>
   </svg>
   <p class="demo-cap">Timing O(n) against O(n²) on real data.</p>
-  <p class="demo-sub">(the graph explains itself around n = 10,000)</p>
+  <p class="demo-sub">(same laptop, same data, wildly different patience)</p>
 </section>
 
 <section>
@@ -305,14 +292,14 @@ for (int i = 1; i &lt; n; i = i * 2) {
     <strong>Algorithm A is O(n²), algorithm B is O(n lg n). Which should you use?</strong>
   </div>
   <ul class="pi-choices pi-compact">
-    <li><span class="letter">A.</span> Always B — it has the better complexity</li>
-    <li><span class="letter">B.</span> Always A — simpler code runs faster</li>
+    <li><span class="letter">A.</span> Always B; it has the better complexity</li>
+    <li><span class="letter">B.</span> Always A, simpler code runs faster</li>
     <li class="fragment correct" data-fragment-index="1"><span class="letter">C.</span> B for large n; for small n, A may well be faster</li>
     <li><span class="letter">D.</span> Whichever is easier to write</li>
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>C.</strong> Big-Oh describes behaviour as n grows. For small inputs the constants that we dropped can dominate — which is why real sort libraries switch to insertion sort for tiny sub-arrays. Know the asymptotics, then measure.
+    <strong>C.</strong> Big-Oh describes behaviour as n grows. For small inputs the constants that we dropped can dominate: which is why real sort libraries switch to insertion sort for tiny sub-arrays. Know the asymptotics, then measure.
   </div>
 </section>
 
@@ -328,14 +315,14 @@ ostream&amp; operator&lt;&lt;(ostream &amp;out, const List &amp;list) {
     return out;
 }
   </code></pre>
-  <div class="callout">Week 3's rule again: a free function, taking the stream on the left, returning the stream so it chains. Traversing the whole list to print it is O(n) — as you'd expect.</div>
+  <div class="callout">Week 3's rule again: a free function, taking the stream on the left, returning the stream so it chains. Traversing the whole list to print it is O(n), as you'd expect.</div>
 </section>
 
 <section class="closing-slide" data-background-color="#6E1C2E">
   <h2>Week 08 Recap</h2>
   <ul style="font-size:0.72em; color:rgba(255,255,255,0.92)">
     <li>Big-Oh describes <strong>how work grows with n</strong>, not seconds on a clock</li>
-    <li>Drop constant factors and lower-order terms — keep the dominant one</li>
+    <li>Drop constant factors and lower-order terms: keep the dominant one</li>
     <li>Nested loops multiply; halving the problem gives <code style='color:var(--gold)'>lg n</code></li>
     <li>O(1) &lt; O(lg n) &lt; O(n) &lt; O(n lg n) &lt; O(n²) &lt; O(2ⁿ)</li>
     <li>At a million items the difference is a second versus an afternoon</li>

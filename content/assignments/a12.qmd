@@ -1,34 +1,346 @@
 ---
-title: "Assignment 12: STL Sets and Maps"
-subtitle: "Week 13 · Nov 30 – Dec 5"
+title: "Assignment 12: Snake"
+subtitle: "The snake is a queue. Not like a queue — a queue."
 ---
 
 ::: {.callout-note}
-**Not published yet.** This page fills in before week 13 begins. The outline below
-is what the assignment is being built to cover — a preview, not a specification.
+Accept the assignment to get your own private GitHub repository (see
+[Getting the code](#getting-the-code) below), then clone it and open it in VS Code.
+
+**Plan to set aside about 2 to 2.5 hours.** There is no new data structure
+here and no new C++ — this is the week's second assignment and it is meant to
+be the lighter one. TODO 3 is the heart of it and is four lines long.
 :::
 
-## What this assignment will cover
+## Objectives
 
-- Describe the unique characteristics of the STL set (unique values, sorted order).
-- Identify the time complexity of set and map operations.
-- Explain the behavior of an iterator.
-- Describe the unique characteristics of the STL map (key-value pairs, unique keys).
-- Reason about the unique behavior of indexing ([]) in a map.
+By the end of this assignment, you will be able to:
 
-## Course skills
+- Recognise a queue in the wild, in a place where nobody labelled it one
+- Implement moving, growing and dying in terms of one enqueue and one dequeue
+  per frame
+- Explain why "growing" needs no code of its own — only a dequeue that does not
+  happen
+- Use modular arithmetic to wrap a coordinate round the edge of a grid
+- Say why a game with random elements can still be graded, and what makes that
+  possible
 
-Primary practice for skills **G1, G2**. See
-[Skills & Check-Ins](../checkins.html) for what each one means and when it is assessed.
+---
 
-## Getting the code
+This assignment applies course skill **C6** (implement a queue with O(1)
+enqueue and dequeue) rather than teaching a new one. It is week 10's second
+assignment, and it is the shorter of the two on purpose — a11 is the one with
+the weight in it.
 
-You will accept the assignment through Classroom 50, which creates your own private
-repository from the starter code. The accept link appears here when the assignment
-is published.
+::: {.callout-note}
+**This one is homework.** Tuesday's lab belongs to a11. Nothing here needs a
+lecture you have not had: it is week 9's Queue, applied.
+:::
 
-## Submitting
+---
 
-Commit and push to `main`. Every push is graded automatically — check the **Actions**
-tab of your repository for the run and **Releases** for your score. Your most recent
-submission before the deadline is the one that counts.
+## 1. Introduction
+
+Watch a snake move.
+
+```
+frame 1     ####@.......
+frame 2     .####@......
+frame 3     ..####@.....
+frame 4     ...####@....
+```
+
+Look at what is actually happening. A square appears at the front. A square
+disappears at the back. **Nothing in the middle moves at all.**
+
+New in at one end, old out at the other, everything in between untouched.
+That is a queue. Not a queue-like thing, not a useful analogy for a queue — the
+snake's body *is* a `Queue<Segment>`, and the entire animation is:
+
+```cpp
+myBody.enqueue(newHead);      // grow a head
+myBody.dequeue();             // lose a tail
+```
+
+once per frame.
+
+And then eating, which is the part worth sitting with:
+
+> **To grow, skip the dequeue.**
+
+That is all of it. The head keeps advancing, nothing leaves at the back, and
+the snake is one segment longer for every frame you skip. There is no "grow"
+function in this assignment, and there is nothing anywhere that shuffles
+segments along. You will write four lines in TODO 3, and one of them is a
+`return`.
+
+::: {.callout-note}
+**There is no better fit between a data structure and a problem in this
+course**, and it is worth noticing how little code a good fit costs you. The
+same game written over a `vector` needs to decide what to do about the tail on
+every frame — shift everything down, or track an offset, or reverse the order
+and pay somewhere else. Over a queue, the question does not come up.
+
+That is the thing to take away from this assignment. Choosing the right
+structure does not make the code faster. It makes the code *disappear*.
+:::
+
+---
+
+## 2. Getting the Code {#getting-the-code}
+
+Accept the assignment. This creates a private GitHub repository that belongs to
+you, already containing the starter code:
+
+::: {.callout-note}
+**Accept link:** *(added when the assignment is published)*
+:::
+
+```bash
+git clone https://github.com/26fa-cs112/cs112-a12-YOURUSERNAME.git
+cd cs112-a12-YOURUSERNAME
+make
+./a12 moves/circle.txt 20
+make test
+```
+
+`make` succeeds, `./a12` draws an empty board, and `make test` reports
+**5 / 30**.
+
+---
+
+## 3. What You Were Given
+
+**You edit one file: `Snake.cpp`.** Six TODOs.
+
+| File | Yours? | What it is |
+|---|---|---|
+| `Snake.cpp` | **yes** | TODOs 1–6 |
+| `Snake.h` | no | the specification. Read this first. |
+| `given.cpp` | no | the constructor, `step()`, and the random source |
+| `render.cpp` | no | colour |
+| `main.cpp` | no | plays a scripted game |
+| `Queue.h` | **replaceable** | a working Queue — drop in your own a09 one if you like |
+| `moves/` | no | scripts of moves |
+
+### Read `step()` in `given.cpp`
+
+It is the whole game loop, it decides the order your six functions are called
+in, and it settles a question you would otherwise have to guess at:
+
+```
+1. work out where the head is going        (your nextHead)
+2. if that square is the snake, it is over (your detectDeath)
+3. notice whether we are about to eat      (your detectTarget)
+4. move                                    (your updateSnake)
+5. if we ate, put a new target down        (your plantTarget)
+```
+
+Step 2 happens **before** step 4, so the tail still counts as part of the snake
+at the moment you decide whether you crashed. Turning into the square your tail
+is about to leave kills you. Some versions of Snake are kinder; this one is not,
+and the rule is at least simple.
+
+### You never write an escape code
+
+`render.cpp` is given complete. It uses the same trick a02 did: the half-block
+character `▀` fills the top half of a terminal cell with the foreground colour
+and leaves the bottom half showing the background, so one printed character
+draws two grid rows and the pixels come out square.
+
+Everything you write works on a plain `char` grid. Colour is a mapping applied
+at the very end, and nowhere else.
+
+---
+
+## 4. The six TODOs
+
+**TODO 1 — `drawSnake`.** Paint `BODY` on every occupied square, then `HEAD` on
+top, then `TARGET`. Walk `myOccupied`, the 2D array of bools the class keeps;
+do not take segments out of the queue to look at them, because a queue only
+lets you see its front and you would be dismantling the snake to read it.
+
+Do this one first even though it is not the interesting one. Once it works you
+can *see* everything else you write.
+
+**TODO 2 — `nextHead`.** One square in the given direction, and the field
+wraps.
+
+::: {.callout-warning}
+`%` alone will not wrap a coordinate. In C++ `-1 % 24` is `-1`, not `23`. Add
+the size back first:
+
+```cpp
+(row - 1 + ROWS) % ROWS
+```
+
+You met this exact trap in a09, in the circular queue's `getSize`, and it is
+here for the same reason: the remainder operator does not do what you want on
+the way down. It is worth noticing that a wrapping grid and a circular array
+are the same idea wearing different clothes.
+:::
+
+**TODO 3 — `updateSnake`.** The queue. Four lines:
+
+```
+the new head joins the back of the queue, and becomes myHead
+its square is now occupied
+if myGrowth is above zero:  spend one of it and STOP
+otherwise:                  the tail leaves the front, and its square is free
+```
+
+That third line is eating. `step()` adds `GROW_BY` to `myGrowth` when the snake
+eats; each frame after that skips the dequeue once. The frame that eats is
+itself the first frame of growing, so a snake of 1 becomes a snake of
+`1 + GROW_BY` over `GROW_BY` frames.
+
+**TODO 4 — `detectDeath`.** One line: is that square already occupied?
+
+**TODO 5 — `detectTarget`.** One line: is that square the target?
+
+**TODO 6 — `plantTarget`.** A new target on a square the snake is not on, by
+**exactly** this procedure:
+
+```
+repeat:
+    row = nextRandom() % ROWS          ← the row FIRST
+    col = nextRandom() % COLS          ← then the column
+until (row, col) is free
+```
+
+Two numbers per attempt, row before column, a fresh pair every attempt. §5
+explains why the order is not a matter of taste.
+
+---
+
+## 5. Why a random game can be graded at all {#determinism}
+
+A game with random elements sounds ungradeable. Play it twice and you get two
+different games; there is nothing to compare against.
+
+Except that the randomness is not random.
+
+`nextRandom()` in `given.cpp` is a **linear congruential generator**: multiply
+the last number by something, add something, keep the middle bits. Give it the
+same starting number and it produces the same sequence, in the same order, on
+every machine that has ever existed.
+
+```cpp
+myRandom = myRandom * 1103515245u + 12345u;
+return (myRandom >> 16) & 0x7FFFu;
+```
+
+`main.cpp` starts every game from the same seed, 2026. So the first target is
+always at row 16, column 38 — on your laptop, on the grading machine, in
+February.
+
+::: {.callout-note}
+**Every game you have ever played does this.** A game's world is a seed and a
+formula, which is why two players given the same seed get the same map, and why
+a speedrunner can memorise where an item will be. "Random" in a game almost
+never means unpredictable; it means *you* cannot predict it.
+:::
+
+That is what makes TODO 6's procedure non-negotiable. The grader replays whole
+games and compares the board at the end. If you draw the column before the row,
+your first target lands somewhere else, your snake eats at a different moment,
+and every single frame after that differs. There is a check that compares your
+first ten targets against the right ones, precisely so that this failure shows
+up as "your targets are in the wrong places" rather than as an unexplained
+mismatch two hundred frames later.
+
+### The other half: the game is scripted
+
+Reading arrow keys as they are pressed needs a library that takes over the
+terminal, and a grader has no terminal to take over. So the game is played from
+a **script**: a file of `U`, `D`, `L` and `R`, one per frame.
+
+```bash
+./a12 moves/greedy.txt 309 --watch
+```
+
+`greedy.txt` was written by steering toward the target on every frame. It eats
+seventeen times, reaches sixty-nine segments, and survives. Watch it once — it
+is the payoff for TODO 3, and it makes the "skip the dequeue" idea concrete in
+a way that no amount of prose will.
+
+Then watch `moves/suicide.txt`, which grows a little and then drives into
+itself.
+
+---
+
+## 6. Testing Your Work
+
+```bash
+make test         # all 30 checks
+```
+
+::: {.callout-important}
+**There are no hidden tests.** What you run with `make test` is exactly what the
+grader runs — all 30 checks, every one of them in a file in your repository.
+:::
+
+| | |
+|---|---|
+| 4 | `nextHead` — moving, and wrapping at the edges |
+| 6 | the queue — length, the tail, and growing after eating |
+| 4 | death |
+| 4 | the target |
+| 4 | drawing |
+| 8 | whole games, replayed and compared |
+
+The last eight run `./a12` on a script and compare the board the game ends on
+against a **fingerprint** — a SHA-256 of the right answer. A fingerprint tells
+you whether you got it right and nothing whatsoever about what the answer is,
+which is how every check can be visible without the answers being visible too.
+Two of those scripts are generated inside `test.py` rather than shipped in
+`moves/`, so a solution tuned to the files you can read still has to be right.
+
+If the twenty-two single-function checks pass and the replays do not, look at
+TODO 6 first. One target in the wrong place changes everything after it.
+
+Run one on its own while you are debugging:
+
+```bash
+make checks
+./checks "Snake: eating makes it longer by exactly GROW_BY"
+```
+
+---
+
+## 7. Submit
+
+```bash
+git add .
+git commit -m "Complete a12"
+git push
+```
+
+::: {.callout-important}
+Put your name at the top of `README.md` before your final push.
+:::
+
+Every push is graded automatically. Push as often as you like — the most recent
+submission counts, and there is no deadline beyond the last day of classes.
+
+---
+
+::: {.callout-note}
+## If you want to keep playing
+
+None of this is graded and none of it is required. But the pieces are all here:
+
+- **Play it yourself.** Read a direction from `cin` each frame instead of from
+  a script. It is not a real game — you have to press enter — but it is yours.
+- **Walls.** Make the edges lethal instead of wrapping: one condition in
+  `nextHead` and one in `detectDeath`.
+- **Two targets at once.** `plantTarget` twice, and check both.
+- **A faster snake as it grows.** `usleep` in `render.cpp` takes a number.
+- **Write your own script** that beats seventeen targets. `greedy.txt` steers
+  toward the target and nothing else, which is why it eventually traps itself.
+  A script that also avoided its own body would do better.
+
+The last one is not a small exercise, and it is worth knowing why: deciding
+where to go next, given what you know about the board, is a search problem —
+and you wrote three of those last week.
+:::

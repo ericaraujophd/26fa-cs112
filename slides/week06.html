@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Week 06: Linked Lists — CS112</title>
+  <title>Week 06: Linked Lists · CS112</title>
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reset.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.css">
@@ -103,9 +103,9 @@
 <section>
   <h2>Where Dynamic Arrays Hurt</h2>
   <ul>
-    <li><code>append()</code> when full — allocate, copy everything, delete</li>
-    <li><code>insert()</code> in the middle — shift every element after it</li>
-    <li><code>remove()</code> — shift everything back down</li>
+    <li><code>append()</code> when full: allocate, copy everything, delete</li>
+    <li><code>insert()</code> in the middle: shift every element after it</li>
+    <li><code>remove()</code>: shift everything back down</li>
     <li>Growing needs one <strong>contiguous</strong> block big enough for all of it</li>
   </ul>
   <div class="callout">All four problems come from the same source: the elements must sit <em>next to each other</em> in memory.</div>
@@ -150,7 +150,7 @@
   <h2>Two Classes</h2>
   <div class="two-col">
     <div>
-      <h3>Node — one link</h3>
+      <h3>Node: one link</h3>
       <pre style="font-size:0.44em"><code class="language-cpp" data-trim>
 class Node {
  public:
@@ -163,7 +163,7 @@ class Node {
       </code></pre>
     </div>
     <div>
-      <h3>List — the container</h3>
+      <h3>List: the container</h3>
       <pre style="font-size:0.44em"><code class="language-cpp" data-trim>
 class List {
  public:
@@ -179,7 +179,7 @@ class List {
       </code></pre>
     </div>
   </div>
-  <div class="callout">Students of your class only ever see <code>List</code>. <code>Node</code> is an implementation detail — which is exactly what <code>private</code> is for.</div>
+  <div class="callout">Students of your class only ever see <code>List</code>. <code>Node</code> is an implementation detail, which is exactly what <code>private</code> is for.</div>
 </section>
 
 <section>
@@ -194,7 +194,7 @@ while (current != nullptr) {
   </code></pre>
   <div class="callout callout-maroon">
     This loop is the linked-list equivalent of <code>for (i = 0; i &lt; n; ++i)</code>. You will write it
-    dozens of times — and every one of its bugs comes from forgetting the <code>nullptr</code> test or
+    dozens of times, and every one of its bugs comes from forgetting the <code>nullptr</code> test or
     forgetting to advance.
   </div>
 </section>
@@ -255,7 +255,7 @@ void List::prepend(Item it) {
     ++mySize;
 }
   </code></pre>
-  <div class="callout">Three steps, no shifting, no matter how long the list is — <strong>constant time</strong>.</div>
+  <div class="callout">Three steps, no shifting, no matter how long the list is, <strong>constant time</strong>.</div>
 </section>
 
 <section>
@@ -267,7 +267,7 @@ void List::prepend(Item it) {
     <li><span class="letter">A.</span> To avoid a memory leak</li>
     <li class="fragment correct" data-fragment-index="1"><span class="letter">B.</span> Because on an empty list the new node is also the <em>last</em> node</li>
     <li><span class="letter">C.</span> To keep <code>mySize</code> correct</li>
-    <li><span class="letter">D.</span> It isn't needed — <code>myLast</code> is never used</li>
+    <li><span class="letter">D.</span> It isn't needed, <code>myLast</code> is never used</li>
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
@@ -276,7 +276,7 @@ void List::prepend(Item it) {
 </section>
 
 <section>
-  <h2>append() — Why Keep <code>myLast</code>?</h2>
+  <h2>append(), Why Keep <code>myLast</code>?</h2>
   <pre><code class="language-cpp" data-trim>
 void List::append(Item it) {
     Node *n = new Node(it, nullptr);
@@ -289,7 +289,7 @@ void List::append(Item it) {
     ++mySize;
 }
   </code></pre>
-  <div class="callout">Without <code>myLast</code> you'd walk the whole list to find the end — linear. Storing one extra pointer makes <code>append()</code> constant. <strong>A little memory buys a lot of speed.</strong></div>
+  <div class="callout">Without <code>myLast</code> you'd walk the whole list to find the end, linear. Storing one extra pointer makes <code>append()</code> constant. <strong>A little memory buys a lot of speed.</strong></div>
 </section>
 
 <section>
@@ -305,7 +305,7 @@ List::~List() {
   </code></pre>
   <p style="font-size:0.64em">Deleting the first Node runs <em>its</em> destructor, which deletes the second, which deletes the third…</p>
   <div class="callout callout-maroon">
-    <code>delete nullptr</code> is harmless and defined — that's what stops the chain at the end.
+    <code>delete nullptr</code> is harmless and defined; that's what stops the chain at the end.
     Elegant, but on a very long list it also means a very deep stack of destructor calls.
   </div>
 </section>
@@ -316,14 +316,14 @@ List::~List() {
     <strong>A <code>List</code> holding 4 items goes out of scope. How many <code>Node</code> destructors run?</strong>
   </div>
   <ul class="pi-choices pi-compact">
-    <li><span class="letter">A.</span> 1 — only the first node is deleted</li>
-    <li class="fragment correct" data-fragment-index="1"><span class="letter">B.</span> 4 — each node deletes the next</li>
-    <li><span class="letter">C.</span> 0 — the compiler handles it</li>
-    <li><span class="letter">D.</span> 5 — including the nullptr at the end</li>
+    <li><span class="letter">A.</span> 1, only the first node is deleted</li>
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">B.</span> 4, each node deletes the next</li>
+    <li><span class="letter">C.</span> 0, the compiler handles it</li>
+    <li><span class="letter">D.</span> 5, including the nullptr at the end</li>
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>B — four.</strong> <code>~List</code> deletes <code>myFirst</code>; each <code>~Node</code> deletes the one after it. The chain stops when it reaches <code>nullptr</code>, which is not a node and needs no destructor.
+    <strong>B. four.</strong> <code>~List</code> deletes <code>myFirst</code>; each <code>~Node</code> deletes the one after it. The chain stops when it reaches <code>nullptr</code>, which is not a node and needs no destructor.
   </div>
 </section>
 
@@ -344,7 +344,7 @@ List::~List() {
     <rect x="140" y="174" width="40" height="6" rx="3" fill="#cfcdc6"/>
   </svg>
   <p class="demo-cap">Walking a list, one hop at a time.</p>
-  <p class="demo-sub">(and what happens when you forget to advance)</p>
+  <p class="demo-sub">(the list is fine. the loop is forever.)</p>
 </section>
 
 <section>
@@ -370,14 +370,14 @@ List::~List() {
     <strong>You need a collection you'll mostly add to at the front and read in order. Which?</strong>
   </div>
   <ul class="pi-choices pi-compact">
-    <li><span class="letter">A.</span> Dynamic array — indexing is faster</li>
-    <li class="fragment correct" data-fragment-index="1"><span class="letter">B.</span> Linked list — prepending is constant and you never index</li>
-    <li><span class="letter">C.</span> Either — they're the same in practice</li>
+    <li><span class="letter">A.</span> Dynamic array, indexing is faster</li>
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">B.</span> Linked list, prepending is constant and you never index</li>
+    <li><span class="letter">C.</span> Either, they're the same in practice</li>
     <li><span class="letter">D.</span> Dynamic array, because it uses less memory per item</li>
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>B.</strong> Prepending to an array shifts everything every time; on a list it's three pointer operations. You give up fast indexing — but you weren't going to index anyway. <em>Match the structure to the operations you actually perform.</em>
+    <strong>B.</strong> Prepending to an array shifts everything every time; on a list it's three pointer operations. You give up fast indexing: but you weren't going to index anyway. <em>Match the structure to the operations you actually perform.</em>
   </div>
 </section>
 
@@ -386,7 +386,7 @@ List::~List() {
   <ul style="font-size:0.72em; color:rgba(255,255,255,0.92)">
     <li>A linked list trades <strong>contiguity</strong> for <strong>flexibility</strong></li>
     <li>Each <code style='color:var(--gold)'>Node</code> holds an item and the address of the next</li>
-    <li>Traversal is <code style='color:var(--gold)'>while (current != nullptr)</code> — advance or loop forever</li>
+    <li>Traversal is <code style='color:var(--gold)'>while (current != nullptr)</code>: advance or loop forever</li>
     <li><code style='color:var(--gold)'>prepend</code> and <code style='color:var(--gold)'>append</code> are constant; indexing is linear</li>
     <li>The empty list and the one-item list are where the bugs hide</li>
     <li>Node destructors chain, and <code style='color:var(--gold)'>delete nullptr</code> ends the chain safely</li>

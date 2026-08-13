@@ -1,34 +1,777 @@
 ---
-title: "Assignment 09: Recursion"
-subtitle: "Week 10 · Nov 9 – Nov 14"
+title: "Assignment 09: Stack and Queue"
+subtitle: "Two containers, nine TODOs, and one array bent into a circle"
 ---
 
 ::: {.callout-note}
-**Not published yet.** This page fills in before week 10 begins. The outline below
-is what the assignment is being built to cover — a preview, not a specification.
+Accept the assignment to get your own private GitHub repository (see
+[Getting the code](#getting-the-code) below), then clone it and open it in VS Code.
+
+**Plan to set aside about 2.5 hours.** The Stack (§4) is short and you should
+finish it in lab. The Queue (§6–§8) is the substance, and §7 — the circular
+array — is where the time goes. Read §7 before you write any of it.
 :::
 
-## What this assignment will cover
+## Objectives
 
-- Define the structure of a recursive solution: base case and recursive case.
-- Correctly use the terms "winding phase" and "unwinding phase".
-- Argue why a recursive solution is generally less efficient than an iterative one.
-- Describe the role the runtime stack plays in recursive execution.
-- Reason about the time complexity of the Towers of Hanoi problem.
+By the end of this assignment, you will be able to:
 
-## Course skills
+- Say what an Abstract Data Type is, and why the operations are the definition
+  and the storage is not
+- Implement a Stack whose `push` and `pop` are both O(1)
+- Implement a Queue whose `enqueue` and `dequeue` are both O(1)
+- Explain why the obvious array queue is O(n), and what a circular array changes
+- Use the remainder operator to move an index around a ring
+- Explain why "front equals back" is ambiguous, and defend one of the two
+  standard fixes for it
+- Define your own exception type, throw it, and catch it
+- Write a class template whose definitions live in its header
 
-Primary practice for skills **E1, E2, E3**. See
-[Skills & Check-Ins](../checkins.html) for what each one means and when it is assessed.
+---
 
-## Getting the code
+This assignment covers course skills **C5** (implement a stack with O(1) push
+and pop) and **C6** (implement a queue with O(1) enqueue and dequeue), from
+cluster **C**, assessed at **Window 2** on Nov 20.
 
-You will accept the assignment through Classroom 50, which creates your own private
-repository from the starter code. The accept link appears here when the assignment
-is published.
+::: {.callout-note}
+**Lab and homework.** You start this in lab on **Tuesday Nov 3**. By then you
+will have had Monday's lecture on ADTs and the Stack, which is everything §1
+through §5 needs.
 
-## Submitting
+**§4 and §5 are the lab.** TODOs 1–4 and the exception types. A typical student
+finishes them in the session.
 
-Commit and push to `main`. Every push is graded automatically — check the **Actions**
-tab of your repository for the run and **Releases** for your score. Your most recent
-submission before the deadline is the one that counts.
+**§6 onwards is homework, after Wednesday's lecture.** The circular array is
+Wednesday's material, and TODO 5 asks you to make a decision that lecture is
+about. You *can* read §7 ahead and get going — it is written to stand on its
+own — but do not be alarmed if you would rather wait for the pictures on the
+board first.
+:::
+
+---
+
+## 1. Introduction
+
+You have built two containers this semester. In week 4 you built `Vec`, which is
+an array that grows. In week 6 you built `List`, which is a chain of nodes. Both
+of them let you put things anywhere and take things from anywhere.
+
+This week you build two containers that are deliberately *less* capable than
+that, and the restriction is the whole point.
+
+A **Stack** only lets you touch the item that arrived most recently. A **Queue**
+only lets you touch the item that arrived first. Neither will let you reach into
+the middle. That sounds like a downgrade until you notice what it buys: because
+there is only one place anything can happen, everything can happen in constant
+time, no matter how much is in there.
+
+You already use both of these every day:
+
+| | |
+|---|---|
+| Ctrl-Z | a stack of the things you did |
+| the Back button | a stack of the pages you visited |
+| a function call | a stack — which is why it is called *the* call stack |
+| `{ [ ( ) ] }` matching | a stack, in every compiler ever written |
+| a print queue | a queue |
+| customer service | a queue, and everyone notices immediately when it is not |
+| breadth-first search | a queue — you will write one in a11 |
+
+::: {.callout-note}
+**The idea Monday's lecture opens on: an Abstract Data Type.**
+
+An ADT is a set of operations and a promise about what they do — and *nothing
+else*. "A Stack is something you can push onto, peek at, and pop from, where pop
+gives you back the most recent push." That is the entire definition. It says
+nothing about arrays, nothing about nodes, nothing about memory.
+
+That silence is deliberate. You could build this week's Stack on top of your
+`Vec`, or on top of your `List`, or on a raw array, and every one of them would
+be a Stack, because a Stack is defined by what it promises and not by what it is
+made of. You have now built both possible underneaths, so this is a real choice
+rather than a hypothetical one.
+
+We use a raw array here, for two reasons: it is the version where the O(1)
+requirement is visible in the code you write, and it is the version that forces
+you to meet the circular array, which is the idea this week is really about.
+:::
+
+---
+
+## 2. Getting the Code {#getting-the-code}
+
+Accept the assignment. This creates a private GitHub repository that belongs to
+you, already containing the starter code:
+
+::: {.callout-note}
+**Accept link:** *(added when the assignment is published)*
+:::
+
+Then clone it, replacing `YOURUSERNAME` with your GitHub username:
+
+```bash
+git clone https://github.com/26fa-cs112/cs112-a09-YOURUSERNAME.git
+cd cs112-a09-YOURUSERNAME
+```
+
+Open the folder in VS Code, then build it and run it before you change anything:
+
+```bash
+make
+./a09
+make test
+```
+
+`make` succeeds, `./a09` prints a demonstration in which nothing works, and
+`make test` reports **5 / 36**. All three are correct. Two of those five are the
+constructor checks, which are given to you; the other three are the
+constant-time checks, which an empty function passes for free.
+
+::: {.callout-tip}
+Prefer the terminal? `gh student accept 26fa-cs112 cs112 a09` does the same
+thing. Install it once with `gh extension install foundation50/gh-student`.
+:::
+
+---
+
+## 3. What You Were Given
+
+**You edit two files: `Stack.h` and `Queue.h`.** Nine TODOs between them.
+
+| File | Yours? | What it is |
+|---|---|---|
+| `Stack.h` | **yes** | the Stack class, and TODOs 1–4 |
+| `Queue.h` | **yes** | the Queue class, and TODOs 5–9 |
+| `Exceptions.h` | no | `StackException` and `QueueException` |
+| `main.cpp` | no | a demonstration program — read it, it is short |
+| `checks.cpp` | no | the course's checks |
+| `catch.hpp`, `catchmain.cpp`, `makefile`, `test.py` | no | framework, build, grader |
+
+::: {.callout-note}
+**There is no `Stack.cpp` and no `Queue.cpp`, and that is not an oversight.**
+
+Both classes are templates. A template is not code — it is a recipe for making
+code, and the compiler cannot bake it until some file says `Stack<int>` and
+tells it what an `Item` is. That happens in whatever `.cpp` uses the class, and
+the compiler has to be able to see the recipe *from there*. So the definitions
+go in the header, underneath the class, where every `#include` carries them
+along.
+
+You have met this twice: `Trace` in a05 and `List` in a07. Same rule, and this
+time it is set up for you from the start.
+:::
+
+The methods that manage memory — the constructor, the copy constructor, the
+destructor and `operator=` — are **given to you complete** in both files, except
+for one line of `Queue`'s constructor. You wrote all four of these by hand in
+a04 and again in a07; this week the interesting part is elsewhere, so they are
+done. Read them anyway. `Stack`'s copy constructor copies the whole array rather
+than just the live part, and the comment says why.
+
+---
+
+## 4. The Stack {#the-stack}
+
+Four TODOs, all in `Stack.h`. This is the lab.
+
+### Where the top is {#where-the-top-is}
+
+Everything in this section comes out of one picture. Here is a `Stack<char>`
+with capacity 6, holding three items:
+
+```
+index:      0     1     2     3     4     5
+          ┌─────┬─────┬─────┬─────┬─────┬─────┐
+myArray:  │  A  │  B  │  C  │  ?  │  ?  │  ?  │
+          └─────┴─────┴─────┴─────┴─────┴─────┘
+                              ▲
+                              │
+                          mySize = 3
+```
+
+`mySize` is 3, and there are three items. But look at where 3 lands when you use
+it as an *index*: it points at the first slot that is free.
+
+**`mySize` means two things at once, and they are both true.** It is how many
+items you are holding, and it is the index where the next item goes. That is not
+a coincidence — it is what counting from zero does for you — and it is the whole
+reason a stack's push and pop are one line each.
+
+Read the picture again with that in mind:
+
+| Question | Answer | Why |
+|---|---|---|
+| Where does the next item go? | `myArray[mySize]` | that is the first free slot |
+| Where is the top item now? | `myArray[mySize - 1]` | one below the first free slot |
+| Is it empty? | `mySize == 0` | no items |
+| Is it full? | `mySize == myCapacity` | the first free slot is off the end |
+
+Those four rows are TODOs 1 through 3. The `- 1` in the second row is the single
+most common mistake in this assignment; it is there because `mySize` is a
+*count* in one meaning and an *index* in the other, and a count of three items
+ends at index two.
+
+::: {.callout-warning}
+**Never write to `myArray[myCapacity]`.** When `mySize == myCapacity`, the "first
+free slot" is one past the end of the array, and there is nothing there. C++ will
+not stop you — it will write over whatever memory happens to be next and carry
+on cheerfully, and you will find out about it half an hour later somewhere
+completely unrelated. That is what the `isFull()` check at the top of `push` is
+for, and it is why it goes *first*.
+:::
+
+### TODO 1 — `isEmpty` and `isFull`
+
+One line each, from the table above. Do these first: `push`, `pop` and
+`peekTop` all call them, so a mistake here becomes a mysterious failure three
+TODOs later.
+
+### TODO 2 — `push`
+
+Three steps, in order: refuse if full, store the item, update `mySize`.
+
+```
+          ┌─────┬─────┬─────┬─────┬─────┬─────┐
+before    │  A  │  B  │  C  │  ?  │  ?  │  ?  │   mySize = 3
+          └─────┴─────┴─────┴─────┴─────┴─────┘
+                              ▲ store D here
+          ┌─────┬─────┬─────┬─────┬─────┬─────┐
+after     │  A  │  B  │  C  │  D  │  ?  │  ?  │   mySize = 4
+          └─────┴─────┴─────┴─────┴─────┴─────┘
+```
+
+The refusal is `throw StackException("push()", "stack is full");`. `throw` leaves
+the function on the spot, exactly the way `return` does, so you do not need an
+`else` after it.
+
+### TODO 3 — `peekTop`
+
+Refuse if empty, otherwise hand back the top item and change nothing. Watch the
+index: `peekTop` reads from a *different* slot than the one `push` writes to,
+and the difference is the `- 1`.
+
+### TODO 4 — `pop`
+
+Refuse if empty, otherwise shrink by one and return what was on top.
+
+```
+          ┌─────┬─────┬─────┬─────┬─────┬─────┐
+before    │  A  │  B  │  C  │  D  │  ?  │  ?  │   mySize = 4
+          └─────┴─────┴─────┴─────┴─────┴─────┘
+          ┌─────┬─────┬─────┬─────┬─────┬─────┐
+after     │  A  │  B  │  C  │  D  │  ?  │  ?  │   mySize = 3
+          └─────┴─────┴─────┴─────┴─────┴─────┘
+                              ▲ D is still sitting there
+```
+
+Notice what the picture does **not** show: nothing was erased. `pop` does not
+have to clear the slot, zero it, or move anything. "Removing" an item from an
+array-backed stack means nothing more than agreeing to stop counting it. The
+bytes are still there, but nothing will ever read them again, because the next
+`push` writes over that slot.
+
+That is exactly why `pop` is O(1) — it moves no data at all — and it is the same
+insight that the Queue will need in a much less obvious form.
+
+::: {.callout-tip}
+If you decrement `mySize` first, the item you want is at `myArray[mySize]`. If
+you read the item first, it is at `myArray[mySize - 1]`. Both are correct. Pick
+one and be consistent; mixing them is how you end up returning the wrong item.
+:::
+
+---
+
+## 5. Exceptions {#exceptions}
+
+There is no honest value for `pop()` to return when the stack is empty. Any
+`Item` it handed back would be a lie, and the caller would believe it.
+
+So it refuses, out loud. `Exceptions.h` is given to you complete and defines two
+types:
+
+```cpp
+throw StackException("pop()", "stack is empty");
+throw QueueException("enqueue()", "queue is full");
+```
+
+Two fields, not one sentence: *where* the trouble happened is something the
+class knows, and *what* the trouble was is something the situation knows.
+
+A caller who wants to survive this writes:
+
+```cpp
+try {
+    Item x = s.pop();
+} catch (StackException& e) {
+    cerr << e << endl;      // StackException in pop(): stack is empty
+}
+```
+
+`main.cpp` does exactly that, at the bottom, so you can watch it happen.
+
+::: {.callout-note}
+**Why a class of your own rather than throwing a string?** Because `catch`
+selects on type. A `catch (StackException&)` catches the failures a Stack
+produces and nothing else. If everybody threw strings, that same `catch` would
+swallow unrelated failures from three layers down and pretend it had handled
+them.
+
+The checks only require that the right *type* comes out. The two message
+strings are for whoever reads the output, so make them useful.
+:::
+
+---
+
+## 6. The Queue, the obvious way — and why it does not work {#the-obvious-queue}
+
+A Queue is first in, first out. Items leave in the order they arrived.
+
+Try the obvious design. Keep the front of the line at index 0. Enqueue at the
+end, like a stack. Dequeue from the front:
+
+```
+          ┌─────┬─────┬─────┬─────┬─────┬─────┐
+          │ Ada │Grace│Alan │  ?  │  ?  │  ?  │
+          └─────┴─────┴─────┴─────┴─────┴─────┘
+             ▲ dequeue takes this one
+```
+
+Ada leaves. Now index 0 is empty and Grace is at index 1 — but we said the front
+of the line lives at index 0. So we shuffle everyone down:
+
+```
+          ┌─────┬─────┬─────┬─────┬─────┬─────┐
+          │Grace│Alan │  ?  │  ?  │  ?  │  ?  │
+          └─────┴─────┴─────┴─────┴─────┴─────┘
+```
+
+It works. It is also **O(n)**, and you have met this exact cost before: it is
+`Vec::prepend` from week 4, wearing a different hat. Every dequeue touches every
+remaining item. A queue of ten thousand jobs does ten thousand moves to serve
+one of them, and the second one does 9,999 more.
+
+::: {.callout-important}
+**Both of a Queue's operations have to be O(1). That is the requirement, and
+this design fails it.** A queue that shifts is not a slightly-worse queue; it is
+a different data structure with the same interface.
+
+Four of the thirty-six checks read `Stack.h` and `Queue.h` as text and fail you
+if there is a loop inside `push`, `pop`, `enqueue`, `dequeue`, `peekTop`,
+`peekFront`, `getSize`, `isEmpty` or `isFull`. A shifting queue gives every
+right answer, so no behavioural check could ever catch it — and timing it on a
+shared grading machine would not be trustworthy. Reading the source is the only
+honest way to hold you to the thing this assignment is actually about.
+:::
+
+So: **do not move the data. Move the ends.**
+
+Keep an index that says where the front currently is, and stop insisting it is
+zero. Dequeue becomes "add one to `myFront`", which is O(1) and obviously right:
+
+```
+          ┌─────┬─────┬─────┬─────┬─────┬─────┐
+          │ Ada │Grace│Alan │  ?  │  ?  │  ?  │   myFront = 0
+          └─────┴─────┴─────┴─────┴─────┴─────┘
+             ▲ front
+                                                  ...serve Ada...
+          ┌─────┬─────┬─────┬─────┬─────┬─────┐
+          │ ——— │Grace│Alan │  ?  │  ?  │  ?  │   myFront = 1
+          └─────┴─────┴─────┴─────┴─────┴─────┘
+                   ▲ front
+```
+
+Which fixes the speed and creates a new problem. Keep serving and keep adding,
+and the whole line **walks off the right-hand end of the array** while a growing
+run of perfectly good slots sits abandoned on the left:
+
+```
+          ┌─────┬─────┬─────┬─────┬─────┬─────┐
+          │ ——— │ ——— │ ——— │ ——— │Kath │Doro │   myFront = 4
+          └─────┴─────┴─────┴─────┴─────┴─────┘
+            wasted, wasted, wasted, wasted   ▲ and now there is nowhere to put anyone
+```
+
+Four free slots and the queue says it is full. That is the problem §7 solves.
+
+---
+
+## 7. Going in a circle {#going-in-a-circle}
+
+This is the idea of the week. Take your time with it.
+
+### The trick, in one operator
+
+Pretend the array has no ends. When an index walks off the right-hand side, it
+comes back on the left:
+
+```
+                    ┌─────┐
+              ┌─────┤  0  ├─────┐
+              │     └─────┘     │
+           ┌──┴──┐           ┌──┴──┐
+           │  5  │           │  1  │
+           └──┬──┘           └──┬──┘
+              │                 │
+           ┌──┴──┐           ┌──┴──┐
+           │  4  │           │  2  │
+           └──┬──┘           └──┬──┘
+              │     ┌─────┐     │
+              └─────┤  3  ├─────┘
+                    └─────┘
+```
+
+It is still a perfectly ordinary array in memory — nothing is bent, nothing is
+linked. The circle exists entirely in how you do the arithmetic. One operator
+makes it happen:
+
+```cpp
+i = (i + 1) % mySlots;
+```
+
+For an array of 6, that takes 0→1→2→3→4→5→**0**→1→… and never leaves the array.
+`5 + 1` is 6, and `6 % 6` is 0. That is all a circular array is.
+
+::: {.callout-tip}
+**Every index you move in `Queue.h` moves with `% mySlots`.** If you have
+written `+ 1` without a `%` anywhere in that file, that is a bug waiting for the
+right test to find it. There are exactly two places an index moves: the end of
+`enqueue` and the middle of `dequeue`.
+:::
+
+### Watch it go round
+
+A queue of capacity 3, storing in an array — let us say 4 slots long, for
+reasons that become clear in a moment. `F` marks the front, `B` marks the next
+free slot.
+
+```
+start            ┌─────┬─────┬─────┬─────┐
+                 │  ?  │  ?  │  ?  │  ?  │      F=0  B=0   size 0
+                 └─────┴─────┴─────┴─────┘
+                   FB
+
+enqueue A        ┌─────┬─────┬─────┬─────┐
+                 │  A  │  ?  │  ?  │  ?  │      F=0  B=1   size 1
+                 └─────┴─────┴─────┴─────┘
+                    F     B
+
+enqueue B        ┌─────┬─────┬─────┬─────┐
+                 │  A  │  B  │  ?  │  ?  │      F=0  B=2   size 2
+                 └─────┴─────┴─────┴─────┘
+                    F           B
+
+enqueue C        ┌─────┬─────┬─────┬─────┐
+                 │  A  │  B  │  C  │  ?  │      F=0  B=3   size 3  — FULL
+                 └─────┴─────┴─────┴─────┘
+                    F                 B
+
+dequeue → A      ┌─────┬─────┬─────┬─────┐
+                 │ ——— │  B  │  C  │  ?  │      F=1  B=3   size 2
+                 └─────┴─────┴─────┴─────┘
+                          F           B
+
+dequeue → B      ┌─────┬─────┬─────┬─────┐
+                 │ ——— │ ——— │  C  │  ?  │      F=2  B=3   size 1
+                 └─────┴─────┴─────┴─────┘
+                                F     B
+
+enqueue D        ┌─────┬─────┬─────┬─────┐
+                 │ ——— │ ——— │  C  │  D  │      F=2  B=0   size 2
+                 └─────┴─────┴─────┴─────┘
+                   B            F
+                   ▲ B wrapped: (3 + 1) % 4 = 0
+
+enqueue E        ┌─────┬─────┬─────┬─────┐
+                 │  E  │ ——— │  C  │  D  │      F=2  B=1   size 3  — FULL
+                 └─────┴─────┴─────┴─────┘
+                          B     F
+```
+
+E landed at index 0 — a slot that was used and given back — and the queue is
+holding C, D, E in that order even though they sit in the array as E, _, C, D.
+The array order stopped being the queue order the moment the front moved, and
+that is fine, because `myFront` is the only thing that decides who is next.
+
+::: {.callout-tip}
+**Do this one on paper before you write TODO 7 and TODO 9.** Capacity 3 again,
+but a 4-slot array: enqueue A, B, C, dequeue, dequeue, enqueue D, enqueue E,
+dequeue, dequeue, dequeue. Write down `F` and `B` after every single step. If
+your paper trace and your code ever disagree, the paper is right and you have
+found your bug in about ninety seconds.
+:::
+
+### The problem nobody expects {#full-and-empty}
+
+Look at the very first picture and the very last one.
+
+```
+empty            ┌─────┬─────┬─────┬─────┐
+                 │  ?  │  ?  │  ?  │  ?  │      F=0  B=0
+                 └─────┴─────┴─────┴─────┘
+
+full             ┌─────┬─────┬─────┬─────┐
+                 │  W  │  X  │  Y  │  Z  │      F=0  B=0
+                 └─────┴─────┴─────┴─────┘
+```
+
+**`F == B` in both.** An empty queue and a completely full one are, as far as
+the two indices are concerned, identical. Every enqueue moves `B` forward one;
+after four of them in a 4-slot array, `B` has gone all the way round and landed
+back where it started.
+
+This is not an edge case you can code around. The two indices simply do not
+carry enough information to distinguish those two states: two numbers in the
+range 0..3 can describe 16 situations, and there are 17 things a 4-slot queue
+can be doing (empty, 1 item, 2, 3, 4 — at each of 4 rotations, minus the ones
+that coincide). You need one more bit of information from *somewhere*.
+
+There are exactly two standard places to get it, and this is the decision
+**TODO 5** asks you to make.
+
+### Fix one: waste a slot
+
+Never let the queue fill the array. If a 4-slot array is only ever allowed to
+hold 3 items, then `B` can never catch up to `F` from behind, and `F == B`
+means empty and nothing else.
+
+The cost is one `Item` of memory that is never used. The benefit is that you
+keep no count at all.
+
+```
+capacity 3, array of 4 — the fullest this is ever allowed to get:
+
+                 ┌─────┬─────┬─────┬─────┐
+                 │  W  │  X  │  Y  │  ?  │     F=0  B=3
+                 └─────┴─────┴─────┴─────┘
+                    F                 B
+                                        ▲ index 3 stays empty on purpose
+```
+
+| | |
+|---|---|
+| array length | `mySlots = myCapacity + 1` |
+| empty | `myFront == myBack` |
+| full | `(myBack + 1) % mySlots == myFront` |
+| size | `(myBack + mySlots - myFront) % mySlots` |
+| enqueue | store at `myBack`, then `myBack = (myBack + 1) % mySlots` |
+| dequeue | read at `myFront`, then `myFront = (myFront + 1) % mySlots` |
+| unused member | `myCount` |
+
+Read the "full" row out loud: *the queue is full when adding one more would make
+back equal front.* Which is exactly the collision we are refusing to allow.
+
+::: {.callout-warning}
+**The size formula has a `+ mySlots` in it, and it is not decoration.**
+
+`myBack` is often at a *lower* index than `myFront` — that is what wrapping
+means. So `myBack - myFront` goes negative. These members are `unsigned`, and
+unsigned arithmetic does not have negative numbers: `1u - 2u` is not `-1`, it is
+4,294,967,295. Taking `% mySlots` of that gives you an answer that is confidently
+wrong rather than obviously wrong, which is worse.
+
+Adding `mySlots` first pushes the whole thing back above zero without changing
+the remainder. `(myBack + mySlots - myFront) % mySlots` is always right.
+:::
+
+### Fix two: keep a count
+
+Store the number of items. Then `F == B` never has to mean anything, because you
+ask `myCount` instead. The array can be exactly as long as the capacity, and
+every slot gets used.
+
+The cost is that `myCount` is a third thing that has to stay correct: every
+`enqueue` has to remember `++myCount` and every `dequeue` has to remember
+`--myCount`, forever, in every path through the function.
+
+```
+capacity 3, array of 3, holding all three:
+
+                 ┌─────┬─────┬─────┐
+                 │  W  │  X  │  Y  │            F=0  myCount=3
+                 └─────┴─────┴─────┘
+                    F
+```
+
+| | |
+|---|---|
+| array length | `mySlots = myCapacity` |
+| empty | `myCount == 0` |
+| full | `myCount == myCapacity` |
+| size | `myCount` |
+| enqueue | store at `(myFront + myCount) % mySlots`, then `++myCount` |
+| dequeue | read at `myFront`, then `myFront = (myFront + 1) % mySlots` and `--myCount` |
+| unused member | `myBack` |
+
+### Which one should you pick?
+
+Either. They are both standard, both correct, and both O(1), and real libraries
+ship both. The trade is small and real:
+
+| | wasted slot | separate count |
+|---|---|---|
+| memory | one `Item` more than it needs | exactly what it needs |
+| members to keep in step | two | three |
+| `getSize` | arithmetic | just read it |
+| `isFull` | the fiddly line | trivial |
+| easiest to get wrong | the `+ mySlots` in `getSize` | forgetting `--myCount` on one path |
+
+Pick the one whose failure mode you would rather debug. Then **write down which
+one you picked and why**, in the `MY CHOICE` line in the constructor. That line
+is graded — not the prose, but its presence and its having a reason of at least
+six words in it.
+
+::: {.callout-note}
+**Why a comment is worth a mark.** Every genuinely confusing bug students hit in
+this file comes from writing half of one technique and half of the other — a
+`myCount` that gets incremented next to an `isFull` that compares indices. That
+does not happen to people who wrote down which one they were doing before they
+started. The comment is not busywork; it is the fix.
+:::
+
+---
+
+## 8. TODOs 5 through 9 {#the-queue-todos}
+
+All in `Queue.h`. The class carries six data members, and **you will use five of
+them.** Which one you leave alone is precisely the choice you just made.
+
+```cpp
+Item*    myArray;      // the circular array
+unsigned myCapacity;   // how many ITEMS the queue can hold
+unsigned mySlots;      // how many slots myArray really has
+unsigned myFront;      // index of the front item — BOTH techniques
+unsigned myCount;      // number of items — COUNT technique
+unsigned myBack;       // index of the next free slot — WASTED-SLOT technique
+```
+
+Note that `myCapacity` and `mySlots` are different numbers, and the difference is
+the entire wasted-slot technique. `getCapacity()` reports `myCapacity` — what the
+caller asked for. Every `%` uses `mySlots` — how long the array really is.
+
+**TODO 5** — write the `MY CHOICE` line, then make `mySlots` agree with it. It
+ships set to `capacity`; one of the two techniques needs it to be `capacity + 1`.
+Leave the `new Item[mySlots]` line alone — it allocates whatever length you
+decided on.
+
+**TODO 6** — `isEmpty`, `isFull`, `getSize`, from your technique's table above.
+One line each. Do not write a loop in `getSize`; there is a check for that.
+
+**TODO 7** — `enqueue`. Refuse if full, store at the back, move the back index
+(with `%`). Refusing must leave every index exactly as it was.
+
+**TODO 8** — `peekFront`. Refuse if empty, otherwise return `myArray[myFront]`.
+Unlike the Stack, `myFront` is the index of a real item, not of a free slot, so
+there is no `- 1` here.
+
+**TODO 9** — `dequeue`. Refuse if empty, read the front, move `myFront` (with
+`%`), adjust `myCount` if that is your technique, return the item. Nothing is
+erased and nothing is moved — same as `Stack::pop`, for the same reason.
+
+::: {.callout-warning}
+**A capacity of 1 is legal and it is where mistakes show up.** With the
+wasted-slot technique that is an array of 2. Try it on paper: enqueue, dequeue,
+enqueue, dequeue. There is a check for it.
+:::
+
+---
+
+## 9. Testing Your Work
+
+```bash
+make test         # all 36 checks
+```
+
+::: {.callout-important}
+**There are no hidden tests.** What you run with `make test` is exactly what the
+grader runs — all 36 checks, every one of them in a file in your repository.
+Read `checks.cpp`: it is the specification, written out.
+:::
+
+The 36 break down like this:
+
+| | |
+|---|---|
+| 14 | the Stack |
+| 16 | the Queue |
+| 2 | long generated sequences, compared against `std::vector` and `std::deque` |
+| 3 | constant time — read out of your source |
+| 1 | your `MY CHOICE` line |
+
+**Not one of the 32 behavioural checks can tell which technique you chose.**
+They call the public methods and look at what comes back, which is the only
+thing an ADT promises. Both techniques score 36 out of 36; this was verified
+against complete implementations of each.
+
+Each check runs in its own process. An index that goes off the end of the array
+can crash your program, and if all 36 shared one process a crash in the second
+one would take the other 34 with it. This way it costs you exactly the check it
+happened in.
+
+Run a single check while you are debugging:
+
+```bash
+make checks
+./checks "Queue: the array wraps around"
+```
+
+::: {.callout-tip}
+**A suggested order, with the score you should see.** Start at 5. TODO 1 takes
+you to **6**; TODOs 2–4 finish the Stack and take you to **19**. Then read §7
+properly. TODOs 5 and 6 only get you to **21** — most of the Queue checks need
+`enqueue` before they can test anything at all — and 7, 8 and 9 together take
+you the rest of the way to **36**.
+
+So the Queue looks unrewarding right up until it suddenly is not. Do not read
+21 as a sign that §7 went badly.
+
+If you are stuck below 19 on the Stack, the problem is almost certainly the
+index in `peekTop` or `pop`, and §4 has the picture.
+:::
+
+::: {.callout-note}
+**The two long checks** run five thousand pushes and pops, and five thousand
+enqueues and dequeues, in an order generated by a formula — and compare every
+single operation against what the Standard Library's containers do with the same
+sequence. They are the ones most likely to catch a wrap-around mistake that only
+shows up on a particular pattern. They are also completely deterministic, so if
+one fails it will fail the same way every time you run it.
+:::
+
+---
+
+## 10. Submit
+
+```bash
+git add .
+git commit -m "Complete a09"
+git push
+```
+
+::: {.callout-important}
+Put your name at the top of `README.md` before your final push.
+:::
+
+Every push is graded automatically. Within a minute or two the **Actions** tab of
+your repository shows the run, and a **Release** appears with your score and a
+per-check breakdown. Push as often as you like — the most recent submission is
+the one that counts, and there is no deadline on this assignment beyond the last
+day of classes.
+
+---
+
+::: {.callout-note}
+## You are going to use these again
+
+Not as an exercise — as tools.
+
+In **a11** you will solve a maze twice with the same code, once using a Stack and
+once using a Queue, and watch the two containers produce depth-first and
+breadth-first search from an otherwise identical algorithm. In **a12** a Queue
+*is* the snake: enqueue the new head, dequeue the tail, and the animation falls
+out of it.
+
+Both of those assignments ship a working `Stack` and `Queue` in case yours is
+not finished, so a rough week here does not cost you two more. But they are
+written expecting you to drop your own in, and it is a good feeling when
+`Stack<Cell>` just works.
+:::

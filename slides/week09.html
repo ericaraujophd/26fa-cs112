@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Week 09: Stacks and Queues — CS112</title>
+  <title>Week 09: Stacks, Queues, and Hash Tables · CS112</title>
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reset.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.css">
@@ -80,7 +80,7 @@
       <p class="title-course">Introduction to Data Structures</p>
       <div class="title-rule"></div>
       <p class="title-week">Week 09</p>
-      <p class="title-topic">Stacks and Queues</p>
+      <p class="title-topic">Stacks, Queues, and Hash Tables</p>
       <p class="title-author">Eric Ara&uacute;jo</p>
       <p class="title-meta">Calvin University &middot; Fall 2026</p>
     </div>
@@ -91,12 +91,12 @@
   <h2>This Week</h2>
   <ul class="agenda-list">
     <li><div class="agenda-num">1</div> Abstract Data Types</li>
-    <li><div class="agenda-num">2</div> The Stack ADT — LIFO</li>
-    <li><div class="agenda-num">3</div> Implementing a stack</li>
-    <li><div class="agenda-num">4</div> The Queue ADT — FIFO</li>
-    <li><div class="agenda-num">5</div> Why the naive array queue fails</li>
-    <li><div class="agenda-num">6</div> Circular arrays <span class='badge'>KEY</span></li>
-    <li><div class="agenda-num">7</div> Deques</li>
+    <li><div class="agenda-num">2</div> The Stack ADT: LIFO</li>
+    <li><div class="agenda-num">3</div> The Queue ADT: FIFO</li>
+    <li><div class="agenda-num">4</div> Why the naive array queue fails</li>
+    <li><div class="agenda-num">5</div> Circular arrays <span class='badge'>KEY</span></li>
+    <li><div class="agenda-num">6</div> Hash tables: computing the index</li>
+    <li><div class="agenda-num">7</div> Collisions and load factor</li>
   </ul>
 </section>
 
@@ -121,7 +121,7 @@
       </ul>
     </div>
   </div>
-  <div class="callout">Interface versus implementation — the same idea as week 3's <code>public</code>/<code>private</code>, now applied to a whole data structure.</div>
+  <div class="callout">Interface versus implementation, the same idea as week 3's <code>public</code>/<code>private</code>, now applied to a whole data structure.</div>
 </section>
 
 <section>
@@ -144,16 +144,16 @@ getSize()
       </div>
     </div>
   </div>
-  <div class="callout">A stack of plates. Push green, push white, pop — you get <strong>white</strong> back, because it was last on.</div>
+  <div class="callout">A stack of plates. Push green, push white, pop; you get <strong>white</strong> back, because it was last on.</div>
 </section>
 
 <section>
   <h2>Stacks Are Everywhere</h2>
   <ul>
-    <li><strong>Ctrl-Z</strong> — the last change is the first undone</li>
-    <li><strong>Browser back button</strong> — the page you just left is on top</li>
-    <li><strong>The run-time stack</strong> — functions return in reverse call order</li>
-    <li><strong>Matching brackets</strong> — push an opener, pop when you meet its closer</li>
+    <li><strong>Ctrl-Z</strong>: the last change is the first undone</li>
+    <li><strong>Browser back button</strong>: the page you just left is on top</li>
+    <li><strong>The run-time stack</strong>: functions return in reverse call order</li>
+    <li><strong>Matching brackets</strong>: push an opener, pop when you meet its closer</li>
   </ul>
   <div class="callout">Whenever "most recent first" is the right answer, a stack is the right structure. You'll meet the run-time stack again next week, in recursion.</div>
 </section>
@@ -179,7 +179,7 @@ while (!s.isEmpty()) {
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>B — 9 8 7.</strong> Last in, first out: 9 went on last, so it comes off first. A stack reverses the order of whatever you put into it — which is exactly how you reverse a list with one.
+    <strong>B. 9 8 7.</strong> Last in, first out: 9 went on last, so it comes off first. A stack reverses the order of whatever you put into it: which is exactly how you reverse a list with one.
   </div>
 </section>
 
@@ -187,7 +187,7 @@ while (!s.isEmpty()) {
   <h2>Implementing a Stack</h2>
   <div class="two-col">
     <div>
-      <h3>Array — top at the END</h3>
+      <h3>Array: top at the END</h3>
       <pre style="font-size:0.44em"><code class="language-cpp" data-trim>
 void push(const Item &amp;it) {
   if (isFull()) throw ...;
@@ -195,16 +195,16 @@ void push(const Item &amp;it) {
   ++mySize;
 }
       </code></pre>
-      <p style="font-size:0.54em">O(1). Top at index 0 would shift everything — O(n).</p>
+      <p style="font-size:0.54em">O(1). Top at index 0 would shift everything, O(n).</p>
     </div>
     <div>
-      <h3>Linked list — top at the FRONT</h3>
+      <h3>Linked list: top at the FRONT</h3>
       <pre style="font-size:0.44em"><code class="language-cpp" data-trim>
 void push(const Item &amp;it) {
   myList.prepend(it);
 }
       </code></pre>
-      <p style="font-size:0.54em">O(1). Top at the back would need a walk to find it — O(n).</p>
+      <p style="font-size:0.54em">O(1). Top at the back would need a walk to find it, O(n).</p>
     </div>
   </div>
   <div class="callout callout-maroon">Same ADT, two implementations, one design rule: <strong>put the action where the structure is fast.</strong></div>
@@ -216,14 +216,14 @@ void push(const Item &amp;it) {
     <strong>Implementing a stack with a linked list, where should the top be?</strong>
   </div>
   <ul class="pi-choices pi-compact">
-    <li class="fragment correct" data-fragment-index="1"><span class="letter">A.</span> At the front — prepend and remove-first are both O(1)</li>
-    <li><span class="letter">B.</span> At the back — that's where append is</li>
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">A.</span> At the front, prepend and remove-first are both O(1)</li>
+    <li><span class="letter">B.</span> At the back; that's where append is</li>
     <li><span class="letter">C.</span> Either; both are O(1)</li>
     <li><span class="letter">D.</span> In the middle, to balance the cost</li>
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>A — the front.</strong> Appending at the back is O(1) thanks to <code>myLast</code>, but <em>removing</em> the last node needs the node before it, which means walking the list: O(n). The front is fast in both directions.
+    <strong>A. the front.</strong> Appending at the back is O(1) thanks to <code>myLast</code>, but <em>removing</em> the last node needs the node before it, which means walking the list: O(n). The front is fast in both directions.
   </div>
 </section>
 
@@ -243,10 +243,10 @@ getSize()
       <div class="mem-diagram" style="font-size:0.55em">
         <div class="mem-row"><span class="mem-lbl">front</span><span class="mem-val">11 → 22 → 33</span><span class="mem-lbl">back</span></div>
       </div>
-      <p style="font-size:0.55em">Serve at the front, join at the back — a supermarket queue.</p>
+      <p style="font-size:0.55em">Serve at the front, join at the back, a supermarket queue.</p>
     </div>
   </div>
-  <div class="callout">Also called First Come, First Served. Print jobs, request handling, breadth-first search — all queues.</div>
+  <div class="callout">Also called First Come, First Served. Print jobs, request handling, breadth-first search, all queues.</div>
 </section>
 
 <section>
@@ -260,13 +260,13 @@ getSize()
 </section>
 
 <section data-auto-animate>
-  <h2>Don't Move the Data — Move the Ends</h2>
+  <h2>Don't Move the Data, Move the Ends</h2>
   <div class="mem-diagram" style="max-width:660px" data-id="ring">
     <div class="mem-row"><span class="mem-lbl">index</span><span class="mem-val">[0] &nbsp; [1] &nbsp; [2] &nbsp; [3] &nbsp; [4]</span></div>
     <div class="mem-row"><span class="mem-lbl">data</span><span class="mem-val">&nbsp;_ &nbsp;&nbsp; 22 &nbsp;&nbsp; 33 &nbsp;&nbsp; 44 &nbsp;&nbsp; _</span></div>
     <div class="mem-row"><span class="mem-lbl">&nbsp;</span><span class="mem-addr">head = 1 &nbsp;&nbsp;&nbsp; tail = 3</span></div>
   </div>
-  <div class="callout">Keep two indices. <code>remove()</code> just moves <code>head</code> forward — no shifting, <strong>O(1)</strong>.</div>
+  <div class="callout">Keep two indices. <code>remove()</code> just moves <code>head</code> forward, no shifting, <strong>O(1)</strong>.</div>
 </section>
 
 <section data-auto-animate>
@@ -291,12 +291,12 @@ head = (head + 1) % myCapacity;
   <ul class="pi-choices pi-compact">
     <li><span class="letter">A.</span> Empty</li>
     <li><span class="letter">B.</span> Full</li>
-    <li class="fragment correct" data-fragment-index="1"><span class="letter">C.</span> Ambiguous — you can't tell without more information</li>
-    <li><span class="letter">D.</span> Impossible — they can never be equal</li>
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">C.</span> Ambiguous; you can't tell without more information</li>
+    <li><span class="letter">D.</span> Impossible; they can never be equal</li>
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>C — you genuinely can't tell.</strong> Both an empty and a completely full queue put the two indices in the same place. The usual fixes: keep a separate <code>mySize</code> counter, or deliberately leave one slot empty so full and empty never look alike.
+    <strong>C. you genuinely can't tell.</strong> Both an empty and a completely full queue put the two indices in the same place. The usual fixes: keep a separate <code>mySize</code> counter, or deliberately leave one slot empty so full and empty never look alike.
   </div>
 </section>
 
@@ -320,7 +320,7 @@ head = (head + 1) % myCapacity;
       </ul>
     </div>
   </div>
-  <div class="callout">A linked-list queue avoids the fiddliness — <code>add</code> at the tail, <code>remove</code> at the head, both O(1) — at the cost of a pointer per item and a <code>new</code> on every insert.</div>
+  <div class="callout">A linked-list queue avoids the fiddliness, <code>add</code> at the tail, <code>remove</code> at the head, both O(1): at the cost of a pointer per item and a <code>new</code> on every insert.</div>
 </section>
 
 <section class="demo-slide" data-background-color="#6E1C2E">
@@ -340,12 +340,12 @@ head = (head + 1) % myCapacity;
     <rect x="140" y="174" width="40" height="6" rx="3" fill="#cfcdc6"/>
   </svg>
   <p class="demo-cap">Watching head and tail chase each other around.</p>
-  <p class="demo-sub">(and the moment they collide)</p>
+  <p class="demo-sub">(full and empty look identical. that is the whole bug.)</p>
 </section>
 
 <section>
   <h2>Deques</h2>
-  <p style="font-size:0.7em">Pronounced "deck" — a <strong>d</strong>ouble-<strong>e</strong>nded <strong>que</strong>ue.</p>
+  <p style="font-size:0.7em">Pronounced "deck", a <strong>d</strong>ouble-<strong>e</strong>nded <strong>que</strong>ue.</p>
   <pre style="font-size:0.55em"><code class="language-cpp" data-trim>
 #include &lt;deque&gt;
 
@@ -353,7 +353,94 @@ deque&lt;int&gt; d;
 d.push_front(1);   d.push_back(2);
 d.pop_front();     d.pop_back();
   </code></pre>
-  <div class="callout">Push and pop at either end, all O(1). A deque can act as a stack <em>or</em> a queue — which is why the STL's <code>stack</code> and <code>queue</code> are built on one by default.</div>
+  <div class="callout">Push and pop at either end, all O(1). A deque can act as a stack <em>or</em> a queue, which is why the STL's <code>stack</code> and <code>queue</code> are built on one by default.</div>
+</section>
+
+<section>
+  <h2>What If We Just Computed the Index?</h2>
+  <p style="font-size:0.7em">A tree finds an item in O(lg n) by comparing. An array finds index <code>i</code> in O(1) by arithmetic.</p>
+  <div class="callout callout-maroon">
+    So: turn the <em>key itself</em> into an index. No comparisons, no walking, one calculation and you're there.
+    That's a <strong>hash table</strong>.
+  </div>
+</section>
+
+<section>
+  <h2>A Hash Function</h2>
+  <pre style="font-size:0.58em"><code class="language-cpp" data-trim>
+unsigned hash(const string &amp;key, unsigned capacity) {
+    unsigned sum = 0;
+    for (char c : key) {
+        sum = sum * 31 + c;        // mix the characters
+    }
+    return sum % capacity;         // fold into the table
+}
+  </code></pre>
+  <ul>
+    <li><strong>Deterministic</strong>: same key, same slot, every time</li>
+    <li><strong>Fast</strong>: otherwise you've lost the advantage</li>
+    <li><strong>Spreads out</strong>: keys should scatter across the table</li>
+  </ul>
+  <div class="callout">The <code>% capacity</code> is what forces an unbounded key space into a fixed number of slots, and that is exactly why collisions are unavoidable.</div>
+</section>
+
+<section>
+  <h2>Collisions</h2>
+  <div class="mem-diagram" style="max-width:640px">
+    <div class="mem-row"><span class="mem-addr">slot 0</span><span class="mem-val">(empty)</span></div>
+    <div class="mem-row"><span class="mem-addr">slot 1</span><span class="mem-val">"ada" → "bob"</span><span class="mem-lbl">both hashed to 1</span></div>
+    <div class="mem-row"><span class="mem-addr">slot 2</span><span class="mem-val">"grace"</span></div>
+  </div>
+  <p style="font-size:0.64em">Two keys, one slot. With 4 billion possible strings and 100 slots, this is not bad luck; it's arithmetic.</p>
+  <div class="two-col" style="font-size:0.58em">
+    <div class="callout"><strong>Chaining</strong>: each slot holds a linked list of everything that landed there</div>
+    <div class="callout"><strong>Open addressing</strong>: on a clash, probe forward for the next free slot</div>
+  </div>
+</section>
+
+<section>
+  <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
+  <div class="pi-question">
+    <strong>With chaining, what is the worst case for <code>find</code>?</strong>
+  </div>
+  <ul class="pi-choices pi-compact">
+    <li><span class="letter">A.</span> O(1): hashing is always constant</li>
+    <li><span class="letter">B.</span> O(lg n), the chain is a tree</li>
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">C.</span> O(n), every key could hash to the same slot</li>
+    <li><span class="letter">D.</span> O(n²)</li>
+  </ul>
+  <div class="answer-box fragment" data-fragment-index="1">
+    <div class="ans-label">&#10003; Answer</div>
+    <strong>C. O(n).</strong> If every key collides, one chain holds everything and you're doing a linear search through a linked list. With a decent hash function it never happens, which is why we quote O(1) <em>average</em>: but the worst case is real.
+  </div>
+</section>
+
+<section>
+  <h2>Load Factor</h2>
+  <pre style="font-size:0.6em"><code class="language-cpp" data-trim>
+load factor = items / slots
+  </code></pre>
+  <ul>
+    <li>Low (say 0.5): short chains, fast lookups, memory sitting empty</li>
+    <li>High (say 5.0): memory well used, chains long, lookups slower</li>
+    <li>Most implementations <strong>rehash</strong>: double the table and redistribute: around 0.75</li>
+  </ul>
+  <div class="callout callout-maroon">This is the <strong>time–space trade-off</strong> in its purest form: buy speed with empty slots. Rehashing is O(n), amortised across the inserts, exactly the doubling argument from week 5.</div>
+</section>
+
+<section>
+  <h2>Where Hash Tables Sit</h2>
+  <table>
+    <thead><tr><th>Operation</th><th>Hash table</th><th>Balanced tree</th><th>Sorted array</th></tr></thead>
+    <tbody>
+      <tr><td>find</td><td><strong>O(1)</strong> avg</td><td>O(lg n)</td><td>O(lg n)</td></tr>
+      <tr><td>insert</td><td><strong>O(1)</strong> avg</td><td>O(lg n)</td><td>O(n)</td></tr>
+      <tr><td>remove</td><td><strong>O(1)</strong> avg</td><td>O(lg n)</td><td>O(n)</td></tr>
+      <tr><td>sorted listing</td><td>O(n lg n)</td><td><strong>O(n)</strong></td><td><strong>O(n)</strong></td></tr>
+      <tr><td>worst case</td><td>O(n)</td><td>O(lg n)</td><td>O(lg n)</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">Fastest on average, and the only one with no sense of order. Every row of this table is a design decision you can now make on purpose.</div>
 </section>
 
 <section>
@@ -376,12 +463,12 @@ d.pop_front();     d.pop_back();
   <ul style="font-size:0.72em; color:rgba(255,255,255,0.92)">
     <li>An <strong>ADT</strong> fixes the behaviour and leaves the storage open</li>
     <li>Stack = LIFO; Queue = FIFO</li>
-    <li>Put the action where the structure is fast — end of an array, front of a list</li>
+    <li>Put the action where the structure is fast: end of an array, front of a list</li>
     <li>A naive array queue makes <code style='color:var(--gold)'>remove()</code> O(n); a <strong>circular array</strong> fixes it</li>
     <li><code style='color:var(--gold)'>(i + 1) % capacity</code> is the whole trick</li>
-    <li><code style='color:var(--gold)'>head == tail</code> is ambiguous — keep a size, or leave a gap</li>
+    <li><code style='color:var(--gold)'>head == tail</code> is ambiguous, keep a size, or leave a gap</li>
   </ul>
-  <div class="next">Next: a09 →</div>
+  <div class="next">Next: a09 · a10 →</div>
   <p class="credit-line">
     This deck stands on earlier CS112 materials by<br>
     <strong>Joel Adams</strong> and <strong>Victor Norman</strong> &middot; adapted and extended by <strong>Eric Ara&uacute;jo</strong>

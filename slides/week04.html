@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Week 04: Vectors — Dynamic Arrays — CS112</title>
+  <title>Week 04: Vectors: Dynamic Arrays · CS112</title>
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reset.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.css">
@@ -80,7 +80,7 @@
       <p class="title-course">Introduction to Data Structures</p>
       <div class="title-rule"></div>
       <p class="title-week">Week 04</p>
-      <p class="title-topic">Vectors — Dynamic Arrays</p>
+      <p class="title-topic">Vectors: Dynamic Arrays</p>
       <p class="title-author">Eric Ara&uacute;jo</p>
       <p class="title-meta">Calvin University &middot; Fall 2026</p>
     </div>
@@ -95,7 +95,7 @@
     <li><div class="agenda-num">3</div> The stack and the heap</li>
     <li><div class="agenda-num">4</div> Building a dynamic array</li>
     <li><div class="agenda-num">5</div> Growing when full</li>
-    <li><div class="agenda-num">6</div> Destructors — now you need one</li>
+    <li><div class="agenda-num">6</div> Destructors: now you need one</li>
     <li><div class="agenda-num">7</div> Copy constructors: shallow vs deep <span class='badge'>KEY</span></li>
   </ul>
 </section>
@@ -107,7 +107,7 @@
       <h3>Good</h3>
       <ul style="font-size:0.62em">
         <li>Simple to declare</li>
-        <li>Indexing is fast — one multiply and add</li>
+        <li>Indexing is fast: one multiply and add</li>
         <li>Contiguous, so the cache loves them</li>
       </ul>
     </div>
@@ -120,7 +120,7 @@
       </ul>
     </div>
   </div>
-  <div class="callout">Python's <code>list</code> grows on demand. This week we build that — and find out what it costs.</div>
+  <div class="callout">Python's <code>list</code> grows on demand. This week we build that, and find out what it costs.</div>
 </section>
 
 <section>
@@ -135,7 +135,7 @@ arr = nullptr;                 // don't keep the address
   </code></pre>
   <ul>
     <li><code>new</code> returns the <strong>address</strong> of the block</li>
-    <li>The size can be a variable — decided while the program runs</li>
+    <li>The size can be a variable: decided while the program runs</li>
     <li><code>delete []</code> for arrays, plain <code>delete</code> for single objects</li>
   </ul>
   <div class="callout callout-maroon">Every <code>new</code> needs exactly one matching <code>delete</code>. Forget it and you leak; do it twice and you corrupt the heap.</div>
@@ -223,7 +223,7 @@ void Vec::append(const Item &amp;it) {
   ++mySize;
 }
   </code></pre>
-  <div class="callout callout-maroon">Now it copies all <em>n</em> items: <strong>linear time</strong>. Doubling means this happens rarely — more on that next week.</div>
+  <div class="callout callout-maroon">Now it copies all <em>n</em> items: <strong>linear time</strong>. Doubling means this happens rarely, more on that next week.</div>
 </section>
 
 <section>
@@ -235,11 +235,11 @@ void Vec::append(const Item &amp;it) {
     <li><span class="letter">A.</span> Doubling uses less memory</li>
     <li class="fragment correct" data-fragment-index="1"><span class="letter">B.</span> Adding one would make every append copy the whole array</li>
     <li><span class="letter">C.</span> The heap only hands out sizes that are powers of two</li>
-    <li><span class="letter">D.</span> It doesn't matter — both are equally fast</li>
+    <li><span class="letter">D.</span> It doesn't matter, both are equally fast</li>
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>B.</strong> Growing by one means a full copy on <em>every</em> append — that's O(n) each time. Doubling spreads the cost: the expensive copies get rarer as the array grows.
+    <strong>B.</strong> Growing by one means a full copy on <em>every</em> append, which is O(n) each time. Doubling spreads the cost: the expensive copies get rarer as the array grows.
   </div>
 </section>
 
@@ -251,7 +251,7 @@ Vec::~Vec() {
     myArray = nullptr;
 }
   </code></pre>
-  <p style="font-size:0.68em">C++ writes a destructor for you — but it only destroys the <em>members</em>. It destroys the pointer, not what the pointer points at.</p>
+  <p style="font-size:0.68em">C++ writes a destructor for you, but it only destroys the <em>members</em>. It destroys the pointer, not what the pointer points at.</p>
   <div class="callout callout-maroon">
     <strong>The rule:</strong> if your class calls <code>new</code>, your class must define a destructor.
     Otherwise every <code>Vec</code> that dies leaves its heap block behind.
@@ -271,7 +271,7 @@ Vec::~Vec() {
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>B.</strong> Local objects are destroyed automatically at the closing brace; heap objects when you <code>delete</code> them; members when their owner dies. There is no garbage collector — the rules are exact and predictable.
+    <strong>B.</strong> Local objects are destroyed automatically at the closing brace; heap objects when you <code>delete</code> them; members when their owner dies. There is no garbage collector: the rules are exact and predictable.
   </div>
 </section>
 
@@ -288,7 +288,7 @@ Vec b = a;       // what exactly got copied?
     <div class="mem-row"><span class="mem-lbl">a.myArray</span><span class="mem-val">0x5f2a10</span><span class="mem-addr">→ [ 3 | 7 ]</span></div>
     <div class="mem-row"><span class="mem-lbl">b.myArray</span><span class="mem-val">0x5f2a10</span><span class="mem-addr">→ the same block!</span></div>
   </div>
-  <div class="callout callout-maroon">The default copy duplicates the <strong>pointer</strong>, not the data. Two objects now own one block — a <strong>shallow copy</strong>.</div>
+  <div class="callout callout-maroon">The default copy duplicates the <strong>pointer</strong>, not the data. Two objects now own one block, a <strong>shallow copy</strong>.</div>
 </section>
 
 <section>
@@ -297,14 +297,14 @@ Vec b = a;       // what exactly got copied?
     <strong>What goes wrong with that shallow copy?</strong>
   </div>
   <ul class="pi-choices pi-compact">
-    <li><span class="letter">A.</span> Nothing — sharing the block saves memory</li>
+    <li><span class="letter">A.</span> Nothing: sharing the block saves memory</li>
     <li><span class="letter">B.</span> Changing <code>b[0]</code> also changes <code>a[0]</code></li>
-    <li><span class="letter">C.</span> Both destructors delete the same block — undefined behaviour</li>
+    <li><span class="letter">C.</span> Both destructors delete the same block, undefined behaviour</li>
     <li class="fragment correct" data-fragment-index="1"><span class="letter">D.</span> Both B and C</li>
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>D.</strong> They alias each other <em>and</em> the second destructor frees memory that was already freed. A double delete usually crashes — but only sometimes, which is worse.
+    <strong>D.</strong> They alias each other <em>and</em> the second destructor frees memory that was already freed. A double delete usually crashes: but only sometimes, which is worse.
   </div>
 </section>
 
@@ -356,7 +356,7 @@ Vec makeVec() {         // 3. return by value
     <rect x="140" y="174" width="40" height="6" rx="3" fill="#cfcdc6"/>
   </svg>
   <p class="demo-cap">Watching a shallow copy destroy itself.</p>
-  <p class="demo-sub">(double free detected in tcache 2)</p>
+  <p class="demo-sub">(two objects, one array, zero survivors)</p>
 </section>
 
 <section>
@@ -368,7 +368,7 @@ Item&amp; Vec::operator[](unsigned i) {
 
 v[2] = 99;      // works because v[2] IS the slot
   </code></pre>
-  <div class="callout">Return <code>Item</code> and you get a copy — assigning to it would change a temporary and vanish. Returning <code>Item&amp;</code> makes the call an <em>alias</em> for the element.</div>
+  <div class="callout">Return <code>Item</code> and you get a copy, assigning to it would change a temporary and vanish. Returning <code>Item&amp;</code> makes the call an <em>alias</em> for the element.</div>
 </section>
 
 <section>
@@ -390,7 +390,7 @@ void setFirst(Item v) {
       </code></pre>
     </div>
   </div>
-  <div class="callout">C++ passes the object silently as <code>this</code> — a pointer to the object the method was called on. You rarely write it, but it's there, and <code>this-&gt;x</code> is just <code>(*this).x</code>.</div>
+  <div class="callout">C++ passes the object silently as <code>this</code>: a pointer to the object the method was called on. You rarely write it, but it's there, and <code>this-&gt;x</code> is just <code>(*this).x</code>.</div>
 </section>
 
 <section class="closing-slide" data-background-color="#6E1C2E">
@@ -398,9 +398,9 @@ void setFirst(Item v) {
   <ul style="font-size:0.72em; color:rgba(255,255,255,0.92)">
     <li><code style='color:var(--gold)'>new</code> gets heap memory at runtime; every <code style='color:var(--gold)'>new</code> needs one <code style='color:var(--gold)'>delete</code></li>
     <li><strong>size</strong> vs <strong>capacity</strong> is what makes append cheap most of the time</li>
-    <li>Growing means allocate, copy, delete, repoint — linear, so we double</li>
+    <li>Growing means allocate, copy, delete, repoint: linear, so we double</li>
     <li>If your class calls <code style='color:var(--gold)'>new</code>, it needs a <strong>destructor</strong></li>
-    <li>The default copy is <strong>shallow</strong> — aliasing plus a double delete</li>
+    <li>The default copy is <strong>shallow</strong>: aliasing plus a double delete</li>
     <li>Write a copy constructor that allocates its own block</li>
   </ul>
   <div class="next">Next: a04 →</div>

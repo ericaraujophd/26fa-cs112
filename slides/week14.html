@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Week 14: Hash Tables and Sorting — CS112</title>
+  <title>Week 14: Parallelism: experiments and course recap · CS112</title>
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reset.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.css">
@@ -80,7 +80,7 @@
       <p class="title-course">Introduction to Data Structures</p>
       <div class="title-rule"></div>
       <p class="title-week">Week 14</p>
-      <p class="title-topic">Hash Tables and Sorting</p>
+      <p class="title-topic">Parallelism: experiments and course recap</p>
       <p class="title-author">Eric Ara&uacute;jo</p>
       <p class="title-meta">Calvin University &middot; Fall 2026</p>
     </div>
@@ -90,184 +90,16 @@
 <section>
   <h2>This Week</h2>
   <ul class="agenda-list">
-    <li><div class="agenda-num">1</div> Computing where an item lives</li>
-    <li><div class="agenda-num">2</div> Hash functions</li>
-    <li><div class="agenda-num">3</div> Collisions <span class='badge'>KEY</span></li>
-    <li><div class="agenda-num">4</div> Load factor and the time–space trade</li>
-    <li><div class="agenda-num">5</div> Selection sort</li>
-    <li><div class="agenda-num">6</div> Insertion sort</li>
-    <li><div class="agenda-num">7</div> Where the course has taken you</li>
+    <li><div class="agenda-num">1</div> Timing the matrix operations</li>
+    <li><div class="agenda-num">2</div> omp parallel for</li>
+    <li><div class="agenda-num">3</div> schedule(dynamic)</li>
+    <li><div class="agenda-num">4</div> What we built this semester</li>
   </ul>
 </section>
 
 <section>
-  <h2>What If We Just Computed the Index?</h2>
-  <p style="font-size:0.7em">A tree finds an item in O(lg n) by comparing. An array finds index <code>i</code> in O(1) by arithmetic.</p>
-  <div class="callout callout-maroon">
-    So: turn the <em>key itself</em> into an index. No comparisons, no walking — one calculation and you're there.
-    That's a <strong>hash table</strong>.
-  </div>
-</section>
-
-<section>
-  <h2>A Hash Function</h2>
-  <pre style="font-size:0.58em"><code class="language-cpp" data-trim>
-unsigned hash(const string &amp;key, unsigned capacity) {
-    unsigned sum = 0;
-    for (char c : key) {
-        sum = sum * 31 + c;        // mix the characters
-    }
-    return sum % capacity;         // fold into the table
-}
-  </code></pre>
-  <ul>
-    <li><strong>Deterministic</strong> — same key, same slot, every time</li>
-    <li><strong>Fast</strong> — otherwise you've lost the advantage</li>
-    <li><strong>Spreads out</strong> — keys should scatter across the table</li>
-  </ul>
-  <div class="callout">The <code>% capacity</code> is what forces an unbounded key space into a fixed number of slots — and that is exactly why collisions are unavoidable.</div>
-</section>
-
-<section>
-  <h2>Collisions</h2>
-  <div class="mem-diagram" style="max-width:640px">
-    <div class="mem-row"><span class="mem-addr">slot 0</span><span class="mem-val">—</span></div>
-    <div class="mem-row"><span class="mem-addr">slot 1</span><span class="mem-val">"ada" → "bob"</span><span class="mem-lbl">both hashed to 1</span></div>
-    <div class="mem-row"><span class="mem-addr">slot 2</span><span class="mem-val">"grace"</span></div>
-  </div>
-  <p style="font-size:0.64em">Two keys, one slot. With 4 billion possible strings and 100 slots, this is not bad luck — it's arithmetic.</p>
-  <div class="two-col" style="font-size:0.58em">
-    <div class="callout"><strong>Chaining</strong> — each slot holds a linked list of everything that landed there</div>
-    <div class="callout"><strong>Open addressing</strong> — on a clash, probe forward for the next free slot</div>
-  </div>
-</section>
-
-<section>
-  <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
-  <div class="pi-question">
-    <strong>With chaining, what is the worst case for <code>find</code>?</strong>
-  </div>
-  <ul class="pi-choices pi-compact">
-    <li><span class="letter">A.</span> O(1) — hashing is always constant</li>
-    <li><span class="letter">B.</span> O(lg n) — the chain is a tree</li>
-    <li class="fragment correct" data-fragment-index="1"><span class="letter">C.</span> O(n) — every key could hash to the same slot</li>
-    <li><span class="letter">D.</span> O(n²)</li>
-  </ul>
-  <div class="answer-box fragment" data-fragment-index="1">
-    <div class="ans-label">&#10003; Answer</div>
-    <strong>C — O(n).</strong> If every key collides, one chain holds everything and you're doing a linear search through a linked list. With a decent hash function it never happens, which is why we quote O(1) <em>average</em> — but the worst case is real.
-  </div>
-</section>
-
-<section>
-  <h2>Load Factor</h2>
-  <pre style="font-size:0.6em"><code class="language-cpp" data-trim>
-load factor = items / slots
-  </code></pre>
-  <ul>
-    <li>Low (say 0.5) — short chains, fast lookups, memory sitting empty</li>
-    <li>High (say 5.0) — memory well used, chains long, lookups slower</li>
-    <li>Most implementations <strong>rehash</strong> — double the table and redistribute — around 0.75</li>
-  </ul>
-  <div class="callout callout-maroon">This is the <strong>time–space trade-off</strong> in its purest form: buy speed with empty slots. Rehashing is O(n), amortised across the inserts — exactly the doubling argument from week 5.</div>
-</section>
-
-<section>
-  <h2>Where Hash Tables Sit</h2>
-  <table>
-    <thead><tr><th>Operation</th><th>Hash table</th><th>Balanced tree</th><th>Sorted array</th></tr></thead>
-    <tbody>
-      <tr><td>find</td><td><strong>O(1)</strong> avg</td><td>O(lg n)</td><td>O(lg n)</td></tr>
-      <tr><td>insert</td><td><strong>O(1)</strong> avg</td><td>O(lg n)</td><td>O(n)</td></tr>
-      <tr><td>remove</td><td><strong>O(1)</strong> avg</td><td>O(lg n)</td><td>O(n)</td></tr>
-      <tr><td>sorted listing</td><td>O(n lg n)</td><td><strong>O(n)</strong></td><td><strong>O(n)</strong></td></tr>
-      <tr><td>worst case</td><td>O(n)</td><td>O(lg n)</td><td>O(lg n)</td></tr>
-    </tbody>
-  </table>
-  <div class="callout">Fastest on average, and the only one with no sense of order. Every row of this table is a design decision you can now make on purpose.</div>
-</section>
-
-<section>
-  <h2>Selection Sort</h2>
-  <pre style="font-size:0.56em"><code class="language-cpp" data-trim>
-for (int i = 0; i &lt; n - 1; ++i) {
-    int smallest = i;
-    for (int j = i + 1; j &lt; n; ++j) {
-        if (a[j] &lt; a[smallest]) { smallest = j; }
-    }
-    swap(a[i], a[smallest]);
-}
-  </code></pre>
-  <p style="font-size:0.62em">Find the smallest of what's left, swap it into place, repeat.</p>
-  <div class="callout">Nested loops over n → <strong>O(n²)</strong>, always. It does the same work on sorted input as on random input, but it makes at most n−1 swaps.</div>
-</section>
-
-<section>
-  <h2>Insertion Sort</h2>
-  <pre style="font-size:0.56em"><code class="language-cpp" data-trim>
-for (int i = 1; i &lt; n; ++i) {
-    Item key = a[i];
-    int j = i - 1;
-    while (j &gt;= 0 &amp;&amp; a[j] &gt; key) {
-        a[j + 1] = a[j];      // shift right
-        --j;
-    }
-    a[j + 1] = key;           // drop it in
-}
-  </code></pre>
-  <p style="font-size:0.62em">Take the next item, slide it back until it's in place — the way you sort a hand of cards.</p>
-  <div class="callout">Worst case O(n²), but on <strong>already-sorted</strong> input the inner loop never runs: O(n).</div>
-</section>
-
-<section>
-  <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
-  <div class="pi-question">
-    <strong>Your data is almost sorted already. Which of the two is better?</strong>
-  </div>
-  <ul class="pi-choices pi-compact">
-    <li><span class="letter">A.</span> Selection sort — it always does the same work</li>
-    <li class="fragment correct" data-fragment-index="1"><span class="letter">B.</span> Insertion sort — it approaches O(n) when little is out of place</li>
-    <li><span class="letter">C.</span> Identical — both are O(n²)</li>
-    <li><span class="letter">D.</span> Neither works on partly sorted data</li>
-  </ul>
-  <div class="answer-box fragment" data-fragment-index="1">
-    <div class="ans-label">&#10003; Answer</div>
-    <strong>B — insertion sort.</strong> Its inner loop stops as soon as the item is in place, so nearly-sorted input costs nearly nothing. This is why real library sorts fall back to insertion sort on small or nearly-ordered chunks.
-  </div>
-</section>
-
-<section>
-  <h2>Comparing the Two</h2>
-  <table>
-    <thead><tr><th></th><th>Selection sort</th><th>Insertion sort</th></tr></thead>
-    <tbody>
-      <tr><td>Best case</td><td>O(n²)</td><td><strong>O(n)</strong></td></tr>
-      <tr><td>Worst case</td><td>O(n²)</td><td>O(n²)</td></tr>
-      <tr><td>Swaps / writes</td><td><strong>O(n)</strong></td><td>O(n²)</td></tr>
-      <tr><td>Stable?</td><td>no</td><td><strong>yes</strong></td></tr>
-    </tbody>
-  </table>
-  <div class="callout">Neither is what you'd ship — <code>std::sort</code> is O(n lg n). But every fast sort is built from ideas you can now read, and both of these are the right choice for a small enough n.</div>
-</section>
-
-<section class="demo-slide" data-background-color="#6E1C2E">
-  <h1>Demo</h1>
-  <div class="demo-rule"></div>
-  <svg class="demo-art" viewBox="0 -34 320 246" xmlns="http://www.w3.org/2000/svg">
-    <path d="M254,12 C250,0 260,-6 256,-20 C270,-11 267,1 261,12 Z" fill="#E8873A"/>
-    <path d="M266,12 C264,4 270,0 268,-10 C277,-3 275,5 271,12 Z" fill="#F2CD00"/>
-    <path d="M243,12 C241,5 246,2 244,-6 C251,-1 250,6 247,12 Z" fill="#E8873A" opacity=".75"/>
-    <rect x="40" y="10" width="240" height="150" rx="9" fill="#1e1f1a" stroke="#C49A2C" stroke-width="3"/>
-    <text x="58" y="46" font-family="'Fira Code',Consolas,monospace" font-size="15.0" fill="#9be36b">$ ./sortbench 50000</text>
-    <text x="58" y="76" font-family="'Fira Code',Consolas,monospace" font-size="13.0" fill="#ff7b72">std::sort:      0.004 s</text>
-    <text x="58" y="96" font-family="'Fira Code',Consolas,monospace" font-size="13.0" fill="#ff7b72">selection:      3.918 s</text>
-    <text x="58" y="134" font-family="'Fira Code',Consolas,monospace" font-size="15" fill="#9be36b">$</text>
-    <rect x="72" y="122" width="9" height="15" fill="#9be36b"/>
-    <path d="M22,168 L298,168 L314,196 L6,196 Z" fill="#eceae3" stroke="#8d8d86" stroke-width="2.5" stroke-linejoin="round"/>
-    <rect x="140" y="174" width="40" height="6" rx="3" fill="#cfcdc6"/>
-  </svg>
-  <p class="demo-cap">Racing selection sort against std::sort.</p>
-  <p class="demo-sub">(n = 50,000, and then we wait)</p>
+  <h2>Deck not yet written</h2>
+  <div class="callout callout-maroon">The parallelism half of this deck has NOT been written yet. The closing recap slide below is the original and is kept.</div>
 </section>
 
 <section>
@@ -278,24 +110,24 @@ for (int i = 1; i &lt; n; ++i) {
       <tr><td>Array / vector</td><td>indexing, appending</td><td>inserting at the front</td></tr>
       <tr><td>Linked list</td><td>inserting and removing anywhere you already are</td><td>indexing</td></tr>
       <tr><td>Stack / queue</td><td>one disciplined end (or two)</td><td>looking in the middle</td></tr>
-      <tr><td>BST</td><td>ordered search — when balanced</td><td>sorted input, unless balanced</td></tr>
+      <tr><td>BST</td><td>ordered search, when balanced</td><td>sorted input, unless balanced</td></tr>
       <tr><td>AVL tree</td><td>guaranteed O(lg n)</td><td>more code, more memory</td></tr>
       <tr><td>Hash table</td><td>raw lookup speed</td><td>any question about order</td></tr>
     </tbody>
   </table>
-  <div class="callout">You built every one of these. The skill you're leaving with isn't any single structure — it's asking <em>which operations will this code do a million times?</em> before choosing.</div>
+  <div class="callout">You built every one of these. The skill you're leaving with isn't any single structure; it's asking <em>which operations will this code do a million times?</em> before choosing.</div>
 </section>
 
 <section class="closing-slide" data-background-color="#6E1C2E">
   <h2>Week 14 Recap</h2>
   <ul style="font-size:0.72em; color:rgba(255,255,255,0.92)">
-    <li>A hash function turns a key into an index — O(1) on average</li>
+    <li>A hash function turns a key into an index, O(1) on average</li>
     <li>Collisions are inevitable; <strong>chaining</strong> and <strong>open addressing</strong> handle them</li>
     <li>Load factor trades memory for speed; rehashing is the doubling trick again</li>
     <li>Selection sort is O(n²) always; insertion sort is O(n) on nearly-sorted data</li>
     <li>Choose the structure by the operations you repeat most</li>
   </ul>
-  <div class="next">Next: Final Window &middot; book by Dec 9 →</div>
+  <div class="next">Next: Final Window · book by Dec 9 →</div>
   <p class="credit-line">
     This deck stands on earlier CS112 materials by<br>
     <strong>Joel Adams</strong> and <strong>Victor Norman</strong> &middot; adapted and extended by <strong>Eric Ara&uacute;jo</strong>

@@ -1,0 +1,13 @@
+<!-- Applies the saved text size before first paint, so the page never flashes
+     at the wrong size. Runs in <head>, before body renders. -->
+<script>
+(function () {
+  try {
+    var saved = window.localStorage.getItem('cs112-fontsize');
+    if (saved !== 'medium' && saved !== 'large') saved = 'small';
+    document.documentElement.setAttribute('data-fontsize', saved);
+  } catch (e) {
+    document.documentElement.setAttribute('data-fontsize', 'small');
+  }
+})();
+</script>

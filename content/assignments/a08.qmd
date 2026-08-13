@@ -1,34 +1,576 @@
 ---
-title: "Assignment 08: Stacks and Queues"
-subtitle: "Week 09 · Nov 2 – Nov 7"
+title: "Assignment 08: Stopwatch"
+subtitle: "Measure it, and let the program tell you the shape"
 ---
 
 ::: {.callout-note}
-**Not published yet.** This page fills in before week 09 begins. The outline below
-is what the assignment is being built to cover — a preview, not a specification.
+Accept the assignment to get your own private GitHub repository (see
+[Getting the code](#getting-the-code) below), then clone it and open it in VS Code.
+
+**Plan to set aside about 2.5 to 3 hours.** `classifyGrowth` (§5) and
+`findings.txt` (§8) are the substance; the five timing functions in §6 are short
+and repetitive once you have read the two worked examples.
 :::
 
-## What this assignment will cover
+## Objectives
 
-- Enumerate the typical API for a Stack and a Queue.
-- Define an Abstract Data Type (ADT).
-- Reason about how to implement Stacks and Queues so all operations are O(1).
-- Describe how a circular array works.
-- Define a deque and explain how to implement it.
+By the end of this assignment, you will be able to:
 
-## Course skills
+- Time an operation that is far too fast to time directly, by repeating it
+- Explain why the *minimum* of several measurements is closer to the truth than
+  the average
+- Read a growth class off a series of measurements, and write down the rule you
+  used as code
+- Explain why the geometric mean of a set of ratios is the right average and the
+  ordinary one is not
+- Say what `vector` and `list` are each good and bad at, and why
+- Explain amortized constant time, and point at a measurement of it
+- Say what a straight line on a log-log chart means, and what its slope is
+- Defend a complexity claim from evidence rather than from memory
 
-Primary practice for skills **C4, C5, C6**. See
-[Skills & Check-Ins](../checkins.html) for what each one means and when it is assessed.
+This assignment covers course skills **D1** (classify the Big-O of a code
+snippet), **D2** (draw and compare growth curves) and **D3** (best, worst and
+amortized), from cluster **D**, assessed at **Window 2** on Nov 20. It is also
+where the linked-list-versus-dynamic-array comparison from week 6 gets settled,
+with numbers.
 
-## Getting the code
+::: {.callout-note}
+**Lab and homework.** You start this in lab on Tuesday Oct 27. By then you will
+have had Friday's POGIL and Monday's lecture on Big-Oh, which is everything this
+assignment needs — there is no new syntax here, only measurement and reasoning.
 
-You will accept the assignment through Classroom 50, which creates your own private
-repository from the starter code. The accept link appears here when the assignment
-is published.
+§5 needs nothing but the Big-Oh lecture, and you can finish and fully test it
+before you have timed anything at all. That is a good place to start.
 
-## Submitting
+**Prof. Norman is teaching all four sessions this week**, including both lab
+sections. This page is written to be self-contained: everything you need to
+decide is decided here, and every rule the grader applies is written down below.
+If something genuinely does not make sense, say so in lab — but you should not
+need to wait for an answer to keep going.
+:::
 
-Commit and push to `main`. Every push is graded automatically — check the **Actions**
-tab of your repository for the run and **Releases** for your score. Your most recent
-submission before the deadline is the one that counts.
+---
+
+## 1. Introduction
+
+You have spent seven weeks being told what things cost.
+
+`vector` subscript is O(1). Prepending to a vector is O(n). A linked list
+prepends in constant time and pays for it on every traversal. Appending to a
+dynamic array is amortized O(1) because doubling makes the expensive case rare.
+
+Every one of those is a claim about the physical world, and you have taken all
+of them on trust.
+
+This week you check.
+
+The instrument is a stopwatch — the one in `Timer.h`, which does nothing more
+than write down the time before and after. Point it at eight operations, at five
+container sizes each, and the shapes fall out of the numbers.
+
+::: {.callout-note}
+**What is different about this assignment.** Everywhere else this semester there
+has been a right answer sitting in a file somewhere, and the checks compare
+against it. Here the numbers are different on every machine, at every moment,
+and on a laptop with a browser open they will be different from one minute to
+the next.
+
+So the numbers are not what is graded. What is graded is the **reasoning that
+turns numbers into a class**, and that is the same everywhere. §5 is the code
+version of it. §8 is the sentence version.
+
+That gap — between the measurement, which is local and noisy, and the
+conclusion, which is not — is most of what empirical computer science is.
+:::
+
+---
+
+## 2. Getting the Code {#getting-the-code}
+
+Accept the assignment. This creates a private GitHub repository that belongs to
+you, already containing the starter code:
+
+::: {.callout-note}
+**Accept link:** *(added when the assignment is published)*
+:::
+
+Then clone it, replacing `YOURUSERNAME` with your GitHub username:
+
+```bash
+git clone https://github.com/26fa-cs112/cs112-a08-YOURUSERNAME.git
+cd cs112-a08-YOURUSERNAME
+```
+
+Open the folder in VS Code, then build it and run it before you change anything:
+
+```bash
+make
+./stopwatch
+make test
+```
+
+`make` succeeds, `./stopwatch` prints a table with three rows filled in and five
+rows of zeroes, and `make test` reports **9 / 36**. All three are correct: the
+harness works, three experiments are written for you, and nothing else is.
+
+::: {.callout-tip}
+Prefer the terminal? `gh student accept 26fa-cs112 cs112 a08` does the same
+thing. Install it once with `gh extension install foundation50/gh-student`.
+:::
+
+---
+
+## 3. What You Were Given
+
+**You edit two files: `Stopwatch.cpp` and `findings.txt`.** Eight TODOs between
+them.
+
+| File | Yours? | What it is |
+|---|---|---|
+| `Stopwatch.cpp` | **yes** | TODOs 1–7 |
+| `findings.txt` | **yes** | TODO 8 — what you conclude |
+| `Stopwatch.h` | no | the specification. Read this first. |
+| `Timer.h` | no | the stopwatch |
+| `given.cpp` | no | sizes, repetition policy, `measure`, and the HTML page |
+| `main.cpp` | no | runs everything and prints the table |
+| `checks.cpp` | no | the course's checks |
+| `sample-results.html` | no | what the chart looks like, on made-up data |
+| `catch.hpp`, `catchmain.cpp`, `makefile`, `test.py` | no | framework, build, grader |
+
+Three of the eight experiments are written for you, as models:
+`timeVectorSubscript`, `timeVectorAppend` and `timeRepeatedVectorAppend`. Read
+all three before you write anything.
+
+::: {.callout-note}
+**This is the one assignment that builds with `-O2`.** Every other week used
+`-g` and no optimisation, which is right when you are debugging and wrong when
+you are measuring — an unoptimised build spends most of its time on bookkeeping
+that a real build would not do, and that bookkeeping is the same size at every
+n, so it flattens exactly the differences you are looking for. Nobody benchmarks
+a debug build.
+
+The price is that the optimiser will delete a loop whose result nobody uses.
+That is what the `volatile` variables in the worked examples are for.
+:::
+
+---
+
+## 4. Why You Cannot Just Time One Operation
+
+A `vector` subscript takes somewhere around one nanosecond. Asking the clock
+what time it is takes rather more than that. So this:
+
+```cpp
+t.start();
+sink += v[i];              // the thing we want to measure
+double us = t.elapsed();   // almost entirely the cost of asking
+```
+
+measures the stopwatch, not the subscript.
+
+Two techniques fix it, and both are already in the code you were given.
+
+**Repeat, then divide.** Do the operation a few thousand times between one
+`start()` and one `elapsed()`, and divide by the count. The clock is consulted
+twice in total rather than twice per operation, and its cost disappears into the
+average. `repsFor(n)` in `given.cpp` decides how many times — more at small n,
+fewer at large n, so the total work stays level instead of exploding at a
+million.
+
+**Take the minimum, not the mean.** `measure()` runs each timing function five
+times and keeps the *smallest* answer. That looks like cheating and is not, and
+the reason is worth understanding:
+
+::: {.callout-note}
+Noise on a shared machine is **one-sided**. The operating system scheduling
+something else, another student's compile starting up, a cache line being
+evicted — every one of those makes a measurement take **longer**. Nothing in the
+universe makes your code run faster than it actually does.
+
+So the average of several runs is the true cost *plus* however much interference
+there happened to be. The minimum is the true cost plus however much
+interference there was in the quietest run — and with enough runs, one of them
+lands in a quiet moment. The minimum converges on the truth from above; the mean
+does not converge on it at all.
+
+This is standard practice in real benchmarking, for exactly this reason.
+:::
+
+There is a third trick, in `buildVector` in `given.cpp`, and it is worth reading
+the comment there. A four-megabyte vector is not really *yours* until you write
+to it — the operating system hands over the pages lazily. Without a warm-up, the
+first appends after building a million-element vector get charged for that, and
+an O(1) operation measures as something else entirely. That one cost about an
+hour to find.
+
+---
+
+## 5. TODO 1 — `classifyGrowth`
+
+This is the heart of the assignment, and you can write and fully test it before
+timing anything.
+
+You are given the times at five sizes, where **each size is ten times the one
+before**. The question is what shape they imply.
+
+Think about what you would do by eye. You would look at whether the time went up
+when n went up, and by how much. If n grows tenfold and the time does not
+change, that is constant. If the time also grows tenfold, that is linear. If it
+grows a hundredfold, the cost is going up much faster than n is — quadratic.
+
+Written down:
+
+| the time grows by, per tenfold step | the class |
+|---|---|
+| about 1× — it barely moves | `O(1)` |
+| clearly more than 1 but far less than 10 | `O(log n)` |
+| about 10× | `O(n)` |
+| about 100× | `O(n²)` |
+
+### The rule, exactly
+
+1. **Refuse to guess.** Return `UNKNOWN` if `count < 2`, or any time is zero or
+   negative, or any size is not exactly ten times the one before it.
+
+2. Compute the ratio between each pair of neighbouring times:
+
+   ```cpp
+   ratio[i] = times[i] / times[i-1];       // for i = 1 .. count-1
+   ```
+
+3. Take the **geometric mean** of those ratios — multiply them together and take
+   the `(count-1)`-th root:
+
+   ```cpp
+   double growth = pow(product, 1.0 / (count - 1));
+   ```
+
+4. Read the class off that number:
+
+   ```
+   growth <  1.3   ->  CONSTANT
+   growth <  4.5   ->  LOGARITHMIC
+   growth < 40.0   ->  LINEAR
+   otherwise       ->  QUADRATIC
+   ```
+
+::: {.callout-warning}
+**`count` measurements have `count - 1` ratios**, so the root is the
+`(count-1)`-th. Five measurements are four steps apart. Taking the fifth root
+instead of the fourth is the single most common way to get this wrong, and it
+does not fail loudly — it just quietly reclassifies your quadratic series as
+linear.
+:::
+
+### Why the geometric mean
+
+Suppose a measurement is unlucky and comes out three times too slow, and the
+next one is normal. The ratios are 3 and 1/3.
+
+The ordinary average of 3 and 1/3 is **1.67** — which says the time is growing.
+It is not; it went up and came straight back down. The geometric mean of 3 and
+1/3 is `sqrt(3 × 1/3)` = **exactly 1**, which is the truth.
+
+That is what ratios are like. Doubling and halving should cancel, and only the
+geometric mean makes them. One of the checks is a series that jumps up and back
+down four times, and it is there precisely to catch an implementation that adds
+the ratios up and divides.
+
+The same property is what makes the rule survive real noise. A single
+measurement that comes out 30% high moves the geometric mean of four ratios by
+about 7% — nowhere near enough to cross a boundary.
+
+::: {.callout-note}
+**Why the boundaries are 1.3, 4.5 and 40 rather than 1, 10 and 100.** A perfect
+O(n) series would give exactly 10.0. Real machines have caches, an operating
+system, and other people on them. The bands are set wide enough to absorb that
+and still separate classes that are a factor of ten apart. You will see measured
+values around 10.4 and 1.05 and they will land in the right places with room to
+spare.
+:::
+
+**Test it now**, before you write any timing code:
+
+```bash
+make checks
+./checks
+```
+
+Sixteen of the thirty-six checks are `classifyGrowth` against series that were
+typed in by hand. They do not need `./stopwatch` to work at all.
+
+---
+
+## 6. TODOs 2–6 — The Five Timing Functions
+
+Read `timeVectorSubscript` and `timeVectorAppend` in `Stopwatch.cpp` first. Both
+follow the same five steps:
+
+1. build a container of `n` items — **outside** the timer
+2. ask `repsFor(n)` how many repetitions to do
+3. start the timer
+4. do the operation that many times
+5. stop, and divide by the repetition count
+
+The five you write are the same shape with a different operation in the middle.
+
+| TODO | Function | The operation |
+|---|---|---|
+| 2 | `timeListAppend` | `l.push_back(1)` |
+| 3 | `timeVectorPrepend` | `v.insert(v.begin(), 1)` |
+| 4 | `timeListPrepend` | `l.push_front(1)` |
+| 5 | `timeVectorTraverse` | walk `begin()` to `end()` with an iterator |
+| 6 | `timeListTraverse` | the same, on a list |
+
+Three things to watch:
+
+::: {.callout-warning}
+**TODO 3 uses 50 repetitions, not `repsFor(n)`.** Two thousand prepends into a
+vector of a million would move a hundred billion elements and you would still be
+sitting there. Fifty is plenty to measure, and it grows the vector by so little
+that n is still effectively n. The TODO comment says this too.
+:::
+
+::: {.callout-warning}
+**TODOs 5 and 6 do not divide by n.** A traversal is already n operations; you
+want to watch the cost of *one whole walk* grow. Divide by the repetition count
+only. Dividing by n as well turns an O(n) measurement into a flat line, which is
+a real answer to a different question.
+:::
+
+::: {.callout-tip}
+**`vector` has no `push_front`.** That is not an oversight — it is the API
+telling you something. Putting an element at the front of a vector means moving
+every other element up one place, and the library declines to give that a
+convenient name. `insert(v.begin(), value)` will do it, and the measurement will
+show you why nobody wanted to make it easy.
+:::
+
+Now run it:
+
+```bash
+make
+./stopwatch
+```
+
+Eight rows, five columns, and a class in the last column worked out by your own
+`classifyGrowth`. Look at the table for a minute before moving on — three of the
+eight rows should surprise you slightly, and §8 is where you say why.
+
+---
+
+## 7. TODO 7 — The Chart
+
+`writeChart` writes `results.html`: `CHART_HEAD`, then a data block you produce,
+then `CHART_TAIL`. The two constants are in `given.cpp` and hold the whole page
+and the JavaScript that draws it, so all you write is the numbers.
+
+### The data format, exactly
+
+```
+2 5
+100 1000 10000 100000 1000000
+vector-subscript|0.0016 0.0016 0.0016 0.0018 0.0019
+vector-prepend|0.0132 0.0511 0.6774 6.3801 156.8236
+```
+
+- **Line 1** — how many series, then how many sizes.
+- **Line 2** — the sizes from `SIZES`, space separated.
+- **Then** one line per series: the name, a `|`, then that series' times.
+
+No blank lines, no spaces around the `|`, nothing else in between. The
+JavaScript counts lines.
+
+### Opening an HTML file that lives on Coder {#opening-html}
+
+Your VS Code runs on your laptop, but your files live on the Coder server. So
+double-clicking `results.html` in the Explorer just shows you the HTML source —
+there is no browser on the far end to render it.
+
+The fix is to serve the folder over HTTP and let VS Code bring the port back to
+your laptop. In the VS Code terminal, from your repository folder:
+
+```bash
+python3 -m http.server 8000
+```
+
+VS Code notices the new listening port within a second or two and forwards it
+automatically — you will see a notification, and a **PORTS** tab appears next to
+the terminal. Now open this in your own browser:
+
+```
+http://localhost:8000/results.html
+```
+
+Press **Ctrl-C** in the terminal to stop the server when you are done.
+
+::: {.callout-tip}
+`http://localhost:8000/sample-results.html` works right now, before you have
+written anything. It is four textbook curves rather than your results, so you
+can see what the page looks like when it works — and what each of the four
+shapes looks like.
+
+You can also right-click a file in the Explorer and choose **Download…** to copy
+it to your laptop and open it normally.
+:::
+
+### Reading a log-log chart
+
+Both axes are logarithmic, which is the trick that makes shapes readable.
+
+On ordinary axes, an O(n) curve and an O(n²) curve both look like "a line that
+goes up steeply" and you cannot tell them apart. On log-log axes, **every power
+law is a straight line, and the slope is the exponent**:
+
+- `O(1)` is **flat**
+- `O(n)` climbs at **45 degrees** — one decade up for one decade across
+- `O(n²)` climbs at **twice** that
+- `O(log n)` climbs, but **bends over** — it is the one line that is not straight
+
+That is the same fact `classifyGrowth` computes. The number it returns is ten
+raised to the slope.
+
+---
+
+## 8. TODO 8 — `findings.txt`
+
+Eight lines, one per experiment: the name, the complexity class, and one
+sentence saying why.
+
+```
+vector-subscript   O(1)   the index is arithmetic and the size never enters into it
+```
+
+The accepted spellings are `O(1)`, `O(logn)`, `O(n)`, `O(n^2)` and `O(1)*` —
+none of them with a space inside. Lines starting with `#` are ignored, so the
+instructions in the file can stay where they are.
+
+**Exactly one of the eight deserves the asterisk.** `O(1)*` means *amortized*
+constant: most operations are cheap, one in a while is expensive, and the
+average over many is constant.
+
+::: {.callout-warning}
+**Do not just copy the last column of the table across.** Your `classifyGrowth`
+reports what it measured, and for six of the eight rows that is the whole story.
+For the other two it is not:
+
+- **One row measures the same operation as another row, in a different way, and
+  deserves a different kind of answer.** Both come out constant. Only one of
+  them is constant *because the expensive case is rare*, and that is the one
+  with the asterisk. Read `timeRepeatedVectorAppend` again and look at what its
+  numbers do as n grows.
+
+- **Two rows are the same class as each other**, and at a million one of them is
+  visibly two or three times slower than the other. Both are `O(n)`. Big-Oh does
+  not describe constant factors, and the reason for the difference — where the
+  elements physically are in memory — is worth your sentence.
+:::
+
+### What is graded here
+
+1. All eight lines present, names spelled as the skeleton has them.
+2. **The class on each line is right.** These are facts about the algorithms,
+   not about your laptop — a fixed answer key, unaffected by hardware.
+3. A reason of at least six words on each line. Nobody marks the prose; the
+   reasoning is the point.
+
+If a class you measured disagrees with the class you can argue for from first
+principles, write down the one you can argue for — and then work out why the
+measurement disagreed. That investigation is the assignment.
+
+---
+
+## 9. Testing Your Work
+
+```bash
+make test
+```
+
+Thirty-six checks, in five groups:
+
+| Group | What it looks at |
+|---|---|
+| **classifyGrowth** (16) | TODO 1, against series typed in by hand |
+| **The harness** (6) | TODOs 2–6: it runs, finishes, and every time is positive |
+| **results.html** (5) | TODO 7 |
+| **findings.txt** (5) | TODO 8, against a fixed answer key |
+| **More cases** (4) | classifyGrowth on series generated while you are graded |
+
+::: {.callout-important}
+**None of these checks grade your milliseconds.** Not one of them compares a
+timing against a target number, because the grading machine is shared and your
+laptop is not it.
+
+The harness group only asks whether the experiment *ran*: eight rows, five
+sizes, every time greater than zero, the linear ones visibly growing and the
+constant ones visibly not. Everything else is checked against things that are
+the same on every computer.
+:::
+
+Every failure comes with a hint. §5 is worth finishing first — sixteen of the
+thirty-six pass without any timing code at all.
+
+::: {.callout-tip}
+Focus on one check while you are fixing it:
+
+```bash
+make checks
+./checks "Classify: a flat series is constant"
+./checks "Classify: a series that jumps up and back down has no trend"
+```
+
+A test name needs the full name, or a prefix with a `*` on the end. `./checks
+"Classify:"` matches nothing, prints almost nothing, and exits successfully —
+which looks a lot like passing.
+:::
+
+::: {.callout-note}
+**There are no hidden tests.** What you run with `make test` is exactly what the
+grader runs — all 36 checks. If it passes here, it passes there.
+
+Grading always runs the official copies of `test.py` and `checks.cpp`, not the
+ones in your repository. Editing them will not change your score. Your
+`Stopwatch.cpp` and `findings.txt` are *not* restored — those are yours, and
+they are what is being graded.
+:::
+
+---
+
+## 10. Submit
+
+::: {.callout-important}
+Before pushing, open `README.md` and add your name.
+:::
+
+In VS Code, click the **Source Control** icon in the left sidebar, type a commit
+message, click the checkmark to commit, then sync. From the terminal:
+
+```bash
+git add .
+git commit -m "Complete a08"
+git push
+```
+
+`results.html` is not committed and does not need to be — the grader runs
+`./stopwatch` itself and regenerates it. `findings.txt` very much does need to
+be committed.
+
+**Every push is graded automatically.** Within a minute or two the **Actions**
+tab of your repository shows the run, and a **Release** appears with your score
+and a per-check breakdown. Push as many times as you like; the most recent
+submission is the one that counts.
+
+---
+
+::: {.callout-note}
+## One last thing, for Friday
+
+Friday's session closes the week on what all this is for. A sorting routine that
+is O(n²) instead of O(n log n) does not just make somebody wait — at scale it
+burns more electricity, needs more machines, and puts more carbon in the air to
+compute the same answer.
+
+You now have a stopwatch and a method. When you next reach for the convenient
+container instead of the right one, you will know what it costs, and you will be
+able to measure it.
+:::

@@ -282,37 +282,71 @@ Assignments are grouped by the week they begin. Weeks carrying **more than one**
 
 <section class="asg-week-group">
   <div class="asg-week-head">
-    <span class="asg-week-num">Week 09</span>
-    <span class="asg-week-dates">Nov 2 – Nov 7</span>
+    <span class="asg-week-num">Week 08</span>
+    <span class="asg-week-dates">Oct 23 – Oct 31</span>
     <span class="asg-week-count">1 assignment</span>
   </div>
   <div class="asg-grid">
-    <div class="asg-card asg-card-soon">
+    <a class="asg-card" href="a08.html">
       <div class="asg-top">
         <span class="asg-id">a08</span>
-        <span class="asg-status asg-soon">Coming soon</span>
+        <span class="asg-status asg-live">Published</span>
       </div>
-      <div class="asg-name">Stacks and Queues</div>
-      <div class="asg-desc">Topic is set; the assignment opens before its week begins.</div>
-    </div>
+      <div class="asg-name">Stopwatch</div>
+      <div class="asg-desc">Time eight operations at five sizes, and let the numbers name the growth class.</div>
+    </a>
   </div>
 </section>
 
 <section class="asg-week-group">
-  <div class="asg-week-head">
-    <span class="asg-week-num">Week 10</span>
-    <span class="asg-week-dates">Nov 9 – Nov 14</span>
-    <span class="asg-week-count">1 assignment</span>
+  <div class="asg-week-head asg-week-multi">
+    <span class="asg-week-num">Week 09</span>
+    <span class="asg-week-dates">Nov 2 – Nov 7</span>
+    <span class="asg-week-count">2 assignments</span>
   </div>
   <div class="asg-grid">
-    <div class="asg-card asg-card-soon">
+    <a class="asg-card" href="a09.html">
       <div class="asg-top">
         <span class="asg-id">a09</span>
-        <span class="asg-status asg-soon">Coming soon</span>
+        <span class="asg-status asg-live">Published</span>
       </div>
-      <div class="asg-name">Recursion</div>
-      <div class="asg-desc">Topic is set; the assignment opens before its week begins.</div>
-    </div>
+      <div class="asg-name">Stack and Queue</div>
+      <div class="asg-desc">Two containers, nine TODOs, and one array bent into a circle.</div>
+    </a>
+    <a class="asg-card" href="a10.html">
+      <div class="asg-top">
+        <span class="asg-id">a10</span>
+        <span class="asg-status asg-live">Published</span>
+      </div>
+      <div class="asg-name">HashTable</div>
+      <div class="asg-desc">Stop searching for the index &mdash; compute it, on seventy-three thousand words.</div>
+    </a>
+  </div>
+</section>
+
+<section class="asg-week-group">
+  <div class="asg-week-head asg-week-multi">
+    <span class="asg-week-num">Week 10</span>
+    <span class="asg-week-dates">Nov 9 – Nov 14</span>
+    <span class="asg-week-count">2 assignments</span>
+  </div>
+  <div class="asg-grid">
+    <a class="asg-card" href="a11.html">
+      <div class="asg-top">
+        <span class="asg-id">a11</span>
+        <span class="asg-status asg-live">Published</span>
+      </div>
+      <div class="asg-name">Three Ways Through a Maze</div>
+      <div class="asg-desc">One algorithm, two containers, and then no container at all.</div>
+    </a>
+    <a class="asg-card" href="a12.html">
+      <div class="asg-top">
+        <span class="asg-id">a12</span>
+        <span class="asg-status asg-live">Published</span>
+      </div>
+      <div class="asg-name">Snake</div>
+      <div class="asg-desc">The snake is a queue. Not like a queue &mdash; a queue.</div>
+    </a>
   </div>
 </section>
 
@@ -323,14 +357,14 @@ Assignments are grouped by the week they begin. Weeks carrying **more than one**
     <span class="asg-week-count">1 assignment</span>
   </div>
   <div class="asg-grid">
-    <div class="asg-card asg-card-soon">
+    <a class="asg-card" href="a13.html">
       <div class="asg-top">
-        <span class="asg-id">a10</span>
-        <span class="asg-status asg-soon">Coming soon</span>
+        <span class="asg-id">a13</span>
+        <span class="asg-status asg-live">Published</span>
       </div>
-      <div class="asg-name">Binary Search Trees</div>
-      <div class="asg-desc">Topic is set; the assignment opens before its week begins.</div>
-    </div>
+      <div class="asg-name">Index</div>
+      <div class="asg-desc">A tree that keeps its promise, and a shape that does not.</div>
+    </a>
   </div>
 </section>
 
@@ -343,7 +377,6 @@ Assignments are grouped by the week they begin. Weeks carrying **more than one**
   <div class="asg-grid">
     <div class="asg-card asg-card-soon">
       <div class="asg-top">
-        <span class="asg-id">a11</span>
         <span class="asg-status asg-soon">Coming soon</span>
       </div>
       <div class="asg-name">AVL Trees</div>
@@ -361,7 +394,6 @@ Assignments are grouped by the week they begin. Weeks carrying **more than one**
   <div class="asg-grid">
     <div class="asg-card asg-card-soon">
       <div class="asg-top">
-        <span class="asg-id">a12</span>
         <span class="asg-status asg-soon">Coming soon</span>
       </div>
       <div class="asg-name">STL Sets and Maps</div>
@@ -379,14 +411,14 @@ Assignments are grouped by the week they begin. Weeks carrying **more than one**
   <div class="asg-grid">
     <div class="asg-card asg-card-soon">
       <div class="asg-top">
-        <span class="asg-id">a13</span>
         <span class="asg-status asg-soon">Coming soon</span>
       </div>
-      <div class="asg-name">Hash Tables and Sorting</div>
+      <div class="asg-name">Review</div>
       <div class="asg-desc">Topic is set; the assignment opens before its week begins.</div>
     </div>
   </div>
 </section>
+
 ```
 
 ::: {.callout-tip}

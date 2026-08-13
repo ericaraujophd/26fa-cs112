@@ -9,8 +9,99 @@
 }
 
 /* ── Font size ─────────────────────────────────────────────── */
+/* The switcher scales the ROOT size, so every rem-based dimension on the
+   site (cards, badges, sidebar, spacing) scales with it — not just text.
+   "small" is the original size and stays the default. */
+html                          { font-size: 100%; }    /* small  — default */
+html[data-fontsize="medium"]  { font-size: 112.5%; }  /* medium */
+html[data-fontsize="large"]   { font-size: 125%; }    /* large  */
+
 body {
   font-size: 1.1rem;
+}
+
+/* ── Text-size switcher ─────────────────────────────────────
+   Sized in px on purpose: the control must not resize itself. */
+.fs-switch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 18px 12px 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--bs-border-color);
+}
+.fs-switch-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--bs-secondary-color);
+  white-space: nowrap;
+}
+.fs-switch-btns {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.fs-btn {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
+  font-family: inherit;
+  font-weight: 600;
+  color: var(--bs-body-color);
+  background: transparent;
+  border: 1px solid var(--bs-border-color);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background .15s, border-color .15s, color .15s;
+}
+.fs-btn-s { font-size: 11px; }
+.fs-btn-m { font-size: 14px; }
+.fs-btn-l { font-size: 17px; }
+
+.fs-btn:hover {
+  border-color: var(--calvin-maroon);
+  color: var(--calvin-maroon);
+}
+.fs-btn.active {
+  background: var(--calvin-maroon);
+  border-color: var(--calvin-maroon);
+  color: #fff;
+}
+.quarto-dark .fs-btn:hover {
+  border-color: var(--calvin-gold);
+  color: var(--calvin-gold);
+}
+.quarto-dark .fs-btn.active {
+  background: var(--calvin-gold);
+  border-color: var(--calvin-gold);
+  color: #000;
+}
+.fs-btn:focus-visible {
+  outline: 2px solid var(--calvin-maroon);
+  outline-offset: 2px;
+}
+.quarto-dark .fs-btn:focus-visible { outline-color: var(--calvin-gold); }
+
+/* fallback placement when no sidebar is present on the page */
+.fs-switch-float {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 1040;
+  margin: 0;
+  padding: 8px 12px;
+  border-top: none;
+  border: 1px solid var(--bs-border-color);
+  border-radius: 8px;
+  background: var(--bs-body-bg);
+  box-shadow: 0 2px 12px rgba(0,0,0,.14);
 }
 
 /* ── Hyperlinks ─────────────────────────────────────────────── */
