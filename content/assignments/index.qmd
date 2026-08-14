@@ -2,7 +2,9 @@
 title: "Assignments"
 ---
 
-Every assignment is distributed through GitHub Classroom and graded automatically. Accept the assignment to get your own private repository, then clone it and work locally in VS Code.
+Every assignment is distributed through **Classroom 50** and graded automatically. Accept the assignment to get your own private repository, then clone it and work in VS Code.
+
+Before you can accept anything, you must send your GitHub username to your instructor so you can be added to the course organization — [Getting Started](gettingStarted.html) walks you through it.
 
 Assignments are grouped by the week they begin. Weeks carrying **more than one** assignment are marked with a heavier rule and a bold count — plan ahead for those.
 
@@ -147,7 +149,7 @@ Assignments are grouped by the week they begin. Weeks carrying **more than one**
 </style>
 
 <div class="asg-legend">
-  <span><span class="asg-status asg-prelab">Pre-lab</span> ungraded setup</span>
+  <span><span class="asg-status asg-prelab">Setup</span> submitted, but not counted toward your grade</span>
   <span><span class="asg-status asg-live">Published</span> ready to start</span>
   <span><span class="asg-status asg-soon">Coming soon</span> not published yet — opens before its week</span>
 </div>
@@ -156,17 +158,17 @@ Assignments are grouped by the week they begin. Weeks carrying **more than one**
   <div class="asg-week-head">
     <span class="asg-week-num">Week 00</span>
     <span class="asg-week-dates">Aug 31 – Sep 5</span>
-    <span class="asg-week-count">1 assignment + 1 pre-lab</span>
+    <span class="asg-week-count">1 assignment + 1 setup task</span>
   </div>
   <div class="asg-grid">
     <a class="asg-card" href="gettingStarted.html">
       <div class="asg-top">
-        <span class="asg-id">Pre-lab</span>
-        <span class="asg-status asg-prelab">Pre-lab</span>
+        <span class="asg-id">Setup</span>
+        <span class="asg-status asg-prelab">Setup</span>
       </div>
       <div class="asg-name">Getting Started</div>
       <div class="asg-desc">The CS112 Oracle — set up your toolchain, compiler, and GitHub access before the first lab.</div>
-      <div class="asg-note">ungraded</div>
+      <div class="asg-note">not counted toward your grade</div>
     </a>
 
     <a class="asg-card" href="a01.html">

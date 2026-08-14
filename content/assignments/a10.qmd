@@ -95,10 +95,10 @@ you, already containing the starter code:
 **Accept link:** *(added when the assignment is published)*
 :::
 
-Then clone it, replacing `YOURUSERNAME` with your GitHub username:
+Then clone it, replacing `YOURUSERNAME` with your GitHub username. This uses the SSH key you set up in [Getting Started](gettingStarted.html):
 
 ```bash
-git clone https://github.com/26fa-cs112/cs112-a10-YOURUSERNAME.git
+git clone git@github.com:26fa-cs112/cs112-a10-YOURUSERNAME.git
 cd cs112-a10-YOURUSERNAME
 ```
 

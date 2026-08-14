@@ -97,7 +97,7 @@ you, already containing the starter code:
 :::
 
 ```bash
-git clone https://github.com/26fa-cs112/cs112-a12-YOURUSERNAME.git
+git clone git@github.com:26fa-cs112/cs112-a12-YOURUSERNAME.git
 cd cs112-a12-YOURUSERNAME
 make
 ./a12 moves/circle.txt 20

@@ -5,19 +5,21 @@ subtitle: "The CS112 Oracle"
 ---
 
 ::: {.callout-note}
-**This pre-lab is not graded.** It exists so that you arrive at your first lab session with your tools already set up and working. Please complete it *before* your first lab meeting. If you get stuck, post on Moodle or ask a classmate — everyone is figuring this out together.
+**This assignment does not count toward your grade.** It exists so that you arrive at our first class meeting with your tools already set up and working. Please complete it *before* the first week of class. If you get stuck, post on Moodle or ask a classmate. Everyone is figuring this out together.
 
-**Plan to set aside about 1.5 to 2 hours.** Most of that time goes to the one-time setup steps — Coder, VS Code, and GitHub. Once those are done, they're done for the whole semester. The actual coding at the end is short.
+It is still submitted and checked like every other CS112 assignment, so you will see a score once you push. That score is practice, not part of your final grade.
+
+**Plan to set aside about 1.5 to 2 hours.** Most of that time goes to the one-time setup steps: Coder, VS Code, and GitHub. Once those are done, they're done for the whole semester. The actual coding at the end is short.
 :::
 
 ## Objectives
 
-By the end of this pre-lab, you will be able to:
+By the end of this assignment, you will be able to:
 
 - Log in to Coder and use a Linux terminal.
 - Use basic Linux commands (`mkdir`, `cd`, `ls`, `pwd`).
 - Connect VS Code on your laptop to the Calvin Linux environment.
-- Create a GitHub account, join the course organization, and accept an assignment.
+- Create a GitHub account, send your username to your instructor, and accept an assignment.
 - Clone a repository and open it in VS Code.
 - Understand what a makefile does and how compilation works in C++.
 - Declare variables of type `string` and `int` in C++.
@@ -29,7 +31,7 @@ By the end of this pre-lab, you will be able to:
 
 **Welcome to CS112!**
 
-If you are coming from CS108, you are used to Python — a language where you just run `python main.py` and things happen. C++ works differently. Before a C++ program can run, it must be **compiled**: translated from human-readable source code into machine instructions that the CPU can execute directly. This makes C++ programs much faster than Python, but it adds a step to your workflow.
+If you are coming from CS108, you are used to Python, a language where you just run `python main.py` and things happen. C++ works differently. Before a C++ program can run, it must be **compiled**: translated from human-readable source code into machine instructions that the CPU can execute directly. This makes C++ programs much faster than Python, but it adds a step to your workflow.
 
 In this course, we will write C++ using **Visual Studio Code** (VS Code) as our editor, but we will run and compile our programs on **Calvin's Linux servers** through a service called **Coder**. This means your editor lives on your laptop, but the C++ compiler lives on the server.
 
@@ -44,7 +46,7 @@ Here is a quick look at how Python and C++ differ before you run anything:
 | End of a statement | Just a newline | Semicolon `;` |
 | Grouping code | Indentation | Curly braces `{ }` |
 
-You will notice these differences throughout the pre-lab. We will point them out as we go.
+You will notice these differences throughout this assignment. We will point them out as we go.
 
 ## 2. Using Linux
 
@@ -54,11 +56,11 @@ Here are the commands you will use most often:
 
 | Command | What it does |
 |---|---|
-| `pwd` | **P**rint **W**orking **D**irectory — shows where you are |
-| `ls` | **L**i**s**t — shows files and folders here |
-| `cd dirname` | **C**hange **D**irectory — move into `dirname` |
+| `pwd` | **P**rint **W**orking **D**irectory: shows where you are |
+| `ls` | **L**i**s**t: shows files and folders here |
+| `cd dirname` | **C**hange **D**irectory: move into `dirname` |
 | `cd ..` | Go up one directory level |
-| `mkdir dirname` | **M**a**k**e **Dir**ectory — create a new folder |
+| `mkdir dirname` | **M**a**k**e **Dir**ectory: create a new folder |
 
 ::: {.callout-tip}
 If you want to go deeper, [Ubuntu's command-line tutorial](https://ubuntu.com/tutorials/command-line-for-beginners#1-overview){target="_blank" rel="noopener"} is a great free resource to work through on your own time.
@@ -66,7 +68,7 @@ If you want to go deeper, [Ubuntu's command-line tutorial](https://ubuntu.com/tu
 
 ## 3. Coder
 
-The Calvin CS Department provides a service called [Coder](https://coder.cs.calvin.edu){target="_blank" rel="noopener"} that gives you access to a Linux environment and a C++ compiler. You do not need to install a compiler on your own laptop — Coder handles that.
+The Calvin CS Department provides a service called [Coder](https://coder.cs.calvin.edu){target="_blank" rel="noopener"} that gives you access to a Linux environment and a C++ compiler. You do not need to install a compiler on your own laptop. Coder handles that.
 
 Do this:
 
@@ -104,19 +106,19 @@ You should see `/home/<username>/cs112`, where `<username>` is your Calvin usern
 
 We will edit code on your laptop using VS Code, but compile and run it on the Linux server through Coder.
 
-**Step 1 — Install VS Code on your laptop:**
+**Step 1: Install VS Code on your laptop**
 
 1. Go to [https://code.visualstudio.com](https://code.visualstudio.com){target="_blank" rel="noopener"} and download VS Code for your operating system. Install it.
 2. Open VS Code.
 
-**Step 2 — Connect VS Code to Coder:**
+**Step 2: Connect VS Code to Coder**
 
 3. Return to the Coder browser tab. Find the **VS Code Desktop** button and click it.
 4. When VS Code asks if you want to install the **Coder** extension, accept. This allows VS Code on your laptop to reach the compiler on the server.
-5. VS Code will ask you to select the platform for the remote host — choose **Linux**.
+5. VS Code will ask you to select the platform for the remote host. Choose **Linux**.
 6. Once connected, choose **Open Folder** and type `/home/<username>/cs112` (substituting your actual username). Click OK.
 7. If asked to trust the authors, select **Yes, I trust the authors**. (You are the author.)
-8. Open a terminal inside VS Code: **Terminal menu → New Terminal**. You should see a Linux terminal at the bottom of the screen — this is running on the Calvin server.
+8. Open a terminal inside VS Code: **Terminal menu → New Terminal**. You should see a Linux terminal at the bottom of the screen. It is running on the Calvin server.
 
 ::: {.callout-tip}
 **Shortcut:** In VS Code, press **Ctrl+`** to open (or toggle) the integrated terminal. On some keyboard layouts, if the backtick key is awkward to find, use **Terminal menu → New Terminal** instead.
@@ -128,11 +130,11 @@ A few one-time settings will make your life much easier all semester.
 
 **Install the C++ extension:**
 
-Open any `.cpp` file. VS Code will suggest installing the **C/C++ Extension Pack** in the lower-right corner. Accept it. If it does not appear automatically, open the Extensions panel (left sidebar), search for `C/C++ Extension Pack`, and install it.
+You have no C++ files yet (you will clone them in Step 8), so install the extension directly rather than waiting for VS Code to offer it. Open the **Extensions** panel (left sidebar), search for `C/C++ Extension Pack`, and click **Install**.
 
 **Configure Auto Save:**
 
-Press **F1** (or Ctrl+Shift+P), type `Preferences: Open User Settings`, and select it. In the search bar at the top, type `Auto Save`. Set `Files: Auto Save` to **onFocusChange**. This saves your file automatically whenever you switch to another window — no more losing work because you forgot to save.
+Press **F1** (or Ctrl+Shift+P), type `Preferences: Open User Settings`, and select it. In the search bar at the top, type `Auto Save`. Set `Files: Auto Save` to **onFocusChange**. This saves your file automatically whenever you switch to another window, so you will not lose work by forgetting to save.
 
 **Set Tab Size:**
 
@@ -149,6 +151,10 @@ Under **Extensions → C/C++ → Formatting**, find `C_Cpp: Clang_format_style` 
 **Set Intellisense to use g++:**
 
 Press Ctrl+Shift+P, search for `C/C++: Select IntelliSense Configuration`, and choose **g++ (found in /usr/bin)**. This tells VS Code which compiler to use when underlining errors in your editor.
+
+::: {.callout-note}
+This command only appears when a C++ file is open in the editor. If you cannot find it yet, skip it and come back after Step 10, once `main.cpp` is open.
+:::
 
 ### Turn Off GitHub Copilot for This Course
 
@@ -177,20 +183,30 @@ If you do not already have an account:
 
 1. Go to [https://github.com](https://github.com){target="_blank" rel="noopener"} and sign up. Use your **Calvin email address**.
 2. Complete the verification steps (you may need to set up two-factor authentication).
-3. Skip any personalization steps — just click "Skip Personalization" at the bottom.
+3. Skip any personalization steps by clicking "Skip Personalization" at the bottom.
+
+### Send Your GitHub Username to Your Instructor
+
+::: {.callout-important}
+**Do this now — nothing else in this assignment will work until you do.**
+
+CS112 distributes and grades assignments through **Classroom 50**. There is no self-service sign-up: the class roster is built by hand from the usernames students send in.
+
+Email your **GitHub username** to [eric.araujo@calvin.edu](mailto:eric.araujo@calvin.edu) with the subject `CS112 GitHub username`. Send the username itself, the one that appears in `https://github.com/<username>`, not your email address or your display name.
+
+Once you have been added, GitHub emails you an invitation to join the **26fa-cs112** organization. Accept that invitation before going on to Step 8.
+:::
 
 Keep your GitHub tab open for the next step.
 
 ## 8. Accept the Assignment and Clone Your Repo
 
-Each assignment in CS112 is distributed through **Classroom 50**. When you accept an assignment, GitHub automatically creates a private repository just for you with the starter code already inside. Only you and the instructor can see it.
+Each assignment in CS112 is distributed through **Classroom 50**. When you accept an assignment, a private repository is created just for you with the starter code already inside. Only you and the instructor can see it.
 
 ::: {.callout-important}
-Get the **Getting Started accept link from Moodle** and open it there.
+**First, make sure both parts of Step 7 are done:** you have sent your GitHub username to your instructor, and you have accepted the emailed invitation to the **26fa-cs112** organization. If either is missing, the accept link will not work. Go back and finish Step 7.
 
-All CS112 accept links are distributed through Moodle so that only Calvin students can accept assignments.
-
-You will need to be a member of the **26fa-cs112** GitHub organization first — you should have received an email invitation. Accept that invitation before using the link. If you never got one, tell the instructor which GitHub username you are using.
+Then get the **Getting Started accept link from Moodle** and open it there. All CS112 accept links are distributed through Moodle so that only Calvin students can accept assignments.
 
 After you accept, wait a few seconds and then click through to your new repository.
 :::
@@ -221,7 +237,7 @@ If this is your first time using Git with Coder, you will see an error about SSH
 
 ### Setting Up SSH Keys for GitHub
 
-GitHub requires an SSH key to verify your identity. Coder generates one for you automatically. When `git clone` fails, look at the error output — somewhere near the top you will see a public key that looks like:
+GitHub requires an SSH key to verify your identity. Coder generates one for you automatically. When `git clone` fails, look at the error output. Somewhere near the top you will see a public key that looks like:
 
 ```
 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAA...
@@ -246,16 +262,16 @@ This time it should succeed. Verify by listing your files:
 ls
 ```
 
-You should see a directory named something like `a00-yourgithubusername`. Change into it:
+You should see a directory named `cs112-a00-YOURUSERNAME`. Change into it:
 
 ```bash
-cd a00-yourgithubusername
+cd cs112-a00-YOURUSERNAME
 ls
 ```
 
-You will find: `main.cpp`, `fortune.h`, `fortune.cpp`, `makefile`, and `README.md`.
+You will find six files: `main.cpp`, `fortune.h`, `fortune.cpp`, `makefile`, `test.py`, and `README.md`.
 
-Open this folder in VS Code: **File → Open Folder**, then navigate to `/home/<username>/cs112/a00-yourgithubusername`.
+Open this folder in VS Code: **File → Open Folder**, then navigate to `/home/<username>/cs112/cs112-a00-YOURUSERNAME`.
 
 ## 9. Understanding the Makefile
 
@@ -263,15 +279,15 @@ Before you compile anything, let us understand *how* compilation works. This is 
 
 ### How Python runs your code
 
-In Python, you type `python main.py` and the Python **interpreter** reads your source code line by line and executes it. Your `.py` file is never turned into anything else — the interpreter does all the work at runtime.
+In Python, you type `python main.py` and the Python **interpreter** reads your source code line by line and executes it. Your `.py` file is never turned into anything else. The interpreter does all the work at runtime.
 
 ### How C++ compilation works
 
 In C++, your source code goes through **two stages** before it can run:
 
-**Stage 1 — Compile:** Each `.cpp` source file is individually translated into an **object file** (`.o`). Object files contain machine code, but they are not yet runnable — they might refer to functions defined in other files.
+**Stage 1: Compile.** Each `.cpp` source file is individually translated into an **object file** (`.o`). Object files contain machine code, but they are not yet runnable, because they might refer to functions defined in other files.
 
-**Stage 2 — Link:** The **linker** combines all the `.o` files into a single **executable** (in our case, a file called `a00`). This is the program you actually run.
+**Stage 2: Link.** The **linker** combines all the `.o` files into a single **executable** (in our case, a file called `a00`). This is the program you actually run.
 
 ```{mermaid}
 flowchart LR
@@ -315,14 +331,14 @@ target: dependencies
     command
 ```
 
-`a00` is what we want to build. It depends on `main.o` and `fortune.o`. If either of those is out of date, `make` runs the command to rebuild `a00`. Notice the command line starts with a **tab character** — makefiles require this, not spaces.
+`a00` is what we want to build. It depends on `main.o` and `fortune.o`. If either of those is out of date, `make` runs the command to rebuild `a00`. Notice the command line starts with a **tab character**. Makefiles require this, not spaces.
 
 ```makefile
 main.o: main.cpp fortune.h
 	$(CXX) $(CXXFLAGS) -c main.cpp
 ```
 
-This rule says: to build `main.o`, compile `main.cpp` (the `-c` flag means "compile only, don't link yet"). It depends on `fortune.h` too — if the header changes, `main.o` needs to be rebuilt.
+This rule says: to build `main.o`, compile `main.cpp` (the `-c` flag means "compile only, don't link yet"). It depends on `fortune.h` too: if the header changes, `main.o` needs to be rebuilt.
 
 ```makefile
 fortune.o: fortune.cpp fortune.h
@@ -340,7 +356,7 @@ clean:
 
 ### `make` is smart about what to rebuild
 
-One of `make`'s best features: it only recompiles files that have changed since the last build. If you only edit `fortune.cpp`, `make` will recompile `fortune.o` and re-link `a00` — but it will *not* recompile `main.cpp`, because `main.cpp` has not changed. This saves time on larger projects.
+One of `make`'s best features: it only recompiles files that have changed since the last build. If you only edit `fortune.cpp`, `make` will recompile `fortune.o` and re-link `a00`, but it will *not* recompile `main.cpp`, because `main.cpp` has not changed. This saves time on larger projects.
 
 ## 10. Compile and Run the Starter Code
 
@@ -358,23 +374,25 @@ g++ -Wall -std=c++17 -c fortune.cpp
 g++ -Wall -std=c++17 -o a00 main.o fortune.o
 ```
 
-Type `ls` — you should now see `a00` in the directory. Run it:
+Type `ls`. You should now see `a00` in the directory. Run it:
 
 ```bash
 ./a00
 ```
 
-The `./` means "run this file in the current directory." The program will immediately exit without doing much — that is expected. `main.cpp` has placeholders where you will write the interactive code. That is your task in the next section.
+The `./` means "run this file in the current directory."
+
+You will see the Oracle's banner and the line about consulting the ancient data structures, and then the program ends without ever asking you anything. That is expected: `main.cpp` still has empty placeholders where the questions and the fortune belong. Filling them in is your task in the next section.
 
 ## 11. Your Coding Task: Complete `main.cpp`
 
-Open `main.cpp` in VS Code. This is the only file you will edit. `fortune.cpp` and `fortune.h` are already complete — read through them to get a sense of how a C++ function is written, but do not change them.
+Open `main.cpp` in VS Code. This is the only file you will edit. `fortune.cpp` and `fortune.h` are already complete. Read through them to get a sense of how a C++ function is written, but do not change them.
 
 `main.cpp` has four TODO comments. Work through them in order.
 
 ---
 
-### TODO 1 — Declare your variables
+### TODO 1: Declare your variables
 
 In Python, you just assign a value and the language figures out the type:
 
@@ -392,13 +410,13 @@ int stressLevel;
 int birthMonth;
 ```
 
-`string` holds text. `int` holds a whole number. Notice the semicolon at the end of each line — every statement in C++ ends with one.
+`string` holds text. `int` holds a whole number. Notice the semicolon at the end of each line. Every statement in C++ ends with one.
 
 Add these three declarations where TODO 1 is.
 
 ---
 
-### TODO 2 — Print prompts and read input
+### TODO 2: Print prompts and read input
 
 Use `cout` to print a line to the screen and `cin` to read input from the keyboard.
 
@@ -408,7 +426,7 @@ Use `cout` to print a line to the screen and `cin` to read input from the keyboa
 cout << "What is your name? ";
 ```
 
-The `<<` operator sends text to the output stream. Note there is **no** `endl` here — we want the cursor to stay on the same line so the user types right after the prompt.
+The `<<` operator sends text to the output stream. Note there is **no** `endl` here, because we want the cursor to stay on the same line so the user types right after the prompt.
 
 **Reading with `cin`:**
 
@@ -429,14 +447,22 @@ In C++, the prompt and the read are two separate statements. Write one `cout` an
 Use these exact prompt strings (the autograder will check them):
 
 ```
-"What is your name? "
+"What is your first name? "
 "On a scale of 1-5, how nervous are you about CS112? "
 "What month were you born in (1-12)? "
 ```
 
+::: {.callout-warning}
+**Why "first name" and not "name"?**
+
+`cin >>` stops reading at the first space. If the prompt said "What is your name?" and someone typed `Eric Araujo`, `cin` would put `Eric` in `name` and leave `Araujo` sitting in the input, and the very next `cin >> stressLevel` would try to read `Araujo` as a number, fail, and leave both numbers as garbage. The program would still run, print a wrong fortune, and never tell you anything was wrong.
+
+This is a real difference from Python: `input()` gives you the whole line; `cin >>` gives you one word at a time. Asking for a first name sidesteps the problem for now. You will learn how to read a whole line later in the semester.
+:::
+
 ---
 
-### TODO 3 — Call `getFortune()`
+### TODO 3: Call `getFortune()`
 
 `getFortune()` is a function declared in `fortune.h`. It takes two `int` parameters and returns a `string`. Call it like this:
 
@@ -448,7 +474,7 @@ This creates a new `string` variable named `fortune` and stores the result of th
 
 ---
 
-### TODO 4 — Print the Oracle's response
+### TODO 4: Print the Oracle's response
 
 Use `cout` to print two lines inside the banner:
 
@@ -476,7 +502,7 @@ After filling in all four TODOs, compile:
 make
 ```
 
-If you see errors, read them carefully — the compiler tells you the file name and line number of the problem. Fix the error and `make` again.
+If you see errors, read them carefully. The compiler tells you the file name and line number of the problem. Fix the error and `make` again.
 
 Run the program:
 
@@ -493,6 +519,19 @@ make test
 ```
 
 You will see a PASS or FAIL for each test case, with hints if something is wrong. Fix any failures and run `make test` again until all tests pass.
+
+There are 14 checks, one per requirement, so a failure points at exactly one thing. An untouched starter scores `0 / 14`. When all four TODOs are done you should see:
+
+```
+Results: 14/14 passed
+All tests passed. Push your code to GitHub.
+```
+
+::: {.callout-note}
+**There are no hidden tests.** What you run with `make test` is exactly what the grader runs: all 14 checks. If it passes here, it passes there.
+
+Grading always runs the official test suite, not the copy in your repository. Editing `test.py` will not change your score.
+:::
 
 ::: {.callout-note}
 **What about `make clean`?**
@@ -519,9 +558,11 @@ In VS Code, look at the **Source Control** icon in the left sidebar (it looks li
 
 To verify the push worked, go to your repository page on github.com and confirm you can see your updated `main.cpp`.
 
+Within a minute or two, the **Actions** tab of your repository shows the grading run, and a **Release** appears with your score and a per-check breakdown. Getting Started does not count toward your course grade. It is here so that this machinery is already familiar when it does.
+
 ## You are ready!
 
-Congratulations — your development environment is set up and you have written your first C++ code for CS112. See you in lab!
+Congratulations! Your development environment is set up and you have written your first C++ code for CS112. See you in class!
 
 ::: {.callout-tip}
 **Working from home?** As long as you have VS Code and can connect to Coder, you can do all your CS112 work from your laptop anywhere with internet. The setup you did today is all you need.
