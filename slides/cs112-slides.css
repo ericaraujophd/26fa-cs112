@@ -212,18 +212,61 @@
       margin-bottom: 0.25em;
     }
 
+    /* ── Pointer memory strip ── */
+    .pt-svg { width: 96%; height: auto; display: block; margin: 0.2em auto;
+              font-family: 'Segoe UI', system-ui, sans-serif; }
+    .pt-cell { fill: #f4f3f0; stroke: #d5d2cb; stroke-width: 1.8; }
+    .pt-live { fill: #fbf1d8; stroke: var(--gold); stroke-width: 2.4; }
+    .pt-ptr  { fill: #f6e2e6; stroke: var(--maroon); stroke-width: 2.4; }
+    .pt-name { font-family: 'Fira Code','Consolas',monospace; font-weight: 700; fill: var(--maroon); }
+    .pt-val  { font-family: 'Fira Code','Consolas',monospace; font-weight: 700; fill: #3a3630; }
+    .pt-addr { font-family: 'Fira Code','Consolas',monospace; fill: #a8a49b; }
+    .pt-addr-hot { fill: #2b6ea8; font-weight: 700; }
+    .pt-arrow { stroke: var(--maroon); stroke-width: 2.6; }
+    .pt-note { fill: var(--maroon); font-style: italic; }
+    .pt-axis { fill: #b4afa5; font-style: italic; }
+
+    /* ── "Meet Rocky" joke slide ── */
+    .joke-row { align-items: start; gap: 2em; }
+    .joke-frame {
+      background: #f3ece1; border: 3px solid var(--maroon); border-radius: 10px;
+      overflow: hidden; height: 300px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .joke-photo { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .joke-frame.rk-photo { background: #ffffff; }
+    .rk-photo .joke-photo { object-fit: contain; padding: 0.4em; }
+    .joke-frame .rk-svg { width: 100%; margin: 0; }
+    .joke-box {
+      position: relative; margin: 1em auto 0; width: fit-content;
+      padding: 0.3em 0.9em; border-radius: 10px; font-size: 0.62em; font-weight: 800;
+      border: 3px solid var(--maroon); background: #fff;
+    }
+    .joke-box::before {
+      content: ""; position: absolute; top: -10px; left: 50%; margin-left: -8px;
+      width: 16px; height: 16px; background: #fff;
+      border-left: 3px solid var(--maroon); border-top: 3px solid var(--maroon);
+      transform: rotate(45deg);
+    }
+    .joke-no  { color: var(--maroon); }
+    .joke-yes { color: #1d4d2e; border-color: #2f6f43; }
+    .joke-yes::before { border-left-color: #2f6f43; border-top-color: #2f6f43; }
+
     /* ── Rocky / bases slide ── */
     .rk-svg, .rk-tbl { width: 100%; height: auto; display: block;
                        font-family: 'Segoe UI', system-ui, sans-serif; }
-    .rk-shell { fill: #cbbfa6; stroke: #6e6350; stroke-width: 3; stroke-linejoin: round; }
-    .rk-plate { fill: #b9ab8c; stroke: #6e6350; stroke-width: 2; stroke-linejoin: round; }
-    .rk-speck { fill: #a2947a; }
-    .rk-leg   { stroke: #6e6350; stroke-width: 8; stroke-linecap: round; stroke-linejoin: round; }
-    .rk-claw  { stroke: #6e6350; stroke-width: 6; stroke-linecap: round; }
-    .rk-arm    { stroke: #6e6350; stroke-width: 9; stroke-linecap: round; fill: none; }
-    .rk-finger { stroke: #6e6350; stroke-width: 5; stroke-linecap: round; }
-    .rk-tip    { fill: #6e6350; }
-    .rk-wrist  { fill: #8a7c66; }
+    .rk-frame { height: 250px; }
+    /* one flat silhouette: limbs are strokes in the same colour as the body */
+    .rk-body  { fill: #6a5c4c; stroke: #6a5c4c;
+                stroke-linecap: round; stroke-linejoin: round; }
+    .rk-chip  { fill: #9d8d78; }
+    .rk-ground{ stroke: #3f3730; stroke-width: 1.6; opacity: .28; }
+    .rk-case      { fill: #dce9de; }
+    .rk-case-lip  { fill: #b9c4bb; }
+    .rk-case-edge { fill: none; stroke: #7f8a80; stroke-width: 4; }
+    .rk-bolt      { fill: #8d968e; }
+    .rk-glass { fill: #9fd6b4; opacity: .15; }
+    .rk-sheen { fill: #ffffff; opacity: .14; }
     .rk-note  { fill: #8a857b; font-style: italic; }
     .rk-cap   { font-size: 0.46em; color: #8a857b; font-style: italic; margin: 0.1em 0 0; }
     .rk-hdr   { fill: #a8a49b; font-weight: 700; }
@@ -289,6 +332,7 @@
 
     /* ── Terminal panel: real program output ── */
     .term {
+      box-sizing: border-box;   /* so width:100% matches the code block exactly */
       background: #1e1f1a;
       border: 2px solid var(--gold);
       border-radius: 8px;
