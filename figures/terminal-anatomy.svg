@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 390" width="800" height="390" role="img" aria-labelledby="ttl dsc">
+  <title id="ttl">A Linux terminal on the Coder server</title>
+  <desc id="dsc">A terminal window. Each line begins with a prompt made of your username, the folder you are currently in, and a dollar sign. The session shows pwd printing /home/jcalvin, then mkdir cs112, then cd cs112, after which the prompt changes to show the new folder and pwd prints /home/jcalvin/cs112. Labels point out the username, the current folder, the place where you type, and the output a command prints back.</desc>
+
+  <style>
+    .mono { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; font-size: 15px; }
+    .lbl  { font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 700; fill: #6E1C2E; }
+    .sub  { font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; font-size: 12px; font-weight: 400; fill: #6b7280; }
+    .lead { stroke: #6E1C2E; stroke-width: 1.3; fill: none; stroke-dasharray: 3 3; }
+    .user { fill: #7FD88F; }
+    .path { fill: #6FB8F5; }
+    .dim  { fill: #C9CCD4; }
+    .cmd  { fill: #F2F3F5; }
+    .out  { fill: #9AA0AC; }
+    .chrome { font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; font-size: 12px; fill: #8A8F98; }
+  </style>
+
+  <!-- window -->
+  <rect x="14" y="48" width="500" height="320" rx="10" fill="#14161C"/>
+  <rect x="14" y="48" width="500" height="30" rx="10" fill="#23262E"/>
+  <rect x="14" y="66" width="500" height="12" fill="#23262E"/>
+  <circle cx="34" cy="63" r="5.5" fill="#E5606A"/>
+  <circle cx="52" cy="63" r="5.5" fill="#E5B85C"/>
+  <circle cx="70" cy="63" r="5.5" fill="#77C97F"/>
+  <text x="264" y="67" class="chrome" text-anchor="middle">Terminal — coder.cs.calvin.edu</text>
+
+  <!-- session -->
+  <text x="32" y="108" class="mono"><tspan class="user">jcalvin@class-cs112</tspan><tspan class="dim">:</tspan><tspan class="path">~</tspan><tspan class="dim">$ </tspan><tspan class="cmd">pwd</tspan></text>
+  <text x="32" y="132" class="mono out">/home/jcalvin</text>
+
+  <text x="32" y="166" class="mono"><tspan class="user">jcalvin@class-cs112</tspan><tspan class="dim">:</tspan><tspan class="path">~</tspan><tspan class="dim">$ </tspan><tspan class="cmd">mkdir cs112</tspan></text>
+
+  <text x="32" y="200" class="mono"><tspan class="user">jcalvin@class-cs112</tspan><tspan class="dim">:</tspan><tspan class="path">~</tspan><tspan class="dim">$ </tspan><tspan class="cmd">cd cs112</tspan></text>
+
+  <text x="32" y="234" class="mono"><tspan class="user">jcalvin@class-cs112</tspan><tspan class="dim">:</tspan><tspan class="path">~/cs112</tspan><tspan class="dim">$ </tspan><tspan class="cmd">pwd</tspan></text>
+  <text x="32" y="258" class="mono out">/home/jcalvin/cs112</text>
+
+  <text x="32" y="292" class="mono"><tspan class="user">jcalvin@class-cs112</tspan><tspan class="dim">:</tspan><tspan class="path">~/cs112</tspan><tspan class="dim">$ </tspan><tspan class="cmd">▮</tspan></text>
+
+  <!-- annotations, all clear of the text, colour-keyed to the prompt -->
+  <path class="lead" d="M 360 104 H 536"/>
+  <rect x="546" y="92" width="10" height="10" rx="2" fill="#7FD88F"/>
+  <text x="562" y="101" class="lbl">your username on the server</text>
+
+  <path class="lead" d="M 360 130 H 536"/>
+  <rect x="546" y="118" width="10" height="10" rx="2" fill="#9AA0AC"/>
+  <text x="562" y="127" class="lbl">what the command answers</text>
+  <text x="562" y="143" class="sub">output appears with no prompt</text>
+
+  <path class="lead" d="M 360 232 H 536"/>
+  <rect x="546" y="220" width="10" height="10" rx="2" fill="#6FB8F5"/>
+  <text x="562" y="229" class="lbl">the folder you are in</text>
+  <text x="562" y="245" class="sub">it changed when you ran cd</text>
+
+  <path class="lead" d="M 360 290 H 536"/>
+  <rect x="546" y="278" width="10" height="10" rx="2" fill="#F2F3F5" stroke="#9AA0AC" stroke-width="1"/>
+  <text x="562" y="287" class="lbl">you type here</text>
+  <text x="562" y="303" class="sub">then press Enter</text>
+
+</svg>
