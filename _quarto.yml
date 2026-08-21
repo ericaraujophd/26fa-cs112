@@ -12,7 +12,11 @@ project:
 
 website:
   title: "CS 112 | Fall 2026"
+  description: "Introduction to Data Structures — C++, data structures, and algorithm analysis. Calvin University, Fall 2026."
+  site-url: https://ericaraujophd.github.io/26fa-cs112/
   favicon: figures/calvin-logo.png
+  image: figures/calvin-logo.png       # preview card when a link is shared
+  open-graph: true
   repo-url: https://github.com/ericaraujophd/26fa-cs112/
   repo-actions: [issue]
   search: true
@@ -38,14 +42,18 @@ website:
           - policies/honesty.qmd
           - policies/classroom.qmd
 
+lang: en
+
 language:
   title-block-published: "Last Updated"
 
 format:
   html:
     # include-before-body: _banner.html
-    include-in-header: _fontsize-head.html   # apply saved size before paint
-    include-after-body: _fontsize.html       # the switcher itself
+    include-in-header: _display-head.html   # apply saved text size before paint
+    include-after-body:
+      - _display.html       # theme + text size panel
+      - _release.html       # hide assignments until their week opens
     number-sections: false
     toc: false
     theme:
