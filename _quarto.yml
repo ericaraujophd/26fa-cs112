@@ -6,10 +6,13 @@ project:
     - "!policies/policies.qmd"
   resources:
     - "slides/"
+    # Only referenced from JS at runtime, so Quarto can't discover it
+    # by scanning the sources — it has to be copied explicitly.
+    - "figures/calvin-logo-dark.png"
 
 website:
   title: "CS 112 | Fall 2026"
-  favicon: figures/logoCalvin-150-logo.png
+  favicon: figures/calvin-logo.png
   repo-url: https://github.com/ericaraujophd/26fa-cs112/
   repo-actions: [issue]
   search: true
@@ -18,7 +21,7 @@ website:
   # (see project.render above) — assignment pages are reachable
   # from the Assignments hub and from the Schedule.
   sidebar:
-    logo: figures/Calvin-150-logo.png
+    logo: figures/calvin-logo.png            # swapped to -dark.png in dark mode
     logo-alt: Calvin University
     pinned: true
     style: floating

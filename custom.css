@@ -8,6 +8,34 @@
   --calvin-gold-light: rgba(196, 154, 44, 0.12);
 }
 
+/* ── Typeface ───────────────────────────────────────────────
+   Quarto swaps the whole Bootstrap sheet when the theme changes, and the
+   two themes declare different first-choice fonts (united → Ubuntu,
+   darkly → Lato). Neither is actually downloaded, so the typeface changed
+   between light and dark *and* varied by whatever the reader had installed.
+   Pin the shared system stack for both themes so it is stable everywhere. */
+:root,
+.quarto-light,
+.quarto-dark {
+  --bs-body-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+body,
+.sidebar,
+h1, h2, h3, h4, h5, h6,
+.hero-title, .hero-eyebrow, .hero-meta,
+.btn, .accordion-button, input, select, textarea {
+  font-family: var(--bs-body-font-family);
+}
+
+/* Code keeps the monospace stack — don't let the override leak into it. */
+code, pre, kbd, samp, .sourceCode {
+  font-family: var(--bs-font-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, "Liberation Mono", "Courier New", monospace);
+}
+
 /* ── Font size ─────────────────────────────────────────────── */
 /* The switcher scales the ROOT size, so every rem-based dimension on the
    site (cards, badges, sidebar, spacing) scales with it — not just text.
@@ -30,10 +58,13 @@ body {
   display: none !important;
 }
 
+/* Sits between the logo and the search box, so it is ruled off on both
+   sides rather than just hanging at the end of the sidebar. */
 .disp-panel {
-  margin: 18px 12px 10px;
-  padding-top: 12px;
+  margin: 4px 12px 12px;
+  padding: 12px 0;
   border-top: 1px solid var(--bs-border-color);
+  border-bottom: 1px solid var(--bs-border-color);
 }
 .disp-row {
   display: flex;
@@ -129,7 +160,6 @@ body {
   z-index: 1040;
   margin: 0;
   padding: 10px 12px;
-  border-top: none;
   border: 1px solid var(--bs-border-color);
   border-radius: 8px;
   background: var(--bs-body-bg);

@@ -74,6 +74,21 @@
     var t = quartoToggle();
     if (t) t.click();          // let Quarto swap sheets + persist
   }
+  /* Quarto renders the logo twice — one <img> tagged .light-content and one
+     .dark-content — and shows whichever matches the active theme. Both start
+     out pointing at the light file, whose wordmark is black and therefore
+     invisible on a dark background. Repoint the dark copy once at load and
+     let Quarto keep handling the switching. */
+  function fixDarkLogo() {
+    document.querySelectorAll('.dark-content.sidebar-logo, .dark-content.navbar-logo')
+      .forEach(function (img) {
+        var src = img.getAttribute('src');
+        if (src && src.indexOf('calvin-logo-dark.png') === -1) {
+          img.setAttribute('src', src.replace('calvin-logo.png', 'calvin-logo-dark.png'));
+        }
+      });
+  }
+
   function syncTheme() {
     var dark = isDark();
     document.querySelectorAll('.theme-btn').forEach(function (b) {
@@ -85,6 +100,8 @@
 
   /* ── build ─────────────────────────────────────────────── */
   function build() {
+    fixDarkLogo();
+
     var tpl = document.getElementById('disp-panel-template');
     if (!tpl) return;
 
@@ -96,12 +113,23 @@
       if (row) row.remove();
     }
 
-    var sidebar = document.querySelector('#quarto-sidebar .sidebar-menu-container')
-               || document.querySelector('#quarto-sidebar nav')
-               || document.querySelector('#quarto-sidebar');
+    /* Place it between the logo and the search box. Quarto's sidebar markup
+       varies a little by version, so try the search element first, then fall
+       back to sitting straight after the header block. */
+    var sidebar = document.querySelector('#quarto-sidebar');
+    var search  = sidebar && (sidebar.querySelector('#quarto-search')
+                           || sidebar.querySelector('.sidebar-search'));
+    var header  = sidebar && sidebar.querySelector('.sidebar-header');
+    var menu    = sidebar && sidebar.querySelector('.sidebar-menu-container');
 
-    if (sidebar) {
-      sidebar.appendChild(node);
+    if (search && search.parentNode) {
+      search.parentNode.insertBefore(node, search);
+    } else if (header) {
+      header.insertAdjacentElement('afterend', node);
+    } else if (menu) {
+      menu.insertBefore(node, menu.firstChild);
+    } else if (sidebar) {
+      sidebar.insertBefore(node, sidebar.firstChild);
     } else {
       node.classList.add('disp-panel-float');
       document.body.appendChild(node);
