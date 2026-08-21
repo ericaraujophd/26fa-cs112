@@ -3,7 +3,9 @@ title: "Assignments"
 toc: false   # hub page — keep the full content width, unlike the assignments themselves
 ---
 
-Every assignment is distributed through **Classroom 50** and graded automatically. Accept the assignment to get your own private repository, then clone it and work in VS Code.
+Every assignment is distributed through **Classroom 50**. Accept the assignment to get your own private repository, then clone it and work in VS Code.
+
+Your repository is checked automatically each time you push, and the tests tell you how you are doing. **That score does not set your grade** — assignments count as *complete* when you submit reasonable work, green tests or not. See [Grading](../../policies/grading.html) for how completion feeds into your final grade.
 
 Before you can accept anything, you must send your GitHub username to your instructor so you can be added to the course organization — [Getting Started](gettingStarted.html) walks you through it.
 
@@ -166,7 +168,7 @@ Each assignment **opens on the Monday of its week**. You can see the whole term 
   <div class="asg-grid">
     <a class="asg-card" href="gettingStarted.html">
       <div class="asg-top">
-        <span class="asg-id">Setup</span>
+        <span class="asg-id">a00</span>
         <span class="asg-status asg-prelab">Setup</span>
       </div>
       <div class="asg-name">Getting Started</div>

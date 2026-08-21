@@ -2,7 +2,8 @@
 title: "Schedule"
 ---
 
-Weekly topics, learning objectives, and skills. Click a week to expand.
+Click a week to see what to do, what to read, and the slides. Each week's
+learning objectives are there too, folded away until you want them.
 
 ```{=html}
 <!-- Bloom's legend -->
@@ -58,6 +59,45 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
 .res-sub { opacity: .6; font-size: .82rem; }
 .res-sep { opacity: .3; margin: 0 .45rem; }
 .res-tbd { opacity: .5; font-style: italic; }
+
+/* ── objectives, tucked behind a disclosure ─────────────────
+   Native <details>, so it works without JS and is keyboard-accessible. */
+.slo-details { margin-top: .25rem; }
+
+.slo-summary {
+  cursor: pointer;
+  list-style: none;
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  color: var(--bs-secondary-color);
+  padding: .25rem 0;
+}
+.slo-summary::-webkit-details-marker { display: none; }
+.slo-summary::before {
+  content: "▸";
+  display: inline-block;
+  font-size: .8rem;
+  transition: transform .15s;
+}
+.slo-details[open] > .slo-summary::before { transform: rotate(90deg); }
+.slo-summary:hover { color: var(--calvin-maroon); }
+.quarto-dark .slo-summary:hover { color: var(--calvin-gold); }
+
+.slo-count {
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  background: var(--bs-secondary-bg);
+  color: var(--bs-secondary-color);
+  padding: .1em .45em;
+  border-radius: .25rem;
+}
+.slo-details[open] > .slo-summary { margin-bottom: .6rem; }
 
 /* ── two-column objectives ────────────────────────────────── */
 .slo-cols {
@@ -118,37 +158,43 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
     <div class="accordion-body">
 
       <div class="res-rows">
-        <div class="res-label">📖 Read</div>
-        <div class="res-val"><a href="https://runestone.academy/runestone/books/published/cpp4python/index.html" target="_blank" rel="noopener">C++ for Python Programmers</a> <span class="res-sub">Ch. 1&ndash;2, Sec. 5.1&ndash;5.2</span></div>
-        <div class="res-label">🖥️ Slides</div>
-        <div class="res-val"><a href="../slides/week00.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week00.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week00-bw.pdf">print version</a></div>
-        <div class="res-label">🔗 Explore</div>
-        <div class="res-val"><a href="https://integer.exposed/#0x0008" target="_blank" rel="noopener">Binary Exposed</a></div>
+
         <div class="res-label">📝 Do</div>
         <div class="res-val"><a class="res-todo" href="assignments/gettingStarted.html">Getting Started</a> <span class="res-sub">(ungraded pre-lab)</span><br><a class="res-todo" data-opens="2026-08-31" href="assignments/a01.html">a01 &mdash; RPG Character Creator</a> <span class="res-sub">(begins)</span></div>
-      </div>
 
-      <div class="slo-cols">
-        <div>
-          <p class="slo-section-label">🧠 Understanding</p>
-          <ul class="slo-list">
-            <li><span class="bloom-dot bloom-understand" title="Understand"></span>Describe the process of <strong>compilation</strong> of a C++ program.</li>
-            <li><span class="bloom-dot bloom-understand" title="Understand"></span>Articulate the importance of initializing variables.</li>
-            <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Identify and compare the sizes of different data types.</li>
-            <li><span class="bloom-dot bloom-understand" title="Understand"></span>Explain what pointers are and how dereferencing works.</li>
-          </ul>
-        </div>
-        <div>
-          <p class="slo-section-label">🛠️ Skills</p>
-          <ul class="slo-list">
-            <li><span class="bloom-dot bloom-apply" title="Apply"></span>Perform basic I/O using <code>cout</code> and <code>cin</code>.</li>
-            <li><span class="bloom-dot bloom-apply" title="Apply"></span>Create and initialize variables of various data types.</li>
-            <li><span class="bloom-dot bloom-apply" title="Apply"></span>Write and convert values in decimal, hexadecimal, and binary.</li>
-            <li><span class="bloom-dot bloom-apply" title="Apply"></span>Declare and initialize array variables.</li>
-            <li><span class="bloom-dot bloom-apply" title="Apply"></span>Create pointers and use the dereferencing and address-of operators.</li>
-          </ul>
-        </div>
+        <div class="res-label">📖 Read</div>
+        <div class="res-val"><a href="https://runestone.academy/runestone/books/published/cpp4python/index.html" target="_blank" rel="noopener">C++ for Python Programmers</a> <span class="res-sub">Ch. 1&ndash;2, Sec. 5.1&ndash;5.2</span></div>
+
+        <div class="res-label">🖥️ Slides</div>
+        <div class="res-val"><a href="../slides/week00.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week00.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week00-bw.pdf">print version</a></div>
+
+        <div class="res-label">🔗 Explore</div>
+        <div class="res-val"><a href="https://integer.exposed/#0x0008" target="_blank" rel="noopener">Binary Exposed</a></div>
       </div>
+      <details class="slo-details">
+        <summary class="slo-summary">Learning objectives <span class="slo-count">9</span></summary>
+        <div class="slo-cols">
+          <div>
+            <p class="slo-section-label">🧠 Understanding</p>
+            <ul class="slo-list">
+              <li><span class="bloom-dot bloom-understand" title="Understand"></span>Describe the process of <strong>compilation</strong> of a C++ program.</li>
+              <li><span class="bloom-dot bloom-understand" title="Understand"></span>Articulate the importance of initializing variables.</li>
+              <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Identify and compare the sizes of different data types.</li>
+              <li><span class="bloom-dot bloom-understand" title="Understand"></span>Explain what pointers are and how dereferencing works.</li>
+            </ul>
+          </div>
+          <div>
+            <p class="slo-section-label">🛠️ Skills</p>
+            <ul class="slo-list">
+              <li><span class="bloom-dot bloom-apply" title="Apply"></span>Perform basic I/O using <code>cout</code> and <code>cin</code>.</li>
+              <li><span class="bloom-dot bloom-apply" title="Apply"></span>Create and initialize variables of various data types.</li>
+              <li><span class="bloom-dot bloom-apply" title="Apply"></span>Write and convert values in decimal, hexadecimal, and binary.</li>
+              <li><span class="bloom-dot bloom-apply" title="Apply"></span>Declare and initialize array variables.</li>
+              <li><span class="bloom-dot bloom-apply" title="Apply"></span>Create pointers and use the dereferencing and address-of operators.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
 
     </div>
   </div>
@@ -170,33 +216,38 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
     <div class="accordion-body">
 
       <div class="res-rows">
-        <div class="res-label">📖 Read</div>
-        <div class="res-val"><a href="https://runestone.academy/runestone/books/published/cpp4python/index.html" target="_blank" rel="noopener">C++ for Python Programmers</a> <span class="res-sub">Ch. 3&ndash;4</span><br><a href="https://makefiletutorial.com/" target="_blank" rel="noopener">Makefile Tutorial</a></div>
-        <div class="res-label">🖥️ Slides</div>
-        <div class="res-val"><a href="../slides/week01.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week01.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week01-bw.pdf">print version</a></div>
+
         <div class="res-label">📝 Do</div>
         <div class="res-val"><a class="res-todo" data-opens="2026-08-31" href="assignments/a01.html">a01 &mdash; RPG Character Creator</a> <span class="res-sub">(concludes)</span></div>
-      </div>
 
-      <div class="slo-cols">
-        <div>
-          <p class="slo-section-label">🧠 Understanding</p>
-          <ul class="slo-list">
-            <li><span class="bloom-dot bloom-understand" title="Understand"></span>Articulate the differences between in, out, and in/out parameters.</li>
-            <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Compare pass-by-value, pass-by-reference, and pass-by-const-ref and choose correctly.</li>
-          </ul>
-        </div>
-        <div>
-          <p class="slo-section-label">🛠️ Skills</p>
-          <ul class="slo-list">
-            <li><span class="bloom-dot bloom-apply" title="Apply"></span>Write <code>if</code>, <code>if-else</code>, <code>if-else-if</code>, and <code>switch</code> statements correctly.</li>
-            <li><span class="bloom-dot bloom-apply" title="Apply"></span>Create <code>while</code> and <code>for</code> loops using <code>break</code> and <code>continue</code>.</li>
-            <li><span class="bloom-dot bloom-apply" title="Apply"></span>Define and call functions with overloading and default arguments.</li>
-            <li><span class="bloom-dot bloom-apply" title="Apply"></span>Pass arrays as parameters to functions.</li>
-            <li><span class="bloom-dot bloom-apply" title="Apply"></span>Use Makefiles to build multi-file C++ projects.</li>
-          </ul>
-        </div>
+        <div class="res-label">📖 Read</div>
+        <div class="res-val"><a href="https://runestone.academy/runestone/books/published/cpp4python/index.html" target="_blank" rel="noopener">C++ for Python Programmers</a> <span class="res-sub">Ch. 3&ndash;4</span><br><a href="https://makefiletutorial.com/" target="_blank" rel="noopener">Makefile Tutorial</a></div>
+
+        <div class="res-label">🖥️ Slides</div>
+        <div class="res-val"><a href="../slides/week01.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week01.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week01-bw.pdf">print version</a></div>
       </div>
+      <details class="slo-details">
+        <summary class="slo-summary">Learning objectives <span class="slo-count">7</span></summary>
+        <div class="slo-cols">
+          <div>
+            <p class="slo-section-label">🧠 Understanding</p>
+            <ul class="slo-list">
+              <li><span class="bloom-dot bloom-understand" title="Understand"></span>Articulate the differences between in, out, and in/out parameters.</li>
+              <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Compare pass-by-value, pass-by-reference, and pass-by-const-ref and choose correctly.</li>
+            </ul>
+          </div>
+          <div>
+            <p class="slo-section-label">🛠️ Skills</p>
+            <ul class="slo-list">
+              <li><span class="bloom-dot bloom-apply" title="Apply"></span>Write <code>if</code>, <code>if-else</code>, <code>if-else-if</code>, and <code>switch</code> statements correctly.</li>
+              <li><span class="bloom-dot bloom-apply" title="Apply"></span>Create <code>while</code> and <code>for</code> loops using <code>break</code> and <code>continue</code>.</li>
+              <li><span class="bloom-dot bloom-apply" title="Apply"></span>Define and call functions with overloading and default arguments.</li>
+              <li><span class="bloom-dot bloom-apply" title="Apply"></span>Pass arrays as parameters to functions.</li>
+              <li><span class="bloom-dot bloom-apply" title="Apply"></span>Use Makefiles to build multi-file C++ projects.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
 
     </div>
   </div>
@@ -218,31 +269,36 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
     <div class="accordion-body">
 
       <div class="res-rows">
-        <div class="res-label">📖 Read</div>
-        <div class="res-val"><a href="https://runestone.academy/runestone/books/published/cpp4python/index.html" target="_blank" rel="noopener">C++ for Python Programmers</a> <span class="res-sub">Ch. 6&ndash;7</span></div>
-        <div class="res-label">🖥️ Slides</div>
-        <div class="res-val"><a href="../slides/week02.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week02.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week02-bw.pdf">print version</a></div>
+
         <div class="res-label">📝 Do</div>
         <div class="res-val"><a class="res-todo" data-opens="2026-09-14" href="assignments/a02.html">a02 &mdash; Sandbox</a></div>
-      </div>
 
-      <div class="slo-cols">
-        <div>
-          <p class="slo-section-label">🧠 Understanding</p>
-          <ul class="slo-list">
-            <li><span class="bloom-dot bloom-understand" title="Understand"></span>Explain end-of-file conditions and how to detect them.</li>
-            <li><span class="bloom-dot bloom-understand" title="Understand"></span>Explain the purpose and flow of exception handling (<code>try</code>/<code>catch</code>/<code>throw</code>).</li>
-          </ul>
-        </div>
-        <div>
-          <p class="slo-section-label">🛠️ Skills</p>
-          <ul class="slo-list">
-            <li><span class="bloom-dot bloom-apply" title="Apply"></span>Open, read from, write to, and close files.</li>
-            <li><span class="bloom-dot bloom-apply" title="Apply"></span>Use <code>try</code>, <code>catch</code>, and <code>throw</code> correctly in C++ programs.</li>
-            <li><span class="bloom-dot bloom-apply" title="Apply"></span>Define, iterate over, and manipulate two-dimensional arrays.</li>
-          </ul>
-        </div>
+        <div class="res-label">📖 Read</div>
+        <div class="res-val"><a href="https://runestone.academy/runestone/books/published/cpp4python/index.html" target="_blank" rel="noopener">C++ for Python Programmers</a> <span class="res-sub">Ch. 6&ndash;7</span></div>
+
+        <div class="res-label">🖥️ Slides</div>
+        <div class="res-val"><a href="../slides/week02.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week02.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week02-bw.pdf">print version</a></div>
       </div>
+      <details class="slo-details">
+        <summary class="slo-summary">Learning objectives <span class="slo-count">5</span></summary>
+        <div class="slo-cols">
+          <div>
+            <p class="slo-section-label">🧠 Understanding</p>
+            <ul class="slo-list">
+              <li><span class="bloom-dot bloom-understand" title="Understand"></span>Explain end-of-file conditions and how to detect them.</li>
+              <li><span class="bloom-dot bloom-understand" title="Understand"></span>Explain the purpose and flow of exception handling (<code>try</code>/<code>catch</code>/<code>throw</code>).</li>
+            </ul>
+          </div>
+          <div>
+            <p class="slo-section-label">🛠️ Skills</p>
+            <ul class="slo-list">
+              <li><span class="bloom-dot bloom-apply" title="Apply"></span>Open, read from, write to, and close files.</li>
+              <li><span class="bloom-dot bloom-apply" title="Apply"></span>Use <code>try</code>, <code>catch</code>, and <code>throw</code> correctly in C++ programs.</li>
+              <li><span class="bloom-dot bloom-apply" title="Apply"></span>Define, iterate over, and manipulate two-dimensional arrays.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
 
     </div>
   </div>
@@ -264,33 +320,38 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
     <div class="accordion-body">
 
       <div class="res-rows">
-        <div class="res-label">📖 Read</div>
-        <div class="res-val"><span class="res-tbd">to be announced</span></div>
-        <div class="res-label">🖥️ Slides</div>
-        <div class="res-val"><a href="../slides/week03.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week03.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week03-bw.pdf">print version</a></div>
+
         <div class="res-label">📝 Do</div>
         <div class="res-val"><a class="res-todo" data-opens="2026-09-21" href="assignments/a03.html">a03 &mdash; Qualifying</a></div>
-      </div>
 
-      <div class="slo-cols">
-        <div>
-          <p class="slo-section-label">🧠 Understanding</p>
-          <ul class="slo-list">
-            <li><span class="bloom-dot bloom-understand" title="Understand"></span>Reason about <code>public</code> and <code>private</code> access modifiers.</li>
-            <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Explain when C++ calls constructors and destructors and why that matters.</li>
-          </ul>
-        </div>
-        <div>
-          <p class="slo-section-label">🛠️ Skills</p>
-          <ul class="slo-list">
-            <li><span class="bloom-dot bloom-apply" title="Apply"></span>Define a class and implement it across <code>.h</code> and <code>.cpp</code> files.</li>
-            <li><span class="bloom-dot bloom-apply" title="Apply"></span>Implement constructors, destructors, and general methods.</li>
-            <li><span class="bloom-dot bloom-apply" title="Apply"></span>Instantiate objects statically.</li>
-            <li><span class="bloom-dot bloom-apply" title="Apply"></span>Implement operator overloading for a class.</li>
-            <li><span class="bloom-dot bloom-create" title="Create"></span>Apply test-driven development to design and verify a class.</li>
-          </ul>
-        </div>
+        <div class="res-label">📖 Read</div>
+        <div class="res-val"><span class="res-tbd">to be announced</span></div>
+
+        <div class="res-label">🖥️ Slides</div>
+        <div class="res-val"><a href="../slides/week03.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week03.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week03-bw.pdf">print version</a></div>
       </div>
+      <details class="slo-details">
+        <summary class="slo-summary">Learning objectives <span class="slo-count">7</span></summary>
+        <div class="slo-cols">
+          <div>
+            <p class="slo-section-label">🧠 Understanding</p>
+            <ul class="slo-list">
+              <li><span class="bloom-dot bloom-understand" title="Understand"></span>Reason about <code>public</code> and <code>private</code> access modifiers.</li>
+              <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Explain when C++ calls constructors and destructors and why that matters.</li>
+            </ul>
+          </div>
+          <div>
+            <p class="slo-section-label">🛠️ Skills</p>
+            <ul class="slo-list">
+              <li><span class="bloom-dot bloom-apply" title="Apply"></span>Define a class and implement it across <code>.h</code> and <code>.cpp</code> files.</li>
+              <li><span class="bloom-dot bloom-apply" title="Apply"></span>Implement constructors, destructors, and general methods.</li>
+              <li><span class="bloom-dot bloom-apply" title="Apply"></span>Instantiate objects statically.</li>
+              <li><span class="bloom-dot bloom-apply" title="Apply"></span>Implement operator overloading for a class.</li>
+              <li><span class="bloom-dot bloom-create" title="Create"></span>Apply test-driven development to design and verify a class.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
 
     </div>
   </div>
@@ -312,33 +373,38 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
     <div class="accordion-body">
 
       <div class="res-rows">
-        <div class="res-label">📖 Read</div>
-        <div class="res-val"><span class="res-tbd">to be announced</span></div>
-        <div class="res-label">🖥️ Slides</div>
-        <div class="res-val"><a href="../slides/week04.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week04.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week04-bw.pdf">print version</a></div>
+
         <div class="res-label">📝 Do</div>
         <div class="res-val"><a class="res-todo" data-opens="2026-09-28" href="assignments/a04.html">a04 &mdash; Telemetry</a></div>
-      </div>
 
-      <div class="slo-cols">
-        <div>
-          <p class="slo-section-label">🧠 Understanding</p>
-          <ul class="slo-list">
-            <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Reason about the difference between <strong>shallow</strong> and <strong>deep</strong> copies of a data structure.</li>
-            <li><span class="bloom-dot bloom-understand" title="Understand"></span>Explain when C++ calls the destructor on an object.</li>
-            <li><span class="bloom-dot bloom-understand" title="Understand"></span>Explain when it is important to implement the destructor explicitly.</li>
-            <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Understand how a dynamic array adapts its internal size.</li>
-          </ul>
-        </div>
-        <div>
-          <p class="slo-section-label">🛠️ Skills</p>
-          <ul class="slo-list">
-            <li><span class="bloom-dot bloom-apply" title="Apply"></span>Recognize and implement a copy constructor.</li>
-            <li><span class="bloom-dot bloom-apply" title="Apply"></span>Use <code>new</code>, <code>delete</code>, and <code>delete[]</code> to manage dynamic memory.</li>
-            <li><span class="bloom-dot bloom-create" title="Create"></span>Implement a dynamic array class with resizing behavior.</li>
-          </ul>
-        </div>
+        <div class="res-label">📖 Read</div>
+        <div class="res-val"><span class="res-tbd">to be announced</span></div>
+
+        <div class="res-label">🖥️ Slides</div>
+        <div class="res-val"><a href="../slides/week04.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week04.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week04-bw.pdf">print version</a></div>
       </div>
+      <details class="slo-details">
+        <summary class="slo-summary">Learning objectives <span class="slo-count">7</span></summary>
+        <div class="slo-cols">
+          <div>
+            <p class="slo-section-label">🧠 Understanding</p>
+            <ul class="slo-list">
+              <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Reason about the difference between <strong>shallow</strong> and <strong>deep</strong> copies of a data structure.</li>
+              <li><span class="bloom-dot bloom-understand" title="Understand"></span>Explain when C++ calls the destructor on an object.</li>
+              <li><span class="bloom-dot bloom-understand" title="Understand"></span>Explain when it is important to implement the destructor explicitly.</li>
+              <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Understand how a dynamic array adapts its internal size.</li>
+            </ul>
+          </div>
+          <div>
+            <p class="slo-section-label">🛠️ Skills</p>
+            <ul class="slo-list">
+              <li><span class="bloom-dot bloom-apply" title="Apply"></span>Recognize and implement a copy constructor.</li>
+              <li><span class="bloom-dot bloom-apply" title="Apply"></span>Use <code>new</code>, <code>delete</code>, and <code>delete[]</code> to manage dynamic memory.</li>
+              <li><span class="bloom-dot bloom-create" title="Create"></span>Implement a dynamic array class with resizing behavior.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
 
     </div>
   </div>
@@ -360,32 +426,37 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
     <div class="accordion-body">
 
       <div class="res-rows">
-        <div class="res-label">📖 Read</div>
-        <div class="res-val"><span class="res-tbd">to be announced</span></div>
-        <div class="res-label">🖥️ Slides</div>
-        <div class="res-val"><a href="../slides/week05.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week05.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week05-bw.pdf">print version</a></div>
+
         <div class="res-label">📝 Do</div>
         <div class="res-val"><a class="res-todo" data-opens="2026-10-05" href="assignments/a05.html">a05 &mdash; Channels</a><span class="res-sep">·</span><a class="res-todo" data-opens="2026-10-05" href="assignments/a06.html">a06 &mdash; Race Data</a></div>
-      </div>
 
-      <div class="slo-cols">
-        <div>
-          <p class="slo-section-label">🧠 Understanding</p>
-          <ul class="slo-list">
-            <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Describe when appending to a dynamic array is inexpensive vs. expensive.</li>
-            <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Reason about the difference between a dynamic array's <em>size</em> and <em>capacity</em>.</li>
-            <li><span class="bloom-dot bloom-understand" title="Understand"></span>Explain what a class template is and why to use it instead of a class.</li>
-            <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Reason about time complexity: linear, constant, and amortized constant time.</li>
-          </ul>
-        </div>
-        <div>
-          <p class="slo-section-label">🛠️ Skills</p>
-          <ul class="slo-list">
-            <li><span class="bloom-dot bloom-apply" title="Apply"></span>Implement a class template.</li>
-            <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Determine the time complexity of append, insert, remove, and copy-constructor on a dynamic array.</li>
-          </ul>
-        </div>
+        <div class="res-label">📖 Read</div>
+        <div class="res-val"><span class="res-tbd">to be announced</span></div>
+
+        <div class="res-label">🖥️ Slides</div>
+        <div class="res-val"><a href="../slides/week05.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week05.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week05-bw.pdf">print version</a></div>
       </div>
+      <details class="slo-details">
+        <summary class="slo-summary">Learning objectives <span class="slo-count">6</span></summary>
+        <div class="slo-cols">
+          <div>
+            <p class="slo-section-label">🧠 Understanding</p>
+            <ul class="slo-list">
+              <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Describe when appending to a dynamic array is inexpensive vs. expensive.</li>
+              <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Reason about the difference between a dynamic array's <em>size</em> and <em>capacity</em>.</li>
+              <li><span class="bloom-dot bloom-understand" title="Understand"></span>Explain what a class template is and why to use it instead of a class.</li>
+              <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Reason about time complexity: linear, constant, and amortized constant time.</li>
+            </ul>
+          </div>
+          <div>
+            <p class="slo-section-label">🛠️ Skills</p>
+            <ul class="slo-list">
+              <li><span class="bloom-dot bloom-apply" title="Apply"></span>Implement a class template.</li>
+              <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Determine the time complexity of append, insert, remove, and copy-constructor on a dynamic array.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
 
     </div>
   </div>
@@ -407,32 +478,37 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
     <div class="accordion-body">
 
       <div class="res-rows">
-        <div class="res-label">📖 Read</div>
-        <div class="res-val"><span class="res-tbd">to be announced</span></div>
-        <div class="res-label">🖥️ Slides</div>
-        <div class="res-val"><a href="../slides/week06.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week06.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week06-bw.pdf">print version</a></div>
+
         <div class="res-label">📝 Do</div>
         <div class="res-val"><a class="res-todo" data-opens="2026-10-12" href="assignments/a07.html">a07 &mdash; Finish the List</a></div>
-      </div>
 
-      <div class="slo-cols">
-        <div>
-          <p class="slo-section-label">🧠 Understanding</p>
-          <ul class="slo-list">
-            <li><span class="bloom-dot bloom-understand" title="Understand"></span>Describe the organization of a linked list and how Nodes chain together.</li>
-            <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Reason about the time complexity of prepend, append, remove, traverse, search, and indexing.</li>
-            <li><span class="bloom-dot bloom-understand" title="Understand"></span>Explain how the Node destructor causes a chain reaction to delete all Nodes.</li>
-            <li><span class="bloom-dot bloom-evaluate" title="Evaluate"></span>Compare and contrast a linked list vs. a dynamic array and choose the right one for a given scenario.</li>
-          </ul>
-        </div>
-        <div>
-          <p class="slo-section-label">🛠️ Skills</p>
-          <ul class="slo-list">
-            <li><span class="bloom-dot bloom-apply" title="Apply"></span>Write code to traverse a linked list.</li>
-            <li><span class="bloom-dot bloom-create" title="Create"></span>Implement prepend, append, and remove operations on a linked list.</li>
-          </ul>
-        </div>
+        <div class="res-label">📖 Read</div>
+        <div class="res-val"><span class="res-tbd">to be announced</span></div>
+
+        <div class="res-label">🖥️ Slides</div>
+        <div class="res-val"><a href="../slides/week06.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week06.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week06-bw.pdf">print version</a></div>
       </div>
+      <details class="slo-details">
+        <summary class="slo-summary">Learning objectives <span class="slo-count">6</span></summary>
+        <div class="slo-cols">
+          <div>
+            <p class="slo-section-label">🧠 Understanding</p>
+            <ul class="slo-list">
+              <li><span class="bloom-dot bloom-understand" title="Understand"></span>Describe the organization of a linked list and how Nodes chain together.</li>
+              <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Reason about the time complexity of prepend, append, remove, traverse, search, and indexing.</li>
+              <li><span class="bloom-dot bloom-understand" title="Understand"></span>Explain how the Node destructor causes a chain reaction to delete all Nodes.</li>
+              <li><span class="bloom-dot bloom-evaluate" title="Evaluate"></span>Compare and contrast a linked list vs. a dynamic array and choose the right one for a given scenario.</li>
+            </ul>
+          </div>
+          <div>
+            <p class="slo-section-label">🛠️ Skills</p>
+            <ul class="slo-list">
+              <li><span class="bloom-dot bloom-apply" title="Apply"></span>Write code to traverse a linked list.</li>
+              <li><span class="bloom-dot bloom-create" title="Create"></span>Implement prepend, append, and remove operations on a linked list.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
 
     </div>
   </div>
@@ -468,32 +544,37 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
     <div class="accordion-body">
 
       <div class="res-rows">
-        <div class="res-label">📖 Read</div>
-        <div class="res-val"><span class="res-tbd">to be announced</span></div>
-        <div class="res-label">🖥️ Slides</div>
-        <div class="res-val"><a href="../slides/week08.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week08.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week08-bw.pdf">print version</a></div>
+
         <div class="res-label">📝 Do</div>
         <div class="res-val"><a class="res-todo" data-opens="2026-10-23" href="assignments/a08.html">a08 &mdash; Stopwatch</a></div>
-      </div>
 
-      <div class="slo-cols">
-        <div>
-          <p class="slo-section-label">🧠 Understanding</p>
-          <ul class="slo-list">
-            <li><span class="bloom-dot bloom-understand" title="Understand"></span>Describe the concept of Big-Oh notation for analyzing algorithmic complexity.</li>
-            <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Reason about Big-Oh as an approximation: <em>a·f(n) + b</em>.</li>
-            <li><span class="bloom-dot bloom-remember" title="Remember"></span>Identify typical Big-Oh curves (O(1), O(log n), O(n), O(n log n), O(n²)).</li>
-            <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Analyse best, worst and amortized complexity.</li>
-          </ul>
-        </div>
-        <div>
-          <p class="slo-section-label">🛠️ Skills</p>
-          <ul class="slo-list">
-            <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Classify the time complexity of a given algorithm using Big-Oh notation.</li>
-            <li><span class="bloom-dot bloom-evaluate" title="Evaluate"></span>Compare the efficiency of two algorithms and justify the better choice.</li>
-          </ul>
-        </div>
+        <div class="res-label">📖 Read</div>
+        <div class="res-val"><span class="res-tbd">to be announced</span></div>
+
+        <div class="res-label">🖥️ Slides</div>
+        <div class="res-val"><a href="../slides/week08.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week08.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week08-bw.pdf">print version</a></div>
       </div>
+      <details class="slo-details">
+        <summary class="slo-summary">Learning objectives <span class="slo-count">6</span></summary>
+        <div class="slo-cols">
+          <div>
+            <p class="slo-section-label">🧠 Understanding</p>
+            <ul class="slo-list">
+              <li><span class="bloom-dot bloom-understand" title="Understand"></span>Describe the concept of Big-Oh notation for analyzing algorithmic complexity.</li>
+              <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Reason about Big-Oh as an approximation: <em>a·f(n) + b</em>.</li>
+              <li><span class="bloom-dot bloom-remember" title="Remember"></span>Identify typical Big-Oh curves (O(1), O(log n), O(n), O(n log n), O(n²)).</li>
+              <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Analyse best, worst and amortized complexity.</li>
+            </ul>
+          </div>
+          <div>
+            <p class="slo-section-label">🛠️ Skills</p>
+            <ul class="slo-list">
+              <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Classify the time complexity of a given algorithm using Big-Oh notation.</li>
+              <li><span class="bloom-dot bloom-evaluate" title="Evaluate"></span>Compare the efficiency of two algorithms and justify the better choice.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
       <p style="font-size:.85em;opacity:.75;margin-top:.9rem">Friday Oct 23 is a <strong>POGIL</strong> — classifying the complexity of code snippets, in groups.</p>
 
     </div>
@@ -516,33 +597,38 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
     <div class="accordion-body">
 
       <div class="res-rows">
-        <div class="res-label">📖 Read</div>
-        <div class="res-val"><span class="res-tbd">to be announced</span></div>
-        <div class="res-label">🖥️ Slides</div>
-        <div class="res-val"><a href="../slides/week09.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week09.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week09-bw.pdf">print version</a></div>
+
         <div class="res-label">📝 Do</div>
         <div class="res-val"><a class="res-todo" data-opens="2026-11-02" href="assignments/a09.html">a09 &mdash; Stack and Queue</a><span class="res-sep">·</span><a class="res-todo" data-opens="2026-11-02" href="assignments/a10.html">a10 &mdash; HashTable</a></div>
-      </div>
 
-      <div class="slo-cols">
-        <div>
-          <p class="slo-section-label">🧠 Understanding</p>
-          <ul class="slo-list">
-            <li><span class="bloom-dot bloom-remember" title="Remember"></span>Enumerate the typical API for a Stack and a Queue.</li>
-            <li><span class="bloom-dot bloom-understand" title="Understand"></span>Define an Abstract Data Type (ADT).</li>
-            <li><span class="bloom-dot bloom-understand" title="Understand"></span>Describe how a circular array works, and how hashing computes an index.</li>
-            <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Reason about collisions, load factor, and the time-space trade-off in a hash table.</li>
-          </ul>
-        </div>
-        <div>
-          <p class="slo-section-label">🛠️ Skills</p>
-          <ul class="slo-list">
-            <li><span class="bloom-dot bloom-create" title="Create"></span>Implement a Stack with O(1) push and pop.</li>
-            <li><span class="bloom-dot bloom-create" title="Create"></span>Implement a Queue with O(1) enqueue and dequeue.</li>
-            <li><span class="bloom-dot bloom-create" title="Create"></span>Implement and use a hash table with a reasonable hash function.</li>
-          </ul>
-        </div>
+        <div class="res-label">📖 Read</div>
+        <div class="res-val"><span class="res-tbd">to be announced</span></div>
+
+        <div class="res-label">🖥️ Slides</div>
+        <div class="res-val"><a href="../slides/week09.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week09.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week09-bw.pdf">print version</a></div>
       </div>
+      <details class="slo-details">
+        <summary class="slo-summary">Learning objectives <span class="slo-count">7</span></summary>
+        <div class="slo-cols">
+          <div>
+            <p class="slo-section-label">🧠 Understanding</p>
+            <ul class="slo-list">
+              <li><span class="bloom-dot bloom-remember" title="Remember"></span>Enumerate the typical API for a Stack and a Queue.</li>
+              <li><span class="bloom-dot bloom-understand" title="Understand"></span>Define an Abstract Data Type (ADT).</li>
+              <li><span class="bloom-dot bloom-understand" title="Understand"></span>Describe how a circular array works, and how hashing computes an index.</li>
+              <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Reason about collisions, load factor, and the time-space trade-off in a hash table.</li>
+            </ul>
+          </div>
+          <div>
+            <p class="slo-section-label">🛠️ Skills</p>
+            <ul class="slo-list">
+              <li><span class="bloom-dot bloom-create" title="Create"></span>Implement a Stack with O(1) push and pop.</li>
+              <li><span class="bloom-dot bloom-create" title="Create"></span>Implement a Queue with O(1) enqueue and dequeue.</li>
+              <li><span class="bloom-dot bloom-create" title="Create"></span>Implement and use a hash table with a reasonable hash function.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
 
     </div>
   </div>
@@ -564,33 +650,38 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
     <div class="accordion-body">
 
       <div class="res-rows">
-        <div class="res-label">📖 Read</div>
-        <div class="res-val"><span class="res-tbd">to be announced</span></div>
-        <div class="res-label">🖥️ Slides</div>
-        <div class="res-val"><a href="../slides/week10.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week10.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week10-bw.pdf">print version</a></div>
+
         <div class="res-label">📝 Do</div>
         <div class="res-val"><a class="res-todo" data-opens="2026-11-09" href="assignments/a11.html">a11 &mdash; Three Ways Through a Maze</a><span class="res-sep">·</span><a class="res-todo" data-opens="2026-11-09" href="assignments/a12.html">a12 &mdash; Snake</a></div>
-      </div>
 
-      <div class="slo-cols">
-        <div>
-          <p class="slo-section-label">🧠 Understanding</p>
-          <ul class="slo-list">
-            <li><span class="bloom-dot bloom-understand" title="Understand"></span>Explain how a recursive function calls itself, and how it terminates.</li>
-            <li><span class="bloom-dot bloom-understand" title="Understand"></span>Describe the run-time stack, and the winding and unwinding phases.</li>
-            <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Reason about the complexity of Towers of Hanoi.</li>
-            <li><span class="bloom-dot bloom-understand" title="Understand"></span>Identify the time complexity of common sorting algorithms.</li>
-          </ul>
-        </div>
-        <div>
-          <p class="slo-section-label">🛠️ Skills</p>
-          <ul class="slo-list">
-            <li><span class="bloom-dot bloom-create" title="Create"></span>Design and implement a recursive solution to a problem.</li>
-            <li><span class="bloom-dot bloom-create" title="Create"></span>Implement insertion sort and selection sort, and compare them.</li>
-            <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Explain why merge sort is tractable only because it is recursive.</li>
-          </ul>
-        </div>
+        <div class="res-label">📖 Read</div>
+        <div class="res-val"><span class="res-tbd">to be announced</span></div>
+
+        <div class="res-label">🖥️ Slides</div>
+        <div class="res-val"><a href="../slides/week10.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week10.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week10-bw.pdf">print version</a></div>
       </div>
+      <details class="slo-details">
+        <summary class="slo-summary">Learning objectives <span class="slo-count">7</span></summary>
+        <div class="slo-cols">
+          <div>
+            <p class="slo-section-label">🧠 Understanding</p>
+            <ul class="slo-list">
+              <li><span class="bloom-dot bloom-understand" title="Understand"></span>Explain how a recursive function calls itself, and how it terminates.</li>
+              <li><span class="bloom-dot bloom-understand" title="Understand"></span>Describe the run-time stack, and the winding and unwinding phases.</li>
+              <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Reason about the complexity of Towers of Hanoi.</li>
+              <li><span class="bloom-dot bloom-understand" title="Understand"></span>Identify the time complexity of common sorting algorithms.</li>
+            </ul>
+          </div>
+          <div>
+            <p class="slo-section-label">🛠️ Skills</p>
+            <ul class="slo-list">
+              <li><span class="bloom-dot bloom-create" title="Create"></span>Design and implement a recursive solution to a problem.</li>
+              <li><span class="bloom-dot bloom-create" title="Create"></span>Implement insertion sort and selection sort, and compare them.</li>
+              <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Explain why merge sort is tractable only because it is recursive.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
 
     </div>
   </div>
@@ -612,31 +703,36 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
     <div class="accordion-body">
 
       <div class="res-rows">
-        <div class="res-label">📖 Read</div>
-        <div class="res-val"><span class="res-tbd">to be announced</span></div>
-        <div class="res-label">🖥️ Slides</div>
-        <div class="res-val"><a href="../slides/week11.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week11.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week11-bw.pdf">print version</a></div>
+
         <div class="res-label">📝 Do</div>
         <div class="res-val"><a class="res-todo" data-opens="2026-11-16" href="assignments/a13.html">a13 &mdash; Index</a></div>
-      </div>
 
-      <div class="slo-cols">
-        <div>
-          <p class="slo-section-label">🧠 Understanding</p>
-          <ul class="slo-list">
-            <li><span class="bloom-dot bloom-remember" title="Remember"></span>Articulate the operations one can perform on a Binary Search Tree.</li>
-            <li><span class="bloom-dot bloom-understand" title="Understand"></span>Understand insert, contains, remove, getHeight, the destructor and traversals.</li>
-            <li><span class="bloom-dot bloom-understand" title="Understand"></span>Describe the characteristics and complexity of the STL <code>set</code> and <code>map</code>.</li>
-          </ul>
-        </div>
-        <div>
-          <p class="slo-section-label">🛠️ Skills</p>
-          <ul class="slo-list">
-            <li><span class="bloom-dot bloom-create" title="Create"></span>Implement a BST with insert, contains and traversals.</li>
-            <li><span class="bloom-dot bloom-apply" title="Apply"></span>Write code using iterators to traverse a <code>set</code> or a <code>map</code>.</li>
-          </ul>
-        </div>
+        <div class="res-label">📖 Read</div>
+        <div class="res-val"><span class="res-tbd">to be announced</span></div>
+
+        <div class="res-label">🖥️ Slides</div>
+        <div class="res-val"><a href="../slides/week11.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week11.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week11-bw.pdf">print version</a></div>
       </div>
+      <details class="slo-details">
+        <summary class="slo-summary">Learning objectives <span class="slo-count">5</span></summary>
+        <div class="slo-cols">
+          <div>
+            <p class="slo-section-label">🧠 Understanding</p>
+            <ul class="slo-list">
+              <li><span class="bloom-dot bloom-remember" title="Remember"></span>Articulate the operations one can perform on a Binary Search Tree.</li>
+              <li><span class="bloom-dot bloom-understand" title="Understand"></span>Understand insert, contains, remove, getHeight, the destructor and traversals.</li>
+              <li><span class="bloom-dot bloom-understand" title="Understand"></span>Describe the characteristics and complexity of the STL <code>set</code> and <code>map</code>.</li>
+            </ul>
+          </div>
+          <div>
+            <p class="slo-section-label">🛠️ Skills</p>
+            <ul class="slo-list">
+              <li><span class="bloom-dot bloom-create" title="Create"></span>Implement a BST with insert, contains and traversals.</li>
+              <li><span class="bloom-dot bloom-apply" title="Apply"></span>Write code using iterators to traverse a <code>set</code> or a <code>map</code>.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
       <p style="font-size:.85em;opacity:.75;margin-top:.9rem">The STL <code>set</code> and <code>map</code> are trees underneath — you meet the library's version the same week you build one by hand.</p>
 
     </div>
@@ -660,35 +756,40 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
     <div class="accordion-body">
 
       <div class="res-rows">
-        <div class="res-label">📖 Read</div>
-        <div class="res-val"><span class="res-tbd">to be announced</span></div>
-        <div class="res-label">🖥️ Slides</div>
-        <div class="res-val"><a href="../slides/week12.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week12.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week12-bw.pdf">print version</a></div>
+
         <div class="res-label">📝 Do</div>
         <div class="res-val"><span class="res-tbd">no assignment &mdash; a14 spans weeks 13&ndash;14</span></div>
-      </div>
 
+        <div class="res-label">📖 Read</div>
+        <div class="res-val"><span class="res-tbd">to be announced</span></div>
+
+        <div class="res-label">🖥️ Slides</div>
+        <div class="res-val"><a href="../slides/week12.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week12.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week12-bw.pdf">print version</a></div>
+      </div>
       <div class="alert alert-warning py-1 px-2 mb-3" style="font-size:0.85rem;">
         ⚠️ Nov 25–27 Thanksgiving break. Nov 23 class covered by substitute.
       </div>
 
-      <div class="slo-cols">
-        <div>
-          <p class="slo-section-label">🧠 Understanding</p>
-          <ul class="slo-list">
-            <li><span class="bloom-dot bloom-understand" title="Understand"></span>Identify an AVL tree as a self-balancing BST.</li>
-            <li><span class="bloom-dot bloom-understand" title="Understand"></span>Articulate the importance of the <strong>balance factor</strong> in determining when to rebalance.</li>
-            <li><span class="bloom-dot bloom-remember" title="Remember"></span>Name the four rotation cases: LL, RR, LR, RL.</li>
-          </ul>
+      <details class="slo-details">
+        <summary class="slo-summary">Learning objectives <span class="slo-count">5</span></summary>
+        <div class="slo-cols">
+          <div>
+            <p class="slo-section-label">🧠 Understanding</p>
+            <ul class="slo-list">
+              <li><span class="bloom-dot bloom-understand" title="Understand"></span>Identify an AVL tree as a self-balancing BST.</li>
+              <li><span class="bloom-dot bloom-understand" title="Understand"></span>Articulate the importance of the <strong>balance factor</strong> in determining when to rebalance.</li>
+              <li><span class="bloom-dot bloom-remember" title="Remember"></span>Name the four rotation cases: LL, RR, LR, RL.</li>
+            </ul>
+          </div>
+          <div>
+            <p class="slo-section-label">🛠️ Skills</p>
+            <ul class="slo-list">
+              <li><span class="bloom-dot bloom-apply" title="Apply"></span>Compute the balance factor for a node.</li>
+              <li><span class="bloom-dot bloom-create" title="Create"></span>Implement AVL rotations to restore balance after insert or remove.</li>
+            </ul>
+          </div>
         </div>
-        <div>
-          <p class="slo-section-label">🛠️ Skills</p>
-          <ul class="slo-list">
-            <li><span class="bloom-dot bloom-apply" title="Apply"></span>Compute the balance factor for a node.</li>
-            <li><span class="bloom-dot bloom-create" title="Create"></span>Implement AVL rotations to restore balance after insert or remove.</li>
-          </ul>
-        </div>
-      </div>
+      </details>
 
     </div>
   </div>
@@ -711,30 +812,35 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
     <div class="accordion-body">
 
       <div class="res-rows">
-        <div class="res-label">📖 Read</div>
-        <div class="res-val"><span class="res-tbd">to be announced</span></div>
-        <div class="res-label">🖥️ Slides</div>
-        <div class="res-val"><span class="res-tbd">being written</span></div>
+
         <div class="res-label">📝 Do</div>
         <div class="res-val"><a class="res-todo" data-opens="2026-11-30" href="assignments/a14.html">a14 &mdash; Matrix Operations and OpenMP</a></div>
-      </div>
 
-      <div class="slo-cols">
-        <div>
-          <p class="slo-section-label">🧠 Understanding</p>
-          <ul class="slo-list">
-            <li><span class="bloom-dot bloom-understand" title="Understand"></span>Describe Moore&rsquo;s law, and why manufacturers stopped raising clock speed.</li>
-            <li><span class="bloom-dot bloom-understand" title="Understand"></span>Describe the fork-join paradigm.</li>
-            <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Reason about how memory access patterns affect parallel speed-up.</li>
-          </ul>
-        </div>
-        <div>
-          <p class="slo-section-label">🛠️ Skills</p>
-          <ul class="slo-list">
-            <li><span class="bloom-dot bloom-apply" title="Apply"></span>Use <code>#pragma omp parallel for</code> to parallelise a loop.</li>
-          </ul>
-        </div>
+        <div class="res-label">📖 Read</div>
+        <div class="res-val"><span class="res-tbd">to be announced</span></div>
+
+        <div class="res-label">🖥️ Slides</div>
+        <div class="res-val"><span class="res-tbd">being written</span></div>
       </div>
+      <details class="slo-details">
+        <summary class="slo-summary">Learning objectives <span class="slo-count">4</span></summary>
+        <div class="slo-cols">
+          <div>
+            <p class="slo-section-label">🧠 Understanding</p>
+            <ul class="slo-list">
+              <li><span class="bloom-dot bloom-understand" title="Understand"></span>Describe Moore&rsquo;s law, and why manufacturers stopped raising clock speed.</li>
+              <li><span class="bloom-dot bloom-understand" title="Understand"></span>Describe the fork-join paradigm.</li>
+              <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Reason about how memory access patterns affect parallel speed-up.</li>
+            </ul>
+          </div>
+          <div>
+            <p class="slo-section-label">🛠️ Skills</p>
+            <ul class="slo-list">
+              <li><span class="bloom-dot bloom-apply" title="Apply"></span>Use <code>#pragma omp parallel for</code> to parallelise a loop.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
       <p style="font-size:.85em;opacity:.75;margin-top:.9rem"><strong>Window 3</strong> reference date is Dec 2, in this week.</p>
 
     </div>
@@ -757,28 +863,33 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
     <div class="accordion-body">
 
       <div class="res-rows">
-        <div class="res-label">📖 Read</div>
-        <div class="res-val"><span class="res-tbd">to be announced</span></div>
-        <div class="res-label">🖥️ Slides</div>
-        <div class="res-val"><span class="res-tbd">being written</span></div>
+
         <div class="res-label">📝 Do</div>
         <div class="res-val"><span class="res-tbd">a14 continues</span></div>
-      </div>
 
-      <div class="slo-cols">
-        <div>
-          <p class="slo-section-label">🧠 Understanding</p>
-          <ul class="slo-list">
-            <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Explain the speed-up you measured, and when parallelism does <em>not</em> help.</li>
-          </ul>
-        </div>
-        <div>
-          <p class="slo-section-label">🛠️ Skills</p>
-          <ul class="slo-list">
-            <li><span class="bloom-dot bloom-evaluate" title="Evaluate"></span>Compare timings across scheduling strategies and justify the difference.</li>
-          </ul>
-        </div>
+        <div class="res-label">📖 Read</div>
+        <div class="res-val"><span class="res-tbd">to be announced</span></div>
+
+        <div class="res-label">🖥️ Slides</div>
+        <div class="res-val"><span class="res-tbd">being written</span></div>
       </div>
+      <details class="slo-details">
+        <summary class="slo-summary">Learning objectives <span class="slo-count">2</span></summary>
+        <div class="slo-cols">
+          <div>
+            <p class="slo-section-label">🧠 Understanding</p>
+            <ul class="slo-list">
+              <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Explain the speed-up you measured, and when parallelism does <em>not</em> help.</li>
+            </ul>
+          </div>
+          <div>
+            <p class="slo-section-label">🛠️ Skills</p>
+            <ul class="slo-list">
+              <li><span class="bloom-dot bloom-evaluate" title="Evaluate"></span>Compare timings across scheduling strategies and justify the difference.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
       <p style="font-size:.85em;opacity:.75;margin-top:.9rem"><strong>Dec 9 is the last day of classes</strong> — all work and all check-in bookings close.</p>
 
     </div>

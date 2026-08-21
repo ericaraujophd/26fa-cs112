@@ -74,11 +74,13 @@ The percentage of quizzes you complete decides where you land within a grade ran
 
 ### 3 · Assignment Completion
 
-Assignments (a00 through a23) are programming tasks you work on during class and finish on your own time. They are not graded for points — **submitting reasonable work counts as complete**.
+Assignments **a01 through a14** are programming tasks you work on during class and finish on your own time. (Getting Started, `a00`, is setup — it is not one of the fourteen and does not affect your percentage.)
+
+Your repository is checked automatically when you push, and the tests tell you how you are doing. **That score does not set your grade.** Assignments are not graded for points: submitting reasonable work counts as complete, whether or not every test is green.
 
 **Assignments do not have individual due dates.** You may submit any assignment at any time before the last day of classes. What matters is your cumulative completion percentage at the end of the semester.
 
-**Minimum before each check-in:** Before booking a window's appointment, you must have submitted **at least 2 of the assignments for each cluster in that window** (see the [Skills & Check-Ins](../content/checkins.html) page for the per-cluster assignment list). The questions you are asked come straight out of the territory those assignments cover, so arriving without having done them means arriving unprepared — the requirement exists to stop you spending an appointment slot you are not ready to use.
+**Nothing blocks a booking.** There is no minimum number of assignments you must submit before booking a window's appointment. But every question comes straight out of the territory those assignments cover — booking a window before you have worked through its clusters means spending a slot you are not ready to use. See the [Skills & Check-Ins](../content/checkins.html) page for which assignments build which cluster.
 
 Assignment completion works exactly like quiz completion — it appears as its own column in the grade table, and both percentages must clear a row's threshold for that row to apply.
 
