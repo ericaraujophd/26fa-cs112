@@ -166,6 +166,56 @@ body {
   box-shadow: 0 2px 12px rgba(0,0,0,.14);
 }
 
+/* ── Locked assignments (not open until their week) ─────────
+   Applied by _release.html to anything with data-opens in the future. */
+.asg-card.is-locked {
+  opacity: .55;
+  cursor: default;
+}
+.asg-card.is-locked:hover {
+  border-color: var(--bs-border-color);
+  box-shadow: none;
+  transform: none;
+  opacity: .7;
+}
+.asg-status.asg-locked {
+  background: var(--bs-secondary-bg);
+  color: var(--bs-secondary-color);
+}
+
+/* Instructor preview: the gate is off, so flag what students can't see yet.
+   Deliberately loud — it should be impossible to mistake for the real site. */
+.instructor-ribbon {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--calvin-gold);
+  color: #000;
+  border-bottom: 2px solid var(--calvin-maroon);
+}
+.instructor-ribbon a { color: #000 !important; text-decoration: underline; }
+
+/* an item only visible because the gate is off */
+.is-unreleased {
+  outline: 2px dashed var(--calvin-gold);
+  outline-offset: 2px;
+}
+
+/* schedule "Do" row */
+.res-todo.is-locked {
+  color: var(--bs-secondary-color) !important;
+  font-weight: 600;
+  cursor: default;
+  text-decoration: none !important;
+}
+.res-todo.is-locked:hover { text-decoration: none !important; }
+.res-locked-note { font-style: italic; }
+
 /* ── Hyperlinks ─────────────────────────────────────────────── */
 a {
   color: var(--calvin-maroon);

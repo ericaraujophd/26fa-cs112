@@ -1,0 +1,128 @@
+<!-- Assignment release gate.
+     Any link carrying data-opens="YYYY-MM-DD" is disabled until that date,
+     on both the Assignments hub and the Schedule.
+
+     The gate is OFF when:
+       - the site is served from localhost / 127.0.0.1 / a .local host
+         (so `quarto preview` always shows everything), or
+       - instructor preview is on: add ?preview=1 to any URL to enable it,
+         ?preview=0 to turn it back off. The choice is remembered per browser.
+
+     This is presentational only. The pages still render and a guessed URL
+     still resolves — it keeps unfinished work out of students' way, it is
+     not access control. Real gating belongs in Classroom 50. -->
+<script>
+(function () {
+  var KEY = 'cs112-instructor-preview';
+
+  function isLocal() {
+    var h = location.hostname;
+    return h === 'localhost' || h === '127.0.0.1' || h === '::1' ||
+           h === '' || /\.local$/.test(h);
+  }
+
+  function previewFlag() {
+    var q = new URLSearchParams(location.search).get('preview');
+    if (q !== null) {
+      var on = q !== '0' && q !== 'false' && q !== 'off';
+      try { on ? localStorage.setItem(KEY, '1') : localStorage.removeItem(KEY); } catch (e) {}
+      return on;
+    }
+    try { return localStorage.getItem(KEY) === '1'; } catch (e) { return false; }
+  }
+
+  function today() {
+    var d = new Date();
+    d.setHours(0, 0, 0, 0);
+    return d;
+  }
+
+  function parseDate(s) {
+    var p = String(s).split('-');
+    if (p.length !== 3) return null;
+    var d = new Date(+p[0], +p[1] - 1, +p[2]);   // local midnight, not UTC
+    return isNaN(d) ? null : d;
+  }
+
+  function fmt(d) {
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  }
+
+  function ribbon(reason) {
+    var bar = document.createElement('div');
+    bar.className = 'instructor-ribbon';
+    bar.innerHTML = '<span>Instructor preview — release gate off (' + reason + ')</span>';
+    if (!isLocal()) {
+      var a = document.createElement('a');
+      a.href = location.pathname + '?preview=0';
+      a.textContent = 'view as student';
+      bar.appendChild(a);
+    }
+    document.body.insertBefore(bar, document.body.firstChild);
+  }
+
+  function markUnlocked() {
+    // Show the real open date on cards that are only visible because the
+    // gate is off, so it is obvious what a student would still be waiting for.
+    var now = today();
+    document.querySelectorAll('[data-opens]').forEach(function (el) {
+      var when = parseDate(el.getAttribute('data-opens'));
+      if (!when || when <= now) return;
+      el.classList.add('is-unreleased');
+      el.setAttribute('title', 'Students see this from ' + fmt(when));
+    });
+  }
+
+  function gate() {
+    var local = isLocal();
+    var preview = previewFlag();
+
+    if (local || preview) {
+      markUnlocked();
+      ribbon(local ? 'local preview' : 'preview flag');
+      return;
+    }
+
+    var now = today();
+    document.querySelectorAll('[data-opens]').forEach(function (el) {
+      var when = parseDate(el.getAttribute('data-opens'));
+      if (!when || when <= now) return;          // already open — leave alone
+
+      var label = fmt(when);
+      el.classList.add('is-locked');
+      el.setAttribute('aria-disabled', 'true');
+      el.removeAttribute('href');                // no href => not clickable
+      el.setAttribute('title', 'Opens ' + label);
+
+      if (el.classList.contains('asg-card')) {
+        var chip = el.querySelector('.asg-status');
+        if (chip) {
+          chip.className = 'asg-status asg-locked';
+          chip.textContent = 'Opens ' + label;
+        }
+        var note = el.querySelector('.asg-note');
+        if (!note) {
+          note = document.createElement('div');
+          note.className = 'asg-note';
+          el.appendChild(note);
+        }
+        note.textContent = 'Opens ' + label;
+      } else {
+        if (!el.nextElementSibling ||
+            !el.nextElementSibling.classList.contains('res-locked-note')) {
+          var tag = document.createElement('span');
+          tag.className = 'res-sub res-locked-note';
+          tag.textContent = ' — opens ' + label;
+          el.insertAdjacentElement('afterend', tag);
+        }
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', gate);
+  } else {
+    gate();
+  }
+})();
+</script>

@@ -150,7 +150,32 @@ most common way students end up unable to get an appointment at all.
 .ci-axis span:first-child { transform:none; left:0; }
 .ci-axis span:last-child  { transform:none; left:auto; right:0; }
 .ci-cards { display: grid; grid-template-columns: repeat(4,1fr); gap: .6rem; }
-@media (max-width:700px) { .ci-cards { grid-template-columns: 1fr 1fr; } }
+
+/* Simplified axis shown only on narrow screens */
+.ci-axis-narrow { display: none; }
+
+/* ── Narrow screens ─────────────────────────────────────────
+   The last two windows are only 6.5% and 4.6% of the track, which is
+   ~21px and ~15px on a phone — too narrow to hold their labels. The
+   five dated axis ticks also collide once the track drops below ~500px.
+   So below 700px the bar becomes a proportional colour strip with just
+   the start and end dates, and the cards underneath carry the detail. */
+@media (max-width: 700px) {
+  .ci-bar-track { height: 26px; }
+  .ci-segment   { font-size: 0; }
+  .ci-axis      { display: none; }
+  .ci-axis-narrow {
+    display: flex;
+    justify-content: space-between;
+    font-size: .72rem;
+    color: var(--bs-secondary-color);
+    margin-bottom: 1.2rem;
+  }
+  .ci-cards { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 520px) {
+  .ci-cards { grid-template-columns: 1fr; }
+}
 .ci-card {
   border-radius: .4rem;
   padding: .75rem .8rem;
@@ -167,16 +192,20 @@ most common way students end up unable to get an appointment at all.
 
 <div class="ci-timeline-wrap">
   <div class="ci-bar-track">
-    <div class="ci-segment ci-seg-1" style="left:36.1%;width:13%;">W1</div>
-    <div class="ci-segment ci-seg-2" style="left:62%;width:13%;">W2</div>
-    <div class="ci-segment ci-seg-3" style="left:79.6%;width:6.5%;">W3</div>
-    <div class="ci-segment ci-seg-f" style="left:95.4%;width:4.6%;">F</div>
+    <div class="ci-segment ci-seg-1" style="left:36.1%;width:13%;" title="Window 1 — around Oct 23">W1</div>
+    <div class="ci-segment ci-seg-2" style="left:62%;width:13%;" title="Window 2 — around Nov 20">W2</div>
+    <div class="ci-segment ci-seg-3" style="left:79.6%;width:6.5%;" title="Window 3 — around Dec 2">W3</div>
+    <div class="ci-segment ci-seg-f" style="left:95.4%;width:4.6%;" title="Final window — Dec 12–17">F</div>
   </div>
   <div class="ci-axis">
     <span style="left:0">Aug 31</span>
     <span style="left:49.1%">Oct 23</span>
     <span style="left:75%">Nov 20</span>
     <span style="left:86.1%">Dec 2</span>
+    <span>Dec 17</span>
+  </div>
+  <div class="ci-axis-narrow">
+    <span>Aug 31</span>
     <span>Dec 17</span>
   </div>
 

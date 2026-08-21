@@ -1,0 +1,10 @@
+# Applies to every page in this folder.
+#
+# The site sets `toc: false` globally so the hub pages (Home, Schedule,
+# Check-Ins, Assignments) all use the same full content width. Assignment
+# pages are the exception: they run 2,000-6,000 words across 9-15 sections,
+# so they need an on-page contents panel to be navigable.
+toc: true
+toc-depth: 2
+toc-title: "On this page"
+toc-location: right

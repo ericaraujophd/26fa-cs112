@@ -1,5 +1,6 @@
 ---
 title: "Assignments"
+toc: false   # hub page — keep the full content width, unlike the assignments themselves
 ---
 
 Every assignment is distributed through **Classroom 50** and graded automatically. Accept the assignment to get your own private repository, then clone it and work in VS Code.
@@ -7,6 +8,8 @@ Every assignment is distributed through **Classroom 50** and graded automaticall
 Before you can accept anything, you must send your GitHub username to your instructor so you can be added to the course organization — [Getting Started](gettingStarted.html) walks you through it.
 
 Assignments are grouped by the week they begin. Weeks carrying **more than one** assignment are marked with a heavier rule and a bold count — plan ahead for those.
+
+Each assignment **opens on the Monday of its week**. You can see the whole term below, but a future assignment stays greyed out with its opening date until then.
 
 ```{=html}
 <style>
@@ -150,8 +153,8 @@ Assignments are grouped by the week they begin. Weeks carrying **more than one**
 
 <div class="asg-legend">
   <span><span class="asg-status asg-prelab">Setup</span> submitted, but not counted toward your grade</span>
-  <span><span class="asg-status asg-live">Published</span> ready to start</span>
-  <span><span class="asg-status asg-soon">Coming soon</span> not published yet — opens before its week</span>
+  <span><span class="asg-status asg-live">Published</span> open — ready to start</span>
+  <span><span class="asg-status asg-locked">Opens Oct 12</span> unlocks at the start of its week</span>
 </div>
 
 <section class="asg-week-group">
@@ -171,7 +174,7 @@ Assignments are grouped by the week they begin. Weeks carrying **more than one**
       <div class="asg-note">not counted toward your grade</div>
     </a>
 
-    <a class="asg-card" href="a01.html">
+    <a class="asg-card" data-opens="2026-08-31" href="a01.html">
       <div class="asg-top">
         <span class="asg-id">a01</span>
         <span class="asg-status asg-live">Published</span>
@@ -190,7 +193,7 @@ Assignments are grouped by the week they begin. Weeks carrying **more than one**
     <span class="asg-week-count">1 assignment</span>
   </div>
   <div class="asg-grid">
-    <a class="asg-card" href="a02.html">
+    <a class="asg-card" data-opens="2026-09-14" href="a02.html">
       <div class="asg-top">
         <span class="asg-id">a02</span>
         <span class="asg-status asg-live">Published</span>
@@ -208,7 +211,7 @@ Assignments are grouped by the week they begin. Weeks carrying **more than one**
     <span class="asg-week-count">1 assignment</span>
   </div>
   <div class="asg-grid">
-    <a class="asg-card" href="a03.html">
+    <a class="asg-card" data-opens="2026-09-21" href="a03.html">
       <div class="asg-top">
         <span class="asg-id">a03</span>
         <span class="asg-status asg-live">Published</span>
@@ -226,7 +229,7 @@ Assignments are grouped by the week they begin. Weeks carrying **more than one**
     <span class="asg-week-count">1 assignment</span>
   </div>
   <div class="asg-grid">
-    <a class="asg-card" href="a04.html">
+    <a class="asg-card" data-opens="2026-09-28" href="a04.html">
       <div class="asg-top">
         <span class="asg-id">a04</span>
         <span class="asg-status asg-live">Published</span>
@@ -244,7 +247,7 @@ Assignments are grouped by the week they begin. Weeks carrying **more than one**
     <span class="asg-week-count">2 assignments</span>
   </div>
   <div class="asg-grid">
-    <a class="asg-card" href="a05.html">
+    <a class="asg-card" data-opens="2026-10-05" href="a05.html">
       <div class="asg-top">
         <span class="asg-id">a05</span>
         <span class="asg-status asg-live">Published</span>
@@ -253,7 +256,7 @@ Assignments are grouped by the week they begin. Weeks carrying **more than one**
       <div class="asg-desc">One container, three types — turning last week's class into a template.</div>
     </a>
 
-    <a class="asg-card" href="a06.html">
+    <a class="asg-card" data-opens="2026-10-05" href="a06.html">
       <div class="asg-top">
         <span class="asg-id">a06</span>
         <span class="asg-status asg-live">Published</span>
@@ -271,7 +274,7 @@ Assignments are grouped by the week they begin. Weeks carrying **more than one**
     <span class="asg-week-count">1 assignment</span>
   </div>
   <div class="asg-grid">
-    <a class="asg-card" href="a07.html">
+    <a class="asg-card" data-opens="2026-10-12" href="a07.html">
       <div class="asg-top">
         <span class="asg-id">a07</span>
         <span class="asg-status asg-live">Published</span>
@@ -289,7 +292,7 @@ Assignments are grouped by the week they begin. Weeks carrying **more than one**
     <span class="asg-week-count">1 assignment</span>
   </div>
   <div class="asg-grid">
-    <a class="asg-card" href="a08.html">
+    <a class="asg-card" data-opens="2026-10-23" href="a08.html">
       <div class="asg-top">
         <span class="asg-id">a08</span>
         <span class="asg-status asg-live">Published</span>
@@ -307,7 +310,7 @@ Assignments are grouped by the week they begin. Weeks carrying **more than one**
     <span class="asg-week-count">2 assignments</span>
   </div>
   <div class="asg-grid">
-    <a class="asg-card" href="a09.html">
+    <a class="asg-card" data-opens="2026-11-02" href="a09.html">
       <div class="asg-top">
         <span class="asg-id">a09</span>
         <span class="asg-status asg-live">Published</span>
@@ -315,7 +318,7 @@ Assignments are grouped by the week they begin. Weeks carrying **more than one**
       <div class="asg-name">Stack and Queue</div>
       <div class="asg-desc">Two containers, nine TODOs, and one array bent into a circle.</div>
     </a>
-    <a class="asg-card" href="a10.html">
+    <a class="asg-card" data-opens="2026-11-02" href="a10.html">
       <div class="asg-top">
         <span class="asg-id">a10</span>
         <span class="asg-status asg-live">Published</span>
@@ -333,7 +336,7 @@ Assignments are grouped by the week they begin. Weeks carrying **more than one**
     <span class="asg-week-count">2 assignments</span>
   </div>
   <div class="asg-grid">
-    <a class="asg-card" href="a11.html">
+    <a class="asg-card" data-opens="2026-11-09" href="a11.html">
       <div class="asg-top">
         <span class="asg-id">a11</span>
         <span class="asg-status asg-live">Published</span>
@@ -341,7 +344,7 @@ Assignments are grouped by the week they begin. Weeks carrying **more than one**
       <div class="asg-name">Three Ways Through a Maze</div>
       <div class="asg-desc">One algorithm, two containers, and then no container at all.</div>
     </a>
-    <a class="asg-card" href="a12.html">
+    <a class="asg-card" data-opens="2026-11-09" href="a12.html">
       <div class="asg-top">
         <span class="asg-id">a12</span>
         <span class="asg-status asg-live">Published</span>
@@ -359,7 +362,7 @@ Assignments are grouped by the week they begin. Weeks carrying **more than one**
     <span class="asg-week-count">1 assignment</span>
   </div>
   <div class="asg-grid">
-    <a class="asg-card" href="a13.html">
+    <a class="asg-card" data-opens="2026-11-16" href="a13.html">
       <div class="asg-top">
         <span class="asg-id">a13</span>
         <span class="asg-status asg-live">Published</span>
@@ -389,35 +392,20 @@ Assignments are grouped by the week they begin. Weeks carrying **more than one**
 
 <section class="asg-week-group">
   <div class="asg-week-head">
-    <span class="asg-week-num">Week 13</span>
-    <span class="asg-week-dates">Nov 30 – Dec 5</span>
+    <span class="asg-week-num">Weeks 13–14</span>
+    <span class="asg-week-dates">Nov 30 – Dec 9</span>
     <span class="asg-week-count">1 assignment</span>
   </div>
   <div class="asg-grid">
-    <div class="asg-card asg-card-soon">
+    <a class="asg-card" data-opens="2026-11-30" href="a14.html">
       <div class="asg-top">
+        <span class="asg-id">a14</span>
         <span class="asg-status asg-soon">Coming soon</span>
       </div>
-      <div class="asg-name">STL Sets and Maps</div>
-      <div class="asg-desc">Topic is set; the assignment opens before its week begins.</div>
-    </div>
-  </div>
-</section>
-
-<section class="asg-week-group">
-  <div class="asg-week-head">
-    <span class="asg-week-num">Week 14</span>
-    <span class="asg-week-dates">Dec 7 – Dec 9</span>
-    <span class="asg-week-count">1 assignment</span>
-  </div>
-  <div class="asg-grid">
-    <div class="asg-card asg-card-soon">
-      <div class="asg-top">
-        <span class="asg-status asg-soon">Coming soon</span>
-      </div>
-      <div class="asg-name">Review</div>
-      <div class="asg-desc">Topic is set; the assignment opens before its week begins.</div>
-    </div>
+      <div class="asg-name">Matrix Operations and OpenMP</div>
+      <div class="asg-desc">Parallelising a loop, and measuring whether it actually helped.</div>
+      <div class="asg-note">spans both weeks · outline available now</div>
+    </a>
   </div>
 </section>
 

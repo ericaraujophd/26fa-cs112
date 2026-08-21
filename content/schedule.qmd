@@ -125,7 +125,7 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
         <div class="res-label">🔗 Explore</div>
         <div class="res-val"><a href="https://integer.exposed/#0x0008" target="_blank" rel="noopener">Binary Exposed</a></div>
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><a class="res-todo" href="assignments/gettingStarted.html">Getting Started</a> <span class="res-sub">(ungraded pre-lab)</span><br><a class="res-todo" href="assignments/a01.html">a01 &mdash; RPG Character Creator</a> <span class="res-sub">(begins)</span></div>
+        <div class="res-val"><a class="res-todo" href="assignments/gettingStarted.html">Getting Started</a> <span class="res-sub">(ungraded pre-lab)</span><br><a class="res-todo" data-opens="2026-08-31" href="assignments/a01.html">a01 &mdash; RPG Character Creator</a> <span class="res-sub">(begins)</span></div>
       </div>
 
       <div class="slo-cols">
@@ -175,7 +175,7 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
         <div class="res-label">🖥️ Slides</div>
         <div class="res-val"><a href="../slides/week01.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week01.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week01-bw.pdf">print version</a></div>
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><a class="res-todo" href="assignments/a01.html">a01 &mdash; RPG Character Creator</a> <span class="res-sub">(concludes)</span></div>
+        <div class="res-val"><a class="res-todo" data-opens="2026-08-31" href="assignments/a01.html">a01 &mdash; RPG Character Creator</a> <span class="res-sub">(concludes)</span></div>
       </div>
 
       <div class="slo-cols">
@@ -223,7 +223,7 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
         <div class="res-label">🖥️ Slides</div>
         <div class="res-val"><a href="../slides/week02.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week02.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week02-bw.pdf">print version</a></div>
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><a class="res-todo" href="assignments/a02.html">a02 &mdash; Sandbox</a></div>
+        <div class="res-val"><a class="res-todo" data-opens="2026-09-14" href="assignments/a02.html">a02 &mdash; Sandbox</a></div>
       </div>
 
       <div class="slo-cols">
@@ -269,7 +269,7 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
         <div class="res-label">🖥️ Slides</div>
         <div class="res-val"><a href="../slides/week03.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week03.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week03-bw.pdf">print version</a></div>
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><a class="res-todo" href="assignments/a03.html">a03 &mdash; Qualifying</a></div>
+        <div class="res-val"><a class="res-todo" data-opens="2026-09-21" href="assignments/a03.html">a03 &mdash; Qualifying</a></div>
       </div>
 
       <div class="slo-cols">
@@ -317,7 +317,7 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
         <div class="res-label">🖥️ Slides</div>
         <div class="res-val"><a href="../slides/week04.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week04.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week04-bw.pdf">print version</a></div>
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><a class="res-todo" href="assignments/a04.html">a04 &mdash; Telemetry</a></div>
+        <div class="res-val"><a class="res-todo" data-opens="2026-09-28" href="assignments/a04.html">a04 &mdash; Telemetry</a></div>
       </div>
 
       <div class="slo-cols">
@@ -365,7 +365,7 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
         <div class="res-label">🖥️ Slides</div>
         <div class="res-val"><a href="../slides/week05.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week05.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week05-bw.pdf">print version</a></div>
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><a class="res-todo" href="assignments/a05.html">a05 &mdash; Channels</a><span class="res-sep">·</span><a class="res-todo" href="assignments/a06.html">a06 &mdash; Race Data</a></div>
+        <div class="res-val"><a class="res-todo" data-opens="2026-10-05" href="assignments/a05.html">a05 &mdash; Channels</a><span class="res-sep">·</span><a class="res-todo" data-opens="2026-10-05" href="assignments/a06.html">a06 &mdash; Race Data</a></div>
       </div>
 
       <div class="slo-cols">
@@ -412,7 +412,7 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
         <div class="res-label">🖥️ Slides</div>
         <div class="res-val"><a href="../slides/week06.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week06.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week06-bw.pdf">print version</a></div>
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><a class="res-todo" href="assignments/a07.html">a07 &mdash; Finish the List</a></div>
+        <div class="res-val"><a class="res-todo" data-opens="2026-10-12" href="assignments/a07.html">a07 &mdash; Finish the List</a></div>
       </div>
 
       <div class="slo-cols">
@@ -473,7 +473,7 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
         <div class="res-label">🖥️ Slides</div>
         <div class="res-val"><a href="../slides/week08.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week08.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week08-bw.pdf">print version</a></div>
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><a class="res-todo" href="assignments/a08.html">a08 &mdash; Stopwatch</a></div>
+        <div class="res-val"><a class="res-todo" data-opens="2026-10-23" href="assignments/a08.html">a08 &mdash; Stopwatch</a></div>
       </div>
 
       <div class="slo-cols">
@@ -521,7 +521,7 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
         <div class="res-label">🖥️ Slides</div>
         <div class="res-val"><a href="../slides/week09.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week09.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week09-bw.pdf">print version</a></div>
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><a class="res-todo" href="assignments/a09.html">a09 &mdash; Stack and Queue</a><span class="res-sep">·</span><a class="res-todo" href="assignments/a10.html">a10 &mdash; HashTable</a></div>
+        <div class="res-val"><a class="res-todo" data-opens="2026-11-02" href="assignments/a09.html">a09 &mdash; Stack and Queue</a><span class="res-sep">·</span><a class="res-todo" data-opens="2026-11-02" href="assignments/a10.html">a10 &mdash; HashTable</a></div>
       </div>
 
       <div class="slo-cols">
@@ -569,7 +569,7 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
         <div class="res-label">🖥️ Slides</div>
         <div class="res-val"><a href="../slides/week10.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week10.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week10-bw.pdf">print version</a></div>
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><a class="res-todo" href="assignments/a11.html">a11 &mdash; Three Ways Through a Maze</a><span class="res-sep">·</span><a class="res-todo" href="assignments/a12.html">a12 &mdash; Snake</a></div>
+        <div class="res-val"><a class="res-todo" data-opens="2026-11-09" href="assignments/a11.html">a11 &mdash; Three Ways Through a Maze</a><span class="res-sep">·</span><a class="res-todo" data-opens="2026-11-09" href="assignments/a12.html">a12 &mdash; Snake</a></div>
       </div>
 
       <div class="slo-cols">
@@ -617,7 +617,7 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
         <div class="res-label">🖥️ Slides</div>
         <div class="res-val"><a href="../slides/week11.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week11.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week11-bw.pdf">print version</a></div>
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><a class="res-todo" href="assignments/a13.html">a13 &mdash; Index</a></div>
+        <div class="res-val"><a class="res-todo" data-opens="2026-11-16" href="assignments/a13.html">a13 &mdash; Index</a></div>
       </div>
 
       <div class="slo-cols">
@@ -716,7 +716,7 @@ Weekly topics, learning objectives, and skills. Click a week to expand.
         <div class="res-label">🖥️ Slides</div>
         <div class="res-val"><span class="res-tbd">being written</span></div>
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><a class="res-todo" href="assignments/a14.html">a14 &mdash; Matrix Operations and OpenMP</a></div>
+        <div class="res-val"><a class="res-todo" data-opens="2026-11-30" href="assignments/a14.html">a14 &mdash; Matrix Operations and OpenMP</a></div>
       </div>
 
       <div class="slo-cols">
