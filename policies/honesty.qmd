@@ -18,28 +18,65 @@ You are welcome to discuss ideas with classmates or with the instructor. **Discu
 
 **Two useful rules of thumb:**
 
-- If you used copy/paste — or a generative language model — to produce more than one or two lines of your submission, document the original source.
-- If the moment you figured out how to solve a problem occurred while looking at a website or at the output of an AI tool, document that source.
+- If you used copy/paste to produce more than one or two lines of your submission, document the original source.
+- If the moment you figured out how to solve a problem occurred while looking at a website, document that source.
+- **AI tools are a separate matter — they are not permitted at all in this course, with or without attribution.** See [Artificial Intelligence](#artificial-intelligence) below.
 
 These rules apply to the course's own starter code as well.
 
 ---
 
-## AI Use
+## Artificial Intelligence
 
-Generative AI can support learning — but it can also short-circuit the productive struggle that is required for actual skill development. What enters your mind smoothly often exits just as smoothly. Here are guidelines for thoughtful AI use in this class:
+::: {.callout-important}
+**No AI use is permitted in CS112.** Every piece of work you submit — code, tests,
+written answers — must be written by you, without assistance from ChatGPT,
+Copilot, Claude, or any similar tool.
+:::
 
-- **Use AI granularly:** ask for one step, not a complete solution.
-- **Use AI reflectively:** ask for feedback on what you've already done, not to build things for you.
-- **Use AI studiously:** ask it questions that test your understanding.
-- **Use AI skeptically:** even when it is not wrong, it may be overcomplicated or misguided. Go to the textbook or official documentation first.
-- **Use AI communally:** when working with others, position a shared conversation where everyone can see it. Discuss what the AI gives you rather than each person chatting privately with their own bot.
+This is not because these tools are bad. It is because of what this particular
+course is for.
 
-**The policies:**
+CS112 is where you learn to program. Everything after it — including the job you
+will eventually do, where you almost certainly *will* use these tools — depends
+on your being able to look at a piece of code and know whether it is right. An AI
+will produce a linked list that looks convincing and leaks memory on the third
+insertion. If you cannot spot that, the tool is not helping you; it is making
+confident mistakes on your behalf.
 
-- All code and prose you submit must be **typed by you**. Even if you are copying from documentation, type it out — the practice matters.
-- **No AI on assignments or quizzes**, whether in-class or out-of-class.
-- Asking for feedback, coaching, or debugging help is fine — but think for at least a minute on your own first.
+**You cannot supervise work you cannot do yourself.** The whole point of this
+semester is to make you someone who can.
+
+So the rule is simple: do it yourself. Struggle with it, use the debugger, come
+to office hours, ask a classmate to explain something. Those are the activities
+that build the judgement you will need later.
+
+### What happens if you don't
+
+Work that uses AI will receive no credit and will be reported under the
+[Student Conduct Code](https://calvin.edu/directory/policies/student-conduct-code#VI).
+
+More to the point, **the check-ins will find it**. Three times this semester you
+will sit with the instructor for twenty-five minutes and explain your work, and
+write code, with nothing open. A student who did not write their own assignments
+cannot do that, and no amount of submitted work will substitute.
+
+### Your environment
+
+Your Coder workspace ships a compiler, a debugger, and the C/C++ extension — no
+AI assistants. Please do not add any.
+
+### The instructor's own use
+
+Parts of this course were prepared with AI assistance — drafting assignments,
+building the autograders, laying out slides — all of it reviewed, tested and
+revised by the instructor, who remains responsible for it.
+
+You are being told this because Calvin's AI policy asks for transparency, and
+because it makes the distinction this course is built on: *the instructor already
+has the skills you are here to acquire.* That is exactly what makes the tool safe
+for him to use and unsafe for you to lean on right now. Get through CS112 without
+it, and it becomes yours to use well.
 
 ---
 
@@ -49,7 +86,7 @@ Generative AI can support learning — but it can also short-circuit the product
 Graders use **MOSS (Measure of Software Similarity)** to compare all submissions against one another. MOSS understands the structure of C++ and can detect similarity even when variable names and formatting have been changed. Significantly similar submissions will be assumed to involve cheating.
 :::
 
-One important consequence: if you and another student both independently ask an AI tool to write code for the same problem and submit the result, MOSS may flag the submissions as identical — and we will have to treat it as a violation. The only safe path is to write your own code.
+One important consequence: if you and another student both ask an AI tool to write code for the same problem, MOSS will very likely flag the two submissions as identical — AI tools produce strikingly similar code from the same prompt. This is a common way AI use is discovered, and it is treated as a violation on both counts: the similarity, and the AI use itself.
 
 ---
 
@@ -59,7 +96,8 @@ One important consequence: if you and another student both independently ask an 
 |---|---|
 | Discussing an approach with a classmate | ✓ Yes |
 | Looking up documentation or references | ✓ Yes (with attribution if used directly) |
-| Using AI for feedback on your own code | ✓ Yes |
+| Using AI for feedback on your own code | ✗ No |
+| Using AI for *anything* in this course | ✗ No |
 | Copying code from a classmate | ✗ No |
 | Submitting AI-generated code as your own | ✗ No |
 | Sharing your code with a classmate to submit | ✗ No |
