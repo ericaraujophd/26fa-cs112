@@ -3,11 +3,11 @@ title: "Assignments"
 toc: false   # hub page — keep the full content width, unlike the assignments themselves
 ---
 
-Every assignment is distributed through **Classroom 50**. Accept the assignment to get your own private repository, then clone it and work in VS Code.
+Every assignment arrives as **your own private GitHub repository**, created for you inside the course organization. Clone it and work in VS Code.
 
 Your repository is checked automatically each time you push, and the tests tell you how you are doing. **That score does not set your grade** — assignments count as *complete* when you submit reasonable work, green tests or not. See [Grading](../../policies/grading.html) for how completion feeds into your final grade.
 
-Before you can accept anything, you must send your GitHub username to your instructor so you can be added to the course organization — [Getting Started](gettingStarted.html) walks you through it.
+Before any of this can happen, you must send your GitHub username to your instructor and accept the invitation to the course organization — [Getting Started](gettingStarted.html) walks you through it.
 
 Assignments are grouped by the week they begin. Weeks carrying **more than one** assignment are marked with a heavier rule and a bold count — plan ahead for those.
 

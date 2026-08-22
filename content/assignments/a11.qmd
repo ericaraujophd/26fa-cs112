@@ -4,8 +4,8 @@ subtitle: "One algorithm, two containers, and then no container at all"
 ---
 
 ::: {.callout-note}
-Accept the assignment to get your own private GitHub repository (see
-[Getting the code](#getting-the-code) below), then clone it and open it in VS Code.
+Your own private GitHub repository is waiting for you (see
+[Getting the code](#getting-the-code) below) — clone it and open it in VS Code.
 
 **Plan to set aside about 2.5 to 3 hours.** TODO 3 is the big one; TODO 4 is
 about ten minutes once TODO 3 works, and that is the whole point of it. TODO 5
@@ -98,17 +98,14 @@ swapped out. Learn it once here.
 
 ## 2. Getting the Code {#getting-the-code}
 
-Accept the assignment. This creates a private GitHub repository that belongs to
-you, already containing the starter code:
+Your private GitHub repository for this assignment is created for you inside
+the course organization, with the starter code already in it. There is nothing
+to accept — if you are on the roster, it is there.
 
-::: {.callout-note}
-**Accept link:** *(added when the assignment is published)*
-:::
-
-Then clone it, replacing `YOURUSERNAME` with your GitHub username. This uses the SSH key you set up in [Getting Started](gettingStarted.html):
+Clone it, replacing `YOURUSERNAME` with your GitHub username. If `gh` asks you to sign in, see [step 9 of Getting Started](gettingStarted.html#get-your-repository):
 
 ```bash
-git clone git@github.com:26fa-cs112/cs112-a11-YOURUSERNAME.git
+gh repo clone 26fa-cs112/cs112-a11-YOURUSERNAME
 cd cs112-a11-YOURUSERNAME
 ```
 
@@ -519,7 +516,7 @@ git push
 Put your name at the top of `README.md` before your final push.
 :::
 
-Every push is graded automatically. Push as often as you like — the most recent
+Every push is checked automatically. Push as often as you like — the most recent
 submission counts, and there is no deadline beyond the last day of classes.
 
 ---
