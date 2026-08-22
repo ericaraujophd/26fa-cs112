@@ -19,7 +19,7 @@ By the end of this assignment, you will be able to:
 
 - Log in to Coder and work in a Linux terminal.
 - Connect VS Code on your laptop to Calvin's Linux environment.
-- Set up your GitHub account and accept a CS112 assignment.
+- Set up your GitHub account and get your first CS112 repository.
 - Clone your repository and open it in VS Code.
 - Compile and run a C++ program with `make`, and explain what compiling does.
 - Write basic C++ statements: variables, keyboard input, screen output, and a function call.
@@ -66,11 +66,34 @@ GitHub is where all your CS112 code will live. Every assignment is handed to you
 as a private repository, you push your work there, and it is checked
 automatically. It also means you can reach your work from any machine.
 
-**If you do not already have an account:**
+**If you already have a GitHub account, use it.** Do not make a second one for
+this course. Add your Calvin address to it — **Settings → Emails → Add email
+address** — so that the account and the roster agree, and send me that account's
+username below.
+
+**If you do not have an account yet:**
 
 1. Go to [https://github.com](https://github.com){target="_blank" rel="noopener"} and sign up. Use your **Calvin email address**.
-2. Complete the verification steps (you may need to set up two-factor authentication).
-3. Skip any personalization steps by clicking "Skip Personalization" at the bottom.
+2. Choose your username carefully. It is public, it appears in every repository
+   URL, and it is the first thing an internship recruiter sees when you send
+   them a link. Something close to your real name works; something you would not
+   want to read aloud in an interview does not. You are stuck with it for the
+   semester either way.
+3. Complete the email verification, then set up **two-factor authentication**
+   when GitHub asks — it is required for anyone who pushes code.
+4. Skip any personalization steps by clicking "Skip Personalization" at the bottom.
+
+::: {.callout-important}
+**Save your 2FA recovery codes somewhere you will still have them in December.**
+
+GitHub shows them once, during setup. If you set up two-factor authentication on
+a phone and then lose the phone, those codes are the only way back into your
+account — and your account is where all your CS112 work lives. Download them,
+and put the file somewhere that is not the phone.
+
+This is the one setup step on this page that can cost you a whole semester of
+work, and it takes about thirty seconds.
+:::
 
 **Then send me your username.** There is no self-service sign-up for CS112. I
 create a private repository for you, one per assignment, from the class roster —
@@ -93,9 +116,19 @@ semester. Renaming your account mid-course breaks the link between you and your
 work, and untangling it is manual for both of us.
 :::
 
-Once I have added you, GitHub emails you an invitation to join the
-**26fa-cs112** organization. **Accept that invitation** when it arrives — you
-will need it in Step 9.
+**What happens next.** I check the form and add you to the course organization
+by hand, usually within a day. GitHub then emails you an invitation to join
+**26fa-cs112**. **Accept it** — that is the whole of your part, and it takes one
+click.
+
+You will know it worked when
+[github.com/26fa-cs112](https://github.com/26fa-cs112){target="_blank" rel="noopener"}
+loads an organization page instead of *"page not found"*. Your repository for
+this assignment appears there once I create it, and Step 9 picks up from that
+point.
+
+If two days pass with no invitation, email me. That is far more likely to be a
+typo in a username than anything you did wrong.
 
 ::: {.callout-important}
 **The invitation expires after 7 days.** If it lapses, or you never see it,
