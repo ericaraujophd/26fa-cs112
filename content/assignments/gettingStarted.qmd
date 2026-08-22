@@ -72,9 +72,10 @@ automatically. It also means you can reach your work from any machine.
 2. Complete the verification steps (you may need to set up two-factor authentication).
 3. Skip any personalization steps by clicking "Skip Personalization" at the bottom.
 
-**Then send me your username.** CS112 distributes and grades assignments through
-**Classroom 50**, and there is no self-service sign-up: the class roster is built
-by hand from the usernames students send in.
+**Then send me your username.** There is no self-service sign-up for CS112. I
+create a private repository for you, one per assignment, from the class roster —
+and that roster is built by hand from the usernames students send in. Nothing is
+created for you until yours is on it.
 
 [Submit your GitHub username](https://forms.gle/Szw1io5HbxJC3nco7){.btn .btn-primary target="_blank" rel="noopener"}
 
@@ -93,8 +94,22 @@ work, and untangling it is manual for both of us.
 :::
 
 Once I have added you, GitHub emails you an invitation to join the
-**26fa-cs112** organization. **Accept that invitation** when it arrives. You will
-need it in Step 9.
+**26fa-cs112** organization. **Accept that invitation** when it arrives — you
+will need it in Step 9.
+
+::: {.callout-important}
+**The invitation expires after 7 days.** If it lapses, or you never see it,
+email me and I will send another. Do not create a second GitHub account.
+
+Two things that trip people up:
+
+- **Check spam and Gmail's Promotions tab.** The subject is
+  *"@ericaraujophd has invited you to join the @26fa-cs112 organization"*.
+- **If the link shows a 404 page, you are signed in to the wrong GitHub
+  account.** This is by far the most common problem. Sign out, sign back in
+  as the username you sent me, then go to
+  [github.com/26fa-cs112](https://github.com/26fa-cs112) and accept there.
+:::
 
 Now keep going. The rest of this page sets up the tools you will use, and none of
 it has to wait on me.
@@ -505,79 +520,123 @@ the rule still applies. Closing one panel and opening another tab is not
 following it.
 :::
 
-## 9. Accept the Assignment and Clone Your Repo
+## 9. Get Your Repository
 
-Each assignment in CS112 is distributed through **Classroom 50**. When you accept an assignment, a private repository is created just for you with the starter code already inside. Only you and the instructor can see it.
+You do not accept anything, and there is no link to click. Once your GitHub
+username is on the class roster, **a private repository is created for you** with
+the starter code already in it. Only you and the instructor can see it. Every
+assignment this semester arrives the same way.
 
 ::: {.callout-important}
-**First, make sure both parts of Step 2 are done:** you have sent your GitHub username to your instructor, and you have accepted the emailed invitation to the **26fa-cs112** organization. If either is missing, the accept link will not work. Go back and finish Step 2, and email me if you have been waiting more than a day.
+**First, make sure both parts of Step 2 are done:** you have sent me your GitHub
+username, and you have **accepted the emailed invitation** to the
+**26fa-cs112** organization.
 
-Then get the **Getting Started accept link from Moodle** and open it there. All CS112 accept links are distributed through Moodle so that only Calvin students can accept assignments.
+Until you accept that invitation, your repository exists but is invisible to
+you — [github.com/26fa-cs112](https://github.com/26fa-cs112){target="_blank" rel="noopener"}
+will show you a *"page not found"* rather than telling you anything useful.
+That is the single most common thing that goes wrong here.
 
-After you accept, wait a few seconds and then click through to your new repository.
+If you have been waiting more than a day, email me.
 :::
 
 ::: {.callout-note}
-Your repository will be named `cs112-a00-YOURUSERNAME`. Every assignment this semester follows the same pattern: `cs112-<assignment>-<your username>`.
+Your repository is named `cs112-a00-YOURUSERNAME`, all in lowercase. Every
+assignment follows the same pattern: `cs112-<assignment>-<your username>`.
 :::
 
-**Get the repo URL:**
+### Sign in to GitHub from the terminal, once
 
-On your repository page, click the green **\<\> Code** button, then the **SSH** tab. Click the copy icon to copy the URL (it starts with `git@github.com:...`).
+Coder needs to prove to GitHub that you are you. You do this once, and never
+think about it again for the rest of the semester.
 
-**Clone the repo:**
-
-In your VS Code terminal (the one connected to Coder), make sure you are in your `cs112` folder:
+In your VS Code terminal (the one connected to Coder):
 
 ```bash
+gh auth login
+```
+
+Answer the three questions like this:
+
+| Question | Answer |
+|---|---|
+| Where do you use GitHub? | **GitHub.com** |
+| What is your preferred protocol for Git operations on this host? | **HTTPS** |
+| How would you like to authenticate GitHub CLI? | **Login with a web browser** |
+
+It then shows you a one-time code like `4BD1-FB85`. Copy it and press Enter. A
+browser tab should open **on your own computer** — Coder itself has no browser,
+so this is handed back to your laptop. If no tab opens, copy the
+`https://github.com/login/device` link it printed and open that yourself.
+
+Paste the code into that page and sign in **as the GitHub account whose username
+you sent me**.
+
+When it finishes you will see:
+
+```
+✓ Authentication complete.
+- gh config set -h github.com git_protocol https
+✓ Configured git protocol
+! Authentication credentials saved in plain text
+✓ Logged in as YOURUSERNAME
+```
+
+::: {.callout-note}
+You will also see a line saying *"Authentication credentials saved in plain
+text."* That is expected on a server like Coder, which has no keychain to store
+them in. Your home directory on Coder is yours alone.
+:::
+
+The `✓ Configured git protocol` line is the one doing the quiet work: signing in
+also teaches Git itself to use this login. That is why pushing your code later
+just works, and why you will never need an SSH key in this course.
+
+### Clone your repository
+
+Make sure you are in your `cs112` folder:
+
+```bash
+cd ~/cs112
 pwd
 ```
 
-If you are not, run `cd ~/cs112`. Then clone:
+That should print `/home/` followed by your **Calvin username** and `/cs112` —
+for example `/home/ea47/cs112`. Coder logs you in with your Calvin account, so
+the folder is named after that, not after your GitHub username. The two are
+different, and both appear in the next command.
+
+Now clone, replacing `YOURUSERNAME` with your **GitHub** username:
 
 ```bash
-git clone <paste-your-repo-url-here>
+gh repo clone 26fa-cs112/cs112-a00-YOURUSERNAME
 ```
 
-If this is your first time using Git with Coder, you will see an error about SSH keys. Read the next section.
-
-### Setting Up SSH Keys for GitHub
-
-GitHub requires an SSH key to verify your identity. Coder generates one for you automatically. When `git clone` fails, look at the error output. Somewhere near the top you will see a public key that looks like:
-
-```
-ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAA...
-```
-
-Copy that entire line. Then:
-
-1. Go to [https://github.com/settings/keys](https://github.com/settings/keys){target="_blank" rel="noopener"}.
-2. Click **New SSH Key**.
-3. Title: `CS112 Coder`
-4. Paste the key into the Key field. Click **Add SSH Key**.
-
-Now retry the clone:
-
-```bash
-git clone <paste-your-repo-url-here>
-```
-
-This time it should succeed. Verify by listing your files:
-
-```bash
-ls
-```
-
-You should see a directory named `cs112-a00-YOURUSERNAME`. Change into it:
+Then look at what you got:
 
 ```bash
 cd cs112-a00-YOURUSERNAME
 ls
 ```
 
-You will find six files: `main.cpp`, `fortune.h`, `fortune.cpp`, `makefile`, `test.py`, and `README.md`.
+You should see six files: `main.cpp`, `fortune.h`, `fortune.cpp`, `makefile`,
+`test.py`, and `README.md`.
 
-Open this folder in VS Code: **File → Open Folder**, then navigate to `/home/<username>/cs112/cs112-a00-YOURUSERNAME`.
+::: {.callout-warning}
+**If you get `Could not resolve to a Repository`**, the usual cause is that you
+have not accepted the organization invitation yet — go back to Step 2. The
+second most likely cause is a typo in your username, or capital letters: the
+repository name is entirely lowercase, even if your GitHub username is not.
+:::
+
+Now open the folder in VS Code. From that same terminal:
+
+```bash
+code .
+```
+
+Or use **File → Open Folder** and navigate to the folder you just cloned, inside
+`cs112` in your home directory.
 
 ### One last setting, now that you have C++ code
 
@@ -685,7 +744,7 @@ One of `make`'s best features: it only recompiles files that have changed since 
 
 ## 11. Compile and Run the Starter Code
 
-In your VS Code terminal, make sure you are inside your `a00-yourgithubusername` directory. Then type:
+In your VS Code terminal, make sure you are inside your `cs112-a00-YOURUSERNAME` directory. Then type:
 
 ```bash
 make
@@ -869,7 +928,22 @@ In VS Code, look at the **Source Control** icon in the left sidebar (it looks li
 
 To verify the push worked, go to your repository page on github.com and confirm you can see your updated `main.cpp`.
 
-Within a minute or two, the **Actions** tab of your repository shows the grading run, and a **Release** appears with your score and a per-check breakdown. Getting Started does not count toward your course grade. It is here so that this machinery is already familiar when it does.
+Within a minute or two, the **Actions** tab of your repository shows a run named
+**Autograde**. Open it. Under the job you will find a summary saying how many
+checks passed, and — if any failed — which ones, with the same hints `make test`
+gives you. A green tick means every check passed; a red X means at least one did
+not.
+
+::: {.callout-note}
+**The tick is not your grade.** It runs the same `make test` you run on Coder, as
+a convenience so you can see the result without opening a terminal. Your mark
+comes from the official test suite, run separately. If the tick is ever missing
+or the run fails for reasons that have nothing to do with your code, `make test`
+locally is the answer that counts.
+:::
+
+Getting Started does not count toward your course grade. It is here so that this
+machinery is already familiar when it does.
 
 ## You are ready!
 

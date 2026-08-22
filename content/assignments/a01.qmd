@@ -4,8 +4,8 @@ subtitle: "Variables, memory, control structures, and functions — in C++"
 ---
 
 ::: {.callout-note}
-Accept the assignment to get your own private GitHub repository (see
-[Getting the code](#getting-the-code) below), then clone it and open it in VS Code.
+Your own private GitHub repository is waiting for you (see
+[Getting the code](#getting-the-code) below) — clone it and open it in VS Code.
 
 **Plan to set aside about 2 to 2.5 hours.** The first part (character sheet) is
 designed to be started in lab with your class; the adventure system and function
@@ -69,26 +69,20 @@ Two things to notice: C++ needs a semicolon at the end of every statement, and
 
 ## 2. Getting the Code
 
-Accept the assignment. This creates a private GitHub repository that belongs to you,
-already containing the starter code:
+Your private GitHub repository for this assignment is created for you inside
+the course organization, with the starter code already in it. There is nothing
+to accept — if you are on the roster, it is there.
 
-::: {.callout-note}
-**Accept link:** *(added when the assignment is published)*
-:::
 
-Then clone it, replacing `YOURUSERNAME` with your GitHub username. This uses the SSH key you set up in [Getting Started](gettingStarted.html):
+Clone it, replacing `YOURUSERNAME` with your GitHub username. If `gh` asks you to sign in, see [step 9 of Getting Started](gettingStarted.html#get-your-repository):
 
 ```bash
-git clone git@github.com:26fa-cs112/cs112-a01-YOURUSERNAME.git
+gh repo clone 26fa-cs112/cs112-a01-YOURUSERNAME
 cd cs112-a01-YOURUSERNAME
 ```
 
 Open the folder in VS Code and you are ready to start.
 
-::: {.callout-tip}
-Prefer the terminal? `gh student accept 26fa-cs112 cs112 a01` does the same thing.
-Install it once with `gh extension install foundation50/gh-student`.
-:::
 
 ---
 
@@ -672,7 +666,8 @@ git commit -m "Complete a01"
 git push
 ```
 
-**Every push is graded automatically.** Within a minute or two, the **Actions** tab
-of your repository shows the run, and a **Release** appears with your score and a
-per-check breakdown. Push as many times as you like before the deadline — the most
-recent submission is the one that counts.
+**Every push is checked automatically.** Within a minute or two the **Actions**
+tab of your repository shows a run named **Autograde**. Open it: the job summary
+says how many checks passed, and names any that failed. Push as many times as
+you like before the deadline — the most recent submission is the one that
+counts.
