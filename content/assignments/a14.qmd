@@ -5,7 +5,7 @@ subtitle: "Weeks 13–14 · Nov 30 – Dec 9"
 
 ::: {.callout-note}
 **Not published yet.** This page fills in before week 13 begins. The outline
-below is what the assignment is being built to cover — a preview, not a
+below is what the assignment is being built to cover, a preview, not a
 specification. Nothing here is final.
 
 This is the only assignment that spans **two weeks**: it starts in week 13 and
@@ -15,7 +15,7 @@ concludes in week 14, so budget accordingly.
 ## What it will cover
 
 This assignment closes out the course by taking a data structure you already
-know and making it faster on hardware you already have — the last of the five
+know and making it faster on hardware you already have, the last of the five
 course outcomes, *use parallel computing techniques to improve algorithm
 performance and measure the improvement*.
 
@@ -26,7 +26,7 @@ By the end of it, you will be able to:
 - Use `#pragma omp parallel for` to parallelise a loop
 - Reason about how memory access patterns affect parallel speed-up
 - Compare timings across scheduling strategies and justify the difference
-- Explain the speed-up you measured — including the cases where parallelism
+- Explain the speed-up you measured, including the cases where parallelism
   did not help
 
 ## Shape of the work

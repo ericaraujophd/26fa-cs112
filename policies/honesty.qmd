@@ -8,19 +8,19 @@ All assignments in this course are **individual work**. Every submission must co
 
 ## Plagiarism
 
-Submitting another student's work as your own — with or without their knowledge — is academic fraud. Giving another person your work for them to submit is equally a violation. Both parties may receive a failing grade (F) and be subject to Calvin's policies on Academic Honesty.
+Submitting another student's work as your own, with or without their knowledge, is academic fraud. Giving another person your work for them to submit is equally a violation. Both parties may receive a failing grade (F) and be subject to Calvin's policies on Academic Honesty.
 
 You are welcome to discuss ideas with classmates or with the instructor. **Discussion is not plagiarism. Copying code is.** Here are examples of what plagiarism looks like:
 
 - You copy a program from an online source, change variable names or output messages, and submit it without attribution.
-- A classmate writes some code that you add to your program. You document that you understand it — but you never indicate the source.
+- A classmate writes some code that you add to your program. You document that you understand it, but you never indicate the source.
 - You find an online tutorial that walks you through building a system, then submit the result without attribution.
 
 **Two useful rules of thumb:**
 
 - If you used copy/paste to produce more than one or two lines of your submission, document the original source.
 - If the moment you figured out how to solve a problem occurred while looking at a website, document that source.
-- **AI tools are a separate matter — they are not permitted at all in this course, with or without attribution.** See [Artificial Intelligence](#artificial-intelligence) below.
+- **AI tools are a separate matter, they are not permitted at all in this course, with or without attribution.** See [Artificial Intelligence](#artificial-intelligence) below.
 
 These rules apply to the course's own starter code as well.
 
@@ -29,16 +29,16 @@ These rules apply to the course's own starter code as well.
 ## Artificial Intelligence
 
 ::: {.callout-important}
-**No AI use is permitted in CS112.** Every piece of work you submit — code, tests,
-written answers — must be written by you, without assistance from ChatGPT,
+**No AI use is permitted in CS112.** Every piece of work you submit, code, tests,
+written answers, must be written by you, without assistance from ChatGPT,
 Copilot, Claude, or any similar tool.
 :::
 
 This is not because these tools are bad. It is because of what this particular
 course is for.
 
-CS112 is where you learn to program. Everything after it — including the job you
-will eventually do, where you almost certainly *will* use these tools — depends
+CS112 is where you learn to program. Everything after it, including the job you
+will eventually do, where you almost certainly *will* use these tools, depends
 on your being able to look at a piece of code and know whether it is right. An AI
 will produce a linked list that looks convincing and leaks memory on the third
 insertion. If you cannot spot that, the tool is not helping you; it is making
@@ -63,13 +63,13 @@ cannot do that, and no amount of submitted work will substitute.
 
 ### Your environment
 
-Your Coder workspace ships a compiler, a debugger, and the C/C++ extension — no
+Your Coder workspace ships a compiler, a debugger, and the C/C++ extension, no
 AI assistants. Please do not add any.
 
 ### The instructor's own use
 
-Parts of this course were prepared with AI assistance — drafting assignments,
-building the autograders, laying out slides — all of it reviewed, tested and
+Parts of this course were prepared with AI assistance, drafting assignments,
+building the autograders, laying out slides, all of it reviewed, tested and
 revised by the instructor, who remains responsible for it.
 
 You are being told this because Calvin's AI policy asks for transparency, and
@@ -86,7 +86,7 @@ it, and it becomes yours to use well.
 Graders use **MOSS (Measure of Software Similarity)** to compare all submissions against one another. MOSS understands the structure of C++ and can detect similarity even when variable names and formatting have been changed. Significantly similar submissions will be assumed to involve cheating.
 :::
 
-One important consequence: if you and another student both ask an AI tool to write code for the same problem, MOSS will very likely flag the two submissions as identical — AI tools produce strikingly similar code from the same prompt. This is a common way AI use is discovered, and it is treated as a violation on both counts: the similarity, and the AI use itself.
+One important consequence: if you and another student both ask an AI tool to write code for the same problem, MOSS will very likely flag the two submissions as identical, AI tools produce strikingly similar code from the same prompt. This is a common way AI use is discovered, and it is treated as a violation on both counts: the similarity, and the AI use itself.
 
 ---
 
@@ -102,4 +102,4 @@ One important consequence: if you and another student both ask an AI tool to wri
 | Submitting AI-generated code as your own | ✗ No |
 | Sharing your code with a classmate to submit | ✗ No |
 
-If you are unsure whether something is allowed, **ask before you do it** — not after.
+If you are unsure whether something is allowed, **ask before you do it**, not after.

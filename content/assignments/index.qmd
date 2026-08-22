@@ -1,15 +1,15 @@
 ---
 title: "Assignments"
-toc: false   # hub page — keep the full content width, unlike the assignments themselves
+toc: false   # hub page, keep the full content width, unlike the assignments themselves
 ---
 
 Every assignment arrives as **your own private GitHub repository**, created for you inside the course organization. Clone it and work in VS Code.
 
-Your repository is checked automatically each time you push, and the tests tell you how you are doing. **That score does not set your grade** — assignments count as *complete* when you submit reasonable work, green tests or not. See [Grading](../../policies/grading.html) for how completion feeds into your final grade.
+Your repository is checked automatically each time you push, and the tests tell you how you are doing. **That score does not set your grade**, assignments count as *complete* when you submit reasonable work, green tests or not. See [Grading](../../policies/grading.html) for how completion feeds into your final grade.
 
-Before any of this can happen, you must send your GitHub username to your instructor and accept the invitation to the course organization — [Getting Started](gettingStarted.html) walks you through it.
+Before any of this can happen, you must send your GitHub username to your instructor and accept the invitation to the course organization, [Getting Started](gettingStarted.html) walks you through it.
 
-Assignments are grouped by the week they begin. Weeks carrying **more than one** assignment are marked with a heavier rule and a bold count — plan ahead for those.
+Assignments are grouped by the week they begin. Weeks carrying **more than one** assignment are marked with a heavier rule and a bold count, plan ahead for those.
 
 Each assignment **opens on the Monday of its week**. You can see the whole term below, but a future assignment stays greyed out with its opening date until then.
 
@@ -155,7 +155,7 @@ Each assignment **opens on the Monday of its week**. You can see the whole term 
 
 <div class="asg-legend">
   <span><span class="asg-status asg-prelab">Setup</span> submitted, but not counted toward your grade</span>
-  <span><span class="asg-status asg-live">Published</span> open — ready to start</span>
+  <span><span class="asg-status asg-live">Published</span> open, ready to start</span>
   <span><span class="asg-status asg-locked">Opens Oct 12</span> unlocks at the start of its week</span>
 </div>
 
@@ -172,7 +172,7 @@ Each assignment **opens on the Monday of its week**. You can see the whole term 
         <span class="asg-status asg-prelab">Setup</span>
       </div>
       <div class="asg-name">Getting Started</div>
-      <div class="asg-desc">The CS112 Oracle — set up your toolchain, compiler, and GitHub access before the first lab.</div>
+      <div class="asg-desc">The CS112 Oracle, set up your toolchain, compiler, and GitHub access before the first lab.</div>
       <div class="asg-note">not counted toward your grade</div>
     </a>
 
@@ -182,7 +182,7 @@ Each assignment **opens on the Monday of its week**. You can see the whole term 
         <span class="asg-status asg-live">Published</span>
       </div>
       <div class="asg-name">RPG Character Creator</div>
-      <div class="asg-desc">Variables, memory, control structures, and functions — in C++.</div>
+      <div class="asg-desc">Variables, memory, control structures, and functions, in C++.</div>
       <div class="asg-note">runs through Week 01</div>
     </a>
   </div>
@@ -201,7 +201,7 @@ Each assignment **opens on the Monday of its week**. You can see the whole term 
         <span class="asg-status asg-live">Published</span>
       </div>
       <div class="asg-name">Sandbox</div>
-      <div class="asg-desc">A falling-sand simulator — file I/O, exceptions, and 2D arrays.</div>
+      <div class="asg-desc">A falling-sand simulator, file I/O, exceptions, and 2D arrays.</div>
     </a>
   </div>
 </section>
@@ -237,7 +237,7 @@ Each assignment **opens on the Monday of its week**. You can see the whole term 
         <span class="asg-status asg-live">Published</span>
       </div>
       <div class="asg-name">Telemetry</div>
-      <div class="asg-desc">A container that owns its memory — and what that costs.</div>
+      <div class="asg-desc">A container that owns its memory, and what that costs.</div>
     </a>
   </div>
 </section>
@@ -255,7 +255,7 @@ Each assignment **opens on the Monday of its week**. You can see the whole term 
         <span class="asg-status asg-live">Published</span>
       </div>
       <div class="asg-name">Channels</div>
-      <div class="asg-desc">One container, three types — turning last week's class into a template.</div>
+      <div class="asg-desc">One container, three types, turning last week's class into a template.</div>
     </a>
 
     <a class="asg-card" data-opens="2026-10-05" href="a06.html">
@@ -326,7 +326,7 @@ Each assignment **opens on the Monday of its week**. You can see the whole term 
         <span class="asg-status asg-live">Published</span>
       </div>
       <div class="asg-name">HashTable</div>
-      <div class="asg-desc">Stop searching for the index &mdash; compute it, on seventy-three thousand words.</div>
+      <div class="asg-desc">Stop searching for the index , compute it, on seventy-three thousand words.</div>
     </a>
   </div>
 </section>
@@ -352,7 +352,7 @@ Each assignment **opens on the Monday of its week**. You can see the whole term 
         <span class="asg-status asg-live">Published</span>
       </div>
       <div class="asg-name">Snake</div>
-      <div class="asg-desc">The snake is a queue. Not like a queue &mdash; a queue.</div>
+      <div class="asg-desc">The snake is a queue. Not like a queue , a queue.</div>
     </a>
   </div>
 </section>
@@ -414,5 +414,5 @@ Each assignment **opens on the Monday of its week**. You can see the whole term 
 ```
 
 ::: {.callout-tip}
-Each assignment page lists the **skills** it gives you evidence for. If your submitted work clearly demonstrates a skill, you don't need a check-in appointment for it — see [Skills & Check-Ins](../checkins.html).
+Each assignment page lists the **skills** it gives you evidence for. If your submitted work clearly demonstrates a skill, you don't need a check-in appointment for it, see [Skills & Check-Ins](../checkins.html).
 :::

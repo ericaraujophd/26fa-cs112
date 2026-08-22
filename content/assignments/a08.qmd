@@ -5,7 +5,7 @@ subtitle: "Measure it, and let the program tell you the shape"
 
 ::: {.callout-note}
 Your own private GitHub repository is waiting for you (see
-[Getting the code](#getting-the-code) below) — clone it and open it in VS Code.
+[Getting the code](#getting-the-code) below), clone it and open it in VS Code.
 
 **Plan to set aside about 2.5 to 3 hours.** `classifyGrowth` (§5) and
 `findings.txt` (§8) are the substance; the five timing functions in §6 are short
@@ -37,7 +37,7 @@ with numbers.
 ::: {.callout-note}
 **Lab and homework.** You start this in lab on Tuesday Oct 27. By then you will
 have had Friday's POGIL and Monday's lecture on Big-Oh, which is everything this
-assignment needs — there is no new syntax here, only measurement and reasoning.
+assignment needs, there is no new syntax here, only measurement and reasoning.
 
 §5 needs nothing but the Big-Oh lecture, and you can finish and fully test it
 before you have timed anything at all. That is a good place to start.
@@ -45,7 +45,7 @@ before you have timed anything at all. That is a good place to start.
 **Prof. Norman is teaching all four sessions this week**, including both lab
 sections. This page is written to be self-contained: everything you need to
 decide is decided here, and every rule the grader applies is written down below.
-If something genuinely does not make sense, say so in lab — but you should not
+If something genuinely does not make sense, say so in lab, but you should not
 need to wait for an answer to keep going.
 :::
 
@@ -64,7 +64,7 @@ of them on trust.
 
 This week you check.
 
-The instrument is a stopwatch — the one in `Timer.h`, which does nothing more
+The instrument is a stopwatch, the one in `Timer.h`, which does nothing more
 than write down the time before and after. Point it at eight operations, at five
 container sizes each, and the shapes fall out of the numbers.
 
@@ -79,8 +79,8 @@ So the numbers are not what is graded. What is graded is the **reasoning that
 turns numbers into a class**, and that is the same everywhere. §5 is the code
 version of it. §8 is the sentence version.
 
-That gap — between the measurement, which is local and noisy, and the
-conclusion, which is not — is most of what empirical computer science is.
+That gap, between the measurement, which is local and noisy, and the
+conclusion, which is not, is most of what empirical computer science is.
 :::
 
 ---
@@ -89,7 +89,8 @@ conclusion, which is not — is most of what empirical computer science is.
 
 Your private GitHub repository for this assignment is created for you inside
 the course organization, with the starter code already in it. There is nothing
-to accept — if you are on the roster, it is there.
+to accept and nothing to set up, if you are on the roster, it is there.
+
 
 Clone it, replacing `YOURUSERNAME` with your GitHub username. If `gh` asks you to sign in, see [step 9 of Getting Started](gettingStarted.html#get-your-repository):
 
@@ -97,6 +98,35 @@ Clone it, replacing `YOURUSERNAME` with your GitHub username. If `gh` asks you t
 gh repo clone 26fa-cs112/cs112-a08-YOURUSERNAME
 cd cs112-a08-YOURUSERNAME
 ```
+
+::: {.callout-note}
+**Cannot find it? Ask GitHub what you have.**
+
+If `gh repo clone` answers
+`Could not resolve to a Repository`, this lists every repository you can
+actually see, spelled exactly right:
+
+```bash
+gh repo list 26fa-cs112
+```
+
+If yours is in that list, you mistyped the name, copy it from the output and
+try again. Watch for usernames that already contain a hyphen or a number; the
+pattern is `cs112-<assignment>-<your username>`, so the two halves run together
+and it often looks wrong when it is right.
+
+**If the list is empty, or the command errors, that is mine to fix rather than
+yours to work around.** The usual causes are an organization invitation you have not accepted yet
+(check your email, including spam and the Promotions tab), or a username I
+mistyped when I built the roster. Either way, email me at
+[eric.araujo@calvin.edu](mailto:eric.araujo@calvin.edu) and I will sort it out
+the same day.
+
+While you wait, **do not create a repository yourself and do not start the work
+somewhere else.** Only the repository I create for you is connected to grading,
+so anything written outside it has to be moved by hand later, and that is a
+worse afternoon than a short wait.
+:::
 
 Open the folder in VS Code, then build it and run it before you change anything:
 
@@ -121,7 +151,7 @@ them.
 | File | Yours? | What it is |
 |---|---|---|
 | `Stopwatch.cpp` | **yes** | TODOs 1–7 |
-| `findings.txt` | **yes** | TODO 8 — what you conclude |
+| `findings.txt` | **yes** | TODO 8, what you conclude |
 | `Stopwatch.h` | no | the specification. Read this first. |
 | `Timer.h` | no | the stopwatch |
 | `given.cpp` | no | sizes, repetition policy, `measure`, and the HTML page |
@@ -137,7 +167,7 @@ all three before you write anything.
 ::: {.callout-note}
 **This is the one assignment that builds with `-O2`.** Every other week used
 `-g` and no optimisation, which is right when you are debugging and wrong when
-you are measuring — an unoptimised build spends most of its time on bookkeeping
+you are measuring, an unoptimised build spends most of its time on bookkeeping
 that a real build would not do, and that bookkeeping is the same size at every
 n, so it flattens exactly the differences you are looking for. Nobody benchmarks
 a debug build.
@@ -166,7 +196,7 @@ Two techniques fix it, and both are already in the code you were given.
 **Repeat, then divide.** Do the operation a few thousand times between one
 `start()` and one `elapsed()`, and divide by the count. The clock is consulted
 twice in total rather than twice per operation, and its cost disappears into the
-average. `repsFor(n)` in `given.cpp` decides how many times — more at small n,
+average. `repsFor(n)` in `given.cpp` decides how many times, more at small n,
 fewer at large n, so the total work stays level instead of exploding at a
 million.
 
@@ -177,12 +207,12 @@ the reason is worth understanding:
 ::: {.callout-note}
 Noise on a shared machine is **one-sided**. The operating system scheduling
 something else, another student's compile starting up, a cache line being
-evicted — every one of those makes a measurement take **longer**. Nothing in the
+evicted, every one of those makes a measurement take **longer**. Nothing in the
 universe makes your code run faster than it actually does.
 
 So the average of several runs is the true cost *plus* however much interference
 there happened to be. The minimum is the true cost plus however much
-interference there was in the quietest run — and with enough runs, one of them
+interference there was in the quietest run, and with enough runs, one of them
 lands in a quiet moment. The minimum converges on the truth from above; the mean
 does not converge on it at all.
 
@@ -191,14 +221,14 @@ This is standard practice in real benchmarking, for exactly this reason.
 
 There is a third trick, in `buildVector` in `given.cpp`, and it is worth reading
 the comment there. A four-megabyte vector is not really *yours* until you write
-to it — the operating system hands over the pages lazily. Without a warm-up, the
+to it, the operating system hands over the pages lazily. Without a warm-up, the
 first appends after building a million-element vector get charged for that, and
 an O(1) operation measures as something else entirely. That one cost about an
 hour to find.
 
 ---
 
-## 5. TODO 1 — `classifyGrowth`
+## 5. TODO 1, `classifyGrowth`
 
 This is the heart of the assignment, and you can write and fully test it before
 timing anything.
@@ -209,13 +239,13 @@ before**. The question is what shape they imply.
 Think about what you would do by eye. You would look at whether the time went up
 when n went up, and by how much. If n grows tenfold and the time does not
 change, that is constant. If the time also grows tenfold, that is linear. If it
-grows a hundredfold, the cost is going up much faster than n is — quadratic.
+grows a hundredfold, the cost is going up much faster than n is, quadratic.
 
 Written down:
 
 | the time grows by, per tenfold step | the class |
 |---|---|
-| about 1× — it barely moves | `O(1)` |
+| about 1×, it barely moves | `O(1)` |
 | clearly more than 1 but far less than 10 | `O(log n)` |
 | about 10× | `O(n)` |
 | about 100× | `O(n²)` |
@@ -231,7 +261,7 @@ Written down:
    ratio[i] = times[i] / times[i-1];       // for i = 1 .. count-1
    ```
 
-3. Take the **geometric mean** of those ratios — multiply them together and take
+3. Take the **geometric mean** of those ratios, multiply them together and take
    the `(count-1)`-th root:
 
    ```cpp
@@ -251,7 +281,7 @@ Written down:
 **`count` measurements have `count - 1` ratios**, so the root is the
 `(count-1)`-th. Five measurements are four steps apart. Taking the fifth root
 instead of the fourth is the single most common way to get this wrong, and it
-does not fail loudly — it just quietly reclassifies your quadratic series as
+does not fail loudly, it just quietly reclassifies your quadratic series as
 linear.
 :::
 
@@ -260,7 +290,7 @@ linear.
 Suppose a measurement is unlucky and comes out three times too slow, and the
 next one is normal. The ratios are 3 and 1/3.
 
-The ordinary average of 3 and 1/3 is **1.67** — which says the time is growing.
+The ordinary average of 3 and 1/3 is **1.67**, which says the time is growing.
 It is not; it went up and came straight back down. The geometric mean of 3 and
 1/3 is `sqrt(3 × 1/3)` = **exactly 1**, which is the truth.
 
@@ -271,7 +301,7 @@ the ratios up and divides.
 
 The same property is what makes the rule survive real noise. A single
 measurement that comes out 30% high moves the geometric mean of four ratios by
-about 7% — nowhere near enough to cross a boundary.
+about 7%, nowhere near enough to cross a boundary.
 
 ::: {.callout-note}
 **Why the boundaries are 1.3, 4.5 and 40 rather than 1, 10 and 100.** A perfect
@@ -294,12 +324,12 @@ typed in by hand. They do not need `./stopwatch` to work at all.
 
 ---
 
-## 6. TODOs 2–6 — The Five Timing Functions
+## 6. TODOs 2–6, The Five Timing Functions
 
 Read `timeVectorSubscript` and `timeVectorAppend` in `Stopwatch.cpp` first. Both
 follow the same five steps:
 
-1. build a container of `n` items — **outside** the timer
+1. build a container of `n` items, **outside** the timer
 2. ask `repsFor(n)` how many repetitions to do
 3. start the timer
 4. do the operation that many times
@@ -332,7 +362,7 @@ a real answer to a different question.
 :::
 
 ::: {.callout-tip}
-**`vector` has no `push_front`.** That is not an oversight — it is the API
+**`vector` has no `push_front`.** That is not an oversight, it is the API
 telling you something. Putting an element at the front of a vector means moving
 every other element up one place, and the library declines to give that a
 convenient name. `insert(v.begin(), value)` will do it, and the measurement will
@@ -347,12 +377,12 @@ make
 ```
 
 Eight rows, five columns, and a class in the last column worked out by your own
-`classifyGrowth`. Look at the table for a minute before moving on — three of the
+`classifyGrowth`. Look at the table for a minute before moving on, three of the
 eight rows should surprise you slightly, and §8 is where you say why.
 
 ---
 
-## 7. TODO 7 — The Chart
+## 7. TODO 7, The Chart
 
 `writeChart` writes `results.html`: `CHART_HEAD`, then a data block you produce,
 then `CHART_TAIL`. The two constants are in `given.cpp` and hold the whole page
@@ -367,8 +397,8 @@ vector-subscript|0.0016 0.0016 0.0016 0.0018 0.0019
 vector-prepend|0.0132 0.0511 0.6774 6.3801 156.8236
 ```
 
-- **Line 1** — how many series, then how many sizes.
-- **Line 2** — the sizes from `SIZES`, space separated.
+- **Line 1**, how many series, then how many sizes.
+- **Line 2**, the sizes from `SIZES`, space separated.
 - **Then** one line per series: the name, a `|`, then that series' times.
 
 No blank lines, no spaces around the `|`, nothing else in between. The
@@ -377,7 +407,7 @@ JavaScript counts lines.
 ### Opening an HTML file that lives on Coder {#opening-html}
 
 Your VS Code runs on your laptop, but your files live on the Coder server. So
-double-clicking `results.html` in the Explorer just shows you the HTML source —
+double-clicking `results.html` in the Explorer just shows you the HTML source , 
 there is no browser on the far end to render it.
 
 The fix is to serve the folder over HTTP and let VS Code bring the port back to
@@ -388,7 +418,7 @@ python3 -m http.server 8000
 ```
 
 VS Code notices the new listening port within a second or two and forwards it
-automatically — you will see a notification, and a **PORTS** tab appears next to
+automatically, you will see a notification, and a **PORTS** tab appears next to
 the terminal. Now open this in your own browser:
 
 ```
@@ -400,7 +430,7 @@ Press **Ctrl-C** in the terminal to stop the server when you are done.
 ::: {.callout-tip}
 `http://localhost:8000/sample-results.html` works right now, before you have
 written anything. It is four textbook curves rather than your results, so you
-can see what the page looks like when it works — and what each of the four
+can see what the page looks like when it works, and what each of the four
 shapes looks like.
 
 You can also right-click a file in the Explorer and choose **Download…** to copy
@@ -416,16 +446,16 @@ goes up steeply" and you cannot tell them apart. On log-log axes, **every power
 law is a straight line, and the slope is the exponent**:
 
 - `O(1)` is **flat**
-- `O(n)` climbs at **45 degrees** — one decade up for one decade across
+- `O(n)` climbs at **45 degrees**, one decade up for one decade across
 - `O(n²)` climbs at **twice** that
-- `O(log n)` climbs, but **bends over** — it is the one line that is not straight
+- `O(log n)` climbs, but **bends over**, it is the one line that is not straight
 
 That is the same fact `classifyGrowth` computes. The number it returns is ten
 raised to the slope.
 
 ---
 
-## 8. TODO 8 — `findings.txt`
+## 8. TODO 8, `findings.txt`
 
 Eight lines, one per experiment: the name, the complexity class, and one
 sentence saying why.
@@ -434,7 +464,7 @@ sentence saying why.
 vector-subscript   O(1)   the index is arithmetic and the size never enters into it
 ```
 
-The accepted spellings are `O(1)`, `O(logn)`, `O(n)`, `O(n^2)` and `O(1)*` —
+The accepted spellings are `O(1)`, `O(logn)`, `O(n)`, `O(n^2)` and `O(1)*` , 
 none of them with a space inside. Lines starting with `#` are ignored, so the
 instructions in the file can stay where they are.
 
@@ -455,20 +485,20 @@ For the other two it is not:
 
 - **Two rows are the same class as each other**, and at a million one of them is
   visibly two or three times slower than the other. Both are `O(n)`. Big-Oh does
-  not describe constant factors, and the reason for the difference — where the
-  elements physically are in memory — is worth your sentence.
+  not describe constant factors, and the reason for the difference, where the
+  elements physically are in memory, is worth your sentence.
 :::
 
 ### What is graded here
 
 1. All eight lines present, names spelled as the skeleton has them.
 2. **The class on each line is right.** These are facts about the algorithms,
-   not about your laptop — a fixed answer key, unaffected by hardware.
+   not about your laptop, a fixed answer key, unaffected by hardware.
 3. A reason of at least six words on each line. Nobody marks the prose; the
    reasoning is the point.
 
 If a class you measured disagrees with the class you can argue for from first
-principles, write down the one you can argue for — and then work out why the
+principles, write down the one you can argue for, and then work out why the
 measurement disagreed. That investigation is the assignment.
 
 ---
@@ -500,7 +530,7 @@ constant ones visibly not. Everything else is checked against things that are
 the same on every computer.
 :::
 
-Every failure comes with a hint. §5 is worth finishing first — sixteen of the
+Every failure comes with a hint. §5 is worth finishing first, sixteen of the
 thirty-six pass without any timing code at all.
 
 ::: {.callout-tip}
@@ -513,17 +543,17 @@ make checks
 ```
 
 A test name needs the full name, or a prefix with a `*` on the end. `./checks
-"Classify:"` matches nothing, prints almost nothing, and exits successfully —
+"Classify:"` matches nothing, prints almost nothing, and exits successfully , 
 which looks a lot like passing.
 :::
 
 ::: {.callout-note}
 **There are no hidden tests.** What you run with `make test` is exactly what the
-grader runs — all 36 checks. If it passes here, it passes there.
+grader runs, all 36 checks. If it passes here, it passes there.
 
 Grading always runs the official copies of `test.py` and `checks.cpp`, not the
 ones in your repository. Editing them will not change your score. Your
-`Stopwatch.cpp` and `findings.txt` are *not* restored — those are yours, and
+`Stopwatch.cpp` and `findings.txt` are *not* restored, those are yours, and
 they are what is being graded.
 :::
 
@@ -544,7 +574,7 @@ git commit -m "Complete a08"
 git push
 ```
 
-`results.html` is not committed and does not need to be — the grader runs
+`results.html` is not committed and does not need to be, the grader runs
 `./stopwatch` itself and regenerates it. `findings.txt` very much does need to
 be committed.
 
@@ -559,7 +589,7 @@ you like; the most recent submission is the one that counts.
 ## One last thing, for Friday
 
 Friday's session closes the week on what all this is for. A sorting routine that
-is O(n²) instead of O(n log n) does not just make somebody wait — at scale it
+is O(n²) instead of O(n log n) does not just make somebody wait, at scale it
 burns more electricity, needs more machines, and puts more carbon in the air to
 compute the same answer.
 

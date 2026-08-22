@@ -22,7 +22,7 @@
   <circle cx="34" cy="63" r="5.5" fill="#E5606A"/>
   <circle cx="52" cy="63" r="5.5" fill="#E5B85C"/>
   <circle cx="70" cy="63" r="5.5" fill="#77C97F"/>
-  <text x="264" y="67" class="chrome" text-anchor="middle">Terminal — coder.cs.calvin.edu</text>
+  <text x="264" y="67" class="chrome" text-anchor="middle">Terminal, coder.cs.calvin.edu</text>
 
   <!-- session -->
   <text x="32" y="108" class="mono"><tspan class="user">jcalvin@class-cs112</tspan><tspan class="dim">:</tspan><tspan class="path">~</tspan><tspan class="dim">$ </tspan><tspan class="cmd">pwd</tspan></text>

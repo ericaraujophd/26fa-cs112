@@ -1,14 +1,14 @@
 ---
 title: "Assignment 12: Snake"
-subtitle: "The snake is a queue. Not like a queue — a queue."
+subtitle: "The snake is a queue. Not like a queue, a queue."
 ---
 
 ::: {.callout-note}
 Your own private GitHub repository is waiting for you (see
-[Getting the code](#getting-the-code) below) — clone it and open it in VS Code.
+[Getting the code](#getting-the-code) below), clone it and open it in VS Code.
 
 **Plan to set aside about 2 to 2.5 hours.** There is no new data structure
-here and no new C++ — this is the week's second assignment and it is meant to
+here and no new C++, this is the week's second assignment and it is meant to
 be the lighter one. TODO 3 is the heart of it and is four lines long.
 :::
 
@@ -19,7 +19,7 @@ By the end of this assignment, you will be able to:
 - Recognise a queue in the wild, in a place where nobody labelled it one
 - Implement moving, growing and dying in terms of one enqueue and one dequeue
   per frame
-- Explain why "growing" needs no code of its own — only a dequeue that does not
+- Explain why "growing" needs no code of its own, only a dequeue that does not
   happen
 - Use modular arithmetic to wrap a coordinate round the edge of a grid
 - Say why a game with random elements can still be graded, and what makes that
@@ -29,7 +29,7 @@ By the end of this assignment, you will be able to:
 
 This assignment applies course skill **C6** (implement a queue with O(1)
 enqueue and dequeue) rather than teaching a new one. It is week 10's second
-assignment, and it is the shorter of the two on purpose — a11 is the one with
+assignment, and it is the shorter of the two on purpose, a11 is the one with
 the weight in it.
 
 ::: {.callout-note}
@@ -54,7 +54,7 @@ Look at what is actually happening. A square appears at the front. A square
 disappears at the back. **Nothing in the middle moves at all.**
 
 New in at one end, old out at the other, everything in between untouched.
-That is a queue. Not a queue-like thing, not a useful analogy for a queue — the
+That is a queue. Not a queue-like thing, not a useful analogy for a queue, the
 snake's body *is* a `Queue<Segment>`, and the entire animation is:
 
 ```cpp
@@ -78,7 +78,7 @@ segments along. You will write four lines in TODO 3, and one of them is a
 **There is no better fit between a data structure and a problem in this
 course**, and it is worth noticing how little code a good fit costs you. The
 same game written over a `vector` needs to decide what to do about the tail on
-every frame — shift everything down, or track an offset, or reverse the order
+every frame, shift everything down, or track an offset, or reverse the order
 and pay somewhere else. Over a queue, the question does not come up.
 
 That is the thing to take away from this assignment. Choosing the right
@@ -91,7 +91,8 @@ structure does not make the code faster. It makes the code *disappear*.
 
 Your private GitHub repository for this assignment is created for you inside
 the course organization, with the starter code already in it. There is nothing
-to accept — if you are on the roster, it is there.
+to accept and nothing to set up, if you are on the roster, it is there.
+
 
 ```bash
 gh repo clone 26fa-cs112/cs112-a12-YOURUSERNAME
@@ -100,6 +101,35 @@ make
 ./a12 moves/circle.txt 20
 make test
 ```
+
+::: {.callout-note}
+**Cannot find it? Ask GitHub what you have.**
+
+If `gh repo clone` answers
+`Could not resolve to a Repository`, this lists every repository you can
+actually see, spelled exactly right:
+
+```bash
+gh repo list 26fa-cs112
+```
+
+If yours is in that list, you mistyped the name, copy it from the output and
+try again. Watch for usernames that already contain a hyphen or a number; the
+pattern is `cs112-<assignment>-<your username>`, so the two halves run together
+and it often looks wrong when it is right.
+
+**If the list is empty, or the command errors, that is mine to fix rather than
+yours to work around.** The usual causes are an organization invitation you have not accepted yet
+(check your email, including spam and the Promotions tab), or a username I
+mistyped when I built the roster. Either way, email me at
+[eric.araujo@calvin.edu](mailto:eric.araujo@calvin.edu) and I will sort it out
+the same day.
+
+While you wait, **do not create a repository yourself and do not start the work
+somewhere else.** Only the repository I create for you is connected to grading,
+so anything written outside it has to be moved by hand later, and that is a
+worse afternoon than a short wait.
+:::
 
 `make` succeeds, `./a12` draws an empty board, and `make test` reports
 **5 / 30**.
@@ -117,7 +147,7 @@ make test
 | `given.cpp` | no | the constructor, `step()`, and the random source |
 | `render.cpp` | no | colour |
 | `main.cpp` | no | plays a scripted game |
-| `Queue.h` | **replaceable** | a working Queue — drop in your own a09 one if you like |
+| `Queue.h` | **replaceable** | a working Queue, drop in your own a09 one if you like |
 | `moves/` | no | scripts of moves |
 
 ### Read `step()` in `given.cpp`
@@ -152,7 +182,7 @@ at the very end, and nowhere else.
 
 ## 4. The six TODOs
 
-**TODO 1 — `drawSnake`.** Paint `BODY` on every occupied square, then `HEAD` on
+**TODO 1, `drawSnake`.** Paint `BODY` on every occupied square, then `HEAD` on
 top, then `TARGET`. Walk `myOccupied`, the 2D array of bools the class keeps;
 do not take segments out of the queue to look at them, because a queue only
 lets you see its front and you would be dismantling the snake to read it.
@@ -160,7 +190,7 @@ lets you see its front and you would be dismantling the snake to read it.
 Do this one first even though it is not the interesting one. Once it works you
 can *see* everything else you write.
 
-**TODO 2 — `nextHead`.** One square in the given direction, and the field
+**TODO 2, `nextHead`.** One square in the given direction, and the field
 wraps.
 
 ::: {.callout-warning}
@@ -177,7 +207,7 @@ the way down. It is worth noticing that a wrapping grid and a circular array
 are the same idea wearing different clothes.
 :::
 
-**TODO 3 — `updateSnake`.** The queue. Four lines:
+**TODO 3, `updateSnake`.** The queue. Four lines:
 
 ```
 the new head joins the back of the queue, and becomes myHead
@@ -191,11 +221,11 @@ eats; each frame after that skips the dequeue once. The frame that eats is
 itself the first frame of growing, so a snake of 1 becomes a snake of
 `1 + GROW_BY` over `GROW_BY` frames.
 
-**TODO 4 — `detectDeath`.** One line: is that square already occupied?
+**TODO 4, `detectDeath`.** One line: is that square already occupied?
 
-**TODO 5 — `detectTarget`.** One line: is that square the target?
+**TODO 5, `detectTarget`.** One line: is that square the target?
 
-**TODO 6 — `plantTarget`.** A new target on a square the snake is not on, by
+**TODO 6, `plantTarget`.** A new target on a square the snake is not on, by
 **exactly** this procedure:
 
 ```
@@ -228,7 +258,7 @@ return (myRandom >> 16) & 0x7FFFu;
 ```
 
 `main.cpp` starts every game from the same seed, 2026. So the first target is
-always at row 16, column 38 — on your laptop, on the grading machine, in
+always at row 16, column 38, on your laptop, on the grading machine, in
 February.
 
 ::: {.callout-note}
@@ -257,7 +287,7 @@ a **script**: a file of `U`, `D`, `L` and `R`, one per frame.
 ```
 
 `greedy.txt` was written by steering toward the target on every frame. It eats
-seventeen times, reaches sixty-nine segments, and survives. Watch it once — it
+seventeen times, reaches sixty-nine segments, and survives. Watch it once, it
 is the payoff for TODO 3, and it makes the "skip the dequeue" idea concrete in
 a way that no amount of prose will.
 
@@ -274,20 +304,20 @@ make test         # all 30 checks
 
 ::: {.callout-important}
 **There are no hidden tests.** What you run with `make test` is exactly what the
-grader runs — all 30 checks, every one of them in a file in your repository.
+grader runs, all 30 checks, every one of them in a file in your repository.
 :::
 
 | | |
 |---|---|
-| 4 | `nextHead` — moving, and wrapping at the edges |
-| 6 | the queue — length, the tail, and growing after eating |
+| 4 | `nextHead`, moving, and wrapping at the edges |
+| 6 | the queue, length, the tail, and growing after eating |
 | 4 | death |
 | 4 | the target |
 | 4 | drawing |
 | 8 | whole games, replayed and compared |
 
 The last eight run `./a12` on a script and compare the board the game ends on
-against a **fingerprint** — a SHA-256 of the right answer. A fingerprint tells
+against a **fingerprint**, a SHA-256 of the right answer. A fingerprint tells
 you whether you got it right and nothing whatsoever about what the answer is,
 which is how every check can be visible without the answers being visible too.
 Two of those scripts are generated inside `test.py` rather than shipped in
@@ -317,7 +347,7 @@ git push
 Put your name at the top of `README.md` before your final push.
 :::
 
-Every push is checked automatically. Push as often as you like — the most recent
+Every push is checked automatically. Push as often as you like, the most recent
 submission counts, and there is no deadline beyond the last day of classes.
 
 ---
@@ -328,7 +358,7 @@ submission counts, and there is no deadline beyond the last day of classes.
 None of this is graded and none of it is required. But the pieces are all here:
 
 - **Play it yourself.** Read a direction from `cin` each frame instead of from
-  a script. It is not a real game — you have to press enter — but it is yours.
+  a script. It is not a real game, you have to press enter, but it is yours.
 - **Walls.** Make the edges lethal instead of wrapping: one condition in
   `nextHead` and one in `detectDeath`.
 - **Two targets at once.** `plantTarget` twice, and check both.
@@ -338,6 +368,6 @@ None of this is graded and none of it is required. But the pieces are all here:
   A script that also avoided its own body would do better.
 
 The last one is not a small exercise, and it is worth knowing why: deciding
-where to go next, given what you know about the board, is a search problem —
+where to go next, given what you know about the board, is a search problem , 
 and you wrote three of those last week.
 :::

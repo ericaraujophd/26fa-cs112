@@ -1,15 +1,15 @@
 ---
 title: "Assignment 02: Sandbox"
-subtitle: "A falling-sand simulator — file I/O, exceptions, and 2D arrays"
+subtitle: "A falling-sand simulator, file I/O, exceptions, and 2D arrays"
 ---
 
 ::: {.callout-note}
 Your own private GitHub repository is waiting for you (see
-[Getting the code](#getting-the-code) below) — clone it and open it in VS Code.
+[Getting the code](#getting-the-code) below), clone it and open it in VS Code.
 
 **Plan to set aside about 3 to 3.5 hours.** Reading the file
 (`loadWorld`) and writing the simulation rules (`step`) are the two long
-sections — between them they are most of the assignment. The experiment in
+sections, between them they are most of the assignment. The experiment in
 §9 takes about fifteen minutes and will save you more than that.
 :::
 
@@ -31,11 +31,11 @@ By the end of this assignment, you will be able to:
 
 These objectives map to course skills **A1**, **A5**, and **A6**. They also
 introduce **B5** (unit testing), which you finish next week when you write tests
-of your own — here you only have to read and run the ones you are given.
+of your own, here you only have to read and run the ones you are given.
 
 ::: {.callout-note}
 **Lab and homework.** You start this in lab on Tuesday, and by then you will have
-had Monday's lecture on file I/O — enough for §4 and most of §5. Exceptions come
+had Monday's lecture on file I/O, enough for §4 and most of §5. Exceptions come
 on Wednesday and 2D arrays on Friday, so the rest of §5 and all of §6–§10 are
 homework. The sections below are in the order you can actually do them.
 :::
@@ -45,8 +45,8 @@ homework. The sections below are in the order you can actually do them.
 ## 1. Introduction
 
 Falling-sand games are a small genre of their own. You get a blank screen, a few
-kinds of material, and a set of rules about how each one behaves — sand piles up,
-water finds its way around things, walls stay put — and out of those three or
+kinds of material, and a set of rules about how each one behaves, sand piles up,
+water finds its way around things, walls stay put, and out of those three or
 four rules comes something that is oddly hard to stop watching.
 
 None of it is complicated. There is no physics engine. There is a **grid of
@@ -69,14 +69,14 @@ the floor.
 
 You will write four functions:
 
-- `loadWorld()` — read a world from a file, and complain properly when the file
+- `loadWorld()`, read a world from a file, and complain properly when the file
   is broken
-- `saveWorld()` — write the finished world back out
-- `step()` — advance the simulation by one tick
-- `saveReplay()` — write every frame into an HTML file you can play back
+- `saveWorld()`, write the finished world back out
+- `step()`, advance the simulation by one tick
+- `saveReplay()`, write every frame into an HTML file you can play back
 
-Everything else — the colour drawing, the animation, the emitter loop, the
-argument parsing, the HTML and JavaScript for the replay player — is written for
+Everything else, the colour drawing, the animation, the emitter loop, the
+argument parsing, the HTML and JavaScript for the replay player, is written for
 you. None of it is what this week is about.
 
 ::: {.callout-tip}
@@ -84,7 +84,7 @@ you. None of it is what this week is about.
 recording of a finished simulator running `worlds/showcase.txt`. Open it (§3.1
 below explains how) and press Play. That is what yours will do by Friday.
 
-`demo.html` is a run of the *same program you are about to write* — so it is also
+`demo.html` is a run of the *same program you are about to write*, so it is also
 the reference for what your own `replay.html` should look like when TODO 4 works.
 :::
 
@@ -94,7 +94,7 @@ spring, which used a graphics library called Bridges that needed a web account,
 an API key, and a round trip to a server every time you wanted to see anything.
 It also moved water randomly, which meant no two runs agreed and nothing could
 be checked automatically. This version draws in your terminal, in colour, using
-nothing but text — and every rule has a defined tie-break, so the same world run
+nothing but text, and every rule has a defined tie-break, so the same world run
 twice gives the same answer.
 :::
 
@@ -104,7 +104,8 @@ twice gives the same answer.
 
 Your private GitHub repository for this assignment is created for you inside
 the course organization, with the starter code already in it. There is nothing
-to accept — if you are on the roster, it is there.
+to accept and nothing to set up, if you are on the roster, it is there.
+
 
 Clone it, replacing `YOURUSERNAME` with your GitHub username. If `gh` asks you to sign in, see [step 9 of Getting Started](gettingStarted.html#get-your-repository):
 
@@ -112,6 +113,35 @@ Clone it, replacing `YOURUSERNAME` with your GitHub username. If `gh` asks you t
 gh repo clone 26fa-cs112/cs112-a02-YOURUSERNAME
 cd cs112-a02-YOURUSERNAME
 ```
+
+::: {.callout-note}
+**Cannot find it? Ask GitHub what you have.**
+
+If `gh repo clone` answers
+`Could not resolve to a Repository`, this lists every repository you can
+actually see, spelled exactly right:
+
+```bash
+gh repo list 26fa-cs112
+```
+
+If yours is in that list, you mistyped the name, copy it from the output and
+try again. Watch for usernames that already contain a hyphen or a number; the
+pattern is `cs112-<assignment>-<your username>`, so the two halves run together
+and it often looks wrong when it is right.
+
+**If the list is empty, or the command errors, that is mine to fix rather than
+yours to work around.** The usual causes are an organization invitation you have not accepted yet
+(check your email, including spam and the Promotions tab), or a username I
+mistyped when I built the roster. Either way, email me at
+[eric.araujo@calvin.edu](mailto:eric.araujo@calvin.edu) and I will sort it out
+the same day.
+
+While you wait, **do not create a repository yourself and do not start the work
+somewhere else.** Only the repository I create for you is connected to grading,
+so anything written outside it has to be moved by hand later, and that is a
+worse afternoon than a short wait.
+:::
 
 Open the folder in VS Code, then build it before you change anything:
 
@@ -128,8 +158,8 @@ tests). If `make` works now, you know that any error you see later is yours.
 ## 3. What You Are Given, and What You Write
 
 **All the C++ you write goes in one file: `sandbox.cpp`.** (Two other files
-change too — you add your name to `README.md`, and you create `worlds/mine.txt`
-in §12 — but no other code is yours to touch.)
+change too, you add your name to `README.md`, and you create `worlds/mine.txt`
+in §12, but no other code is yours to touch.)
 
 | File | What it is |
 |---|---|
@@ -138,7 +168,7 @@ in §12 — but no other code is yours to touch.)
 | `main.cpp` | The driver: arguments, the emitter loop, the step loop |
 | `render.cpp` | Colour drawing, and the HTML replay scaffold |
 | `tests.cpp` | catch unit tests for the rules. Read these too. |
-| `worlds/` | Worlds to run — including three deliberately broken ones |
+| `worlds/` | Worlds to run, including three deliberately broken ones |
 | `makefile`, `test.py` | Build and check |
 
 Running it:
@@ -156,7 +186,7 @@ never have to sit through four hundred frames.
 ### 3.1 Opening an HTML file that lives on Coder {#opening-html}
 
 Your VS Code runs on your laptop, but your files live on the Coder server. So
-double-clicking `demo.html` in the Explorer just shows you the HTML source —
+double-clicking `demo.html` in the Explorer just shows you the HTML source , 
 there is no browser on the far end to render it.
 
 The fix is to serve the folder over HTTP and let VS Code bring the port back to
@@ -167,7 +197,7 @@ python3 -m http.server 8000
 ```
 
 VS Code notices the new listening port within a second or two and forwards it
-automatically — you will see a notification, and a **PORTS** tab appears next to
+automatically, you will see a notification, and a **PORTS** tab appears next to
 the terminal. Now open this in your own browser:
 
 ```
@@ -189,7 +219,7 @@ enough to see your latest run.
 character `▀`, which fills the *top* half of a character cell with the
 foreground colour and leaves the *bottom* half showing the background colour. So
 one printed row draws two grid rows, and the cells come out square instead of
-stretched. Nothing you write ever touches a colour — your code moves `char`
+stretched. Nothing you write ever touches a colour, your code moves `char`
 values around a 2D array, and the mapping from character to colour happens once,
 at the very end, in `render.cpp`.
 :::
@@ -212,12 +242,12 @@ A world file looks like this:
 
 Line by line:
 
-1. **`rows cols`** — the size of the grid.
-2. **A count** — how many emitter lines follow.
+1. **`rows cols`**, the size of the grid.
+2. **A count**, how many emitter lines follow.
 3. **That many emitter lines**, each `row col element`, where `element` is the
    word `sand` or the word `water`. An emitter drops one grain of its element
    every step, if its cell is free.
-4. **Exactly `rows` lines of exactly `cols` characters** — the grid itself.
+4. **Exactly `rows` lines of exactly `cols` characters**, the grid itself.
 
 One small file, and it needs every reading technique from Monday: `>>` for the
 numbers and the element words, `getline` for the grid rows (which contain `.`
@@ -244,7 +274,7 @@ for (int r = 0; r < rows; r++) {
 
 ---
 
-## 5. TODO 1 — `loadWorld`
+## 5. TODO 1, `loadWorld`
 
 Open `sandbox.cpp`. The first TODO is the largest one in the assignment.
 
@@ -254,7 +284,7 @@ void loadWorld(const string& filename,
                int emitRow[], int emitCol[], char emitElem[], int& emitCount);
 ```
 
-Everything after `filename` is an **out parameter** — `loadWorld` fills it in for
+Everything after `filename` is an **out parameter**, `loadWorld` fills it in for
 whoever called it. The `int&` parameters are references, the same out parameters
 you used in week 1. Arrays are already passed by reference in C++, so `grid` and
 the three emitter arrays need no `&`.
@@ -275,7 +305,7 @@ problem.
 ### Throwing when the file is wrong
 
 A file on disk is written by someone else, and people get things wrong. When
-`loadWorld` cannot do its job, it should say so and stop — not return a
+`loadWorld` cannot do its job, it should say so and stop, not return a
 half-filled grid and let the rest of the program work with garbage. That is what
 `throw` is for.
 
@@ -296,7 +326,7 @@ worth writing.
 | The file runs out of rows, or a row is too short | `grid ended early` |
 | A grid character is not `.` `#` `o` `~`, or an emitter's element is not `sand` or `water` | `unknown character` |
 
-You do **not** need to check that emitters sit inside the grid — `main()` already
+You do **not** need to check that emitters sit inside the grid, `main()` already
 does that.
 
 `main()` catches these for you, at the bottom of the file:
@@ -308,7 +338,7 @@ catch (const runtime_error& e) {
 }
 ```
 
-Note `const runtime_error&` — **caught by reference**. Catching by value would
+Note `const runtime_error&`, **caught by reference**. Catching by value would
 copy the exception object, and with a hierarchy of exception types it would slice
 off everything the derived type added. Catch exceptions by reference. Always.
 
@@ -320,7 +350,7 @@ no way to accidentally continue with a broken world. That is the argument for
 exceptions in one paragraph.
 :::
 
-Try it against the three broken worlds you were given — plus one that is not
+Try it against the three broken worlds you were given, plus one that is not
 there at all, which needs no file:
 
 ```bash
@@ -335,7 +365,7 @@ nothing, or carries on regardless, that case is not handled yet.
 
 ---
 
-## 6. TODO 2 — `saveWorld`
+## 6. TODO 2, `saveWorld`
 
 Much shorter. Write the grid out in the same format `loadWorld` reads:
 
@@ -345,7 +375,7 @@ line 2     the single character 0     (a finished world has no emitters left)
 then       rows lines of cols characters
 ```
 
-An `ofstream` behaves exactly like `cout` — same `<<`, same everything:
+An `ofstream` behaves exactly like `cout`, same `<<`, same everything:
 
 ```cpp
 #include <fstream>
@@ -374,7 +404,7 @@ prints something, you have found a bug before writing a single rule.
 Once per step, every grain gets **at most one move**. Walls never move. Empty
 cells are not grains and do nothing.
 
-**Sand** — try these in order and stop at the first one that works:
+**Sand**, try these in order and stop at the first one that works:
 
 1. The cell **below** is empty → move down.
 2. The cell **below** holds water → **swap places with it**. (Sand is heavier;
@@ -383,7 +413,7 @@ cells are not grains and do nothing.
 4. The cell **below-right** is empty → move down-right.
 5. Otherwise → stay put.
 
-**Water** — the same idea, with two more options:
+**Water**, the same idea, with two more options:
 
 1. The cell **below** is empty → move down.
 2. The cell **below-left** is empty → move down-left.
@@ -393,15 +423,15 @@ cells are not grains and do nothing.
 6. Otherwise → stay put.
 
 Sand gets lower or stays. Water gets lower if it can, and if it cannot, it
-spreads out — which is the entire difference between a pile and a puddle.
+spreads out, which is the entire difference between a pile and a puddle.
 
 ::: {.callout-important}
 **Left is always tried before right.** Every one of these lists is in strict
 priority order, and ties never go to chance. That matters more than it looks: the
 version of this project that ran last spring picked left or right *at random*,
 which meant no two runs of the same world ever agreed, and nothing about it could
-be checked automatically. A fixed tie-break costs you a little realism — water
-leans left rather than levelling perfectly — and buys you a simulation you can
+be checked automatically. A fixed tie-break costs you a little realism, water
+leans left rather than levelling perfectly, and buys you a simulation you can
 test.
 :::
 
@@ -412,7 +442,7 @@ you do and then behave strangely about.
 
 ---
 
-## 8. TODO 3 — `step`
+## 8. TODO 3, `step`
 
 ```cpp
 void step(char grid[][MAX_COLS], int rows, int cols);
@@ -420,7 +450,7 @@ void step(char grid[][MAX_COLS], int rows, int cols);
 
 Visit every cell. Apply the rules. That is the whole function.
 
-Write it now, with two nested loops — and **pick whichever loop direction seems
+Write it now, with two nested loops, and **pick whichever loop direction seems
 natural to you**. Do not think about it too hard. Then go straight to §9, which
 is about what happens next.
 
@@ -459,7 +489,7 @@ make tester
 ```
 
 Read them before you write anything. They are the specification for §7, written
-in a form the compiler can check — and the ability to state what code must do
+in a form the compiler can check, and the ability to state what code must do
 *before* writing it is most of what next week's assignment is about.
 
 ---
@@ -486,7 +516,7 @@ cat out.txt
 If the grain is where you predicted, run `./sandbox worlds/oneGrain.txt 1` again
 without `--quiet`, and also try `./tester "a grain moves at most one cell per
 step"`. If both agree with you, you happened to pick the right loop direction the
-first time — read the rest of this section anyway, because it explains *why* you
+first time, read the rest of this section anyway, because it explains *why* you
 were right, and you will need that in week 5.
 :::
 
@@ -494,7 +524,7 @@ For most of you, the grain is sitting on the floor. One step, and it fell the
 entire height of the column.
 
 **Nothing in your rules says that.** Rule 1 moves a grain down by one cell. Read
-your `step()` again — it is not wrong. Reading it more carefully will not help,
+your `step()` again, it is not wrong. Reading it more carefully will not help,
 which is exactly why this is the right moment to stop reading and start
 debugging.
 
@@ -522,7 +552,7 @@ A red dot appears. That is a **breakpoint**: a line where you want the program t
 stop.
 
 **2. Start debugging.** Press **F5**. At the top of the window a dropdown appears
-— choose **Debug one unit test**. That builds the project and runs
+choose **Debug one unit test**. That builds the project and runs
 `./tester "a grain moves at most one cell per step"` under the debugger: one
 grain, one step, nothing else happening anywhere.
 
@@ -531,7 +561,7 @@ marks it. Three things are now worth looking at:
 
 | Where | What it shows |
 |---|---|
-| **Variables**, upper left | every variable in scope, right now — including `r` and `c` |
+| **Variables**, upper left | every variable in scope, right now, including `r` and `c` |
 | **Call Stack**, lower left | who called the function you are stopped in |
 | The toolbar at the top | Continue (**F5**), Step Over (**F10**), Step Into (**F11**), Stop |
 
@@ -545,7 +575,7 @@ Here is the question the debugger answers, and the `cout` would not have:
 same grain?**
 
 It should be exactly once. Keep pressing F5 and watching `r`. You will see it run
-again. And again. And again — once per row, all the way to the floor.
+again. And again. And again, once per row, all the way to the floor.
 
 ::: {.callout-tip}
 Click the top frame's caller in the **Call Stack** panel to jump to the line in
@@ -559,7 +589,7 @@ the call stack is twelve frames deep.
 Suppose your outer loop runs **top to bottom**. You are at row `r`, you find a
 grain, and you move it down into row `r + 1`.
 
-Then your loop moves on to row `r + 1` — and finds the same grain there, sitting
+Then your loop moves on to row `r + 1`, and finds the same grain there, sitting
 in a cell you have not visited yet this pass. Nothing marks it as having already
 moved. So it moves again. And again, once per row, all the way down, in a single
 step. The grain does not fall fast; it gets **carried** by your own loop.
@@ -585,13 +615,13 @@ Two things worth taking away from this:
 - **There is a second way to fix it:** keep two grids, read from one and write to
   the other, and swap them at the end of the step. Then nothing you write during
   a pass can affect what you read during that pass. You do not need it here, but
-  hold on to the idea — it comes back.
+  hold on to the idea, it comes back.
 
 ### One more of the same, smaller
 
 There is one move that scanning bottom-to-top does *not* protect you from. Sand
 only ever moves **down** into an already-finished row. Water rule 5 moves it
-**sideways into the next column** — which your inner loop has not reached yet. A
+**sideways into the next column**, which your inner loop has not reached yet. A
 moment later it arrives there, finds the same grain, and gives it a second turn
 in the same step.
 
@@ -614,7 +644,7 @@ Now run something worth watching:
 
 ---
 
-## 10. TODO 4 — `saveReplay`
+## 10. TODO 4, `saveReplay`
 
 The last function, and the shortest interesting one. It writes every frame of the
 run into a single HTML file with a play button and a scrubber.
@@ -631,7 +661,7 @@ fout << REPLAY_HEAD;
 fout << REPLAY_TAIL;
 ```
 
-`frames` is a **3D array** — one more dimension than the grid, with the frame
+`frames` is a **3D array**, one more dimension than the grid, with the frame
 number on the front:
 
 ```cpp
@@ -645,7 +675,7 @@ that the *two* rightmost sizes are in the parameter type now, for the same reaso
 `MAX_COLS` was there before: the compiler needs both to do the arithmetic.
 
 So this is the nested loop from `saveWorld` with one more loop wrapped around it.
-That is genuinely all it is — and the payoff is a colour animation you can send
+That is genuinely all it is, and the payoff is a colour animation you can send
 to somebody.
 
 ::: {.callout-warning}
@@ -661,7 +691,7 @@ When it works, open `replay.html` the same way you opened `demo.html` back in
 python3 -m http.server 8000       # then http://localhost:8000/replay.html
 ```
 
-Put the two side by side — `demo.html` is a recording of a correct simulator, so
+Put the two side by side, `demo.html` is a recording of a correct simulator, so
 if yours looks different, that difference is a bug you can see.
 
 The file is completely self-contained: no images, no libraries, no network. You
@@ -698,13 +728,13 @@ what the right answer looks like. When one fails, that is the moment to run the
 same world *without* `--quiet` and watch where it goes wrong. That is what the
 colour is for.
 
-Every failure comes with a hint. Work through them one at a time — the four
+Every failure comes with a hint. Work through them one at a time, the four
 functions are independent enough that you can get partial credit for each as you
 go.
 
 ::: {.callout-note}
 **There are no hidden tests.** What you run with `make test` is exactly what the
-grader runs — all 29 checks. If it passes here, it passes there.
+grader runs, all 29 checks. If it passes here, it passes there.
 
 Grading always runs the official test suite and the official `worlds/` files, not
 the copies in your repository. Editing them will not change your score.
@@ -723,7 +753,7 @@ the format from §4.
 It is graded on whether it **loads and runs**, plus two sanity conditions so an
 empty grid does not count: at least **8 wall characters** (`#`), and either at
 least **4 grains** of sand or water in the grid or at least one emitter. That is
-the whole rubric. No points for artistry — points for artistry are awarded
+the whole rubric. No points for artistry, points for artistry are awarded
 verbally, in class, on Friday, when we run the good ones on the projector.
 
 ```bash
@@ -733,7 +763,7 @@ verbally, in class, on Friday, when we run the good ones on the projector.
 ::: {.callout-tip}
 Two things worth knowing while you build one. `rows` and `cols` must be within
 `MAX_ROWS` (64) and `MAX_COLS` (128), and no grid line may be **shorter** than
-`cols` — a short line is the `grid ended early` error you spent §5 implementing,
+`cols`, a short line is the `grid ended early` error you spent §5 implementing,
 and it is by far the most common mistake here. And an emitter is much more
 interesting than a grid full of sand: one emitter running for three hundred steps gives you a
 stream, not a lump.
@@ -756,7 +786,7 @@ git commit -m "Complete a02"
 git push
 ```
 
-Make sure `worlds/mine.txt` is included — `git status` will tell you.
+Make sure `worlds/mine.txt` is included, `git status` will tell you.
 
 **Every push is checked automatically.** Within a minute or two the **Actions**
 tab of your repository shows a run named **Autograde**. Open it: the job summary

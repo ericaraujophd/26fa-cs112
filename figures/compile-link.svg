@@ -124,6 +124,6 @@
   <!-- ── the point of the header ──────────────────────────── -->
   <text x="20" y="356" class="note">Both source files include</text>
   <text x="20" y="374" class="note">
-    <tspan class="name" style="font-size:12.5px">fortune.h</tspan><tspan> — so if the header changes, both must be compiled again.</tspan>
+    <tspan class="name" style="font-size:12.5px">fortune.h</tspan><tspan>, so if the header changes, both must be compiled again.</tspan>
   </text>
 </svg>
