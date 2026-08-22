@@ -29,11 +29,11 @@ By the end of this assignment, you will be able to:
 
 **Welcome to CS112!**
 
-You arrive in this course from different places. Some of you took CS108 and wrote Python. Some of you took AP Computer Science and wrote Java. Some of you have written a bit of everything. C++ will be new to all of you, and that is fine, because we start from the beginning.
+You arrive in this course from different places. Some of you took CS108 and wrote Python. Some of you took AP Computer Science and wrote Java. Some of you have written a bit of everything. C++ will be new to most of you, and that is fine, because we start from the beginning.
 
 The one thing C++ asks of you that a Python course did not is **compiling**. Before a C++ program can run, it must be translated from the source code you write into machine instructions the CPU executes directly. That extra step is what buys you the thing this whole course is about: direct control over memory, and the speed that comes with it. If you have written Java, this idea is already familiar.
 
-In this course, we will write C++ using **Visual Studio Code** (VS Code) as our editor, but we will run and compile our programs on **Calvin's Linux servers** through a service called **Coder**. This means your editor lives on your laptop, but the C++ compiler lives on the server.
+In this course, we will write C++ using **Visual Studio Code** (VS Code) as our editor, but we will run and compile our programs on **Calvin's Linux servers** through a service called **Coder**. This means your editor lives on your laptop, but the C++ compiler and your files live on the server.
 
 Four things about C++ are worth knowing before you write a line of it:
 
@@ -81,7 +81,6 @@ username below.
    semester either way.
 3. Complete the email verification, then set up **two-factor authentication**
    when GitHub asks — it is required for anyone who pushes code.
-4. Skip any personalization steps by clicking "Skip Personalization" at the bottom.
 
 ::: {.callout-important}
 **Save your 2FA recovery codes somewhere you will still have them in December.**
@@ -95,10 +94,9 @@ This is the one setup step on this page that can cost you a whole semester of
 work, and it takes about thirty seconds.
 :::
 
-**Then send me your username.** There is no self-service sign-up for CS112. I
-create a private repository for you, one per assignment, from the class roster —
-and that roster is built by hand from the usernames students send in. Nothing is
-created for you until yours is on it.
+**Then send me your username.** I create a private repository for you, one per
+assignment, from the class roster — and that roster is built by hand from the
+usernames students send in. Nothing is created for you until yours is on it.
 
 [Submit your GitHub username](https://forms.gle/Szw1io5HbxJC3nco7){.btn .btn-primary target="_blank" rel="noopener"}
 
@@ -230,9 +228,15 @@ the leftmost, and hovering over it shows **Open VSCode**.
 4. When VS Code asks if you want to install the **Coder** extension, accept. This allows VS Code on your laptop to reach the compiler on the server.
 5. **If** VS Code asks you to select the platform for the remote host, choose **Linux**. It may not ask, in which case skip this.
 6. If asked to trust the authors, select **Yes, I trust the authors**. (You are the author.)
-7. Open a terminal inside VS Code: **Terminal menu → New Terminal**. A terminal appears at the bottom of the window.
+7. Open your home folder on the server: **File → Open Folder**. VS Code offers a
+   path that is already `/home/` followed by your Calvin username — that is the
+   one you want, so press **OK**. Trust the authors again if asked.
+8. Open a terminal inside VS Code: **Terminal menu → New Terminal**. A terminal appears at the bottom of the window.
 
-Do not open a folder yet. You will make one in the next step and open it then.
+Your home folder is where everything you do this semester lives, so opening it
+now means the file list on the left shows your work rather than nothing, and any
+terminal you open starts in the right place. In the next step you will make a
+folder inside it for this course.
 
 ::: {.callout-tip}
 **Shortcut:** In VS Code, press **Ctrl+`** to open (or toggle) the integrated terminal. On some keyboard layouts, if the backtick key is awkward to find, use **Terminal menu → New Terminal** instead.
@@ -287,7 +291,7 @@ ls
 `ls` **l**i**s**ts the files and folders in the current directory. Your account
 starts with a handful of folders already in it:
 
-```
+```{.terminal}
 Desktop  Documents  Downloads  Music  Pictures  Public  public_html  Templates  Videos
 ```
 
@@ -422,6 +426,29 @@ pwd
 It should print `/home/<username>/cs112`. When it does, your editor and your
 terminal are both pointed at the same folder, your environment is finished, and
 everything from here on happens inside it.
+
+::: {.callout-important}
+**Commands act on the folder you are standing in.** This is the single most
+useful idea in this section, and the one that costs the most time when it is
+forgotten.
+
+`make`, which you will use to compile, looks for a file called `makefile` in the
+current folder and nowhere else. Run it one level too high and you get:
+
+```{.terminal}
+make: *** No targets specified and no makefile found.  Stop.
+```
+
+That message means "you are in the wrong folder", not "your code is broken" —
+but it does not say so, and it looks alarming the first time. Later in the
+semester, when you have several assignments side by side, the wrong folder is
+worse than an error: `make` finds a perfectly good makefile and cheerfully
+builds the *other* assignment, and you spend ten minutes wondering why your
+changes have no effect.
+
+**When anything surprises you, type `pwd` before you type anything else.** It
+answers the question you actually have.
+:::
 
 ## 7. Set Up VS Code for C++
 
@@ -574,8 +601,19 @@ If you have been waiting more than a day, email me.
 :::
 
 ::: {.callout-note}
-Your repository is named `cs112-a00-YOURUSERNAME`, all in lowercase. Every
-assignment follows the same pattern: `cs112-<assignment>-<your username>`.
+Your repository is named `cs112-a00-YOURUSERNAME`, all in lowercase, and it
+lives at:
+
+```
+https://github.com/26fa-cs112/cs112-a00-YOURUSERNAME
+```
+
+Put your own username in place of `YOURUSERNAME` and that address opens in a
+browser. Worth keeping to hand — it is how you check that what you pushed
+actually arrived.
+
+Every assignment follows the same pattern:
+`cs112-<assignment>-<your username>`.
 :::
 
 ### Sign in to GitHub from the terminal, once
@@ -607,7 +645,7 @@ you sent me**.
 
 When it finishes you will see:
 
-```
+```{.terminal}
 ✓ Authentication complete.
 - gh config set -h github.com git_protocol https
 ✓ Configured git protocol
@@ -706,14 +744,34 @@ Your source code goes through **two stages** before it can run:
 
 **Stage 2: Link.** The **linker** combines all the `.o` files into a single **executable** (in our case, a file called `a00`). This is the program you actually run.
 
-```{mermaid}
-flowchart LR
-	A[main.cpp] -->|compile| B[main.o]
-	C[fortune.cpp] -->|compile| D[fortune.o]
-	B -->|link| E[a00]
-	D -->|link| E
-	E -->|run| F[output]
+### The third kind of file: headers
+
+Look at your folder again and you will see a file this course has not explained
+yet: **`fortune.h`**. Files ending in `.h` are **headers**, and they exist
+because of how Stage 1 works.
+
+When the compiler translates `main.cpp`, it looks at that file **and nothing
+else**. So when it reaches your call to `getFortune(...)`, it has a problem: the
+function is written in `fortune.cpp`, which it is not reading. It has no idea
+whether `getFortune` exists, what arguments it takes, or what it gives back.
+
+A header is how you tell it. `fortune.h` contains the *promise* — one line
+saying "there is a function called `getFortune`, it takes two `int`s, and it
+returns a `string`" — with no code behind it. That is why `main.cpp` starts
+with:
+
+```cpp
+#include "fortune.h"
 ```
+
+`#include` means *paste that file in here before compiling*. The compiler now
+knows enough to translate the call, and the **linker** in Stage 2 is what
+finally connects it to the real function in `fortune.o`.
+
+The rule of thumb for the whole semester: **`.h` says what exists, `.cpp` says
+what it does.**
+
+![How your code becomes a program. Both source files include `fortune.h`, which is why a change to the header means both have to be compiled again.](../../figures/compile-link.svg){#fig-compile fig-alt="Three columns. On the left, fortune.h, a header file, with dashed arrows labelled hash-include pointing into main.cpp and fortune.cpp. In the middle, each source file is compiled with g++ -c into its own object file, main.o and fortune.o. On the right, the linker combines both object files into one executable called a00, which you run by typing ./a00."}
 
 Doing this manually every time would look like:
 
@@ -777,15 +835,19 @@ One of `make`'s best features: it only recompiles files that have changed since 
 
 ## 11. Compile and Run the Starter Code
 
-In your VS Code terminal, make sure you are inside your `cs112-a00-YOURUSERNAME` directory. Then type:
+In your VS Code terminal, make sure you are inside your `cs112-a00-YOURUSERNAME`
+directory — `pwd` will tell you, and this is the moment it matters. Then type:
 
 ```bash
 make
 ```
 
+If you see `No targets specified and no makefile found`, you are in the wrong
+folder, not looking at broken code. `cd` into the repository and try again.
+
 You should see output like:
 
-```
+```{.terminal}
 g++ -Wall -std=c++17 -c main.cpp
 g++ -Wall -std=c++17 -c fortune.cpp
 g++ -Wall -std=c++17 -o a00 main.o fortune.o
@@ -823,6 +885,43 @@ int birthMonth;
 
 Add these three declarations where TODO 1 is.
 
+**Now run `make`, before you write anything else.** It takes two seconds, and it
+is the single habit that separates a pleasant afternoon from a miserable one.
+
+You will see this:
+
+```{.terminal}
+main.cpp: In function 'int main()':
+main.cpp:26:9: warning: unused variable 'stressLevel' [-Wunused-variable]
+   26 |     int stressLevel;
+      |         ^~~~~~~~~~~
+main.cpp:27:9: warning: unused variable 'birthMonth' [-Wunused-variable]
+```
+
+::: {.callout-note}
+**Warnings are not errors, and the difference matters.**
+
+An **error** means the compiler gave up: there is no program at the end. A
+**warning** means it built your program but noticed something suspicious.
+
+These two are correct and expected. You have declared `stressLevel` and
+`birthMonth` but not used them yet, and `-Wall` — the flag in your makefile that
+turns on all warnings — is telling you so. They will disappear on their own when
+TODO 2 starts using the variables.
+
+Warnings are worth reading rather than ignoring. Over the semester, `-Wall` will
+catch real mistakes for you long before they become a debugging session.
+:::
+
+**Why compile after every small change?** Because compiler errors are far easier
+to read one at a time. If you write all four TODOs and then compile for the
+first time, a single missing semicolon near the top can produce twenty errors
+further down, most of them nonsense caused by the first one. Compile after each
+TODO and every error you see belongs to the handful of lines you just wrote.
+
+Press the **Up arrow** and Enter to re-run `make` — you will do this hundreds of
+times this semester.
+
 ---
 
 ### TODO 2: Print prompts and read input
@@ -832,10 +931,32 @@ Use `cout` to print a line to the screen and `cin` to read input from the keyboa
 **Printing with `cout`:**
 
 ```cpp
-cout << "What is your name? ";
+cout << "What is your first name? ";
 ```
 
-The `<<` operator sends text to the output stream. Note there is **no** `endl` here, because we want the cursor to stay on the same line so the user types right after the prompt.
+The `<<` operator sends text to the output stream.
+
+**A word about `endl`,** because you have already seen it without being told
+what it is. The banner at the top of `main.cpp` is full of lines like:
+
+```cpp
+cout << "        Welcome to the CS112 Oracle!" << endl;
+```
+
+`endl` **ends the line.** Everything printed after it starts on a fresh line —
+it is the equivalent of pressing Enter. You can chain as many things onto one
+`cout` as you like, and `endl` is simply the last of them.
+
+Now look again at the prompt above: there is **no** `endl` on it, and that is
+deliberate. Without one, the cursor stays put at the end of the text, so the
+user types their answer right after the question instead of on the line below:
+
+```{.terminal}
+What is your first name? Jordan
+```
+
+Leave the `endl` off your three prompts for the same reason. You *will* want it
+in TODO 4, where each line of the Oracle's response should stand on its own.
 
 **Reading with `cin`:**
 
@@ -863,6 +984,56 @@ Use these exact prompt strings (the autograder will check them):
 Many languages hand you the whole line when you ask for input. `cin >>` hands you one word at a time. Asking for a first name sidesteps the problem for now, and you will learn how to read a whole line later in the semester.
 :::
 
+**Compile again before you move on** — `make`, and fix anything it complains
+about. Two TODOs done is a good place to stop and check.
+
+#### Now save your work to GitHub
+
+Everything you have written so far exists in exactly one place: a folder on the
+Coder server. That is one disk, one account, and one bad afternoon away from
+gone. Push it and there are two copies, one of them somewhere you cannot break.
+
+In VS Code, click the **Source Control** icon in the left sidebar — it looks
+like a branch, and it will have a small badge showing how many files you have
+changed.
+
+1. Your changed files are listed under **Changes**. Hover over `main.cpp` and
+   click the **+** to stage it.
+2. Type a short message in the box at the top, such as
+   `Prompts and input working`.
+3. Click **✓ Commit**.
+4. Click **Sync Changes** to send it to GitHub.
+
+::: {.callout-tip}
+**The same thing in the terminal.** Every button above is a command underneath,
+and it is worth seeing them side by side once — you will meet them in every
+programming job you ever have, and on machines with no editor at all:
+
+```bash
+git add main.cpp     # the + button: stage this file
+git commit -m "Prompts and input working"    # the ✓ button
+git push             # Sync Changes
+```
+
+Use whichever you prefer. The buttons and the commands do exactly the same
+thing, and Step 13 explains what each one means.
+:::
+
+::: {.callout-note}
+**Expect a red X on GitHub, and do not let it worry you.**
+
+Pushing starts the automatic check, and your program is not finished — TODO 3
+and TODO 4 are still empty — so the check fails. That is the correct result. A
+red X on unfinished work means the machinery is paying attention. It turns green
+when all four TODOs are done and `make test` passes.
+:::
+
+You do not have to wait until an assignment is finished to push, and you should
+not. **Commit and push whenever something works.** It costs ten seconds, it
+means a broken laptop or a lost workspace costs you nothing, and later in the
+semester it gives you something far more useful: a working version to go back to
+when an experiment goes wrong.
+
 ---
 
 ### TODO 3: Call `getFortune()`
@@ -879,17 +1050,18 @@ This creates a new `string` variable named `fortune` and stores the result of th
 
 ### TODO 4: Print the Oracle's response
 
-Use `cout` to print two lines inside the banner:
+Use `cout` to print two lines inside the banner, with a blank line between
+them, so the screen ends up looking like this:
 
-```
+```{.terminal}
   The Oracle speaks, NAME!
-```
-*(an empty line)*
-```
+
 FORTUNE
 ```
 
-Where `NAME` and `FORTUNE` are your variables. In C++, you can chain multiple things on one `cout` line:
+Where `NAME` and `FORTUNE` are your variables. The gap in the middle is a real
+blank line and the tests look for it — a bare `cout << endl;` on its own is how
+you print one. Note the two spaces before `The`, as well. In C++, you can chain multiple things on one `cout` line:
 
 ```cpp
 cout << "  The Oracle speaks, " << name << "!" << endl;
@@ -925,7 +1097,7 @@ You will see a PASS or FAIL for each test case, with hints if something is wrong
 
 There are 14 checks, one per requirement, so a failure points at exactly one thing. An untouched starter scores `0 / 14`. When all four TODOs are done you should see:
 
-```
+```{.terminal}
 Results: 14/14 passed
 All tests passed. Push your code to GitHub.
 ```
@@ -957,9 +1129,35 @@ When all tests pass, submit your work to GitHub.
 Add your name to the `README.md` file before pushing. Open it in VS Code, add a line with your name, and save.
 :::
 
-In VS Code, look at the **Source Control** icon in the left sidebar (it looks like a branch). Click it. You will see your changed files listed. Type a short commit message (e.g., `"Complete main.cpp"`), then click the **checkmark** to commit. Follow any prompts to sync/push to your remote repository.
+Click the **Source Control** icon in the left sidebar — the one that looks like
+a branch, with a badge counting your changed files.
 
-To verify the push worked, go to your repository page on github.com and confirm you can see your updated `main.cpp`.
+1. **Stage** what you want to send. Under **Changes**, hover over each file and
+   click **+**. You should be staging `main.cpp` and `README.md`.
+2. **Write a message** in the box at the top. `Complete main.cpp` is fine. A
+   message describes what changed and why — "stuff" and "asdf" will make sense
+   to nobody, including you, in November.
+3. **Commit** — click **✓ Commit**. Your snapshot now exists, on the server.
+4. **Sync Changes** — this is the step that sends it to GitHub. A commit without
+   it is a diary entry nobody else can read.
+
+::: {.callout-tip}
+**The same thing in the terminal.** Underneath, VS Code is running these:
+
+```bash
+git add main.cpp README.md    # stage: choose what goes in
+git commit -m "Complete main.cpp"    # commit: take the snapshot
+git push                             # sync: send it to GitHub
+```
+
+Learn both. The buttons are faster day to day; the commands are what you will
+find in every tutorial, every Stack Overflow answer, and every machine that has
+no editor installed — which, in this field, is most of them.
+:::
+
+To verify the push worked, open your repository on github.com and confirm your
+updated `main.cpp` is there. Nothing has been submitted until you can see it in
+the browser.
 
 Within a minute or two, the **Actions** tab of your repository shows a run named
 **Autograde**. Open it. Under the job you will find a summary saying how many
