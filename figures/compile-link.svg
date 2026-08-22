@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 400" width="880" height="400" role="img" aria-labelledby="ttl dsc">
+  <title id="ttl">How a C++ program is built, in two stages</title>
+  <desc id="dsc">A diagram in three columns. On the left, fortune.h, a header file, with dashed arrows labelled hash-include pointing into main.cpp and fortune.cpp. In the middle column, each of those two source files is compiled by g plus plus minus c into its own object file, main.o and fortune.o. On the right, the linker combines both object files into a single executable named a00, which you run by typing dot slash a00. A caption notes that because both source files include fortune.h, changing the header means both object files must be rebuilt.</desc>
+
+  <style>
+    .card      { fill: #FFFFFF; stroke: #DED2D5; stroke-width: 1.2; }
+    .name      { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+                 font-size: 15px; fill: #241B1E; }
+    .kind      { font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+                 font-size: 10.5px; letter-spacing: .09em; text-transform: uppercase; fill: #8B7B7F; }
+    .stage     { font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+                 font-size: 13px; font-weight: 700; fill: #6E1C2E; letter-spacing: .02em; }
+    .stagesub  { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+                 font-size: 11.5px; fill: #8B7B7F; }
+    .edgelbl   { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+                 font-size: 11.5px; fill: #8B7B7F; }
+    .note      { font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+                 font-size: 12.5px; fill: #6B5A5E; }
+    .flow      { stroke: #B9A6AA; stroke-width: 1.6; fill: none; }
+    .include   { stroke: #C49A2C; stroke-width: 1.6; fill: none; stroke-dasharray: 4 4; }
+    .guide     { stroke: #E8DDDF; stroke-width: 1; stroke-dasharray: 2 5; }
+    .bar-src   { fill: #6E1C2E; }
+    .bar-hdr   { fill: #C49A2C; }
+    .bar-obj   { fill: #A79598; }
+    .exe       { fill: #6E1C2E; stroke: none; }
+    .exename   { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+                 font-size: 16px; fill: #FFFFFF; }
+    .exekind   { font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+                 font-size: 10.5px; letter-spacing: .09em; text-transform: uppercase; fill: #E9C9D1; }
+    .arrowhead { fill: #B9A6AA; }
+    .arrowinc  { fill: #C49A2C; }
+
+    @media (prefers-color-scheme: dark) {
+      .card    { fill: #1E1719; stroke: #3B2D31; }
+      .name    { fill: #F1E8EA; }
+      .kind    { fill: #9E8B90; }
+      .stage   { fill: #E38DA0; }
+      .stagesub, .edgelbl { fill: #9E8B90; }
+      .note    { fill: #B4A1A6; }
+      .flow    { stroke: #5A4649; }
+      .arrowhead { fill: #5A4649; }
+      .include { stroke: #DFB85C; }
+      .arrowinc { fill: #DFB85C; }
+      .guide   { stroke: #33272A; }
+      .bar-src { fill: #E38DA0; }
+      .bar-hdr { fill: #DFB85C; }
+      .bar-obj { fill: #6E585C; }
+      .exe     { fill: #8E2A40; }
+      .exekind { fill: #F0C3CD; }
+    }
+  </style>
+
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" class="arrowhead"/>
+    </marker>
+    <marker id="ahi" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" class="arrowinc"/>
+    </marker>
+  </defs>
+
+  <!-- stage guides -->
+  <line x1="392" y1="86" x2="392" y2="330" class="guide"/>
+  <line x1="628" y1="86" x2="628" y2="330" class="guide"/>
+
+  <!-- stage captions -->
+  <text x="205" y="60" class="stage" text-anchor="middle">What you write</text>
+  <text x="205" y="78" class="stagesub" text-anchor="middle">source and header</text>
+
+  <text x="510" y="60" class="stage" text-anchor="middle">Stage 1 · Compile</text>
+  <text x="510" y="78" class="stagesub" text-anchor="middle">g++ -c   ·   one .o per .cpp</text>
+
+  <text x="754" y="60" class="stage" text-anchor="middle">Stage 2 · Link</text>
+  <text x="754" y="78" class="stagesub" text-anchor="middle">g++ -o a00</text>
+
+  <!-- ── header ───────────────────────────────────────────── -->
+  <rect x="20" y="176" width="152" height="56" rx="7" class="card"/>
+  <rect x="20" y="176" width="5" height="56" rx="2.5" class="bar-hdr"/>
+  <text x="38" y="200" class="name">fortune.h</text>
+  <text x="38" y="219" class="kind">what exists</text>
+
+  <!-- include arrows -->
+  <path d="M 176 194 C 205 186, 215 168, 236 158" class="include" marker-end="url(#ahi)"/>
+  <path d="M 176 216 C 205 226, 215 248, 236 260" class="include" marker-end="url(#ahi)"/>
+  <text x="206" y="140" class="edgelbl" text-anchor="middle">#include</text>
+
+  <!-- ── sources ──────────────────────────────────────────── -->
+  <rect x="240" y="124" width="152" height="56" rx="7" class="card"/>
+  <rect x="240" y="124" width="5" height="56" rx="2.5" class="bar-src"/>
+  <text x="258" y="148" class="name">main.cpp</text>
+  <text x="258" y="167" class="kind">you edit this</text>
+
+  <rect x="240" y="236" width="152" height="56" rx="7" class="card"/>
+  <rect x="240" y="236" width="5" height="56" rx="2.5" class="bar-src"/>
+  <text x="258" y="260" class="name">fortune.cpp</text>
+  <text x="258" y="279" class="kind">already written</text>
+
+  <!-- compile arrows -->
+  <line x1="396" y1="152" x2="472" y2="152" class="flow" marker-end="url(#ah)"/>
+  <line x1="396" y1="264" x2="472" y2="264" class="flow" marker-end="url(#ah)"/>
+
+  <!-- ── objects ──────────────────────────────────────────── -->
+  <rect x="476" y="124" width="152" height="56" rx="7" class="card"/>
+  <rect x="476" y="124" width="5" height="56" rx="2.5" class="bar-obj"/>
+  <text x="494" y="148" class="name">main.o</text>
+  <text x="494" y="167" class="kind">machine code</text>
+
+  <rect x="476" y="236" width="152" height="56" rx="7" class="card"/>
+  <rect x="476" y="236" width="5" height="56" rx="2.5" class="bar-obj"/>
+  <text x="494" y="260" class="name">fortune.o</text>
+  <text x="494" y="279" class="kind">not runnable</text>
+
+  <!-- link arrows -->
+  <path d="M 632 152 C 676 152, 676 196, 704 202" class="flow" marker-end="url(#ah)"/>
+  <path d="M 632 264 C 676 264, 676 220, 704 214" class="flow" marker-end="url(#ah)"/>
+
+  <!-- ── executable ───────────────────────────────────────── -->
+  <rect x="708" y="180" width="152" height="56" rx="7" class="exe"/>
+  <text x="726" y="205" class="exename">a00</text>
+  <text x="726" y="223" class="exekind">the program</text>
+
+  <text x="784" y="264" class="edgelbl" text-anchor="middle">run it:  ./a00</text>
+
+  <!-- ── the point of the header ──────────────────────────── -->
+  <text x="20" y="356" class="note">Both source files include</text>
+  <text x="20" y="374" class="note">
+    <tspan class="name" style="font-size:12.5px">fortune.h</tspan><tspan> — so if the header changes, both must be compiled again.</tspan>
+  </text>
+</svg>

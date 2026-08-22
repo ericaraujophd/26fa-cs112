@@ -404,3 +404,46 @@ div.flush-table > table {
   background-color: rgba(255, 255, 255, 0.13);
   color: #f2efe8;
 }
+
+
+/* ── Terminal output ──────────────────────────────────────────────────────
+   Blocks marked ```{.terminal} are things the SCREEN said, not things the
+   student types. Two reasons they need their own treatment:
+
+   1. Compiler output is wide. `g++` diagnostics carry a caret line
+      (^~~~~~~~~) under the offending token, and wrapping them destroys the
+      alignment that makes them readable. So: never wrap, scroll instead, and
+      keep the block inside the column with max-width — without it a long
+      diagnostic stretches the whole page sideways.
+   2. Dark ground reads as "the computer is talking". A student scanning the
+      page can tell at a glance what they must type from what they should
+      expect to see, without reading a word.
+   ------------------------------------------------------------------------ */
+pre.terminal {
+  background: #14161C;
+  color: #E4E7EC;
+  border: 1px solid #2A2E38;
+  border-radius: 6px;
+  padding: 0.85rem 1rem;
+  margin: 1rem 0;
+  max-width: 100%;
+  overflow-x: auto;
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+pre.terminal code {
+  background: none;
+  color: inherit;
+  padding: 0;
+  border: none;
+  white-space: pre;      /* scroll, never wrap: the caret line must line up */
+  font-size: inherit;
+}
+
+/* Quarto's dark theme lightens <pre>; the terminal keeps its own ground. */
+.quarto-dark pre.terminal {
+  background: #0F1116;
+  border-color: #333844;
+  color: #E4E7EC;
+}
