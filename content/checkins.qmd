@@ -2,10 +2,10 @@
 title: "Skills & Check-Ins"
 ---
 
-There are **no traditional tests** in CS 112. Instead, your grade reflects whether you can *demonstrate* the course skills in person — through three individual check-in appointments with the instructor, backed by the assignments you complete along the way.
+There are **no traditional tests** in CS 112. Instead, your grade reflects whether you can *demonstrate* the course skills in person, through three individual check-in appointments with the instructor, backed by the assignments you complete along the way.
 
 ::: {.callout-note}
-**The short version:** Do your assignments — they are how you learn, and your completion percentage affects your final grade. Then come in for each **check-in**: a 25-minute conversation where you work through a question drawn from each cluster in that window. Every student books one appointment per window — three across the semester.
+**The short version:** Do your assignments, they are how you learn, and your completion percentage affects your final grade. Then come in for each **check-in**: a 25-minute conversation where you work through a question drawn from each cluster in that window. Every student books one appointment per window, three across the semester.
 :::
 
 ---
@@ -28,13 +28,13 @@ Each of the three windows earns one of three marks:
   <div style="border:1px solid var(--bs-border-color);border-radius:.5rem;padding:1.1rem;text-align:center;">
     <div style="font-size:2rem;font-weight:800;margin-bottom:.4rem;color:var(--bs-secondary-color);">N</div>
     <div style="font-weight:700;margin-bottom:.3rem;">Not yet</div>
-    <div style="font-size:.85rem;color:var(--bs-secondary-color);">Not demonstrated yet — the appointment has not happened, or it did not show working understanding.</div>
+    <div style="font-size:.85rem;color:var(--bs-secondary-color);">Not demonstrated yet, the appointment has not happened, or it did not show working understanding.</div>
   </div>
 
   <div style="border:1px solid var(--bs-border-color);border-radius:.5rem;padding:1.1rem;text-align:center;background:var(--bs-secondary-bg);">
     <div class="ms-d" style="font-size:2rem;font-weight:800;margin-bottom:.4rem;">D</div>
     <div style="font-weight:700;margin-bottom:.3rem;">Developing</div>
-    <div style="font-size:.85rem;color:var(--bs-secondary-color);">Core ideas are there but gaps remain. A D still counts toward your grade — and the Final Window can upgrade it.</div>
+    <div style="font-size:.85rem;color:var(--bs-secondary-color);">Core ideas are there but gaps remain. A D still counts toward your grade, and the Final Window can upgrade it.</div>
   </div>
 
   <div class="ms-mcard" style="border:2px solid;border-radius:.5rem;padding:1.1rem;text-align:center;">
@@ -46,7 +46,7 @@ Each of the three windows earns one of three marks:
 </div>
 ```
 
-Every window starts at N and moves up when you demonstrate understanding at its check-in. A mark can also move *down* — if a later session shows that a persistent skill from an earlier window is no longer solid, that window can return to D. The instructor will tell you and follow up; the Final Window is there to put it right.
+Every window starts at N and moves up when you demonstrate understanding at its check-in. A mark can also move *down*, if a later session shows that a persistent skill from an earlier window is no longer solid, that window can return to D. The instructor will tell you and follow up; the Final Window is there to put it right.
 
 Both N and D can be improved later, so an early stumble is not permanent.
 
@@ -84,7 +84,7 @@ Each appointment is **25 minutes** and covers **every cluster in that window**. 
 </div>
 ```
 
-**How long you get per question depends on the window.** Windows 1 and 3 cover two clusters, so each question gets roughly ten minutes. Window 2 covers three, so its questions run nearer seven minutes each. They are correspondingly shorter — you are not being asked to do more in less time.
+**How long you get per question depends on the window.** Windows 1 and 3 cover two clusters, so each question gets roughly ten minutes. Window 2 covers three, so its questions run nearer seven minutes each. They are correspondingly shorter, you are not being asked to do more in less time.
 
 A single question may touch more than one skill, and often will: removing a node from a linked list involves pointer manipulation *and* freeing memory. That is realistic, and it is fine. The session as a whole produces **one mark for the window**.
 
@@ -92,20 +92,20 @@ A single question may touch more than one skill, and often will: removing a node
 
 ## Check-In Windows
 
-You book **one 25-minute appointment per window** — three across the semester, plus the Final Window. Each appointment covers every cluster in that window.
+You book **one 25-minute appointment per window**, three across the semester, plus the Final Window. Each appointment covers every cluster in that window.
 
 ::: {.callout-important}
-**Book early — earlier than you think.** The windows are not deadlines, but the
+**Book early, earlier than you think.** The windows are not deadlines, but the
 instructor's calendar is real, and this semester it is unusually tight right
 after each window's reference date:
 
-- **Window 1 (ref. Oct 23)** — Fall Break runs Oct 16–21 and the instructor is
+- **Window 1 (ref. Oct 23)**, Fall Break runs Oct 16–21 and the instructor is
   away Oct 24–30. Everything for clusters A and B is taught by Oct 3, so you are
   ready three weeks early. **Book in the first half of October.**
-- **Window 2 (ref. Nov 20)** — the instructor is away Nov 21–24 and Thanksgiving
+- **Window 2 (ref. Nov 20)**, the instructor is away Nov 21–24 and Thanksgiving
   follows. There are no slots between Nov 21 and Nov 29. **Book on or before
   Nov 20.**
-- **Window 3 (ref. Dec 2)** — clear, but it inherits anyone who slipped out of
+- **Window 3 (ref. Dec 2)**, clear, but it inherits anyone who slipped out of
   Window 2.
 
 Everything closes on **Dec 9**, the last day of classes. Waiting is the single
@@ -156,7 +156,7 @@ most common way students end up unable to get an appointment at all.
 
 /* ── Narrow screens ─────────────────────────────────────────
    The last two windows are only 6.5% and 4.6% of the track, which is
-   ~21px and ~15px on a phone — too narrow to hold their labels. The
+   ~21px and ~15px on a phone, too narrow to hold their labels. The
    five dated axis ticks also collide once the track drops below ~500px.
    So below 700px the bar becomes a proportional colour strip with just
    the start and end dates, and the cards underneath carry the detail. */
@@ -192,10 +192,10 @@ most common way students end up unable to get an appointment at all.
 
 <div class="ci-timeline-wrap">
   <div class="ci-bar-track">
-    <div class="ci-segment ci-seg-1" style="left:36.1%;width:13%;" title="Window 1 — around Oct 23">W1</div>
-    <div class="ci-segment ci-seg-2" style="left:62%;width:13%;" title="Window 2 — around Nov 20">W2</div>
-    <div class="ci-segment ci-seg-3" style="left:79.6%;width:6.5%;" title="Window 3 — around Dec 2">W3</div>
-    <div class="ci-segment ci-seg-f" style="left:95.4%;width:4.6%;" title="Final window — Dec 12–17">F</div>
+    <div class="ci-segment ci-seg-1" style="left:36.1%;width:13%;" title="Window 1, around Oct 23">W1</div>
+    <div class="ci-segment ci-seg-2" style="left:62%;width:13%;" title="Window 2, around Nov 20">W2</div>
+    <div class="ci-segment ci-seg-3" style="left:79.6%;width:6.5%;" title="Window 3, around Dec 2">W3</div>
+    <div class="ci-segment ci-seg-f" style="left:95.4%;width:4.6%;" title="Final window, Dec 12–17">F</div>
   </div>
   <div class="ci-axis">
     <span style="left:0">Aug 31</span>
@@ -238,20 +238,20 @@ most common way students end up unable to get an appointment at all.
 
 ## Every Student Does Every Check-In
 
-Check-ins are **not optional and not selective**. Every student books a 25-minute appointment in every window — three across the semester. Completing the assignments is not by itself proof of mastery; it is the preparation that makes the check-in go well. The check-in is where mastery is confirmed.
+Check-ins are **not optional and not selective**. Every student books a 25-minute appointment in every window, three across the semester. Completing the assignments is not by itself proof of mastery; it is the preparation that makes the check-in go well. The check-in is where mastery is confirmed.
 
-Book each appointment when you feel ready — ideally after you have completed the assignments for that window's clusters. You do not have to wait for the window's reference date. You also should not wait until the last week of the window.
+Book each appointment when you feel ready, ideally after you have completed the assignments for that window's clusters. You do not have to wait for the window's reference date. You also should not wait until the last week of the window.
 
 ---
 
 ## Persistent Skills
 
-A handful of skills are **in scope at every check-in window**, not just their home cluster. These are foundational habits that need to remain sharp as the course grows more complex — not just skills you demonstrate once and forget.
+A handful of skills are **in scope at every check-in window**, not just their home cluster. These are foundational habits that need to remain sharp as the course grows more complex, not just skills you demonstrate once and forget.
 
 ```{=html}
 <div class="flush-table" style="margin:1rem 0;border:1px solid var(--bs-border-color);border-radius:.5rem;overflow:hidden;font-size:.875rem;">
   <div style="background:var(--calvin-maroon,#6E1C2E);color:#fff;padding:.6rem 1rem;font-weight:700;font-size:.8rem;letter-spacing:.04em;text-transform:uppercase;">
-    Persistent Skills — assessed at any check-in window
+    Persistent Skills, assessed at any check-in window
   </div>
   <table style="width:100%;border-collapse:collapse;">
     <thead>
@@ -262,24 +262,24 @@ A handful of skills are **in scope at every check-in window**, not just their ho
     </thead>
     <tbody>
       <tr>
-        <td style="padding:.5rem .8rem;border-bottom:1px solid var(--bs-border-color);white-space:nowrap;"><strong>A3</strong> &mdash; Pointers &amp; dynamic memory</td>
+        <td style="padding:.5rem .8rem;border-bottom:1px solid var(--bs-border-color);white-space:nowrap;"><strong>A3</strong> , Pointers &amp; dynamic memory</td>
         <td style="padding:.5rem .8rem;border-bottom:1px solid var(--bs-border-color);color:var(--bs-secondary-color);">Memory leaks and dangling pointers are a risk in every data structure implementation.</td>
       </tr>
       <tr style="background:var(--bs-secondary-bg);">
-        <td style="padding:.5rem .8rem;border-bottom:1px solid var(--bs-border-color);white-space:nowrap;"><strong>A4</strong> &mdash; Parameter passing</td>
+        <td style="padding:.5rem .8rem;border-bottom:1px solid var(--bs-border-color);white-space:nowrap;"><strong>A4</strong> , Parameter passing</td>
         <td style="padding:.5rem .8rem;border-bottom:1px solid var(--bs-border-color);color:var(--bs-secondary-color);">Students revert to pass-by-value under pressure; this habit drifts across the semester.</td>
       </tr>
       <tr>
-        <td style="padding:.5rem .8rem;border-bottom:1px solid var(--bs-border-color);white-space:nowrap;"><strong>B2</strong> &mdash; Constructors &amp; destructors</td>
+        <td style="padding:.5rem .8rem;border-bottom:1px solid var(--bs-border-color);white-space:nowrap;"><strong>B2</strong> , Constructors &amp; destructors</td>
         <td style="padding:.5rem .8rem;border-bottom:1px solid var(--bs-border-color);color:var(--bs-secondary-color);">Destructor correctness is easy to omit as classes grow more complex.</td>
       </tr>
       <tr style="background:var(--bs-secondary-bg);">
-        <td style="padding:.5rem .8rem;border-bottom:1px solid var(--bs-border-color);white-space:nowrap;"><strong>B4</strong> &mdash; Deep copy (Rule of Three)</td>
+        <td style="padding:.5rem .8rem;border-bottom:1px solid var(--bs-border-color);white-space:nowrap;"><strong>B4</strong> , Deep copy (Rule of Three)</td>
         <td style="padding:.5rem .8rem;border-bottom:1px solid var(--bs-border-color);color:var(--bs-secondary-color);">Copy constructor oversights resurface in linked lists, trees, and every heap-allocated class.</td>
       </tr>
       <tr>
-        <td style="padding:.5rem .8rem;white-space:nowrap;"><strong>D1</strong> &mdash; Big-O classification</td>
-        <td style="padding:.5rem .8rem;color:var(--bs-secondary-color);">Should remain sharp as each new data structure is introduced — not a one-time milestone.</td>
+        <td style="padding:.5rem .8rem;white-space:nowrap;"><strong>D1</strong> , Big-O classification</td>
+        <td style="padding:.5rem .8rem;color:var(--bs-secondary-color);">Should remain sharp as each new data structure is introduced, not a one-time milestone.</td>
       </tr>
     </tbody>
   </table>
@@ -299,7 +299,7 @@ A persistent skill appearing at a later window can be upgraded (N → M or D →
 | Skill not demonstrated | Skill stays **N** (Not yet) |
 | A prior **M** cannot be demonstrated | Skill → **D**; instructor follows up |
 
-The last row is not a trap. If you genuinely engaged with the work but had a rough day, the instructor will schedule a follow-up. The goal is an honest picture of what you know — not to catch you out.
+The last row is not a trap. If you genuinely engaged with the work but had a rough day, the instructor will schedule a follow-up. The goal is an honest picture of what you know, not to catch you out.
 
 ---
 
@@ -308,17 +308,17 @@ The last row is not a trap. If you genuinely engaged with the work but had a rou
 Assignments are **not graded for points**. Their role is twofold:
 
 - **Practice.** Doing the assignments is how you build the skills the check-in confirms. A student who skips the linked list assignment will meet linked lists for the first time at Window 2, with the clock running.
-- **Completion threshold.** Completing a sufficient percentage of assignments is required to earn a given letter grade range. Strong check-in results alone are not enough — consistent engagement with the coursework matters. The specific thresholds are on the [Grading](../policies/grading.html) page.
+- **Completion threshold.** Completing a sufficient percentage of assignments is required to earn a given letter grade range. Strong check-in results alone are not enough, consistent engagement with the coursework matters. The specific thresholds are on the [Grading](../policies/grading.html) page.
 
 ---
 
 ## All 33 Skills
 
-This is the complete list — every skill in the course, which cluster it belongs to, which check-in window assesses it, and which assignments build it. Nothing is assessed that is not on this page.
+This is the complete list, every skill in the course, which cluster it belongs to, which check-in window assesses it, and which assignments build it. Nothing is assessed that is not on this page.
 
 At each appointment the instructor draws **one question per cluster** in that window.
 
-Skills marked **†** are *persistent* — once taught, they can resurface in any later window, because they are habits the whole course depends on.
+Skills marked **†** are *persistent*, once taught, they can resurface in any later window, because they are habits the whole course depends on.
 
 ```{=html}
 <style>
@@ -401,7 +401,7 @@ Skills marked **†** are *persistent* — once taught, they can resurface in an
       <div class="srow"><span class="sid">E1</span><span class="sdesc">Identify base case and recursive case</span><span class="sasg">a11</span></div>
       <div class="srow"><span class="sid">E2</span><span class="sdesc">Trace the call stack (winding and unwinding)</span><span class="sasg">a11</span></div>
       <div class="srow"><span class="sid">E3</span><span class="sdesc">Implement a recursive solution to a moderately complex problem</span><span class="sasg">a11</span></div>
-      <div class="sample"><b>A question might ask</b>Here is a recursive function. Trace the call stack for input <code>n = 4</code> — show me the winding and the unwinding.</div>
+      <div class="sample"><b>A question might ask</b>Here is a recursive function. Trace the call stack for input <code>n = 4</code>, show me the winding and the unwinding.</div>
     </div>
   </div>
 </div>
@@ -432,10 +432,10 @@ Skills marked **†** are *persistent* — once taught, they can resurface in an
 </div>
 ```
 
-The codes on the right of each row show where that skill is built — an assignment, or class time where it is coded together. They are your preparation. Come to a check-in when you have done the work behind that window's clusters and feel ready; there is no minimum number of assignments to unlock a booking.
+The codes on the right of each row show where that skill is built, an assignment, or class time where it is coded together. They are your preparation. Come to a check-in when you have done the work behind that window's clusters and feel ready; there is no minimum number of assignments to unlock a booking.
 
 ---
 
 ::: {.callout-tip}
-**How to prepare:** do the assignments with genuine understanding, not just until the tests go green. Every question is drawn from the territory those assignments cover, so a student who worked through them honestly has already seen the ideas — just not the exact question. There is nothing to memorise and no trick waiting for you.
+**How to prepare:** do the assignments with genuine understanding, not just until the tests go green. Every question is drawn from the territory those assignments cover, so a student who worked through them honestly has already seen the ideas, just not the exact question. There is nothing to memorise and no trick waiting for you.
 :::

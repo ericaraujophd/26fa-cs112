@@ -7,12 +7,12 @@ project:
   resources:
     - "slides/"
     # Only referenced from JS at runtime, so Quarto can't discover it
-    # by scanning the sources — it has to be copied explicitly.
+    # by scanning the sources, it has to be copied explicitly.
     - "figures/calvin-logo-dark.png"
 
 website:
   title: "CS 112 | Fall 2026"
-  description: "Introduction to Data Structures — C++, data structures, and algorithm analysis. Calvin University, Fall 2026."
+  description: "Introduction to Data Structures, C++, data structures, and algorithm analysis. Calvin University, Fall 2026."
   site-url: https://ericaraujophd.github.io/26fa-cs112/
   favicon: figures/calvin-logo.png
   image: figures/calvin-logo.png       # preview card when a link is shared
@@ -22,7 +22,7 @@ website:
   search: true
 
   # Only these appear in the sidebar. Every .qmd still renders
-  # (see project.render above) — assignment pages are reachable
+  # (see project.render above), assignment pages are reachable
   # from the Assignments hub and from the Schedule.
   sidebar:
     logo: figures/calvin-logo.png            # swapped to -dark.png in dark mode

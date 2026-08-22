@@ -15,7 +15,7 @@ learning objectives are there too, folded away until you want them.
   <span class="bloom bloom-analyze">Analyze</span>
   <span class="bloom bloom-evaluate">Evaluate</span>
   <span class="bloom bloom-create">Create</span>
-  <small class="text-secondary ms-1" style="font-style:italic;">— hover a dot to see its level</small>
+  <small class="text-secondary ms-1" style="font-style:italic;">,  hover a dot to see its level</small>
 </div>
 
 <style>
@@ -143,7 +143,7 @@ learning objectives are there too, folded away until you want them.
 <div class="accordion" id="scheduleAccordion">
 
 <!-- ══════════════════════════════════════════════════════════
-     WEEK 00 — Introduction to C++
+     WEEK 00, Introduction to C++
      ══════════════════════════════════════════════════════════ -->
 <div class="accordion-item">
   <h2 class="accordion-header">
@@ -160,7 +160,7 @@ learning objectives are there too, folded away until you want them.
       <div class="res-rows">
 
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><a class="res-todo" href="assignments/gettingStarted.html">Getting Started</a> <span class="res-sub">(ungraded pre-lab)</span><br><a class="res-todo" data-opens="2026-08-31" href="assignments/a01.html">a01 &mdash; RPG Character Creator</a> <span class="res-sub">(begins)</span></div>
+        <div class="res-val"><a class="res-todo" href="assignments/gettingStarted.html">Getting Started</a> <span class="res-sub">(ungraded pre-lab)</span><br><a class="res-todo" data-opens="2026-08-31" href="assignments/a01.html">a01 , RPG Character Creator</a> <span class="res-sub">(begins)</span></div>
 
         <div class="res-label">📖 Read</div>
         <div class="res-val"><a href="https://runestone.academy/runestone/books/published/cpp4python/index.html" target="_blank" rel="noopener">C++ for Python Programmers</a> <span class="res-sub">Ch. 1&ndash;2, Sec. 5.1&ndash;5.2</span></div>
@@ -201,7 +201,7 @@ learning objectives are there too, folded away until you want them.
 </div>
 
 <!-- ══════════════════════════════════════════════════════════
-     WEEK 01 — Control Structures, Functions, Parameter Passing
+     WEEK 01, Control Structures, Functions, Parameter Passing
      ══════════════════════════════════════════════════════════ -->
 <div class="accordion-item">
   <h2 class="accordion-header">
@@ -218,7 +218,7 @@ learning objectives are there too, folded away until you want them.
       <div class="res-rows">
 
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><a class="res-todo" data-opens="2026-08-31" href="assignments/a01.html">a01 &mdash; RPG Character Creator</a> <span class="res-sub">(concludes)</span></div>
+        <div class="res-val"><a class="res-todo" data-opens="2026-08-31" href="assignments/a01.html">a01 , RPG Character Creator</a> <span class="res-sub">(concludes)</span></div>
 
         <div class="res-label">📖 Read</div>
         <div class="res-val"><a href="https://runestone.academy/runestone/books/published/cpp4python/index.html" target="_blank" rel="noopener">C++ for Python Programmers</a> <span class="res-sub">Ch. 3&ndash;4</span><br><a href="https://makefiletutorial.com/" target="_blank" rel="noopener">Makefile Tutorial</a></div>
@@ -254,7 +254,7 @@ learning objectives are there too, folded away until you want them.
 </div>
 
 <!-- ══════════════════════════════════════════════════════════
-     WEEK 02 — File I/O, Exception Handling, 2D Arrays
+     WEEK 02, File I/O, Exception Handling, 2D Arrays
      ══════════════════════════════════════════════════════════ -->
 <div class="accordion-item">
   <h2 class="accordion-header">
@@ -271,7 +271,7 @@ learning objectives are there too, folded away until you want them.
       <div class="res-rows">
 
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><a class="res-todo" data-opens="2026-09-14" href="assignments/a02.html">a02 &mdash; Sandbox</a></div>
+        <div class="res-val"><a class="res-todo" data-opens="2026-09-14" href="assignments/a02.html">a02 , Sandbox</a></div>
 
         <div class="res-label">📖 Read</div>
         <div class="res-val"><a href="https://runestone.academy/runestone/books/published/cpp4python/index.html" target="_blank" rel="noopener">C++ for Python Programmers</a> <span class="res-sub">Ch. 6&ndash;7</span></div>
@@ -305,7 +305,7 @@ learning objectives are there too, folded away until you want them.
 </div>
 
 <!-- ══════════════════════════════════════════════════════════
-     WEEK 03 — Classes and Operator Overloading
+     WEEK 03, Classes and Operator Overloading
      ══════════════════════════════════════════════════════════ -->
 <div class="accordion-item">
   <h2 class="accordion-header">
@@ -322,7 +322,7 @@ learning objectives are there too, folded away until you want them.
       <div class="res-rows">
 
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><a class="res-todo" data-opens="2026-09-21" href="assignments/a03.html">a03 &mdash; Qualifying</a></div>
+        <div class="res-val"><a class="res-todo" data-opens="2026-09-21" href="assignments/a03.html">a03 , Qualifying</a></div>
 
         <div class="res-label">📖 Read</div>
         <div class="res-val"><span class="res-tbd">to be announced</span></div>
@@ -358,7 +358,7 @@ learning objectives are there too, folded away until you want them.
 </div>
 
 <!-- ══════════════════════════════════════════════════════════
-     WEEK 04 — Vectors / Dynamic Arrays
+     WEEK 04, Vectors / Dynamic Arrays
      ══════════════════════════════════════════════════════════ -->
 <div class="accordion-item">
   <h2 class="accordion-header">
@@ -366,7 +366,7 @@ learning objectives are there too, folded away until you want them.
             data-bs-toggle="collapse" data-bs-target="#w04">
       <span class="week-num">Week 04</span>
       <span class="week-dates">Sep 28 – Oct 3</span>
-      <span class="week-topic">Vectors — Dynamic Arrays</span>
+      <span class="week-topic">Vectors, Dynamic Arrays</span>
     </button>
   </h2>
   <div id="w04" class="accordion-collapse collapse" data-bs-parent="#scheduleAccordion">
@@ -375,7 +375,7 @@ learning objectives are there too, folded away until you want them.
       <div class="res-rows">
 
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><a class="res-todo" data-opens="2026-09-28" href="assignments/a04.html">a04 &mdash; Telemetry</a></div>
+        <div class="res-val"><a class="res-todo" data-opens="2026-09-28" href="assignments/a04.html">a04 , Telemetry</a></div>
 
         <div class="res-label">📖 Read</div>
         <div class="res-val"><span class="res-tbd">to be announced</span></div>
@@ -411,7 +411,7 @@ learning objectives are there too, folded away until you want them.
 </div>
 
 <!-- ══════════════════════════════════════════════════════════
-     WEEK 05 — Generic Containers
+     WEEK 05, Generic Containers
      ══════════════════════════════════════════════════════════ -->
 <div class="accordion-item">
   <h2 class="accordion-header">
@@ -428,7 +428,7 @@ learning objectives are there too, folded away until you want them.
       <div class="res-rows">
 
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><a class="res-todo" data-opens="2026-10-05" href="assignments/a05.html">a05 &mdash; Channels</a><span class="res-sep">·</span><a class="res-todo" data-opens="2026-10-05" href="assignments/a06.html">a06 &mdash; Race Data</a></div>
+        <div class="res-val"><a class="res-todo" data-opens="2026-10-05" href="assignments/a05.html">a05 , Channels</a><span class="res-sep">·</span><a class="res-todo" data-opens="2026-10-05" href="assignments/a06.html">a06 , Race Data</a></div>
 
         <div class="res-label">📖 Read</div>
         <div class="res-val"><span class="res-tbd">to be announced</span></div>
@@ -463,7 +463,7 @@ learning objectives are there too, folded away until you want them.
 </div>
 
 <!-- ══════════════════════════════════════════════════════════
-     WEEK 06 — Linked Lists
+     WEEK 06, Linked Lists
      ══════════════════════════════════════════════════════════ -->
 <div class="accordion-item">
   <h2 class="accordion-header">
@@ -480,7 +480,7 @@ learning objectives are there too, folded away until you want them.
       <div class="res-rows">
 
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><a class="res-todo" data-opens="2026-10-12" href="assignments/a07.html">a07 &mdash; Finish the List</a></div>
+        <div class="res-val"><a class="res-todo" data-opens="2026-10-12" href="assignments/a07.html">a07 , Finish the List</a></div>
 
         <div class="res-label">📖 Read</div>
         <div class="res-val"><span class="res-tbd">to be announced</span></div>
@@ -515,21 +515,21 @@ learning objectives are there too, folded away until you want them.
 </div>
 
 <!-- ══════════════════════════════════════════════════════════
-     WEEK 07 — Fall Break
+     WEEK 07, Fall Break
      ══════════════════════════════════════════════════════════ -->
 <div class="accordion-item">
   <h2 class="accordion-header">
     <button class="accordion-button break-week" type="button">
       <span class="week-num">Week 07</span>
       <span class="week-dates">Oct 16 – Oct 22</span>
-      <span class="week-topic">🍂 Fall Break &amp; Advising Days — No Class</span>
+      <span class="week-topic">🍂 Fall Break &amp; Advising Days, No Class</span>
     </button>
   </h2>
 </div>
 
 <!-- ══════════════════════════════════════════════════════════
 <!-- ══════════════════════════════════════════════════════════
-     WEEK 08 — Algorithm Analysis and Big-Oh
+     WEEK 08, Algorithm Analysis and Big-Oh
      ══════════════════════════════════════════════════════════ -->
 <div class="accordion-item">
   <h2 class="accordion-header">
@@ -546,7 +546,7 @@ learning objectives are there too, folded away until you want them.
       <div class="res-rows">
 
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><a class="res-todo" data-opens="2026-10-23" href="assignments/a08.html">a08 &mdash; Stopwatch</a></div>
+        <div class="res-val"><a class="res-todo" data-opens="2026-10-23" href="assignments/a08.html">a08 , Stopwatch</a></div>
 
         <div class="res-label">📖 Read</div>
         <div class="res-val"><span class="res-tbd">to be announced</span></div>
@@ -575,14 +575,14 @@ learning objectives are there too, folded away until you want them.
           </div>
         </div>
       </details>
-      <p style="font-size:.85em;opacity:.75;margin-top:.9rem">Friday Oct 23 is a <strong>POGIL</strong> — classifying the complexity of code snippets, in groups.</p>
+      <p style="font-size:.85em;opacity:.75;margin-top:.9rem">Friday Oct 23 is a <strong>POGIL</strong>, classifying the complexity of code snippets, in groups.</p>
 
     </div>
   </div>
 </div>
 
 <!-- ══════════════════════════════════════════════════════════
-     WEEK 09 — Stacks, Queues, and Hash Tables
+     WEEK 09, Stacks, Queues, and Hash Tables
      ══════════════════════════════════════════════════════════ -->
 <div class="accordion-item">
   <h2 class="accordion-header">
@@ -599,7 +599,7 @@ learning objectives are there too, folded away until you want them.
       <div class="res-rows">
 
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><a class="res-todo" data-opens="2026-11-02" href="assignments/a09.html">a09 &mdash; Stack and Queue</a><span class="res-sep">·</span><a class="res-todo" data-opens="2026-11-02" href="assignments/a10.html">a10 &mdash; HashTable</a></div>
+        <div class="res-val"><a class="res-todo" data-opens="2026-11-02" href="assignments/a09.html">a09 , Stack and Queue</a><span class="res-sep">·</span><a class="res-todo" data-opens="2026-11-02" href="assignments/a10.html">a10 , HashTable</a></div>
 
         <div class="res-label">📖 Read</div>
         <div class="res-val"><span class="res-tbd">to be announced</span></div>
@@ -635,7 +635,7 @@ learning objectives are there too, folded away until you want them.
 </div>
 
 <!-- ══════════════════════════════════════════════════════════
-     WEEK 10 — Recursion and Sorting
+     WEEK 10, Recursion and Sorting
      ══════════════════════════════════════════════════════════ -->
 <div class="accordion-item">
   <h2 class="accordion-header">
@@ -652,7 +652,7 @@ learning objectives are there too, folded away until you want them.
       <div class="res-rows">
 
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><a class="res-todo" data-opens="2026-11-09" href="assignments/a11.html">a11 &mdash; Three Ways Through a Maze</a><span class="res-sep">·</span><a class="res-todo" data-opens="2026-11-09" href="assignments/a12.html">a12 &mdash; Snake</a></div>
+        <div class="res-val"><a class="res-todo" data-opens="2026-11-09" href="assignments/a11.html">a11 , Three Ways Through a Maze</a><span class="res-sep">·</span><a class="res-todo" data-opens="2026-11-09" href="assignments/a12.html">a12 , Snake</a></div>
 
         <div class="res-label">📖 Read</div>
         <div class="res-val"><span class="res-tbd">to be announced</span></div>
@@ -688,7 +688,7 @@ learning objectives are there too, folded away until you want them.
 </div>
 
 <!-- ══════════════════════════════════════════════════════════
-     WEEK 11 — Binary Search Trees and the STL set / map
+     WEEK 11, Binary Search Trees and the STL set / map
      ══════════════════════════════════════════════════════════ -->
 <div class="accordion-item">
   <h2 class="accordion-header">
@@ -705,7 +705,7 @@ learning objectives are there too, folded away until you want them.
       <div class="res-rows">
 
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><a class="res-todo" data-opens="2026-11-16" href="assignments/a13.html">a13 &mdash; Index</a></div>
+        <div class="res-val"><a class="res-todo" data-opens="2026-11-16" href="assignments/a13.html">a13 , Index</a></div>
 
         <div class="res-label">📖 Read</div>
         <div class="res-val"><span class="res-tbd">to be announced</span></div>
@@ -733,7 +733,7 @@ learning objectives are there too, folded away until you want them.
           </div>
         </div>
       </details>
-      <p style="font-size:.85em;opacity:.75;margin-top:.9rem">The STL <code>set</code> and <code>map</code> are trees underneath — you meet the library's version the same week you build one by hand.</p>
+      <p style="font-size:.85em;opacity:.75;margin-top:.9rem">The STL <code>set</code> and <code>map</code> are trees underneath, you meet the library's version the same week you build one by hand.</p>
 
     </div>
   </div>
@@ -741,7 +741,7 @@ learning objectives are there too, folded away until you want them.
 
 
 <!-- ══════════════════════════════════════════════════════════
-     WEEK 12 — AVL Trees — a brief introduction
+     WEEK 12, AVL Trees, a brief introduction
      ══════════════════════════════════════════════════════════ -->
 <div class="accordion-item">
   <h2 class="accordion-header">
@@ -749,7 +749,7 @@ learning objectives are there too, folded away until you want them.
             data-bs-toggle="collapse" data-bs-target="#w12">
       <span class="week-num">Week 12</span>
       <span class="week-dates">Nov 23 – Nov 28</span>
-      <span class="week-topic">AVL Trees — a brief introduction</span>
+      <span class="week-topic">AVL Trees, a brief introduction</span>
     </button>
   </h2>
   <div id="w12" class="accordion-collapse collapse" data-bs-parent="#scheduleAccordion">
@@ -758,7 +758,7 @@ learning objectives are there too, folded away until you want them.
       <div class="res-rows">
 
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><span class="res-tbd">no assignment &mdash; a14 spans weeks 13&ndash;14</span></div>
+        <div class="res-val"><span class="res-tbd">no assignment , a14 spans weeks 13&ndash;14</span></div>
 
         <div class="res-label">📖 Read</div>
         <div class="res-val"><span class="res-tbd">to be announced</span></div>
@@ -797,7 +797,7 @@ learning objectives are there too, folded away until you want them.
 
 <!-- ══════════════════════════════════════════════════════════
 <!-- ══════════════════════════════════════════════════════════
-     WEEK 13 — Parallelism — Moore's law, fork-join, OpenMP
+     WEEK 13, Parallelism, Moore's law, fork-join, OpenMP
      ══════════════════════════════════════════════════════════ -->
 <div class="accordion-item">
   <h2 class="accordion-header">
@@ -805,7 +805,7 @@ learning objectives are there too, folded away until you want them.
             data-bs-toggle="collapse" data-bs-target="#w13">
       <span class="week-num">Week 13</span>
       <span class="week-dates">Nov 30 – Dec 5</span>
-      <span class="week-topic">Parallelism — Moore's law, fork-join, OpenMP</span>
+      <span class="week-topic">Parallelism, Moore's law, fork-join, OpenMP</span>
     </button>
   </h2>
   <div id="w13" class="accordion-collapse collapse" data-bs-parent="#scheduleAccordion">
@@ -814,7 +814,7 @@ learning objectives are there too, folded away until you want them.
       <div class="res-rows">
 
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><a class="res-todo" data-opens="2026-11-30" href="assignments/a14.html">a14 &mdash; Matrix Operations and OpenMP</a></div>
+        <div class="res-val"><a class="res-todo" data-opens="2026-11-30" href="assignments/a14.html">a14 , Matrix Operations and OpenMP</a></div>
 
         <div class="res-label">📖 Read</div>
         <div class="res-val"><span class="res-tbd">to be announced</span></div>
@@ -848,7 +848,7 @@ learning objectives are there too, folded away until you want them.
 </div>
 
 <!-- ══════════════════════════════════════════════════════════
-     WEEK 14 — Parallelism — experiments, and course recap
+     WEEK 14, Parallelism, experiments, and course recap
      ══════════════════════════════════════════════════════════ -->
 <div class="accordion-item">
   <h2 class="accordion-header">
@@ -856,7 +856,7 @@ learning objectives are there too, folded away until you want them.
             data-bs-toggle="collapse" data-bs-target="#w14">
       <span class="week-num">Week 14</span>
       <span class="week-dates">Dec 7 – Dec 9</span>
-      <span class="week-topic">Parallelism — experiments, and course recap</span>
+      <span class="week-topic">Parallelism, experiments, and course recap</span>
     </button>
   </h2>
   <div id="w14" class="accordion-collapse collapse" data-bs-parent="#scheduleAccordion">
@@ -890,7 +890,7 @@ learning objectives are there too, folded away until you want them.
           </div>
         </div>
       </details>
-      <p style="font-size:.85em;opacity:.75;margin-top:.9rem"><strong>Dec 9 is the last day of classes</strong> — all work and all check-in bookings close.</p>
+      <p style="font-size:.85em;opacity:.75;margin-top:.9rem"><strong>Dec 9 is the last day of classes</strong>, all work and all check-in bookings close.</p>
 
     </div>
   </div>
@@ -910,7 +910,7 @@ learning objectives are there too, folded away until you want them.
     w04: ['2026-09-28', '2026-10-03'],
     w05: ['2026-10-05', '2026-10-10'],
     w06: ['2026-10-12', '2026-10-15'],
-    w07: ['2026-10-16', '2026-10-22'], // Fall Break — no expand
+    w07: ['2026-10-16', '2026-10-22'], // Fall Break, no expand
     w08: ['2026-10-23', '2026-10-31'],
     w09: ['2026-11-02', '2026-11-07'],
     w10: ['2026-11-09', '2026-11-14'],

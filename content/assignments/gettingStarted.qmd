@@ -67,8 +67,8 @@ as a private repository, you push your work there, and it is checked
 automatically. It also means you can reach your work from any machine.
 
 **If you already have a GitHub account, use it.** Do not make a second one for
-this course. Add your Calvin address to it — **Settings → Emails → Add email
-address** — so that the account and the roster agree, and send me that account's
+this course. Add your Calvin address to it, **Settings → Emails → Add email
+address**, so that the account and the roster agree, and send me that account's
 username below.
 
 **If you do not have an account yet:**
@@ -80,14 +80,14 @@ username below.
    want to read aloud in an interview does not. You are stuck with it for the
    semester either way.
 3. Complete the email verification, then set up **two-factor authentication**
-   when GitHub asks — it is required for anyone who pushes code.
+   when GitHub asks, it is required for anyone who pushes code.
 
 ::: {.callout-important}
 **Save your 2FA recovery codes somewhere you will still have them in December.**
 
 GitHub shows them once, during setup. If you set up two-factor authentication on
 a phone and then lose the phone, those codes are the only way back into your
-account — and your account is where all your CS112 work lives. Download them,
+account, and your account is where all your CS112 work lives. Download them,
 and put the file somewhere that is not the phone.
 
 This is the one setup step on this page that can cost you a whole semester of
@@ -95,7 +95,7 @@ work, and it takes about thirty seconds.
 :::
 
 **Then send me your username.** I create a private repository for you, one per
-assignment, from the class roster — and that roster is built by hand from the
+assignment, from the class roster, and that roster is built by hand from the
 usernames students send in. Nothing is created for you until yours is on it.
 
 [Submit your GitHub username](https://forms.gle/Szw1io5HbxJC3nco7){.btn .btn-primary target="_blank" rel="noopener"}
@@ -116,7 +116,7 @@ work, and untangling it is manual for both of us.
 
 **What happens next.** I check the form and add you to the course organization
 by hand, usually within a day. GitHub then emails you an invitation to join
-**26fa-cs112**. **Accept it** — that is the whole of your part, and it takes one
+**26fa-cs112**. **Accept it**, that is the whole of your part, and it takes one
 click.
 
 You will know it worked when
@@ -229,7 +229,7 @@ the leftmost, and hovering over it shows **Open VSCode**.
 5. **If** VS Code asks you to select the platform for the remote host, choose **Linux**. It may not ask, in which case skip this.
 6. If asked to trust the authors, select **Yes, I trust the authors**. (You are the author.)
 7. Open your home folder on the server: **File → Open Folder**. VS Code offers a
-   path that is already `/home/` followed by your Calvin username — that is the
+   path that is already `/home/` followed by your Calvin username, that is the
    one you want, so press **OK**. Trust the authors again if asked.
 8. Open a terminal inside VS Code: **Terminal menu → New Terminal**. A terminal appears at the bottom of the window.
 
@@ -439,7 +439,7 @@ current folder and nowhere else. Run it one level too high and you get:
 make: *** No targets specified and no makefile found.  Stop.
 ```
 
-That message means "you are in the wrong folder", not "your code is broken" —
+That message means "you are in the wrong folder", not "your code is broken" , 
 but it does not say so, and it looks alarming the first time. Later in the
 semester, when you have several assignments side by side, the wrong folder is
 worse than an error: `make` finds a perfectly good makefile and cheerfully
@@ -593,7 +593,7 @@ username, and you have **accepted the emailed invitation** to the
 **26fa-cs112** organization.
 
 Until you accept that invitation, your repository exists but is invisible to
-you — [github.com/26fa-cs112](https://github.com/26fa-cs112){target="_blank" rel="noopener"}
+you, [github.com/26fa-cs112](https://github.com/26fa-cs112){target="_blank" rel="noopener"}
 will show you a *"page not found"* rather than telling you anything useful.
 That is the single most common thing that goes wrong here.
 
@@ -609,7 +609,7 @@ https://github.com/26fa-cs112/cs112-a00-YOURUSERNAME
 ```
 
 Put your own username in place of `YOURUSERNAME` and that address opens in a
-browser. Worth keeping to hand — it is how you check that what you pushed
+browser. Worth keeping to hand, it is how you check that what you pushed
 actually arrived.
 
 Every assignment follows the same pattern:
@@ -636,7 +636,7 @@ Answer the three questions like this:
 | How would you like to authenticate GitHub CLI? | **Login with a web browser** |
 
 It then shows you a one-time code like `4BD1-FB85`. Copy it and press Enter. A
-browser tab should open **on your own computer** — Coder itself has no browser,
+browser tab should open **on your own computer**, Coder itself has no browser,
 so this is handed back to your laptop. If no tab opens, copy the
 `https://github.com/login/device` link it printed and open that yourself.
 
@@ -672,7 +672,7 @@ cd ~/cs112
 pwd
 ```
 
-That should print `/home/` followed by your **Calvin username** and `/cs112` —
+That should print `/home/` followed by your **Calvin username** and `/cs112` , 
 for example `/home/ea47/cs112`. Coder logs you in with your Calvin account, so
 the folder is named after that, not after your GitHub username. The two are
 different, and both appear in the next command.
@@ -695,7 +695,7 @@ You should see six files: `main.cpp`, `fortune.h`, `fortune.cpp`, `makefile`,
 
 ::: {.callout-warning}
 **If you get `Could not resolve to a Repository`**, the usual cause is that you
-have not accepted the organization invitation yet — go back to Step 2. The
+have not accepted the organization invitation yet, go back to Step 2. The
 second most likely cause is a typo in your username, or capital letters: the
 repository name is entirely lowercase, even if your GitHub username is not.
 :::
@@ -755,9 +755,9 @@ else**. So when it reaches your call to `getFortune(...)`, it has a problem: the
 function is written in `fortune.cpp`, which it is not reading. It has no idea
 whether `getFortune` exists, what arguments it takes, or what it gives back.
 
-A header is how you tell it. `fortune.h` contains the *promise* — one line
+A header is how you tell it. `fortune.h` contains the *promise*, one line
 saying "there is a function called `getFortune`, it takes two `int`s, and it
-returns a `string`" — with no code behind it. That is why `main.cpp` starts
+returns a `string`", with no code behind it. That is why `main.cpp` starts
 with:
 
 ```cpp
@@ -836,7 +836,7 @@ One of `make`'s best features: it only recompiles files that have changed since 
 ## 11. Compile and Run the Starter Code
 
 In your VS Code terminal, make sure you are inside your `cs112-a00-YOURUSERNAME`
-directory — `pwd` will tell you, and this is the moment it matters. Then type:
+directory, `pwd` will tell you, and this is the moment it matters. Then type:
 
 ```bash
 make
@@ -905,8 +905,8 @@ An **error** means the compiler gave up: there is no program at the end. A
 **warning** means it built your program but noticed something suspicious.
 
 These two are correct and expected. You have declared `stressLevel` and
-`birthMonth` but not used them yet, and `-Wall` — the flag in your makefile that
-turns on all warnings — is telling you so. They will disappear on their own when
+`birthMonth` but not used them yet, and `-Wall`, the flag in your makefile that
+turns on all warnings, is telling you so. They will disappear on their own when
 TODO 2 starts using the variables.
 
 Warnings are worth reading rather than ignoring. Over the semester, `-Wall` will
@@ -919,7 +919,7 @@ first time, a single missing semicolon near the top can produce twenty errors
 further down, most of them nonsense caused by the first one. Compile after each
 TODO and every error you see belongs to the handful of lines you just wrote.
 
-Press the **Up arrow** and Enter to re-run `make` — you will do this hundreds of
+Press the **Up arrow** and Enter to re-run `make`, you will do this hundreds of
 times this semester.
 
 ---
@@ -943,7 +943,7 @@ what it is. The banner at the top of `main.cpp` is full of lines like:
 cout << "        Welcome to the CS112 Oracle!" << endl;
 ```
 
-`endl` **ends the line.** Everything printed after it starts on a fresh line —
+`endl` **ends the line.** Everything printed after it starts on a fresh line , 
 it is the equivalent of pressing Enter. You can chain as many things onto one
 `cout` as you like, and `endl` is simply the last of them.
 
@@ -984,7 +984,7 @@ Use these exact prompt strings (the autograder will check them):
 Many languages hand you the whole line when you ask for input. `cin >>` hands you one word at a time. Asking for a first name sidesteps the problem for now, and you will learn how to read a whole line later in the semester.
 :::
 
-**Compile again before you move on** — `make`, and fix anything it complains
+**Compile again before you move on**, `make`, and fix anything it complains
 about. Two TODOs done is a good place to stop and check.
 
 #### Now save your work to GitHub
@@ -993,7 +993,7 @@ Everything you have written so far exists in exactly one place: a folder on the
 Coder server. That is one disk, one account, and one bad afternoon away from
 gone. Push it and there are two copies, one of them somewhere you cannot break.
 
-In VS Code, click the **Source Control** icon in the left sidebar — it looks
+In VS Code, click the **Source Control** icon in the left sidebar, it looks
 like a branch, and it will have a small badge showing how many files you have
 changed.
 
@@ -1006,7 +1006,7 @@ changed.
 
 ::: {.callout-tip}
 **The same thing in the terminal.** Every button above is a command underneath,
-and it is worth seeing them side by side once — you will meet them in every
+and it is worth seeing them side by side once, you will meet them in every
 programming job you ever have, and on machines with no editor at all:
 
 ```bash
@@ -1022,8 +1022,8 @@ thing, and Step 13 explains what each one means.
 ::: {.callout-note}
 **Expect a red X on GitHub, and do not let it worry you.**
 
-Pushing starts the automatic check, and your program is not finished — TODO 3
-and TODO 4 are still empty — so the check fails. That is the correct result. A
+Pushing starts the automatic check, and your program is not finished, TODO 3
+and TODO 4 are still empty, so the check fails. That is the correct result. A
 red X on unfinished work means the machinery is paying attention. It turns green
 when all four TODOs are done and `make test` passes.
 :::
@@ -1060,7 +1060,7 @@ FORTUNE
 ```
 
 Where `NAME` and `FORTUNE` are your variables. The gap in the middle is a real
-blank line and the tests look for it — a bare `cout << endl;` on its own is how
+blank line and the tests look for it, a bare `cout << endl;` on its own is how
 you print one. Note the two spaces before `The`, as well. In C++, you can chain multiple things on one `cout` line:
 
 ```cpp
@@ -1129,16 +1129,16 @@ When all tests pass, submit your work to GitHub.
 Add your name to the `README.md` file before pushing. Open it in VS Code, add a line with your name, and save.
 :::
 
-Click the **Source Control** icon in the left sidebar — the one that looks like
+Click the **Source Control** icon in the left sidebar, the one that looks like
 a branch, with a badge counting your changed files.
 
 1. **Stage** what you want to send. Under **Changes**, hover over each file and
    click **+**. You should be staging `main.cpp` and `README.md`.
 2. **Write a message** in the box at the top. `Complete main.cpp` is fine. A
-   message describes what changed and why — "stuff" and "asdf" will make sense
+   message describes what changed and why, "stuff" and "asdf" will make sense
    to nobody, including you, in November.
-3. **Commit** — click **✓ Commit**. Your snapshot now exists, on the server.
-4. **Sync Changes** — this is the step that sends it to GitHub. A commit without
+3. **Commit**, click **✓ Commit**. Your snapshot now exists, on the server.
+4. **Sync Changes**, this is the step that sends it to GitHub. A commit without
    it is a diary entry nobody else can read.
 
 ::: {.callout-tip}
@@ -1152,7 +1152,7 @@ git push                             # sync: send it to GitHub
 
 Learn both. The buttons are faster day to day; the commands are what you will
 find in every tutorial, every Stack Overflow answer, and every machine that has
-no editor installed — which, in this field, is most of them.
+no editor installed, which, in this field, is most of them.
 :::
 
 To verify the push worked, open your repository on github.com and confirm your
@@ -1161,7 +1161,7 @@ the browser.
 
 Within a minute or two, the **Actions** tab of your repository shows a run named
 **Autograde**. Open it. Under the job you will find a summary saying how many
-checks passed, and — if any failed — which ones, with the same hints `make test`
+checks passed, and, if any failed, which ones, with the same hints `make test`
 gives you. A green tick means every check passed; a red X means at least one did
 not.
 

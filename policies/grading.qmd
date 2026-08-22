@@ -2,7 +2,7 @@
 title: "Grading"
 ---
 
-There are no traditional tests or point-based scores in CS 112. Your grade reflects whether you have genuinely learned the material — not how many points you accumulated on exams. This page explains the system in full.
+There are no traditional tests or point-based scores in CS 112. Your grade reflects whether you have genuinely learned the material, not how many points you accumulated on exams. This page explains the system in full.
 
 ---
 
@@ -16,7 +16,7 @@ The result is a grade that is hard to fake and hard to luck into. A student who 
 
 ## The Three Components
 
-Your final grade is determined by three independent components. **All three must be satisfied** — the weakest of the three sets your ceiling. Every row of the grade table has four conditions, and you must meet all four at once: your M count, your M + D count, your quiz completion, and your assignment completion.
+Your final grade is determined by three independent components. **All three must be satisfied**, the weakest of the three sets your ceiling. Every row of the grade table has four conditions, and you must meet all four at once: your M count, your M + D count, your quiz completion, and your assignment completion.
 
 ---
 
@@ -26,11 +26,11 @@ The course has 33 skills organized into 7 clusters (A through G). Those clusters
 
 | Window | Clusters covered |
 |---|---|
-| **Window 1** | A — C++ Foundations · B — Object-Oriented Programming |
-| **Window 2** | C — Linear Data Structures · D — Algorithm Analysis · E — Recursion |
-| **Window 3** | F — Trees · G — STL and Sorting |
+| **Window 1** | A, C++ Foundations · B, Object-Oriented Programming |
+| **Window 2** | C, Linear Data Structures · D, Algorithm Analysis · E, Recursion |
+| **Window 3** | F, Trees · G, STL and Sorting |
 
-At the appointment the instructor draws a question from each cluster in that window — a discussion prompt or a short coding exercise you work through on the spot. A question may also lean on a **persistent skill** from any cluster already covered earlier in the course, so those ideas stay live all semester.
+At the appointment the instructor draws a question from each cluster in that window, a discussion prompt or a short coding exercise you work through on the spot. A question may also lean on a **persistent skill** from any cluster already covered earlier in the course, so those ideas stay live all semester.
 
 **Each window earns one mark**, based on the session as a whole:
 
@@ -39,7 +39,7 @@ At the appointment the instructor draws a question from each cluster in that win
   <div style="border:1px solid var(--bs-border-color);border-radius:.4rem;padding:.9rem;text-align:center;">
     <div style="font-size:1.6rem;font-weight:800;color:var(--bs-secondary-color);">N</div>
     <div style="font-weight:700;font-size:.88rem;margin:.2rem 0;">Not yet</div>
-    <div style="font-size:.8rem;color:var(--bs-secondary-color);">Not demonstrated — either the check-in hasn't happened yet, or the session did not show working understanding.</div>
+    <div style="font-size:.8rem;color:var(--bs-secondary-color);">Not demonstrated, either the check-in hasn't happened yet, or the session did not show working understanding.</div>
   </div>
   <div style="border:1px solid var(--bs-border-color);border-radius:.4rem;padding:.9rem;text-align:center;background:var(--bs-secondary-bg);">
     <div style="font-size:1.6rem;font-weight:800;color:#8B4513;">D</div>
@@ -54,17 +54,17 @@ At the appointment the instructor draws a question from each cluster in that win
 </div>
 ```
 
-So across the semester you collect **three marks** — one for each window. Those three marks are the backbone of your grade: how many you master sets how high you can reach, and how many you at least partly demonstrated fills in the rest.
+So across the semester you collect **three marks**, one for each window. Those three marks are the backbone of your grade: how many you master sets how high you can reach, and how many you at least partly demonstrated fills in the rest.
 
 See the [Skills & Check-Ins](../content/checkins.html) page for the full skill list and check-in schedule.
 
-**One important detail:** marks can move in both directions. An **M** earned early can drop to **D** at a later check-in if a persistent skill is clearly no longer solid. This is not a trap — the instructor will follow up, and the Final Window exists to put it right.
+**One important detail:** marks can move in both directions. An **M** earned early can drop to **D** at a later check-in if a persistent skill is clearly no longer solid. This is not a trap, the instructor will follow up, and the Final Window exists to put it right.
 
 ---
 
 ### 2 · Quiz Completion
 
-Short programming quizzes happen in class almost every day, including during lab time. Each quiz takes about 5 minutes. They are not graded for correctness — only **completion** counts. Submitting a reasonable attempt, even an imperfect one, is all that is required.
+Short programming quizzes happen in class almost every day, including during lab time. Each quiz takes about 5 minutes. They are not graded for correctness, only **completion** counts. Submitting a reasonable attempt, even an imperfect one, is all that is required.
 
 The percentage of quizzes you complete decides where you land within a grade range. With two windows mastered and a third at Developing, for example, ≥ 80 % of quizzes earns B+, ≥ 75 % earns B, and ≥ 70 % earns B−.
 
@@ -74,15 +74,15 @@ The percentage of quizzes you complete decides where you land within a grade ran
 
 ### 3 · Assignment Completion
 
-Assignments **a01 through a14** are programming tasks you work on during class and finish on your own time. (Getting Started, `a00`, is setup — it is not one of the fourteen and does not affect your percentage.)
+Assignments **a01 through a14** are programming tasks you work on during class and finish on your own time. (Getting Started, `a00`, is setup, it is not one of the fourteen and does not affect your percentage.)
 
 Your repository is checked automatically when you push, and the tests tell you how you are doing. **That score does not set your grade.** Assignments are not graded for points: submitting reasonable work counts as complete, whether or not every test is green.
 
 **Assignments do not have individual due dates.** You may submit any assignment at any time before the last day of classes. What matters is your cumulative completion percentage at the end of the semester.
 
-**Nothing blocks a booking.** There is no minimum number of assignments you must submit before booking a window's appointment. But every question comes straight out of the territory those assignments cover — booking a window before you have worked through its clusters means spending a slot you are not ready to use. See the [Skills & Check-Ins](../content/checkins.html) page for which assignments build which cluster.
+**Nothing blocks a booking.** There is no minimum number of assignments you must submit before booking a window's appointment. But every question comes straight out of the territory those assignments cover, booking a window before you have worked through its clusters means spending a slot you are not ready to use. See the [Skills & Check-Ins](../content/checkins.html) page for which assignments build which cluster.
 
-Assignment completion works exactly like quiz completion — it appears as its own column in the grade table, and both percentages must clear a row's threshold for that row to apply.
+Assignment completion works exactly like quiz completion, it appears as its own column in the grade table, and both percentages must clear a row's threshold for that row to apply.
 
 **Why assignments matter:** The assignments are the primary way you build the skills that check-ins assess. Consistent submission is a proxy for whether you did the practice that mastery requires.
 
@@ -90,12 +90,12 @@ Assignment completion works exactly like quiz completion — it appears as its o
 
 ## Grade Table
 
-Every number in this table is a **minimum**. Read down from the top and stop at the first row where you meet all four conditions — that is your grade.
+Every number in this table is a **minimum**. Read down from the top and stop at the first row where you meet all four conditions, that is your grade.
 
 The first two columns describe your three window marks:
 
-- **Windows M** — how many windows you *mastered*.
-- **Windows M + D** — how many you mastered *or* reached Developing on. A window still marked N does not count here.
+- **Windows M**, how many windows you *mastered*.
+- **Windows M + D**, how many you mastered *or* reached Developing on. A window still marked N does not count here.
 
 Because both columns are minimums, having more than a row asks for never hurts you. Three Ms satisfies "at least 2 M" and "at least 2 M + D" just as well as two Ms would.
 
@@ -161,7 +161,7 @@ Because both columns are minimums, having more than a row asks for never hurts y
   </thead>
   <tbody>
 
-    <tr class="separator-row"><td colspan="5">A range — all three windows mastered</td></tr>
+    <tr class="separator-row"><td colspan="5">A range, all three windows mastered</td></tr>
     <tr>
       <td><span class="grade-badge g-a">A</span></td>
       <td>3 <span class="m-mark">M</span></td>
@@ -177,7 +177,7 @@ Because both columns are minimums, having more than a row asks for never hurts y
       <td>≥ 85 %</td>
     </tr>
 
-    <tr class="separator-row"><td colspan="5">B range — at least two windows mastered</td></tr>
+    <tr class="separator-row"><td colspan="5">B range, at least two windows mastered</td></tr>
     <tr>
       <td><span class="grade-badge g-b">B+</span></td>
       <td>2 <span class="m-mark">M</span></td>
@@ -200,7 +200,7 @@ Because both columns are minimums, having more than a row asks for never hurts y
       <td>≥ 70 %</td>
     </tr>
 
-    <tr class="separator-row"><td colspan="5">C range — at least one window mastered</td></tr>
+    <tr class="separator-row"><td colspan="5">C range, at least one window mastered</td></tr>
     <tr>
       <td><span class="grade-badge g-c">C+</span></td>
       <td>1 <span class="m-mark">M</span></td>
@@ -223,7 +223,7 @@ Because both columns are minimums, having more than a row asks for never hurts y
       <td>≥ 55 %</td>
     </tr>
 
-    <tr class="separator-row"><td colspan="5">D range — no window mastered, but progress shown</td></tr>
+    <tr class="separator-row"><td colspan="5">D range, no window mastered, but progress shown</td></tr>
     <tr>
       <td><span class="grade-badge g-d">D+</span></td>
       <td>0 <span class="m-mark">M</span></td>
@@ -261,11 +261,11 @@ Because both columns are minimums, having more than a row asks for never hurts y
 
 **How to read the table.** Work out three numbers first:
 
-1. How many windows are marked **M** — call it your M count.
-2. How many are marked **M or D** — your M + D count.
+1. How many windows are marked **M**, call it your M count.
+2. How many are marked **M or D**, your M + D count.
 3. Your quiz and assignment completion percentages.
 
-Then start at the top row and read downwards. **Your grade is the first row where all four conditions hold.** Every number is a minimum, so exceeding one is always fine — a student with 3 M comfortably satisfies a row asking for 2 M.
+Then start at the top row and read downwards. **Your grade is the first row where all four conditions hold.** Every number is a minimum, so exceeding one is always fine, a student with 3 M comfortably satisfies a row asking for 2 M.
 
 The second column is what separates a window you partly demonstrated from one you did not attempt. Two Ms and a **D** gives you M + D = 3; two Ms and an **N** gives you only 2. That single difference is what stands between B and B−.
 
@@ -273,29 +273,29 @@ The second column is what separates a window you partly demonstrated from one yo
 
 ## Worked Examples
 
-**Example 1 — Everything lines up**
+**Example 1, Everything lines up**
 Marks are **M M M**. Quizzes 92 %, assignments 91 %. The A row asks for 3 M, M + D of 3, and ≥ 90 % on both. All four hold. **Final grade: A.**
 
-**Example 2 — Strong check-ins, patchy engagement**
+**Example 2, Strong check-ins, patchy engagement**
 Marks are **M M M** again, but quizzes are 78 % and assignments 84 %. Both A rows fail on percentage, and so does B+. The B row asks for at least 2 M (you have 3 ✓), M + D of at least 3 (you have 3 ✓), and ≥ 75 % on both ✓. **Final grade: B.**
 
 > This is the case worth understanding: mastering all three windows does **not** guarantee an A. Skipping the day-to-day work still pulls the grade down.
 
-**Example 3 — One window short, but you showed up for it**
-Marks are **M M D**. Quizzes 91 %, assignments 90 %. The A rows need 3 M — you have 2. B+ asks for at least 2 M ✓, M + D of at least 3 (2 + 1 = 3 ✓), and ≥ 80 % ✓. **Final grade: B+.**
+**Example 3, One window short, but you showed up for it**
+Marks are **M M D**. Quizzes 91 %, assignments 90 %. The A rows need 3 M, you have 2. B+ asks for at least 2 M ✓, M + D of at least 3 (2 + 1 = 3 ✓), and ≥ 80 % ✓. **Final grade: B+.**
 
-**Example 4 — Same two Ms, but a window left undemonstrated**
+**Example 4, Same two Ms, but a window left undemonstrated**
 Marks are **M M N**. Same 91 % / 90 %. B+ and B both want M + D of 3, but yours is 2. B− asks for 2 M ✓ and M + D of 2 ✓. **Final grade: B−.**
 
-> Compare with Example 3. Identical effort on the assignments, identical M count — the only difference is turning up for the third window and showing partial understanding rather than none. That is one full step of grade.
+> Compare with Example 3. Identical effort on the assignments, identical M count, the only difference is turning up for the third window and showing partial understanding rather than none. That is one full step of grade.
 
-**Example 5 — Excellent engagement, thin check-ins**
-Quizzes 94 %, assignments 95 % — above every threshold on the page. But the marks are **M D D**: one window mastered, M + D of 3. The A and B rows need at least 2 M. C+ asks for 1 M ✓ and M + D of 3 ✓. **Final grade: C+.**
+**Example 5, Excellent engagement, thin check-ins**
+Quizzes 94 %, assignments 95 %, above every threshold on the page. But the marks are **M D D**: one window mastered, M + D of 3. The A and B rows need at least 2 M. C+ asks for 1 M ✓ and M + D of 3 ✓. **Final grade: C+.**
 
 > Completion percentages can lift you inside a range, but they cannot replace the check-ins. This is the mirror image of Example 2.
 
-**Example 6 — Recovering in the Final Window**
-After Window 3 a student sits at **M D N** with 88 % / 87 %, which lands at C. In the Final Window they re-take the Window 2 conversation and upgrade D to M, then demonstrate Window 3 for the first time and earn a D. The marks become **M M D** — M + D of 3 — and the same percentages now clear B+. **Final grade: B+.**
+**Example 6, Recovering in the Final Window**
+After Window 3 a student sits at **M D N** with 88 % / 87 %, which lands at C. In the Final Window they re-take the Window 2 conversation and upgrade D to M, then demonstrate Window 3 for the first time and earn a D. The marks become **M M D**, M + D of 3, and the same percentages now clear B+. **Final grade: B+.**
 
 ---
 
@@ -303,12 +303,12 @@ After Window 3 a student sits at **M D N** with 88 % / 87 %, which lands at C. I
 
 One date governs everything: **the last day of classes, Wednesday Dec 9.**
 
-**Work** — no assignment or quiz is accepted after Dec 9. Until then you may submit any assignment at any time, in any order.
+**Work**, no assignment or quiz is accepted after Dec 9. Until then you may submit any assignment at any time, in any order.
 
-**Check-in bookings** — every appointment you intend to have must be **booked** by Dec 9, including any in the Final Window. The appointment itself may fall later: Final Window sessions run Dec 12–17, during exam week. What closes on Dec 9 is the ability to request one, so that the exam-week schedule can be set.
+**Check-in bookings**, every appointment you intend to have must be **booked** by Dec 9, including any in the Final Window. The appointment itself may fall later: Final Window sessions run Dec 12–17, during exam week. What closes on Dec 9 is the ability to request one, so that the exam-week schedule can be set.
 
 ::: {.callout-important}
-Booking closes **before** the appointment happens. If you wait until exam week to ask for a Final Window slot, there will be nothing to ask for — the list closed on Dec 9.
+Booking closes **before** the appointment happens. If you wait until exam week to ask for a Final Window slot, there will be nothing to ask for, the list closed on Dec 9.
 :::
 
 ---
@@ -317,41 +317,41 @@ Booking closes **before** the appointment happens. If you wait until exam week t
 
 During exam week (Dec 12–17) there is one last check-in opportunity. It is optional, and it exists for two reasons: to **retry a window** currently marked N or D, and to **improve a grade** you are not happy with.
 
-A window upgraded in the Final Window counts exactly the same as one mastered back in October — there is no penalty for late improvement. As Example 6 above shows, a single upgrade can move a grade by more than one step, because it lifts both your M count and your M + D count at once.
+A window upgraded in the Final Window counts exactly the same as one mastered back in October, there is no penalty for late improvement. As Example 6 above shows, a single upgrade can move a grade by more than one step, because it lifts both your M count and your M + D count at once.
 
 The Final Window is not a replacement for regular check-ins. Use it to close specific gaps, not to cover a whole semester you have not engaged with.
 
 ::: {.callout-warning}
-**Bookings for the Final Window close on Dec 9**, the last day of classes — and slots are limited all semester. If you leave your check-ins to the end you may find nothing open, and after Dec 9 you cannot book at all. Book each window's appointment as soon as you are ready.
+**Bookings for the Final Window close on Dec 9**, the last day of classes, and slots are limited all semester. If you leave your check-ins to the end you may find nothing open, and after Dec 9 you cannot book at all. Book each window's appointment as soon as you are ready.
 :::
 
 ---
 
 ## Tracking Your Progress
 
-Moodle shows you everything you need throughout the semester: your quiz completion %, your assignment completion %, and your **N/D/M mark for each of the three windows**. At any point you can count your Ms, count your Ms and Ds together, and read straight down the grade table to see exactly where you stand — and what would move you up.
+Moodle shows you everything you need throughout the semester: your quiz completion %, your assignment completion %, and your **N/D/M mark for each of the three windows**. At any point you can count your Ms, count your Ms and Ds together, and read straight down the grade table to see exactly where you stand, and what would move you up.
 
 ---
 
 ## Common Questions
 
 **Can I improve a D to an M after the window has passed?**
-Yes — the Final Window exists for exactly this. You can also request a follow-up appointment within reason.
+Yes, the Final Window exists for exactly this. You can also request a follow-up appointment within reason.
 
 **Why does a D count for anything? I did not master it.**
 Because showing partial understanding is genuinely different from showing none, and the M + D column is where that shows up. Two Ms and a D is a full step above two Ms and an N.
 
 **What if I miss a quiz due to illness?**
-Missed quizzes count as incomplete regardless of reason. The thresholds are designed with some buffer — you do not need 100 % completion for an A. Extended illness should be discussed with the instructor.
+Missed quizzes count as incomplete regardless of reason. The thresholds are designed with some buffer, you do not need 100 % completion for an A. Extended illness should be discussed with the instructor.
 
 **Do assignments need to be perfect to count as complete?**
 No. Reasonable work submitted counts as complete.
 
-**My completion percentages are high but my window marks are low — why isn't my grade higher?**
+**My completion percentages are high but my window marks are low, why isn't my grade higher?**
 Completion moves you *within* a range; the check-ins decide *which* range. Doing the work makes mastery far more likely, but the appointment is where it gets confirmed. See Example 5 above.
 
 **I mastered all three windows. Am I guaranteed an A?**
-No. Every row also carries a quiz and assignment threshold, and the A rows ask for ≥ 85 %. Three Ms with 78 % quiz completion lands at B — see Example 2.
+No. Every row also carries a quiz and assignment threshold, and the A rows ask for ≥ 85 %. Three Ms with 78 % quiz completion lands at B, see Example 2.
 
 ---
 
@@ -359,7 +359,7 @@ No. Every row also carries a quiz and assignment threshold, and the A rows ask f
 
 Because assignments and quizzes are graded only for completion (not correctness), the only marks subject to dispute are **check-in results** (N, D, or M on a window).
 
-If you believe a check-in mark was recorded incorrectly, raise it with the instructor **within one week of the appointment**. Disputes brought up after that window will not be considered. The cleanest way to address a D you disagree with is to request a follow-up appointment and demonstrate mastery there — that is faster and more useful than an appeal.
+If you believe a check-in mark was recorded incorrectly, raise it with the instructor **within one week of the appointment**. Disputes brought up after that window will not be considered. The cleanest way to address a D you disagree with is to request a follow-up appointment and demonstrate mastery there, that is faster and more useful than an appeal.
 
 ---
 

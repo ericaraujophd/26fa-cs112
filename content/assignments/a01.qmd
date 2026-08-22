@@ -1,16 +1,16 @@
 ---
 title: "Assignment 01: RPG Character Creator"
-subtitle: "Variables, memory, control structures, and functions — in C++"
+subtitle: "Variables, memory, control structures, and functions, in C++"
 ---
 
 ::: {.callout-note}
 Your own private GitHub repository is waiting for you (see
-[Getting the code](#getting-the-code) below) — clone it and open it in VS Code.
+[Getting the code](#getting-the-code) below), clone it and open it in VS Code.
 
 **Plan to set aside about 2 to 2.5 hours.** The first part (character sheet) is
 designed to be started in lab with your class; the adventure system and function
 decomposition are the take-home extension. The pointer section and the while-loop
-refactor are the two places most students slow down — give yourself extra time there.
+refactor are the two places most students slow down, give yourself extra time there.
 :::
 
 ## Objectives
@@ -41,7 +41,7 @@ systems that govern how a character is described, how they join a guild, and how
 they accumulate experience points.
 
 Unlike Python, where you just write `health = 100` and move on, C++ requires you
-to say exactly what *type* of value `health` is — and that choice has real
+to say exactly what *type* of value `health` is, and that choice has real
 consequences. Is it a number that can go negative? An integer or a decimal? Can
 it be changed, or is it a constant? These decisions affect how much memory is used,
 what operations are allowed, and what happens at the edge cases. The RPG bugs
@@ -71,7 +71,7 @@ Two things to notice: C++ needs a semicolon at the end of every statement, and
 
 Your private GitHub repository for this assignment is created for you inside
 the course organization, with the starter code already in it. There is nothing
-to accept — if you are on the roster, it is there.
+to accept and nothing to set up, if you are on the roster, it is there.
 
 
 Clone it, replacing `YOURUSERNAME` with your GitHub username. If `gh` asks you to sign in, see [step 9 of Getting Started](gettingStarted.html#get-your-repository):
@@ -81,6 +81,35 @@ gh repo clone 26fa-cs112/cs112-a01-YOURUSERNAME
 cd cs112-a01-YOURUSERNAME
 ```
 
+::: {.callout-note}
+**Cannot find it? Ask GitHub what you have.**
+
+If `gh repo clone` answers
+`Could not resolve to a Repository`, this lists every repository you can
+actually see, spelled exactly right:
+
+```bash
+gh repo list 26fa-cs112
+```
+
+If yours is in that list, you mistyped the name, copy it from the output and
+try again. Watch for usernames that already contain a hyphen or a number; the
+pattern is `cs112-<assignment>-<your username>`, so the two halves run together
+and it often looks wrong when it is right.
+
+**If the list is empty, or the command errors, that is mine to fix rather than
+yours to work around.** The usual causes are an organization invitation you have not accepted yet
+(check your email, including spam and the Promotions tab), or a username I
+mistyped when I built the roster. Either way, email me at
+[eric.araujo@calvin.edu](mailto:eric.araujo@calvin.edu) and I will sort it out
+the same day.
+
+While you wait, **do not create a repository yourself and do not start the work
+somewhere else.** Only the repository I create for you is connected to grading,
+so anything written outside it has to be moved by hand later, and that is a
+worse afternoon than a short wait.
+:::
+
 Open the folder in VS Code and you are ready to start.
 
 
@@ -89,8 +118,63 @@ Open the folder in VS Code and you are ready to start.
 ## 3. The File You Will Edit
 
 Open **`functions.cpp`** in VS Code. This is the only file you need to edit.
-`functions.h` and `main.cpp` are already complete — read through them to
+`functions.h` and `main.cpp` are already complete, read through them to
 understand the structure, but do not change them.
+
+::: {.callout-note}
+**Two lines at the top of `functions.h` that need explaining.**
+
+Open it and you will see:
+
+```cpp
+#ifndef FUNCTIONS_H
+#define FUNCTIONS_H
+```
+
+with `#endif` at the very bottom. That is an **include guard**, and every header
+you meet this semester has one.
+
+Here is the problem it solves. `#include` is a literal paste: the compiler drops
+the file's whole text into whatever included it. Headers include other headers,
+so the same file often gets pasted into one compilation two or three times
+without anyone meaning to, and a second copy of the same declarations is an
+error, not a harmless repeat.
+
+The guard makes the second paste do nothing. The first time through,
+`FUNCTIONS_H` is not defined, so the compiler defines it and reads the file. Any
+later time, it is already defined, so everything up to `#endif` is skipped.
+
+You will write your own from a03 onward, when you start creating classes. The
+convention is the file's name in capitals with the dot turned into an
+underscore, so `Queue.h` gets `QUEUE_H`.
+:::
+
+::: {.callout-note}
+**And one line at the top of `main.cpp`.**
+
+In a00 it was simply `int main()`. Here it is:
+
+```cpp
+int main(int argc, char* argv[]) {
+```
+
+Those two parameters are how a program reads what you typed after its name on
+the command line, which is what makes `./a01 step1` possible at all.
+
+- **`argc`**, *argument count*. How many words were on the line, **including the
+  program's own name**. Typing `./a01 step1` gives `argc == 2`.
+- **`argv`**, *argument vector*. The words themselves, as an array. `argv[0]` is
+  `"./a01"` and `argv[1]` is `"step1"`.
+
+That is why `main.cpp` checks `argc < 2` before doing anything: if you run
+`./a01` with no step, there is no `argv[1]` to read, and reading it anyway would
+be your first taste of undefined behaviour. It prints the usage line instead.
+
+`char*` means *pointer to a character*, and `char* argv[]` an array of them , 
+pointers being exactly what TODO 1 is about. You are not expected to be
+comfortable with that line yet; you are expected to recognise it when you meet
+it again.
+:::
 
 To compile and run a specific step:
 
@@ -112,10 +196,10 @@ with hints when something is wrong. Work through failures one at a time.
 
 ## 4. Part 1: The Character Sheet
 
-### TODO 1a — Declare character variables
+### TODO 1a, Declare character variables
 
 In `character_sheet()`, declare the following seven variables. The types and
-names must match exactly — the autograder checks them.
+names must match exactly, the autograder checks them.
 
 | Variable | Type | Initial value |
 |---|---|---|
@@ -129,19 +213,19 @@ names must match exactly — the autograder checks them.
 
 ::: {.callout-tip}
 **Single quotes vs. double quotes.** In C++, `'A'` is a single character (`char`).
-`"A"` is a string — even if it contains only one letter. Use single quotes for
+`"A"` is a string, even if it contains only one letter. Use single quotes for
 `char` variables and double quotes for `string` variables.
 :::
 
 ::: {.callout-warning}
 **Unused variable warnings.** After TODO 1a, compiling will produce warnings about
-unused variables. This is expected — you will use them in TODO 1b. Warnings are not
+unused variables. This is expected, you will use them in TODO 1b. Warnings are not
 errors; the program still compiles and runs.
 :::
 
 ---
 
-### TODO 1b — Print memory addresses
+### TODO 1b, Print memory addresses
 
 Every variable you declare occupies space somewhere in RAM. In C++, the
 **address-of operator** `&` gives you the memory address of any variable:
@@ -185,14 +269,14 @@ health is at: 0x7ffd3a1b2bc8
 
 ::: {.callout-tip}
 **Why are the addresses different on every run?** Modern operating systems use
-address-space layout randomization (ASLR) — they deliberately place your program
+address-space layout randomization (ASLR), they deliberately place your program
 at a random memory location each time it runs. This is a security feature that
 makes it harder to exploit memory bugs.
 :::
 
 ---
 
-### TODO 1c — Declare a pointer and use it
+### TODO 1c, Declare a pointer and use it
 
 A **pointer** is a variable that holds a memory address. Where a regular variable
 holds a value (like `100`), a pointer holds the address *where* a value lives
@@ -209,7 +293,7 @@ cout << "hpPtr points to: " << hpPtr << endl;
 cout << "Value at hpPtr: " << *hpPtr << endl;
 ```
 
-In Python, every variable is already a reference — you can never see or manipulate
+In Python, every variable is already a reference, you can never see or manipulate
 the raw address. In C++, you can, which gives you both power and responsibility.
 
 Use these **exact** labels:
@@ -230,7 +314,7 @@ Test with `./a01 step1`, then `make test`.
 
 ---
 
-### TODO 2 — Number systems
+### TODO 2, Number systems
 
 In `show_code()`, create an `int` called `code` initialized to `37`, then
 print it in all three number systems:
@@ -254,15 +338,15 @@ Hexadecimal: 25
 
 ::: {.callout-tip}
 37 in binary is `100101`. Grouping into three bits from the right gives `100` `101`,
-which is `4` and `5` in decimal — so octal is `45`. Grouping into four bits gives
-`0010` `0101`, which is `2` and `5` — so hex is `25`.
+which is `4` and `5` in decimal, so octal is `45`. Grouping into four bits gives
+`0010` `0101`, which is `2` and `5`, so hex is `25`.
 :::
 
 Test with `./a01 step2`, then `make test`.
 
 ---
 
-### TODO 3 — Arrays and `sizeof`
+### TODO 3, Arrays and `sizeof`
 
 In `inventory_size()`, declare an array of 20 `float`s:
 
@@ -276,7 +360,7 @@ Then print its total size in bytes using `sizeof`:
 cout << "Inventory size in bytes: " << sizeof(inventory) << endl;
 ```
 
-`sizeof(inventory)` returns the **total** size of the whole array —
+`sizeof(inventory)` returns the **total** size of the whole array , 
 20 floats × 4 bytes each = 80 bytes. Compare this to `sizeof(float)`,
 which only gives you the size of one `float`.
 
@@ -290,7 +374,7 @@ Test with `./a01 step3`, then `make test`.
 
 ---
 
-### TODO 4 — Unsigned integer underflow
+### TODO 4, Unsigned integer underflow
 
 In `health_underflow()`, you will discover one of the most infamous bugs in
 game programming. Declare an unsigned integer set to 0, then decrement it:
@@ -307,7 +391,7 @@ You will not see `-1`. Add a comment explaining why.
 **What is an unsigned integer?** A regular `int` can hold negative values
 (roughly −2 billion to +2 billion). An `unsigned int` can only hold
 non-negative values (0 to roughly 4 billion). Decrementing below zero does not
-produce a negative number — it *wraps around* to the maximum value. This is called
+produce a negative number, it *wraps around* to the maximum value. This is called
 **integer underflow**.
 
 This exact bug has caused real problems in shipped games: a character's health
@@ -326,7 +410,7 @@ Test with `./a01 step4`, then `make test`.
 
 ## 5. Part 2: The Adventure System
 
-### TODO 5 — Power tier rating (`if / else if / else`)
+### TODO 5, Power tier rating (`if / else if / else`)
 
 In `rate_power()`, read an unsigned power level from the user and assign a
 letter tier using `if / else if / else`:
@@ -364,12 +448,12 @@ value (89, 90, 79, 80, etc.), so be precise with your `>=` conditions.
 
 ---
 
-### TODO 6 — Guild membership cost (`while` + `if / else`)
+### TODO 6, Guild membership cost (`while` + `if / else`)
 
 In `guild_cost()`, you will combine two new control structures: a `while` loop
 for input validation and a nested `if / else` for cost lookup.
 
-**Step A — Validate the guild name with a while loop:**
+**Step A, Validate the guild name with a while loop:**
 
 ```cpp
 string guild;
@@ -386,7 +470,7 @@ while (guild != "silver" && guild != "gold") {
 The `\"` inside a string literal prints a literal double-quote character.
 The loop keeps running as long as the guild name is neither `"silver"` nor `"gold"`.
 
-**Step B — Read the duration:**
+**Step B, Read the duration:**
 
 ```cpp
 unsigned months;
@@ -394,14 +478,14 @@ cout << "Enter number of months: ";
 cin >> months;
 ```
 
-**Step C — Compute the cost using this table:**
+**Step C, Compute the cost using this table:**
 
 | Guild  | 1 month | 2–6 months | 7+ months |
 |--------|---------|------------|-----------|
 | silver | $90     | $60        | $60       |
 | gold   | $90     | $70        | $35       |
 
-**Step D — Print the result** using this exact format:
+**Step D, Print the result** using this exact format:
 
 ```
 "The cost for your guild is $"   (immediately followed by the cost and a period)
@@ -422,7 +506,7 @@ the table, both boundary values (months 6 and 7), and multiple invalid inputs.
 
 ---
 
-### TODO 7 — Class affinity (`switch`)
+### TODO 7, Class affinity (`switch`)
 
 In `class_type()`, read a single lowercase character from the user and use a
 `switch` statement to determine whether it is a vowel (magical class) or
@@ -461,7 +545,7 @@ Test with `./a01 step7`, then `make test`.
 
 ---
 
-### TODO 8 — XP thresholds (`for` loop, ascending)
+### TODO 8, XP thresholds (`for` loop, ascending)
 
 In `xp_levels()`, create an array of 8 `unsigned` values and fill it with
 multiples of 7 using a `for` loop:
@@ -481,7 +565,7 @@ assert(xp[3] == 21);
 assert(xp[7] == 49);
 ```
 
-If an assertion fails, the program crashes immediately with an error — that
+If an assertion fails, the program crashes immediately with an error, that
 means your loop is filling the array incorrectly. Fix the loop and rerun.
 
 If all three pass, print:
@@ -494,7 +578,7 @@ Test with `./a01 step8`, then `make test`.
 
 ---
 
-### TODO 9 — Gold sum (`for` loop, descending)
+### TODO 9, Gold sum (`for` loop, descending)
 
 In `gold_sum()`, create an array of 100 `double`s, fill it forward, then sum
 it in reverse:
@@ -516,7 +600,7 @@ cout << "Total gold collected: " << total << endl;
 ::: {.callout-warning}
 **Why `int`, not `unsigned`, for the loop variable?**
 A descending `for` loop eventually reaches `i = -1` as its stopping condition.
-An `unsigned` variable cannot represent -1 — it wraps to 4,294,967,295 (the
+An `unsigned` variable cannot represent -1, it wraps to 4,294,967,295 (the
 same underflow you saw in TODO 4). The loop would run forever. Always use `int`
 when your loop variable needs to go below zero.
 :::
@@ -539,11 +623,11 @@ the cost. A function that does three things is harder to test and reuse than
 three functions that each do one thing.
 
 In this part you will refactor that logic into three smaller functions.
-`play()` — already written in the starter code — calls them in sequence.
+`play()`, already written in the starter code, calls them in sequence.
 After your three functions work, `play()` should produce the same output
 as `guild_cost()` without any changes on your part.
 
-### TODO 10a — `getGuild()`
+### TODO 10a, `getGuild()`
 
 Extract the while-loop validation from TODO 6. The function should:
 
@@ -559,7 +643,7 @@ string getGuild() {
 }
 ```
 
-### TODO 10b — `getDuration()`
+### TODO 10b, `getDuration()`
 
 Extract the months-input from TODO 6. The function should:
 
@@ -574,13 +658,13 @@ unsigned getDuration() {
 }
 ```
 
-### TODO 10c — `computeCost()`
+### TODO 10c, `computeCost()`
 
 Extract the cost-table logic from TODO 6. This function:
 
 - Takes `guild` (a `string`) and `months` (an `unsigned`) as parameters
 - Returns the cost as an `unsigned`
-- **Contains no `cout` or `cin`** — pure computation only
+- **Contains no `cout` or `cin`**, pure computation only
 
 ```cpp
 unsigned computeCost(string guild, unsigned months) {
@@ -590,8 +674,8 @@ unsigned computeCost(string guild, unsigned months) {
 ```
 
 ::: {.callout-tip}
-**In, out, and in/out parameters.** `computeCost` takes two *in parameters* —
-values passed in for the function to read — and returns one value. There is
+**In, out, and in/out parameters.** `computeCost` takes two *in parameters* , 
+values passed in for the function to read, and returns one value. There is
 no need for `cin` or `cout` inside it. If you find yourself reaching for `cin`
 inside `computeCost`, step back: the caller (`play`) is responsible for
 gathering input; `computeCost` is only responsible for the math.
@@ -610,7 +694,7 @@ void play() {
 }
 ```
 
-Study this function. Anyone reading it immediately understands what it does —
+Study this function. Anyone reading it immediately understands what it does , 
 not because it has comments, but because the function names say it all. This is
 what well-decomposed code looks like.
 
@@ -625,11 +709,11 @@ make test
 ```
 
 You will see a PASS or FAIL for each of the 89 test cases. Read the hints on any
-FAILs — they tell you exactly which prompt string is missing, which boundary value
+FAILs, they tell you exactly which prompt string is missing, which boundary value
 is wrong, or which loop is behaving unexpectedly.
 
 ::: {.callout-tip}
-If you get a **build error**, the hints do not matter yet — fix the compiler error
+If you get a **build error**, the hints do not matter yet, fix the compiler error
 first. The error message tells you the file name and line number. Read it carefully.
 :::
 
@@ -642,7 +726,7 @@ All tests passed! Your character sheet is complete.
 
 ::: {.callout-note}
 **There are no hidden tests.** What you run with `make test` is exactly what the
-grader runs — all 89 checks. If it passes here, it passes there.
+grader runs, all 89 checks. If it passes here, it passes there.
 
 Grading always runs the official test suite, not the copy in your repository.
 Editing `test.py` will not change your score.
@@ -669,5 +753,5 @@ git push
 **Every push is checked automatically.** Within a minute or two the **Actions**
 tab of your repository shows a run named **Autograde**. Open it: the job summary
 says how many checks passed, and names any that failed. Push as many times as
-you like before the deadline — the most recent submission is the one that
+you like before the deadline, the most recent submission is the one that
 counts.

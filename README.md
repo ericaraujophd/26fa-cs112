@@ -1,4 +1,4 @@
-# CS 112 — Data Structures (Fall 2026)
+# CS 112, Data Structures (Fall 2026)
 
 Course website for CS 112, Introduction to Data Structures, at Calvin University.
 Built with [Quarto](https://quarto.org).

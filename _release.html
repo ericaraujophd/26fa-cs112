@@ -9,7 +9,7 @@
          ?preview=0 to turn it back off. The choice is remembered per browser.
 
      This is presentational only. The pages still render and a guessed URL
-     still resolves — it keeps unfinished work out of students' way, it is
+     still resolves, it keeps unfinished work out of students' way, it is
      not access control. Real gating is the private repo each student receives. -->
 <script>
 (function () {
@@ -51,7 +51,7 @@
   function ribbon(reason) {
     var bar = document.createElement('div');
     bar.className = 'instructor-ribbon';
-    bar.innerHTML = '<span>Instructor preview — release gate off (' + reason + ')</span>';
+    bar.innerHTML = '<span>Instructor preview, release gate off (' + reason + ')</span>';
     if (!isLocal()) {
       var a = document.createElement('a');
       a.href = location.pathname + '?preview=0';
@@ -86,7 +86,7 @@
     var now = today();
     document.querySelectorAll('[data-opens]').forEach(function (el) {
       var when = parseDate(el.getAttribute('data-opens'));
-      if (!when || when <= now) return;          // already open — leave alone
+      if (!when || when <= now) return;          // already open, leave alone
 
       var label = fmt(when);
       el.classList.add('is-locked');
@@ -112,7 +112,7 @@
             !el.nextElementSibling.classList.contains('res-locked-note')) {
           var tag = document.createElement('span');
           tag.className = 'res-sub res-locked-note';
-          tag.textContent = ' — opens ' + label;
+          tag.textContent = ', opens ' + label;
           el.insertAdjacentElement('afterend', tag);
         }
       }

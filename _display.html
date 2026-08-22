@@ -74,8 +74,8 @@
     var t = quartoToggle();
     if (t) t.click();          // let Quarto swap sheets + persist
   }
-  /* Quarto renders the logo twice — one <img> tagged .light-content and one
-     .dark-content — and shows whichever matches the active theme. Both start
+  /* Quarto renders the logo twice, one <img> tagged .light-content and one
+     .dark-content, and shows whichever matches the active theme. Both start
      out pointing at the light file, whose wordmark is black and therefore
      invisible on a dark background. Repoint the dark copy once at load and
      let Quarto keep handling the switching. */

@@ -5,7 +5,7 @@ subtitle: "A season of results, and the container you did not have to write"
 
 ::: {.callout-note}
 Your own private GitHub repository is waiting for you (see
-[Getting the code](#getting-the-code) below) — clone it and open it in VS Code.
+[Getting the code](#getting-the-code) below), clone it and open it in VS Code.
 
 **Plan to set aside about 2 to 2.5 hours.** `readResults` (§6) and the menu (§9)
 are the two longest sections. §10 is yours to make as small or as large as you
@@ -35,8 +35,8 @@ Linear Data Structures, assessed at **Window 2** on Nov 20.
 This one needs Wednesday's lecture on `vector` and iterators, so it opens after
 that.
 
-Friday's lecture — what a dynamic array costs, and what "amortized constant
-time" means — is the other half of the story, and it is not needed for anything
+Friday's lecture, what a dynamic array costs, and what "amortized constant
+time" means, is the other half of the story, and it is not needed for anything
 here. Nothing in this assignment asks you to measure anything.
 :::
 
@@ -85,7 +85,8 @@ of 2024. 479 rows. You will read it into a `vector`, and then ask it questions.
 
 Your private GitHub repository for this assignment is created for you inside
 the course organization, with the starter code already in it. There is nothing
-to accept — if you are on the roster, it is there.
+to accept and nothing to set up, if you are on the roster, it is there.
+
 
 Clone it, replacing `YOURUSERNAME` with your GitHub username. If `gh` asks you to sign in, see [step 9 of Getting Started](gettingStarted.html#get-your-repository):
 
@@ -93,6 +94,35 @@ Clone it, replacing `YOURUSERNAME` with your GitHub username. If `gh` asks you t
 gh repo clone 26fa-cs112/cs112-a06-YOURUSERNAME
 cd cs112-a06-YOURUSERNAME
 ```
+
+::: {.callout-note}
+**Cannot find it? Ask GitHub what you have.**
+
+If `gh repo clone` answers
+`Could not resolve to a Repository`, this lists every repository you can
+actually see, spelled exactly right:
+
+```bash
+gh repo list 26fa-cs112
+```
+
+If yours is in that list, you mistyped the name, copy it from the output and
+try again. Watch for usernames that already contain a hyphen or a number; the
+pattern is `cs112-<assignment>-<your username>`, so the two halves run together
+and it often looks wrong when it is right.
+
+**If the list is empty, or the command errors, that is mine to fix rather than
+yours to work around.** The usual causes are an organization invitation you have not accepted yet
+(check your email, including spam and the Promotions tab), or a username I
+mistyped when I built the roster. Either way, email me at
+[eric.araujo@calvin.edu](mailto:eric.araujo@calvin.edu) and I will sort it out
+the same day.
+
+While you wait, **do not create a repository yourself and do not start the work
+somewhere else.** Only the repository I create for you is connected to grading,
+so anything written outside it has to be moved by hand later, and that is a
+worse afternoon than a short wait.
+:::
 
 Open the folder in VS Code, then build it before you change anything:
 
@@ -115,12 +145,12 @@ answer happens to match an empty question.
 | File | Yours? | What it is |
 |---|---|---|
 | `Season.cpp` | **yes** | TODOs 1, 2, 3 and 5 |
-| `main.cpp` | **yes** | TODO 4 — the menu |
+| `main.cpp` | **yes** | TODO 4, the menu |
 | `Result.h` | no | one row of the file, as a `struct`. Read it first. |
 | `Season.h` | no | the specification for everything you write |
 | `season2024.csv` | no | the data |
 | `broken.csv` | no | a deliberately malformed file, for the error path |
-| `checks.cpp` | no | the course's checks. Read them — they are the specification. |
+| `checks.cpp` | no | the course's checks. Read them, they are the specification. |
 | `catch.hpp`, `catchmain.cpp` | no | the test framework |
 | `sample-output.txt` | no | what `./season` looks like when you are done |
 | `makefile`, `test.py` | no | the build and the grader |
@@ -158,7 +188,7 @@ assume. A tidy made-up season would not have taught you that.
 ::: {.callout-warning}
 **One thing this file does not have.** These are race results only, so the
 `points` column does not include sprint points. Add up Max Verstappen's column
-and you get 399, not the 437 he finished the championship on — the missing 38
+and you get 399, not the 437 he finished the championship on, the missing 38
 came from the six sprint races. Nothing in this assignment depends on it, but if
 you go looking for the championship table, that is why your numbers are 20-odd
 points light.
@@ -191,15 +221,15 @@ Two differences worth knowing:
   `range_error` and was kinder than the real thing. (`vector::at()` does throw,
   if you want it.)
 - **`vector<Result>` works** without you doing anything, because `vector` is a
-  template — the same mechanism you built last week, applied to a type someone
+  template, the same mechanism you built last week, applied to a type someone
   else wrote.
 
 ---
 
 ## 5. Iterators
 
-`push_back`, `size` and `[]` are the container. The *algorithms* — `find`,
-`sort`, and about ninety others — do not take a container at all. They take a
+`push_back`, `size` and `[]` are the container. The *algorithms*, `find`,
+`sort`, and about ninety others, do not take a container at all. They take a
 pair of **iterators**.
 
 An iterator is a position in a container. `begin()` is the first element:
@@ -210,7 +240,7 @@ teams.end()            // points ONE PAST the last element
 ```
 
 `end()` is the strange one, and it is worth being precise about. It does not
-point at the last element. It points at the position *after* the last element —
+point at the last element. It points at the position *after* the last element , 
 somewhere you may never read from. It exists so that a range can be written as a
 pair, `[begin, end)`, and so that an empty container has `begin() == end()`
 without any special case.
@@ -225,7 +255,7 @@ if (find(teams.begin(), teams.end(), "Ferrari") == teams.end()) {
 
 reads the way it does. `find` walks the range and returns *where* it found the
 value. If it never found it, the only position left to return is the one past
-the end — so `== end()` means "not there".
+the end, so `== end()` means "not there".
 
 ```cpp
 sort(teams.begin(), teams.end());     // the same pair, sorting the range
@@ -238,12 +268,12 @@ Both live in `<algorithm>`, which the starter already includes.
 
 ---
 
-## 6. TODO 1 — Reading the File
+## 6. TODO 1, Reading the File
 
 `readResults(filename)` turns the whole file into a `vector<Result>`.
 
-Open `Result.h` first. It is a `struct` — a class whose members are public by
-default — with twelve members in the same order as the file's columns. A
+Open `Result.h` first. It is a `struct`, a class whose members are public by
+default, with twelve members in the same order as the file's columns. A
 `Result` has no behaviour; it is twelve values that travel together, so there is
 nothing to hide and nothing to enforce.
 
@@ -261,7 +291,7 @@ What `readResults` does:
 
 1. Open the file. If it will not open, throw
    `invalid_argument("cannot open file: " + filename)`.
-2. Read the first line with `getline` and **throw it away** — it is the header.
+2. Read the first line with `getline` and **throw it away**, it is the header.
 3. For every line after that: skip it if it is blank; split it; if you did not
    get exactly 12 fields, throw; otherwise fill in a `Result` and `push_back` it.
 4. Return the vector.
@@ -280,7 +310,7 @@ The other eight go straight across: `r.race = fields[2];`
 ::: {.callout-tip}
 **`return results;` is not expensive**, even though it looks like it copies 479
 Results out of the function. The compiler builds the vector directly in the
-caller's variable — it never exists twice. This is the one place you do not have
+caller's variable, it never exists twice. This is the one place you do not have
 to think about copying a big container, and it is why a function *can* just hand
 you a vector.
 
@@ -289,7 +319,7 @@ Passing one *in* is a different story. That is §11.
 
 ---
 
-## 7. TODO 2 — Every Team, Once
+## 7. TODO 2, Every Team, Once
 
 `collectAllTeams(results)` returns every team that appears, in alphabetical
 order, with no duplicates. Ten teams are mentioned 479 times between them; you
@@ -329,21 +359,21 @@ by hand once before you let a container do it for you.
 
 ---
 
-## 8. TODO 3 — One Team's Drivers
+## 8. TODO 3, One Team's Drivers
 
 `getDriversForTeam(results, team)` is the same shape with one extra condition:
 only look at results whose `team` matches the one you were asked about.
 
 - Match the whole string with `==`. `"Apple"` must not match `"Apple Junior"`.
 - A team nobody drove for gives an **empty vector**. That is an answer, not an
-  error — do not throw.
+  error, do not throw.
 - Do not assume two drivers. Five teams used three in 2024, and that is the
   whole reason this function de-duplicates instead of just collecting the first
   two names it sees.
 
 ---
 
-## 9. TODO 4 — The Menu
+## 9. TODO 4, The Menu
 
 In `main.cpp`. Everything around this block is written for you; this is the part
 that talks to whoever is running the program.
@@ -360,7 +390,7 @@ line, act on it.
 
   Team number (0 to quit): 3
 
-  Ferrari — 3 drivers
+  Ferrari, 3 drivers
     Carlos Sainz
     Charles Leclerc
     Oliver Bearman
@@ -371,9 +401,9 @@ in `main.cpp`; copy them from there.
 
 | | |
 |---|---|
-| the prompt | `  Team number (0 to quit): ` — no `endl` after it |
+| the prompt | `  Team number (0 to quit): `, no `endl` after it |
 | a bad number | `  There is no team number 99.` |
-| a team's heading | `  Ferrari — 3 drivers` |
+| a team's heading | `  Ferrari, 3 drivers` |
 
 ::: {.callout-warning}
 **Read the whole line, then parse it.** Not `cin >> choice`.
@@ -398,12 +428,12 @@ Two more things:
 
 - **The person types from 1; the vector is indexed from 0.** `teams[choice - 1]`.
 - **Check the range before you index.** `teams[98]` on a vector of ten does not
-  throw — it reads memory that is not yours and carries on as if nothing
+  throw, it reads memory that is not yours and carries on as if nothing
   happened. Check `choice` is between 1 and `teams.size()` first.
 
 ---
 
-## 10. TODO 5 — Ask Your Own Question
+## 10. TODO 5, Ask Your Own Question
 
 ```cpp
 void myQuery(const vector<Result>& results, ostream& out);
@@ -424,11 +454,11 @@ Some starting points, if nothing comes to mind:
 **What is graded is not what it computes.** Five things:
 
 1. It is a real function with a real body.
-2. It prints at least two lines — to `out`, not to `cout`. (They are the same
+2. It prints at least two lines, to `out`, not to `cout`. (They are the same
    stream when `main` calls it, but the checks hand it an `ostringstream` so
    they can read what you wrote.)
-3. It actually reads the vector it was given. One check runs your query twice —
-   once on the 2024 season, once on a four-row made-up one — and expects the
+3. It actually reads the vector it was given. One check runs your query twice , 
+   once on the 2024 season, once on a four-row made-up one, and expects the
    answers to differ. A fixed string will not pass.
 4. It does not crash on 479 results.
 5. The `// MY QUESTION:` line above it says what you are asking, in a sentence.
@@ -436,7 +466,7 @@ Some starting points, if nothing comes to mind:
 
 ::: {.callout-tip}
 Write the question down first, in that comment, before you write any code. It is
-much easier to write a query when you have committed to what it answers — and if
+much easier to write a query when you have committed to what it answers, and if
 you cannot state it in a sentence, that is usually a sign the query is two
 questions rather than one.
 :::
@@ -463,8 +493,8 @@ call, to do a job that only ever reads them. With the `&`, the function works on
 the caller's vector and nothing is copied at all.
 
 **The `const`.** It says the function will not change what it was given, and the
-compiler holds you to it. That is worth having for its own sake — you can call
-`collectAllTeams` and know your `results` came back untouched — but it also
+compiler holds you to it. That is worth having for its own sake, you can call
+`collectAllTeams` and know your `results` came back untouched, but it also
 means a caller with a `const vector<Result>` can use your function at all.
 
 ::: {.callout-note}
@@ -513,12 +543,12 @@ make checks
 
 A test name needs the full name, or a prefix with a `*` on the end. `./checks
 "Teams: collectAllTeams"` matches nothing, prints almost nothing, and exits
-successfully — which looks a lot like passing.
+successfully, which looks a lot like passing.
 :::
 
 ::: {.callout-note}
 **There are no hidden tests.** What you run with `make test` is exactly what the
-grader runs — all 40 checks. If it passes here, it passes there.
+grader runs, all 40 checks. If it passes here, it passes there.
 
 Grading always runs the official test suite, not the copy in your repository.
 Editing `test.py` or `checks.cpp` will not change your score.

@@ -1,15 +1,15 @@
 ---
 title: "Assignment 04: Telemetry"
-subtitle: "A container that owns its memory — and what that costs"
+subtitle: "A container that owns its memory, and what that costs"
 ---
 
 ::: {.callout-note}
 Your own private GitHub repository is waiting for you (see
-[Getting the code](#getting-the-code) below) — clone it and open it in VS Code.
+[Getting the code](#getting-the-code) below), clone it and open it in VS Code.
 
 **Plan to set aside about 3.75 to 4.25 hours.** `append` (§7) and the copy
 constructor (§10) are the two long sections. §9 is an experiment rather than a
-task — it takes about twenty minutes and it is the most important twenty minutes
+task, it takes about twenty minutes and it is the most important twenty minutes
 of the week.
 :::
 
@@ -35,13 +35,13 @@ By the end of this assignment, you will be able to:
   in a debugger
 
 These objectives map to course skills **A3** and **B4**, both of which are
-assessed at **Window 1** on Oct 23, and both of which are *persistent* — they can
+assessed at **Window 1** on Oct 23, and both of which are *persistent*, they can
 come back at any later check-in. This assignment also introduces **C1**, which
 you finish next week.
 
 ::: {.callout-note}
 **Lab and homework.** You start this in lab on Tuesday, when you will have had
-Monday's lecture on `new`, `delete`, and the heap — enough for §3 through §6.
+Monday's lecture on `new`, `delete`, and the heap, enough for §3 through §6.
 Wednesday's lecture covers growing an array and the destructor, which is §7 and
 §8. Friday's covers copying, which is §10 onward.
 
@@ -55,7 +55,7 @@ the ordering; it is the ordering.
 ## 1. Introduction
 
 An F1 car is covered in sensors. Over one qualifying lap it logs a stream of
-samples — speed, throttle, brake, steering, hundreds of channels — and the
+samples, speed, throttle, brake, steering, hundreds of channels, and the
 engineers in the garage compare this lap against the best lap of the session to
 find out where the time went. That comparison is the wiggling bar you see across
 the bottom of a broadcast: **the delta**.
@@ -69,9 +69,9 @@ again. And every array you have written so far in this course has had its size
 fixed when the program was *compiled*:
 
 ```cpp
-char grid[64][128];        // a02 — decided by you, in advance
-Lap myLaps[10];            // a03 — decided by you, in advance
-Sample lap[???];           // a04 — decided by a file you have not read yet
+char grid[64][128];        // a02, decided by you, in advance
+Lap myLaps[10];            // a03, decided by you, in advance
+Sample lap[???];           // a04, decided by a file you have not read yet
 ```
 
 There is no number you can put in those brackets that is right. Too small and
@@ -79,7 +79,7 @@ the program is broken on the next circuit; too large and you are wasting most of
 it on every lap. You need an array whose size is decided while the program is
 *running*, and that is what `new[]` is for.
 
-The catch — and this is the part that takes a week — is that memory you ask for
+The catch, and this is the part that takes a week, is that memory you ask for
 this way is **yours until you give it back**. Nothing cleans up after you. A
 `Trace` that forgets to give its array back leaks. A `Trace` that gives the same
 array back twice crashes. And a `Trace` that gets copied without thinking hard
@@ -113,7 +113,8 @@ number and you have the corner where the driver gained the most.
 
 Your private GitHub repository for this assignment is created for you inside
 the course organization, with the starter code already in it. There is nothing
-to accept — if you are on the roster, it is there.
+to accept and nothing to set up, if you are on the roster, it is there.
+
 
 Clone it, replacing `YOURUSERNAME` with your GitHub username. If `gh` asks you to sign in, see [step 9 of Getting Started](gettingStarted.html#get-your-repository):
 
@@ -121,6 +122,35 @@ Clone it, replacing `YOURUSERNAME` with your GitHub username. If `gh` asks you t
 gh repo clone 26fa-cs112/cs112-a04-YOURUSERNAME
 cd cs112-a04-YOURUSERNAME
 ```
+
+::: {.callout-note}
+**Cannot find it? Ask GitHub what you have.**
+
+If `gh repo clone` answers
+`Could not resolve to a Repository`, this lists every repository you can
+actually see, spelled exactly right:
+
+```bash
+gh repo list 26fa-cs112
+```
+
+If yours is in that list, you mistyped the name, copy it from the output and
+try again. Watch for usernames that already contain a hyphen or a number; the
+pattern is `cs112-<assignment>-<your username>`, so the two halves run together
+and it often looks wrong when it is right.
+
+**If the list is empty, or the command errors, that is mine to fix rather than
+yours to work around.** The usual causes are an organization invitation you have not accepted yet
+(check your email, including spam and the Promotions tab), or a username I
+mistyped when I built the roster. Either way, email me at
+[eric.araujo@calvin.edu](mailto:eric.araujo@calvin.edu) and I will sort it out
+the same day.
+
+While you wait, **do not create a repository yourself and do not start the work
+somewhere else.** Only the repository I create for you is connected to grading,
+so anything written outside it has to be moved by hand later, and that is a
+worse afternoon than a short wait.
+:::
 
 Open the folder in VS Code, then build it before you change anything:
 
@@ -144,16 +174,16 @@ between them, in the order they appear in the files.
 |---|:--:|---|
 | **`Trace.cpp`** | ✎ | TODOs 1–11. The container. |
 | **`Delta.cpp`** | ✎ | TODOs 12–13. The application logic. |
-| `Trace.h` | | The class. **Read this first** — it is the whole design in one page. |
+| `Trace.h` | | The class. **Read this first**, it is the whole design in one page. |
 | `Delta.h` | | What the three application functions promise |
 | `checks.cpp` | | The course's checks. Read them; they are the specification. |
-| `main.cpp` | | The application — reads `laps.txt`, prints the delta |
+| `main.cpp` | | The application, reads `laps.txt`, prints the delta |
 | `experiment.cpp` | | The short program §9 asks you to run |
 | `laps.txt`, `broken.txt` | | Two laps, and two laps that do not match |
 | `makefile`, `test.py` | | Build and check |
 
 Two methods, `setSize` and `operator==`, are **written for you** in the middle of
-`Trace.cpp`. `setSize` is not there to save you time — it is there to be read.
+`Trace.cpp`. `setSize` is not there to save you time, it is there to be read.
 It is the same allocate-copy-delete pattern you are about to write in `append`,
 worked out in full, with the mistake that costs most people a mark called out in
 a comment.
@@ -164,7 +194,7 @@ is in `test.py` and `checks.cpp`, in your repository, readable right now. What
 `make test` runs is exactly what the grader runs.
 
 Grading re-copies the official `test.py` and `checks.cpp` over yours before
-running, so editing them changes nothing about your score — and `make test`
+running, so editing them changes nothing about your score, and `make test`
 checks `checks.cpp` against its shipped fingerprint and warns you if it has been
 edited, because a local score that does not match your real one is worse than
 useless.
@@ -187,7 +217,7 @@ private:
 Read `mySamples` carefully. It is a **pointer**. It does not contain any samples;
 it contains the address where the samples are. The samples themselves live in a
 block of memory that you will ask for with `new[]`, and that block is not part of
-the `Trace` object at all — it is somewhere else entirely, and the `Trace` just
+the `Trace` object at all, it is somewhere else entirely, and the `Trace` just
 knows where.
 
 That is new. In a02 your grid *was* the array. In a03 `Lap myLaps[10]` *was* ten
@@ -196,14 +226,14 @@ laps. Here the object is three small numbers, one of which is a signpost.
 ### Why two counts?
 
 Because growing is expensive. Growing means allocating a bigger array, copying
-everything across, and freeing the old one — the cost of which is proportional to
+everything across, and freeing the old one, the cost of which is proportional to
 how much is already there. If the array were always exactly as big as the number
 of samples in it, **every single `append` would do all of that**.
 
 So `Trace` keeps slack. `myCapacity` is how big the array is; `mySize` is how
 much of it is in use. Most appends just write into a slot that is already there
 and bump the count: two operations, no matter how long the trace is. Only when
-the array is genuinely full does it grow — and then it **doubles**, so that the
+the array is genuinely full does it grow, and then it **doubles**, so that the
 next growth is twice as far away as the last one.
 
 ::: {.callout-tip}
@@ -218,7 +248,7 @@ week, just get the feel of it: *appending is cheap because growing is rare.*
 
 *(Tuesday.)*
 
-### TODO 1 — the default constructor
+### TODO 1, the default constructor
 
 An empty trace owns nothing:
 
@@ -230,9 +260,9 @@ myCapacity = 0;
 
 `nullptr` is not the same as leaving `mySamples` uninitialised. An uninitialised
 pointer holds whatever bytes happened to be in that memory, and a `delete[]` on
-that is a crash — usually somewhere else entirely, minutes later.
+that is a crash, usually somewhere else entirely, minutes later.
 
-### TODO 2 — the explicit-value constructor
+### TODO 2, the explicit-value constructor
 
 `Trace t(400);` should give 400 samples, all zero.
 
@@ -248,7 +278,7 @@ if (n > 0) {
 
 `new Sample[n]` asks the operating system for room for `n` Samples and hands back
 the address of the first one. **`n` does not have to be known when the program is
-compiled** — which is the entire reason this class can exist.
+compiled**, which is the entire reason this class can exist.
 
 ::: {.callout-warning}
 Every `new[]` is half of a promise. The other half is `delete[]`, and you write it
@@ -256,13 +286,13 @@ in §7. Get into the habit now of not typing one without knowing where the other
 one is going to live.
 :::
 
-### TODO 3 — `getSize` and `getCapacity`
+### TODO 3, `getSize` and `getCapacity`
 
 Two one-line getters, both `const`.
 
 There is deliberately **no** getter for `mySamples`. Handing out the address of
 your array would let any code anywhere write into it, and the class could no
-longer promise anything about its own contents — including that `mySize` is
+longer promise anything about its own contents, including that `mySize` is
 still true.
 
 ---
@@ -271,7 +301,7 @@ still true.
 
 *(Tuesday. This is the last section Monday's lecture unlocks.)*
 
-### TODO 4 — `getSample` and `setSample`
+### TODO 4, `getSample` and `setSample`
 
 Read and write one sample, with a bounds check:
 
@@ -283,13 +313,13 @@ if (i >= mySize) {
 
 ::: {.callout-warning}
 **`i` is `unsigned`, and that is a trap rather than a convenience.** An unsigned
-number can never be negative — so if a caller passes `-1`, it does not arrive as
+number can never be negative, so if a caller passes `-1`, it does not arrive as
 `-1`. It arrives as `4294967295`, which sails straight past any `i < 0` test you
 might write and then indexes four billion elements past the end of your array.
 
 A single `i >= mySize` catches both a negative argument and a too-large one,
 which is why that is the only test you need. If you write `i < 0` as well and
-compile with `-Wextra`, the compiler will tell you it is always false — and it
+compile with `-Wextra`, the compiler will tell you it is always false, and it
 will be right.
 :::
 
@@ -298,7 +328,7 @@ more samples than the trace is holding; those slots exist but they are not part
 of the trace, and handing one out would be handing out a number nobody stored.
 
 **Run `make test` now.** You should be passing Part 1 and the first half of
-Part 2 — the other two need the subscript operators, which are Wednesday's work.
+Part 2, the other two need the subscript operators, which are Wednesday's work.
 That is a good place to stop on Tuesday.
 
 ---
@@ -312,7 +342,7 @@ written in the middle of `Trace.cpp`.** It is the pattern you are about to use,
 spelled out, and the comments above it point at the mistake that cost spring's
 students more marks than anything else in the course.
 
-### TODO 5 — `append`
+### TODO 5, `append`
 
 Add one sample to the end, growing if there is no room:
 
@@ -330,13 +360,13 @@ then, either way:
 ::: {.callout-warning}
 **Steps 3 and 4 are in that order for a reason.** Delete the old array before
 you have copied out of it and you are copying from memory that is no longer
-yours. It will often appear to work — the bytes are usually still sitting there
-untouched — right up until the moment something else has reused them. Bugs that
+yours. It will often appear to work, the bytes are usually still sitting there
+untouched, right up until the moment something else has reused them. Bugs that
 work by luck are the worst kind, because they pass your tests and fail in a
 demo.
 :::
 
-### TODO 6 — the destructor
+### TODO 6, the destructor
 
 This is the second half of every `new[]` you have written.
 
@@ -364,7 +394,7 @@ Undefined means you do not get to reason about what it does.
 
 Only the first line is strictly necessary; the object is about to cease to exist,
 so resetting its members changes nothing. Write them anyway. It costs nothing,
-and it converts one whole class of bug — using an object after it was destroyed —
+and it converts one whole class of bug, using an object after it was destroyed , 
 from silent corruption into an obvious zero.
 
 `delete[] nullptr;` is explicitly legal and does nothing, so an empty trace needs
@@ -376,11 +406,11 @@ no special case.
 
 *(Wednesday.)*
 
-### TODO 7 — `operator[]`, both of them
+### TODO 7, `operator[]`, both of them
 
 `t[i]` with a bounds check, exactly like `getSample`. Two differences.
 
-**The first returns `Sample&` — a reference.** That is what makes this work:
+**The first returns `Sample&`, a reference.** That is what makes this work:
 
 ```cpp
 t[0] = 9.5;
@@ -401,10 +431,10 @@ cout << frozen[2];                  // needs the const version
 
 Only `const` methods can be called on a `const` object. Your own `operator+` and
 `operator<<` both take `const Trace&`, so without this overload they cannot read
-the trace they were handed. The two are not duplicates — they are the read-write
+the trace they were handed. The two are not duplicates, they are the read-write
 door and the read-only door, and a class needs both.
 
-### TODO 8 — `operator+` and `operator-`
+### TODO 8, `operator+` and `operator-`
 
 Elementwise, and refusing traces of different lengths:
 
@@ -413,7 +443,7 @@ throw invalid_argument("your message here");
 ```
 
 Note the return type: `Trace`, **by value**. The result is a brand-new trace that
-did not exist before the call, so there is nothing to return a reference *to* —
+did not exist before the call, so there is nothing to return a reference *to* , 
 returning a reference to a local would be a reference to something that has just
 been destroyed.
 
@@ -448,7 +478,7 @@ cout << "sum is  " << sum << endl;
 
 > What does `sum is` print?
 
-You know what `operator+` does — you wrote it an hour ago. Write down the three
+You know what `operator+` does, you wrote it an hour ago. Write down the three
 numbers you expect.
 
 Now run it:
@@ -462,7 +492,7 @@ make experiment
 If the numbers are the three you predicted **and** the program exits normally,
 run it two or three more times. Then run `make test` and look at Part 4. If
 those pass too, you have somehow already written a deep copy constructor and an
-assignment operator, which is not possible yet — come and find me, because
+assignment operator, which is not possible yet, come and find me, because
 something odd is going on.
 :::
 
@@ -479,8 +509,8 @@ free(): double free detected in tcache 2
 Aborted
 ```
 
-**Nothing in your code is wrong.** Read `operator+` again — it is correct. Read
-`append` — it is correct. This is not a bug you can find by reading, which is
+**Nothing in your code is wrong.** Read `operator+` again, it is correct. Read
+`append`, it is correct. This is not a bug you can find by reading, which is
 exactly why you are being asked to find it another way.
 
 ### What just happened
@@ -494,13 +524,13 @@ sum = a + b;
 Three things happen, in this order:
 
 1. `a + b` runs, and builds a `Trace` holding the array `{11, 22, 33}`. It is a
-   **temporary** — it has no name and it will not live past the end of this line.
+   **temporary**, it has no name and it will not live past the end of this line.
 2. That temporary is **copied** into `sum` by `operator=`. Open `Trace.cpp` and
    look at the one the starter shipped: it is the compiler's own version,
    written out by hand so that you can see it. It copies each member exactly as
    it finds it. `mySize` and `myCapacity` copy fine. `mySamples` is a pointer,
    so what gets copied is **the address**.
-3. The line ends, so the temporary is destroyed, so your destructor runs — and
+3. The line ends, so the temporary is destroyed, so your destructor runs, and
    `delete[] mySamples` frees the array.
 
 Which array? The only one there ever was. `sum` is now holding the address of
@@ -512,13 +542,13 @@ Two objects. One array. Two destructors.
 
 ### See it happen
 
-Do this — it takes five minutes and it is the difference between believing the
+Do this, it takes five minutes and it is the difference between believing the
 paragraph above and knowing it.
 
 1. Put a breakpoint on the `delete[]` line in your destructor.
 2. Press **F5** and choose **Debug the §9 experiment**.
 3. When it stops, look at `mySamples` in the **Variables** panel. Write down the
-   address — it will look like `0x5555555592a0`.
+   address, it will look like `0x5555555592a0`.
 4. Press **F5** to continue. It will stop in the destructor again, and again,
    as `a`, `b` and `sum` are destroyed at the end of `main`.
 
@@ -527,7 +557,7 @@ one number.
 
 ::: {.callout-tip}
 **Why did none of your other tests catch this?** Make a scratch copy of
-`experiment.cpp` — call it anything you like, it is not graded — and add this
+`experiment.cpp`, call it anything you like, it is not graded, and add this
 line to the copy:
 
 ```cpp
@@ -536,7 +566,7 @@ Trace other = a + b;        // initialisation, not assignment
 
 That one does *not* crash. When you initialise a new object from a function's
 return value, the compiler builds the result directly in the destination and
-skips the copy entirely — since C++17 it is required to, not merely allowed — so
+skips the copy entirely, since C++17 it is required to, not merely allowed, so
 there is no second object, no second destructor, and no bug. It is called copy
 elision.
 
@@ -557,7 +587,7 @@ The copy constructor and `operator=` in your `Trace.cpp` are the compiler's own,
 written out by hand so §9 could show you them failing. Both do the wrong thing
 for a class that owns memory. Replace them.
 
-### TODO 9 — the copy constructor
+### TODO 9, the copy constructor
 
 A constructor whose job is to build a trace that is a separate, equal copy:
 
@@ -577,14 +607,14 @@ array, because every `Trace` is going to free that array when it dies.
 
 ::: {.callout-warning}
 **The parameter is `const Trace&`, and it has to be a reference.** A by-value
-parameter would be copied on the way in — which would call the copy constructor
-— whose parameter would be copied on the way in — which would call the copy
+parameter would be copied on the way in, which would call the copy constructor
+whose parameter would be copied on the way in, which would call the copy
 constructor…
 
 The compiler will not stop you. It compiles, runs, and overflows the stack.
 :::
 
-### TODO 10 — `operator=`
+### TODO 10, `operator=`
 
 Assignment does everything the copy constructor does, plus one thing before and
 one thing after:
@@ -627,7 +657,7 @@ It prints `11 22 33` and exits cleanly. Nothing else changed.
 
 needs **all three**. They are the three ways an object can be duplicated or
 disposed of, and the compiler's versions of all three are fine right up until the
-class owns something — at which point leaving any of them to the compiler leaves
+class owns something, at which point leaving any of them to the compiler leaves
 a hole.
 
 Your `Trace` needed a destructor the moment it called `new[]`. Everything since
@@ -643,9 +673,9 @@ runs when an object is:
 |---|---|---|
 | **initialised from another** | `Trace b(a);` or `Trace b = a;` | Part 4's first check |
 | **passed to a by-value parameter** | `f(a)` where `f` takes `Trace` | Part 4's fourth check |
-| **returned by value** | `return result;` | §9 — or rather, §9's tip, where you saw the compiler skip it |
+| **returned by value** | `return result;` | §9, or rather, §9's tip, where you saw the compiler skip it |
 
-`make test` should now clear Part 4 entirely. If Part 8 — the memory checks —
+`make test` should now clear Part 4 entirely. If Part 8, the memory checks , 
 is still red, the message will tell you whether the problem is a crash or a leak.
 
 ---
@@ -654,10 +684,10 @@ is still red, the message will tell you whether the problem is a crash or a leak
 
 *(Friday.)*
 
-### TODO 11 — `writeTo`, `readFrom`, `operator<<`
+### TODO 11, `writeTo`, `readFrom`, `operator<<`
 
 `writeTo` sends every sample to the stream, each followed by **one space**,
-including the last. Nothing else — no size, no newline, no brackets:
+including the last. Nothing else, no size, no newline, no brackets:
 
 ```
 1.5 2.5 3.5
@@ -674,7 +704,7 @@ while (in >> s) {
 ```
 
 `in >> s` is true while it succeeds and false once the stream has nothing left,
-so the loop stops on its own. This is week 2's end-of-file idea again — and it is
+so the loop stops on its own. This is week 2's end-of-file idea again, and it is
 what lets a lap be any length at all. Nothing has to know the count in advance,
 which is the promise §1 made.
 
@@ -689,7 +719,7 @@ exactly as in week 3.
 
 Open **`Delta.cpp`**.
 
-### TODO 12 — `deltaTrace`
+### TODO 12, `deltaTrace`
 
 This lap minus the best lap, in that order. A negative delta means this lap was
 faster through that segment.
@@ -702,7 +732,7 @@ Get the order right: `best - current` would flip the sign of every number on the
 timing screen, which is the sort of bug that looks entirely plausible until a
 driver is told they lost time on their best sector.
 
-### TODO 13 — `biggestGainAt` and `biggestLossAt`
+### TODO 13, `biggestGainAt` and `biggestLossAt`
 
 The index of the most negative delta, and the index of the most positive one.
 Both are the standard find-the-extreme loop: assume index 0, walk the rest, take
@@ -716,7 +746,7 @@ Three details the checks look at:
 - An **empty** delta has no answer, so `throw invalid_argument` rather than
   inventing one. There is no best of nothing.
 
-A lap that was slower everywhere still has a biggest gain — it is just the least
+A lap that was slower everywhere still has a biggest gain, it is just the least
 bad segment. Do not special-case it.
 
 ### Now look at it
@@ -727,7 +757,7 @@ make telemetry
 ```
 
 ```
-  TELEMETRY — 24 segments
+  TELEMETRY, 24 segments
   best lap     80.230
   this lap     79.535
   delta        -0.695
@@ -761,7 +791,7 @@ Thirty-six checks, in nine groups:
 | **Construction** (4) | TODOs 1–2 |
 | **Element access** (4) | TODOs 4 and 7 |
 | **Growth** (4) | TODO 5, and the given `setSize` |
-| **Copying** (5) | TODOs 9–10 — the point of the week |
+| **Copying** (5) | TODOs 9–10, the point of the week |
 | **Arithmetic** (4) | TODO 8, and the given `operator==` |
 | **Streams** (3) | TODO 11 |
 | **The delta application** (6) | TODOs 12–13, and the program end to end |
@@ -774,7 +804,7 @@ assigns and destroys several thousand `Trace` objects, and run it under a memory
 sanitizer. That catches two things ordinary tests miss: freeing the same block
 twice, and never freeing it at all.
 
-A leak does not make a test fail on its own — the program still produces the
+A leak does not make a test fail on its own, the program still produces the
 right answers, right up until it runs out of memory. That is precisely why the
 destructor and the copy constructor have to be *reasoned about* rather than
 guessed at, and why this group exists.
@@ -791,7 +821,7 @@ Focus on one group at a time with a tag:
 ```
 
 A tag needs its brackets. A test *name* needs the full name, or a prefix with a
-`*` on the end — `./tester "Copy: construct*"` works, and `./tester "Copy:
+`*` on the end, `./tester "Copy: construct*"` works, and `./tester "Copy:
 construct"` matches nothing, prints almost nothing, and exits successfully,
 which looks a lot like passing.
 :::
