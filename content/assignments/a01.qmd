@@ -170,8 +170,8 @@ That is why `main.cpp` checks `argc < 2` before doing anything: if you run
 `./a01` with no step, there is no `argv[1]` to read, and reading it anyway would
 be your first taste of undefined behaviour. It prints the usage line instead.
 
-`char*` means *pointer to a character*, and `char* argv[]` an array of them , 
-pointers being exactly what TODO 1 is about. You are not expected to be
+`char*` means *pointer to a character*, and `char* argv[]` an array of them.
+Pointers are exactly what TODO 1 is about. You are not expected to be
 comfortable with that line yet; you are expected to recognise it when you meet
 it again.
 :::
@@ -195,6 +195,62 @@ with hints when something is wrong. Work through failures one at a time.
 ---
 
 ## 4. Part 1: The Character Sheet
+
+::: {.callout-important}
+**Where every TODO on this page goes.**
+
+All of your work for Parts 1, 2 and 3 happens in **one file: `functions.cpp`**.
+You will not create any new files, and you will not edit `functions.h`,
+`main.cpp`, `makefile` or `test.py`.
+
+Open `functions.cpp` and scroll through it once before you start. Every TODO on
+this page has a matching comment block inside it, in the same order and with the
+same number, and each block ends with a marker:
+
+```cpp
+void character_sheet() {
+
+    // ---------------------------------------------------------------------
+    // TODO 1a, Declare character variables
+    // ---------------------------------------------------------------------
+    // ... the instructions, repeated from this page ...
+
+    // YOUR CODE HERE
+
+```
+
+**Write your code where that `// YOUR CODE HERE` marker is**, inside the
+function whose name the section mentions. Leave the comment blocks alone: they
+are your instructions, and deleting them costs you nothing but makes the file
+much harder to work in.
+
+So "In `character_sheet()`, declare the following seven variables" means: find
+`void character_sheet()` in `functions.cpp`, find the `TODO 1a` block inside it,
+and type your seven declarations under its `// YOUR CODE HERE`.
+
+Tip: in VS Code, <kbd>Ctrl</kbd>+<kbd>F</kbd> (<kbd>Cmd</kbd>+<kbd>F</kbd> on a
+Mac) and typing `TODO 1a` jumps you straight there.
+:::
+
+::: {.callout-tip}
+**Type the code. Do not paste it.**
+
+Getting Started made this point about terminal commands, and it matters at least
+as much here. Every C++ example below has a copy button, and using it will get
+you a working `functions.cpp` while leaving you unable to write a line of C++
+from a blank file, which is what the check-in exams ask for.
+
+Typing is also how the syntax stops being decoration. Type
+`unsigned* hpPtr = &health;` yourself and you have to decide where the `*` goes
+and which side the `&` is on; paste it and you have decided nothing. The
+compiler errors you cause while typing are the cheapest teaching in the course,
+and they are much easier to fix in the two lines you just wrote than in fifty
+lines you pasted.
+
+Read the example, look away from it, then type it. If you cannot, you have found
+exactly the thing you do not understand yet, which is useful to know now rather
+than in week eight.
+:::
 
 ### TODO 1a, Declare character variables
 
@@ -314,6 +370,57 @@ Test with `./a01 step1`, then `make test`.
 
 ---
 
+#### Checkpoint: save TODO 1 to GitHub
+
+TODO 1 is the whole of `character_sheet()`, and it is a natural place to stop
+and save. Right now your work exists in one place only: a folder on the Coder
+server. Push it and there are two copies, one of them somewhere you cannot
+break.
+
+In VS Code, click the **Source Control** icon in the left sidebar, it looks like
+a branch, and it will have a small badge showing how many files you have
+changed.
+
+1. Your changed files are listed under **Changes**. Hover over `functions.cpp`
+   and click the **+** to stage it.
+2. Type a short message in the box at the top, such as `TODO 1 complete`.
+3. Click **✓ Commit**.
+4. Click **Sync Changes** to send it to GitHub.
+
+::: {.callout-tip}
+**The same thing in the terminal.**
+
+```bash
+git add functions.cpp     # the + button: stage this file
+git commit -m "TODO 1 complete"    # the ✓ button
+git push                  # Sync Changes
+```
+
+The buttons and the commands do exactly the same thing. Use whichever you
+prefer.
+:::
+
+::: {.callout-note}
+**Expect a red X on GitHub, and do not let it worry you.**
+
+Pushing starts the automatic check. TODO 2 through TODO 10 are still empty, so
+the check fails and GitHub shows a red X rather than a green tick. That is the
+correct result for unfinished work.
+
+**The red X does not mean zero.** The check ran every test and recorded what
+passed, so the marks you have already earned are stored. The tick is not the
+grade; it only turns green when every single test passes, which for this
+assignment means all ten TODOs.
+:::
+
+Do not wait until the assignment is finished to push, and do not push only once.
+**Commit and push whenever something works**, at the end of each TODO if you
+like. It costs ten seconds, it means a broken laptop or a lost workspace costs
+you nothing, and later in the semester it gives you a working version to go back
+to when an experiment goes wrong.
+
+---
+
 ### TODO 2, Number systems
 
 In `show_code()`, create an `int` called `code` initialized to `37`, then
@@ -360,7 +467,7 @@ Then print its total size in bytes using `sizeof`:
 cout << "Inventory size in bytes: " << sizeof(inventory) << endl;
 ```
 
-`sizeof(inventory)` returns the **total** size of the whole array , 
+`sizeof(inventory)` returns the **total** size of the whole array:
 20 floats × 4 bytes each = 80 bytes. Compare this to `sizeof(float)`,
 which only gives you the size of one `float`.
 
@@ -409,6 +516,9 @@ Test with `./a01 step4`, then `make test`.
 ---
 
 ## 5. Part 2: The Adventure System
+
+Same file, same pattern: each TODO below has a numbered comment block in
+`functions.cpp` with a `// YOUR CODE HERE` marker inside it.
 
 ### TODO 5, Power tier rating (`if / else if / else`)
 
@@ -485,10 +595,11 @@ cin >> months;
 | silver | $90     | $60        | $60       |
 | gold   | $90     | $70        | $35       |
 
-**Step D, Print the result** using this exact format:
+**Step D, Print the result.** Use this exact string, immediately followed by
+the cost and then a period, with no spaces between the three:
 
 ```
-"The cost for your guild is $"   (immediately followed by the cost and a period)
+"The cost for your guild is $"
 ```
 
 Example session:
@@ -624,6 +735,17 @@ three functions that each do one thing.
 
 In this part you will refactor that logic into three smaller functions.
 `play()`, already written in the starter code, calls them in sequence.
+
+These three are at the **bottom** of `functions.cpp`, in the same
+`// YOUR CODE HERE` pattern as everything above. One difference: each already
+ends with a placeholder line such as
+
+```cpp
+    return ""; // replace this line
+```
+
+which exists only so the starter compiles. Delete it once your function returns
+a real value.
 After your three functions work, `play()` should produce the same output
 as `guild_cost()` without any changes on your part.
 
@@ -674,8 +796,8 @@ unsigned computeCost(string guild, unsigned months) {
 ```
 
 ::: {.callout-tip}
-**In, out, and in/out parameters.** `computeCost` takes two *in parameters* , 
-values passed in for the function to read, and returns one value. There is
+**In, out, and in/out parameters.** `computeCost` takes two *in parameters*,
+that is, values passed in for the function to read, and returns one value. There is
 no need for `cin` or `cout` inside it. If you find yourself reaching for `cin`
 inside `computeCost`, step back: the caller (`play`) is responsible for
 gathering input; `computeCost` is only responsible for the math.
@@ -694,7 +816,7 @@ void play() {
 }
 ```
 
-Study this function. Anyone reading it immediately understands what it does , 
+Study this function. Anyone reading it immediately understands what it does,
 not because it has comments, but because the function names say it all. This is
 what well-decomposed code looks like.
 
@@ -755,3 +877,98 @@ tab of your repository shows a run named **Autograde**. Open it: the job summary
 says how many checks passed, and names any that failed. Push as many times as
 you like before the deadline, the most recent submission is the one that
 counts.
+
+---
+
+## 9. When I Push a Fix Into Your Repository
+
+Assignments occasionally need correcting after they have gone out. A test turns
+out to be checking the wrong thing, a comment in `functions.h` says something
+misleading, a makefile flag is wrong. When that happens I do not ask
+twenty-five people to re-clone. I push the corrected file straight into each of
+your repositories, and I tell the class that I have done it.
+
+Only files you do not own move that way, and each of them says so at the top:
+
+> `NOTE TO STUDENTS: You do NOT need to edit this file.`
+
+For this assignment that is `functions.h`, `main.cpp`, `makefile` and
+`test.py`. `functions.cpp` is yours, and nothing I run will touch it.
+
+### What that means for you
+
+Your repository now has a commit on GitHub that your Coder copy does not.
+Until you fetch it, you are working against the old file, and `make test` on
+your machine may disagree with the Autograde result on GitHub, which is exactly
+the confusion the fix was meant to end.
+
+So: **pull before you start working**, every session, for the rest of the
+semester. It takes a second and it costs nothing when there is nothing to
+collect.
+
+In VS Code, the **Source Control** panel is where this lives. The **Sync
+Changes** button carries a small ↓ count when GitHub has commits you do not:
+clicking it brings them down and sends yours up in one go. If you would rather
+only collect, use the **⋯** menu at the top of the panel and choose **Pull**.
+
+::: {.callout-tip}
+**The same thing in the terminal.**
+
+```bash
+git pull
+```
+
+`pull` is two operations with one name: fetch what is on GitHub, then join it to
+what you have.
+:::
+
+::: {.callout-important}
+**Commit your own work before you pull.** Git will refuse to pull on top of
+uncommitted edits to a file it needs to replace, and the refusal is the polite
+outcome. Commit first and your work is recorded, recoverable, and impossible to
+lose in the process.
+:::
+
+### Why this is called merging
+
+You now have two lines of history that both grew from the same starting point.
+Yours is the branch called `main` in your Coder folder, where you committed
+TODO 4. Mine is `origin/main`, the copy on GitHub, where I committed the fix.
+Neither is a continuation of the other; they forked.
+
+`git pull` fetches my line and **merges** the two, which means it writes one new
+commit joining both. That commit is the only one in your repository with two
+parents, and if you ever look at the history graph it is the point where the two
+strands come back together. It is a normal, healthy thing for a repository to
+contain, not a sign that something went wrong.
+
+If an editor opens asking you to confirm a merge message, the default text is
+fine. In VS Code, press <kbd>Ctrl</kbd>+<kbd>S</kbd> and close the tab. If you
+land in a terminal editor instead, `nano` exits with
+<kbd>Ctrl</kbd>+<kbd>O</kbd>, <kbd>Enter</kbd>, <kbd>Ctrl</kbd>+<kbd>X</kbd>,
+and `vim` exits with `:wq` then <kbd>Enter</kbd>.
+
+### If it reports a conflict
+
+A conflict means we both changed the same lines of the same file. Given the
+four files above are the only ones I push, that can only happen if you edited a
+file whose header told you not to, so it should be rare. When it does happen, my version is the
+one you want: it is the file the grader will use regardless of what your copy
+says.
+
+```bash
+git checkout --theirs functions.h
+git add functions.h
+git commit
+```
+
+::: {.callout-note}
+`--theirs` reads backwards here, and it trips up everyone the first time. During
+a merge, "ours" means the branch you were sitting on and "theirs" means the one
+arriving. The arriving one is mine, so `--theirs` is my file.
+:::
+
+To back out of the merge entirely and return to exactly where you were, run
+`git merge --abort`. Nothing is lost, and you can email me and we will sort it
+out together. **Do not delete the folder and re-clone**: that throws away any
+work you have not pushed.

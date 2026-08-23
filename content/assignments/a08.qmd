@@ -407,7 +407,7 @@ JavaScript counts lines.
 ### Opening an HTML file that lives on Coder {#opening-html}
 
 Your VS Code runs on your laptop, but your files live on the Coder server. So
-double-clicking `results.html` in the Explorer just shows you the HTML source , 
+double-clicking `results.html` in the Explorer just shows you the HTML source,
 there is no browser on the far end to render it.
 
 The fix is to serve the folder over HTTP and let VS Code bring the port back to
@@ -461,10 +461,10 @@ Eight lines, one per experiment: the name, the complexity class, and one
 sentence saying why.
 
 ```
-vector-subscript   O(1)   the index is arithmetic and the size never enters into it
+vector-subscript   O(1)   the index is arithmetic, size never enters in
 ```
 
-The accepted spellings are `O(1)`, `O(logn)`, `O(n)`, `O(n^2)` and `O(1)*` , 
+The accepted spellings are `O(1)`, `O(logn)`, `O(n)`, `O(n^2)` and `O(1)*`,
 none of them with a space inside. Lines starting with `#` are ignored, so the
 instructions in the file can stay where they are.
 
@@ -543,7 +543,7 @@ make checks
 ```
 
 A test name needs the full name, or a prefix with a `*` on the end. `./checks
-"Classify:"` matches nothing, prints almost nothing, and exits successfully , 
+"Classify:"` matches nothing, prints almost nothing, and exits successfully,
 which looks a lot like passing.
 :::
 

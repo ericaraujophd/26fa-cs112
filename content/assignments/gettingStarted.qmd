@@ -267,6 +267,35 @@ The workspace is the machine. The folder is a drawer inside it.
 
 Use the terminal you just opened inside VS Code. Click in it, and it is waiting for you to type.
 
+::: {.callout-important}
+**Type the commands. Do not paste them.**
+
+Every code block on this site has a small copy button in its corner, and for the
+rest of your life it will be the sensible thing to use. For the next few weeks it
+is not.
+
+Typing `mkdir cs112` yourself is how `mkdir` stops being a word on a webpage and
+becomes something your hands know. Pasting it produces the same folder and
+teaches you nothing, and the difference shows up the first time you are away from
+this page and have to write the command from memory, which is roughly every day
+after this one.
+
+Typing also makes you read. Paste a command and your eyes skip it; type it and
+you notice that `cd ..` has a space before the dots, that `ls` is two letters and
+not `Is`, and that the `$` at the start of a line in a book is the prompt, not
+part of the command. Those are the mistakes that eat an afternoon, and typing is
+how you stop making them.
+
+You will get things wrong. That is the point: an error message you caused is the
+cheapest lesson available, and the terminal is patient. Press the Up arrow, fix
+the typo, press Enter.
+
+**There are fair exceptions**, and the page will tell you when you have reached
+one: long one-off strings where a typo costs you time and teaches you nothing.
+The formatting setting in Step 7 is one, and it says so. Your repository address
+in Step 9 is another. Everything short enough to type, type.
+:::
+
 **Where am I?** Type this and press Enter:
 
 ```bash
@@ -439,7 +468,7 @@ current folder and nowhere else. Run it one level too high and you get:
 make: *** No targets specified and no makefile found.  Stop.
 ```
 
-That message means "you are in the wrong folder", not "your code is broken" , 
+That message means "you are in the wrong folder", not "your code is broken",
 but it does not say so, and it looks alarming the first time. Later in the
 semester, when you have several assignments side by side, the wrong folder is
 worse than an error: `make` finds a perfectly good makefile and cheerfully
@@ -672,7 +701,7 @@ cd ~/cs112
 pwd
 ```
 
-That should print `/home/` followed by your **Calvin username** and `/cs112` , 
+That should print `/home/` followed by your **Calvin username** and `/cs112`,
 for example `/home/ea47/cs112`. Coder logs you in with your Calvin account, so
 the folder is named after that, not after your GitHub username. The two are
 different, and both appear in the next command.
@@ -682,6 +711,17 @@ Now clone, replacing `YOURUSERNAME` with your **GitHub** username:
 ```bash
 gh repo clone 26fa-cs112/cs112-a00-YOURUSERNAME
 ```
+
+::: {.callout-note}
+**This is one of the exceptions to typing everything.** The repository address
+is long, you will type it once in your life, and a single wrong letter gets you
+`Could not resolve to a Repository` rather than anything instructive. Copy the
+line, then replace `YOURUSERNAME` with your own before pressing Enter.
+
+The `cd` below is not an exception, but do not type all of it either: type
+`cd cs112-a00` and press **Tab**, and the shell will finish the name for you,
+correctly, every time.
+:::
 
 Then look at what you got:
 
@@ -869,6 +909,14 @@ Open `main.cpp` in VS Code. This is the only file you will edit. `fortune.cpp` a
 
 `main.cpp` has four TODO comments. Work through them in order.
 
+::: {.callout-tip}
+**The same rule applies to the C++ below.** The examples on this page are there
+to be read and then typed into your own file, not copied into it. Typing a line
+like `cout << "Your name: ";` is how you learn where the quotes go, which way the
+`<<` arrows point, and that the semicolon is not optional. Copy it and you will
+find all three out later, in an error message, at a worse moment.
+:::
+
 ---
 
 ### TODO 1: Declare your variables
@@ -943,7 +991,7 @@ what it is. The banner at the top of `main.cpp` is full of lines like:
 cout << "        Welcome to the CS112 Oracle!" << endl;
 ```
 
-`endl` **ends the line.** Everything printed after it starts on a fresh line , 
+`endl` **ends the line.** Everything printed after it starts on a fresh line:
 it is the equivalent of pressing Enter. You can chain as many things onto one
 `cout` as you like, and `endl` is simply the last of them.
 

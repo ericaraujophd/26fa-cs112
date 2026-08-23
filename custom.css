@@ -405,6 +405,45 @@ div.flush-table > table {
   color: #f2efe8;
 }
 
+/* Inline <code> in a HEADING, and in a few other places Quarto forgot.
+
+   Quarto darkens inline code with exactly one rule:
+
+       p code:not(.sourceCode), li code:not(.sourceCode), td code:not(.sourceCode)
+         { background-color: rgba(67, 67, 67, .65); padding: .2em }
+
+   Paragraphs, list items and table cells. Nothing else. Inline code anywhere
+   outside those three falls back to Bootstrap's base `code`, which is
+   `background-color: #f8f9fa` — and the dark theme sets `--bs-code-color:
+   white`. White on #f8f9fa is 1.05:1, which is to say invisible. It showed up
+   on a01 as the heading "TODO 3, Arrays and `sizeof`", where the word `sizeof`
+   simply was not there in dark mode.
+
+   The fix is to give the uncovered containers the same treatment Quarto gives
+   the covered ones, rather than to stop writing code in headings. Light mode is
+   included too: the chip there was readable but a different grey from the body
+   chips, and matching them costs nothing. */
+h1 code:not(.sourceCode), h2 code:not(.sourceCode), h3 code:not(.sourceCode),
+h4 code:not(.sourceCode), h5 code:not(.sourceCode), h6 code:not(.sourceCode),
+.callout-title-container code:not(.sourceCode),
+dt code:not(.sourceCode),
+figcaption code:not(.sourceCode),
+summary code:not(.sourceCode) {
+  background-color: rgba(233, 236, 239, 0.65);
+  padding: 0.2em;
+}
+
+.quarto-dark h1 code:not(.sourceCode), .quarto-dark h2 code:not(.sourceCode),
+.quarto-dark h3 code:not(.sourceCode), .quarto-dark h4 code:not(.sourceCode),
+.quarto-dark h5 code:not(.sourceCode), .quarto-dark h6 code:not(.sourceCode),
+.quarto-dark .callout-title-container code:not(.sourceCode),
+.quarto-dark dt code:not(.sourceCode),
+.quarto-dark figcaption code:not(.sourceCode),
+.quarto-dark summary code:not(.sourceCode) {
+  background-color: rgba(67, 67, 67, 0.65);
+  color: #f2efe8;
+}
+
 
 /* ── Terminal output ──────────────────────────────────────────────────────
    Blocks marked ```{.terminal} are things the SCREEN said, not things the

@@ -7,7 +7,7 @@ subtitle: "One container, three types, turning last week's class into a template
 Your own private GitHub repository is waiting for you (see
 [Getting the code](#getting-the-code) below), clone it and open it in VS Code.
 
-**Plan to set aside about 2 to 2.5 hours.** The conversion in §6 is most of it , 
+**Plan to set aside about 2 to 2.5 hours.** The conversion in §6 is most of it,
 about forty-five minutes of careful, mechanical editing across twenty method
 definitions. Everything after §7 is short by comparison.
 :::
@@ -31,7 +31,7 @@ By the end of this assignment, you will be able to:
 - Use two channels of the same length together, indexing them in step
 - Test a template on more than one element type, and say why one is not enough
 
-This assignment covers course skill **C2**, *write and use a class template* , 
+This assignment covers course skill **C2**, *write and use a class template*,
 from cluster **C**, Linear Data Structures, assessed at **Window 2** on Nov 20.
 
 ::: {.callout-note}

@@ -222,7 +222,7 @@ void List::prepend(const Item& it) {
 }
 ```
 
-Notice that the new Node is created *already pointing at* the old first Node , 
+Notice that the new Node is created *already pointing at* the old first Node,
 that is what the second constructor argument is for. The only special case is
 the empty list, where the new Node is also the last one.
 
@@ -496,7 +496,7 @@ make checks
 ```
 
 A test name needs the full name, or a prefix with a `*` on the end. `./checks
-"Append:"` matches nothing, prints almost nothing, and exits successfully , 
+"Append:"` matches nothing, prints almost nothing, and exits successfully,
 which looks a lot like passing.
 :::
 

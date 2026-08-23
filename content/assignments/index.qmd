@@ -326,7 +326,7 @@ Each assignment **opens on the Monday of its week**. You can see the whole term 
         <span class="asg-status asg-live">Published</span>
       </div>
       <div class="asg-name">HashTable</div>
-      <div class="asg-desc">Stop searching for the index , compute it, on seventy-three thousand words.</div>
+      <div class="asg-desc">Stop searching for the index, compute it, on seventy-three thousand words.</div>
     </a>
   </div>
 </section>
@@ -352,7 +352,7 @@ Each assignment **opens on the Monday of its week**. You can see the whole term 
         <span class="asg-status asg-live">Published</span>
       </div>
       <div class="asg-name">Snake</div>
-      <div class="asg-desc">The snake is a queue. Not like a queue , a queue.</div>
+      <div class="asg-desc">The snake is a queue. Not like a queue: a queue.</div>
     </a>
   </div>
 </section>

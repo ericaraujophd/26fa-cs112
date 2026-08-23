@@ -45,7 +45,7 @@ been taught yet, and you are not behind.
 ## 1. Introduction
 
 A Formula 1 qualifying session is a leaderboard that updates itself. Drivers go
-out, set flying laps, and the timing screen keeps them in order , 
+out, set flying laps, and the timing screen keeps them in order,
 fastest at the top. It is the same problem as a high-score table, except for one
 detail that makes it much more interesting to build.
 
@@ -265,7 +265,7 @@ constructor whose parameter is called `driver` and whose member is `myDriver`.
 *(Wednesday's lecture is about constructors, but these two are simple enough to
 attempt in lab, and the tests will tell you if you have them right.)*
 
-A constructor has the **same name as the class** and **no return type at all** , 
+A constructor has the **same name as the class** and **no return type at all**,
 not even `void`. It runs automatically whenever a `Lap` is created, and its job is
 to leave the object valid: no member holding whatever happened to be in that
 memory already.
@@ -443,7 +443,7 @@ shuffling the board by hand, the only thing the outside world gets to do is
 ::: {.callout-tip}
 Splitting `addLap` into two helpers is not busywork. Each one is a loop small
 enough to hold in your head and reason about alone, and `addLap` itself becomes
-about five lines that read like the rule they implement. When it goes wrong , 
+about five lines that read like the rule they implement. When it goes wrong,
 and it will, you will be debugging one loop, not three tangled together.
 :::
 
@@ -696,7 +696,7 @@ nobody watching cares that P7 did a 1:16.858, they care that it was six tenths
 off. Build the gap with an `ostringstream` the way you built `formatTime`, so
 `setw()` can line the column up afterwards.
 
-This function is not a method either, so it works through the public getters , 
+This function is not a method either, so it works through the public getters,
 which is why `getNumLaps()` and `getLap()` are public and the helpers are not.
 
 ### Now look at it
@@ -737,7 +737,7 @@ Forty checks, in seven groups:
 ::: {.callout-note}
 The 20 class checks do not run through the `./tester` your makefile builds.
 `make test` compiles `checks_lap.cpp` and `checks_session.cpp` itself, straight
-against your `Lap.cpp` and `QualifyingSession.cpp`. Your `./tester` is yours , 
+against your `Lap.cpp` and `QualifyingSession.cpp`. Your `./tester` is yours,
 you decide what goes in it, and you should, which is exactly why it cannot be
 the thing that decides whether your classes are right. One check does look at
 your `./tester`, and it is the one about your makefile.

@@ -247,7 +247,7 @@ largest bucket: 4233
 average per bucket: 367.10
 ```
 
-**Three quarters of the table is empty**, and one bucket holds 4,233 words , 
+**Three quarters of the table is empty**, and one bucket holds 4,233 words,
 eleven times what it should. A lookup that lands there compares against all
 4,233 of them.
 
@@ -320,7 +320,7 @@ and it clears the bar. Try it; it takes one line, and it is a big improvement.
 
 **Addition does not care about order.** Once every character is in the sum,
 "stop" and "pots" still collide, because addition throws the ordering away. To
-fix that you need each character's **position** to change its contribution , 
+fix that you need each character's **position** to change its contribution,
 multiply the running total by something before adding the next character, or
 weight each character by its index. That is what takes the largest bucket from
 about 1.6 × the average down to about 1.1 ×.
@@ -377,7 +377,7 @@ and says no immediately.
 
 ### Why only twenty-six times, and not seventy-three thousand?
 
-Because your table is **three hundred words deep**. You hash once, instant , 
+Because your table is **three hundred words deep**. You hash once, instant,
 and then walk a list of three hundred strings. You have replaced 73,419
 comparisons with about 150, which is a factor of a few hundred, not a factor of
 73,419.

@@ -213,7 +213,7 @@ are the same idea wearing different clothes.
 the new head joins the back of the queue, and becomes myHead
 its square is now occupied
 if myGrowth is above zero:  spend one of it and STOP
-otherwise:                  the tail leaves the front, and its square is free
+otherwise:                  the tail leaves the front, freeing its square
 ```
 
 That third line is eating. `step()` adds `GROW_BY` to `myGrowth` when the snake
@@ -368,6 +368,6 @@ None of this is graded and none of it is required. But the pieces are all here:
   A script that also avoided its own body would do better.
 
 The last one is not a small exercise, and it is worth knowing why: deciding
-where to go next, given what you know about the board, is a search problem , 
+where to go next, given what you know about the board, is a search problem,
 and you wrote three of those last week.
 :::

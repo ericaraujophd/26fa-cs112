@@ -186,7 +186,7 @@ never have to sit through four hundred frames.
 ### 3.1 Opening an HTML file that lives on Coder {#opening-html}
 
 Your VS Code runs on your laptop, but your files live on the Coder server. So
-double-clicking `demo.html` in the Explorer just shows you the HTML source , 
+double-clicking `demo.html` in the Explorer just shows you the HTML source,
 there is no browser on the far end to render it.
 
 The fix is to serve the folder over HTTP and let VS Code bring the port back to
@@ -371,7 +371,7 @@ Much shorter. Write the grid out in the same format `loadWorld` reads:
 
 ```
 line 1     rows and cols, separated by a space
-line 2     the single character 0     (a finished world has no emitters left)
+line 2     the single character 0   (finished worlds have no emitters)
 then       rows lines of cols characters
 ```
 
