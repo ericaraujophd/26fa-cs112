@@ -398,7 +398,7 @@ zero. Dequeue becomes "add one to `myFront`", which is O(1) and obviously right:
              ▲ front
                                                   ...serve Ada...
           ┌─────┬─────┬─────┬─────┬─────┬─────┐
-          │ , , ,  │Grace│Alan │  ?  │  ?  │  ?  │   myFront = 1
+          │ --- │Grace│Alan │  ?  │  ?  │  ?  │   myFront = 1
           └─────┴─────┴─────┴─────┴─────┴─────┘
                    ▲ front
 ```
@@ -409,9 +409,9 @@ run of perfectly good slots sits abandoned on the left:
 
 ```
           ┌─────┬─────┬─────┬─────┬─────┬─────┐
-          │ , , ,  │ , , ,  │ , , ,  │ , , ,  │Kath │Doro │   myFront = 4
+          │ --- │ --- │ --- │ --- │Kath │Doro │   myFront = 4
           └─────┴─────┴─────┴─────┴─────┴─────┘
-            wasted, wasted, wasted, wasted   ▲ and now there is nowhere to put anyone
+           ── four wasted slots ──            ▲ and nowhere left to add
 ```
 
 Four free slots and the queue says it is full. That is the problem §7 solves.
@@ -489,23 +489,23 @@ enqueue C        ┌─────┬─────┬─────┬──
                     F                 B
 
 dequeue → A      ┌─────┬─────┬─────┬─────┐
-                 │ , , ,  │  B  │  C  │  ?  │      F=1  B=3   size 2
+                 │ --- │  B  │  C  │  ?  │      F=1  B=3   size 2
                  └─────┴─────┴─────┴─────┘
                           F           B
 
 dequeue → B      ┌─────┬─────┬─────┬─────┐
-                 │ , , ,  │ , , ,  │  C  │  ?  │      F=2  B=3   size 1
+                 │ --- │ --- │  C  │  ?  │      F=2  B=3   size 1
                  └─────┴─────┴─────┴─────┘
                                 F     B
 
 enqueue D        ┌─────┬─────┬─────┬─────┐
-                 │ , , ,  │ , , ,  │  C  │  D  │      F=2  B=0   size 2
+                 │ --- │ --- │  C  │  D  │      F=2  B=0   size 2
                  └─────┴─────┴─────┴─────┘
                    B            F
                    ▲ B wrapped: (3 + 1) % 4 = 0
 
 enqueue E        ┌─────┬─────┬─────┬─────┐
-                 │  E  │ , , ,  │  C  │  D  │      F=2  B=1   size 3 : FULL
+                 │  E  │ --- │  C  │  D  │      F=2  B=1   size 3 : FULL
                  └─────┴─────┴─────┴─────┘
                           B     F
 ```

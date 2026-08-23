@@ -394,7 +394,7 @@ Undefined means you do not get to reason about what it does.
 
 Only the first line is strictly necessary; the object is about to cease to exist,
 so resetting its members changes nothing. Write them anyway. It costs nothing,
-and it converts one whole class of bug, using an object after it was destroyed , 
+and it converts one whole class of bug, using an object after it was destroyed,
 from silent corruption into an obvious zero.
 
 `delete[] nullptr;` is explicitly legal and does nothing, so an empty trace needs
@@ -443,7 +443,7 @@ throw invalid_argument("your message here");
 ```
 
 Note the return type: `Trace`, **by value**. The result is a brand-new trace that
-did not exist before the call, so there is nothing to return a reference *to* , 
+did not exist before the call, so there is nothing to return a reference *to*,
 returning a reference to a local would be a reference to something that has just
 been destroyed.
 
@@ -675,7 +675,7 @@ runs when an object is:
 | **passed to a by-value parameter** | `f(a)` where `f` takes `Trace` | Part 4's fourth check |
 | **returned by value** | `return result;` | §9, or rather, §9's tip, where you saw the compiler skip it |
 
-`make test` should now clear Part 4 entirely. If Part 8, the memory checks , 
+`make test` should now clear Part 4 entirely. If Part 8, the memory checks,
 is still red, the message will tell you whether the problem is a crash or a leak.
 
 ---

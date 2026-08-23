@@ -240,7 +240,7 @@ teams.end()            // points ONE PAST the last element
 ```
 
 `end()` is the strange one, and it is worth being precise about. It does not
-point at the last element. It points at the position *after* the last element , 
+point at the last element. It points at the position *after* the last element,
 somewhere you may never read from. It exists so that a range can be written as a
 pair, `[begin, end)`, and so that an empty container has `begin() == end()`
 without any special case.
@@ -457,7 +457,7 @@ Some starting points, if nothing comes to mind:
 2. It prints at least two lines, to `out`, not to `cout`. (They are the same
    stream when `main` calls it, but the checks hand it an `ostringstream` so
    they can read what you wrote.)
-3. It actually reads the vector it was given. One check runs your query twice , 
+3. It actually reads the vector it was given. One check runs your query twice,
    once on the 2024 season, once on a four-row made-up one, and expects the
    answers to differ. A fixed string will not pass.
 4. It does not crash on 479 results.
