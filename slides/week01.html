@@ -116,7 +116,7 @@ if (hp &lt;= 0) {
     <li>Boolean operators: <code>==</code> <code>!=</code> <code>&amp;&amp;</code> <code>||</code> <code>!</code></li>
     <li><code>=</code> is assignment, <code>==</code> is comparison: the classic C++ bug</li>
   </ul>
-  <div class="callout">Format as you go: in VS Code, <strong>F1 → Format Document</strong>. Readable code is hospitality toward whoever reads it next.</div>
+  <div class="callout">Format as you go: in VS Code, <strong>F1 → Format Document</strong>, or <kbd>Shift</kbd>+<kbd>Alt</kbd>+<kbd>F</kbd> (<kbd>Shift</kbd>+<kbd>Option</kbd>+<kbd>F</kbd> on a Mac).<br>Readable code is hospitality toward whoever reads it next.</div>
 </section>
 
 <section>
@@ -159,6 +159,94 @@ default:
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
     <strong>A. Critical hit!</strong> An empty <code>case</code> falls through to the next one, so 19 and 20 run the same code. The <code>break</code> then stops it before <code>default</code>.
+  </div>
+</section>
+
+<!-- ══ TTYN: switch, harder ══ -->
+<section>
+  <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
+  <div class="pi-question">
+    <strong>What is printed?</strong>
+    <pre style="font-size:0.54em"><code class="language-cpp" data-trim>
+int tier = 2;
+int gold = 0;
+
+switch (tier) {
+  case 3:  gold += 100;   // no break
+  case 2:  gold += 50;    // no break
+  case 1:  gold += 10;
+           break;
+  default: gold = -1;
+}
+cout &lt;&lt; gold;
+    </code></pre>
+  </div>
+  <ul class="pi-choices pi-compact">
+    <li><span class="letter">A.</span> 50</li>
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">B.</span> 60</li>
+    <li><span class="letter">C.</span> 160</li>
+    <li><span class="letter">D.</span> 10</li>
+    <li><span class="letter">E.</span> -1</li>
+  </ul>
+  <div class="answer-box fragment" data-fragment-index="1">
+    <div class="ans-label">&#10003; Answer</div>
+    <strong>B. 60.</strong> A <code>case</code> is a <em>place to jump to</em>, not a box. Execution enters at <code>case 2</code> and runs on until it meets a <code>break</code>: <code>+= 50</code>, then <code>+= 10</code>. <code>case 3</code> is above the entry point so it never runs, and the <code>break</code> stops it before <code>default</code>.
+  </div>
+</section>
+
+<!-- ══ TTYN: default in the middle ══ -->
+<section>
+  <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
+  <div class="pi-question">
+    <strong>What is printed?</strong>
+    <pre style="font-size:0.54em"><code class="language-cpp" data-trim>
+char grade = 'X';
+
+switch (grade) {
+  case 'A': cout &lt;&lt; "4.0 "; break;
+  default:  cout &lt;&lt; "0.0 ";
+  case 'B': cout &lt;&lt; "3.0 "; break;
+  case 'C': cout &lt;&lt; "2.0 "; break;
+}
+    </code></pre>
+  </div>
+  <ul class="pi-choices pi-compact">
+    <li><span class="letter">A.</span> 0.0</li>
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">B.</span> 0.0 3.0</li>
+    <li><span class="letter">C.</span> 0.0 3.0 2.0</li>
+    <li><span class="letter">D.</span> Nothing: <code>default</code> must come last</li>
+    <li><span class="letter">E.</span> It does not compile</li>
+  </ul>
+  <div class="answer-box fragment" data-fragment-index="1">
+    <div class="ans-label">&#10003; Answer</div>
+    <strong>B. 0.0 3.0</strong> &nbsp;<code>default</code> is allowed anywhere: it is simply the label used when nothing else matches. It has no <code>break</code>, so control falls straight into <code>case 'B'</code> and stops at <em>that</em> break.
+  </div>
+</section>
+
+<!-- ══ TTYN: what switch accepts ══ -->
+<section>
+  <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
+  <div class="pi-question">
+    <strong>Does this compile?</strong>
+    <pre style="font-size:0.54em"><code class="language-cpp" data-trim>
+string charClass = "mage";
+
+switch (charClass) {
+  case "mage":   cout &lt;&lt; "Fireball!"; break;
+  case "cleric": cout &lt;&lt; "Heal!";     break;
+}
+    </code></pre>
+  </div>
+  <ul class="pi-choices">
+    <li><span class="letter">A.</span> Yes: it prints Fireball!</li>
+    <li><span class="letter">B.</span> Yes, but it prints nothing</li>
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">C.</span> No: <code>switch</code> needs a whole-number type</li>
+    <li><span class="letter">D.</span> No: every <code>case</code> needs a <code>break</code></li>
+  </ul>
+  <div class="answer-box fragment" data-fragment-index="1">
+    <div class="ans-label">&#10003; Answer</div>
+    <strong>C.</strong> A C++ <code>switch</code> only works on whole-number types: <code>int</code>, <code>char</code>, <code>bool</code>, <code>enum</code>. Python's <code>match</code> happily switches on strings; C++ needs <code>if</code> / <code>else if</code> for that.<br>
+    That is also why <code>case 'A'</code> works: a <code>char</code> <em>is</em> a small integer.
   </div>
 </section>
 
@@ -206,24 +294,111 @@ while (i &lt; 4) {
 
 <section data-auto-animate>
   <h2>From <code>while</code> to <code>for</code></h2>
-  <pre data-id="loop-code"><code class="language-cpp" data-trim>
-int i = 1;
-while (i &lt; 4) {
+  <div class="loop-code" data-id="loop-code"><span class="lp-start">int i = 1;</span>
+while (<span class="lp-test">i &lt; 4</span>) {
     arr[i] = arr[i] * 2;
-    ++i;
-}
-  </code></pre>
-  <div class="callout">Three things scattered across four lines: <strong>start</strong>, <strong>test</strong>, <strong>step</strong>.</div>
+    <span class="lp-step">++i;</span>
+}</div>
+  
+  <svg class="lp-svg" data-id="loop-cycle" viewBox="0 0 940 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="lpah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="14" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#7d7a73"/></marker>
+  </defs>
+  <rect class="lp-box lp-box-start" x="20" y="48" width="170" height="66" rx="8"/>
+  <text class="lp-box-t" x="105" y="76" font-size="19" text-anchor="middle">START</text>
+  <text class="lp-note" x="105" y="99" font-size="11.5" text-anchor="middle">once, before anything</text>
+  <rect class="lp-box lp-box-test" x="232" y="48" width="170" height="66" rx="8"/>
+  <text class="lp-box-t" x="317" y="76" font-size="19" text-anchor="middle">TEST</text>
+  <text class="lp-note" x="317" y="99" font-size="11.5" text-anchor="middle">before every pass</text>
+  <rect class="lp-box lp-box-body" x="470" y="48" width="170" height="66" rx="8"/>
+  <text class="lp-box-t" x="555" y="76" font-size="19" text-anchor="middle">BODY</text>
+  <text class="lp-note" x="555" y="99" font-size="11.5" text-anchor="middle">the work</text>
+  <rect class="lp-box lp-box-step" x="690" y="48" width="170" height="66" rx="8"/>
+  <text class="lp-box-t" x="775" y="76" font-size="19" text-anchor="middle">STEP</text>
+  <text class="lp-note" x="775" y="99" font-size="11.5" text-anchor="middle">after every pass</text>
+  <path class="lp-arrow" d="M190,81 L226,81" fill="none" marker-end="url(#lpah)"/>
+  <path class="lp-arrow" d="M402,81 L464,81" fill="none" marker-end="url(#lpah)"/>
+  <path class="lp-arrow" d="M640,81 L684,81" fill="none" marker-end="url(#lpah)"/>
+  <text class="lp-note lp-yes" x="433" y="70" font-size="12.5" text-anchor="middle">true</text>
+  <path class="lp-arrow" d="M775,116 L775,164 Q775,176 763,176 L329,176 Q317,176 317,164 L317,117" fill="none" stroke-linejoin="round" marker-end="url(#lpah)"/>
+  <text class="lp-note" x="546" y="190" font-size="12.5" text-anchor="middle">back to the test, never back to the start</text>
+  <path class="lp-arrow lp-exit" d="M317,42 C317,22 690,22 780,22" fill="none" marker-end="url(#lpah)"/>
+  <text class="lp-note lp-no" x="500" y="14" font-size="12.5" text-anchor="middle">false: leave the loop</text>
+  <text class="lp-box-t lp-exit-t" x="836" y="28" font-size="17">exit</text>
+  </svg>
+  <div class="callout" style="margin-top:0.2em">
+    Three jobs, scattered over four lines. Forget the <span class="lp-name lp-step-t">step</span> and the loop never ends.
+  </div>
 </section>
 
 <section data-auto-animate>
   <h2>From <code>while</code> to <code>for</code></h2>
-  <pre data-id="loop-code"><code class="language-cpp" data-trim>
-for (int i = 1; i &lt; 4; ++i) {
+  <div class="loop-code" data-id="loop-code">for (<span class="lp-start">int i = 1</span>; <span class="lp-test">i &lt; 4</span>; <span class="lp-step">++i</span>) {
     arr[i] = arr[i] * 2;
+}</div>
+  
+  <svg class="lp-svg" data-id="loop-cycle" viewBox="0 0 940 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="lpah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="14" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#7d7a73"/></marker>
+  </defs>
+  <rect class="lp-box lp-box-start" x="20" y="48" width="170" height="66" rx="8"/>
+  <text class="lp-box-t" x="105" y="76" font-size="19" text-anchor="middle">START</text>
+  <text class="lp-note" x="105" y="99" font-size="11.5" text-anchor="middle">once, before anything</text>
+  <rect class="lp-box lp-box-test" x="232" y="48" width="170" height="66" rx="8"/>
+  <text class="lp-box-t" x="317" y="76" font-size="19" text-anchor="middle">TEST</text>
+  <text class="lp-note" x="317" y="99" font-size="11.5" text-anchor="middle">before every pass</text>
+  <rect class="lp-box lp-box-body" x="470" y="48" width="170" height="66" rx="8"/>
+  <text class="lp-box-t" x="555" y="76" font-size="19" text-anchor="middle">BODY</text>
+  <text class="lp-note" x="555" y="99" font-size="11.5" text-anchor="middle">the work</text>
+  <rect class="lp-box lp-box-step" x="690" y="48" width="170" height="66" rx="8"/>
+  <text class="lp-box-t" x="775" y="76" font-size="19" text-anchor="middle">STEP</text>
+  <text class="lp-note" x="775" y="99" font-size="11.5" text-anchor="middle">after every pass</text>
+  <path class="lp-arrow" d="M190,81 L226,81" fill="none" marker-end="url(#lpah)"/>
+  <path class="lp-arrow" d="M402,81 L464,81" fill="none" marker-end="url(#lpah)"/>
+  <path class="lp-arrow" d="M640,81 L684,81" fill="none" marker-end="url(#lpah)"/>
+  <text class="lp-note lp-yes" x="433" y="70" font-size="12.5" text-anchor="middle">true</text>
+  <path class="lp-arrow" d="M775,116 L775,164 Q775,176 763,176 L329,176 Q317,176 317,164 L317,117" fill="none" stroke-linejoin="round" marker-end="url(#lpah)"/>
+  <text class="lp-note" x="546" y="190" font-size="12.5" text-anchor="middle">back to the test, never back to the start</text>
+  <path class="lp-arrow lp-exit" d="M317,42 C317,22 690,22 780,22" fill="none" marker-end="url(#lpah)"/>
+  <text class="lp-note lp-no" x="500" y="14" font-size="12.5" text-anchor="middle">false: leave the loop</text>
+  <text class="lp-box-t lp-exit-t" x="836" y="28" font-size="17">exit</text>
+  </svg>
+  <div class="callout" style="margin-top:0.2em">
+    Same three jobs, same order, now gathered into one header: <code>for (start; test; step)</code>.<br>
+    <code>i</code> lives only inside the loop, so using it afterwards is a compile error.
+  </div>
+</section>
+
+<section>
+  <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
+  <div class="pi-question">
+    <strong>What is printed?</strong>
+    <pre style="font-size:0.54em"><code class="language-cpp" data-trim>
+int total = 0;
+
+for (int i = 1; i &lt;= 3; ++i);
+{
+    total += 10;
 }
-  </code></pre>
-  <div class="callout">Same loop, one line of bookkeeping. <code>i</code> now lives <em>only</em> inside the loop, using it afterwards is a compile error.</div>
+
+cout &lt;&lt; total;
+    </code></pre>
+  </div>
+  <ul class="pi-choices pi-compact" style="font-size:0.55em">
+    <li><span class="letter">A.</span> 30</li>
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">B.</span> 10</li>
+    <li><span class="letter">C.</span> 0</li>
+    <li><span class="letter">D.</span> It loops forever</li>
+    <li><span class="letter">E.</span> It does not compile</li>
+  </ul>
+  <div class="answer-box fragment" data-fragment-index="1">
+    <div class="ans-label">&#10003; Answer</div>
+    <strong>B. 10.</strong> The loop does run three times, doing nothing each time. The body is the one statement after the <code>)</code>:
+    <div class="bug-line"><code>for (int i = 1; i &lt;= 3; ++i)<span class="hl-bad">;</span></code></div>
+    The braces are a separate block, so they run once.
+  </div>
 </section>
 
 <section>
@@ -256,8 +431,91 @@ for (int i = 0; i &lt; n; ++i) {
 </section>
 
 <section>
+  <h2><code>break</code>: leave the loop</h2>
+  <div class="loop-code">for (int i = 0; i &lt; n; ++i) {
+    if (party[i] == target) {
+        found = i;
+        <span class="bc-kw-break">break;</span>      <span class="lp-dim">// stop looking</span>
+    }
+}</div>
+  <svg class="lp-svg" viewBox="0 0 940 226" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="bcah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="14" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#7d7a73"/></marker>
+    <marker id="bcbreak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="14" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#b3261e"/></marker>
+    <marker id="bccont" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="14" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2f6f43"/></marker>
+  </defs>
+  <rect class="lp-box lp-box-start" x="20" y="86" width="170" height="62" rx="8"/>
+  <text class="lp-box-t" x="105.0" y="125" font-size="19" text-anchor="middle">START</text>
+  <rect class="lp-box lp-box-test" x="232" y="86" width="170" height="62" rx="8"/>
+  <text class="lp-box-t" x="317.0" y="125" font-size="19" text-anchor="middle">TEST</text>
+  <rect class="lp-box lp-box-body" x="470" y="86" width="170" height="62" rx="8"/>
+  <text class="lp-box-t" x="555.0" y="125" font-size="19" text-anchor="middle">BODY</text>
+  <rect class="lp-box lp-box-step" x="690" y="86" width="170" height="62" rx="8"/>
+  <text class="lp-box-t" x="775.0" y="125" font-size="19" text-anchor="middle">STEP</text>
+  <path class="lp-arrow" d="M190,117 L226,117" fill="none" marker-end="url(#bcah)"/>
+  <path class="lp-arrow" d="M402,117 L464,117" fill="none" marker-end="url(#bcah)"/>
+  <path class="lp-arrow" d="M640,117 L684,117" fill="none" marker-end="url(#bcah)"/>
+  <path class="lp-arrow" d="M775,150 L775,182 Q775,194 763,194 L329,194 Q317,194 317,182 L317,151" fill="none" stroke-linejoin="round" marker-end="url(#bcah)"/>
+  <text class="lp-note" x="546" y="212" font-size="12.5" text-anchor="middle">the normal way round</text>
+  <path class="lp-arrow lp-exit" d="M317,84 L317,64 Q317,52 329,52 L828,52" fill="none" stroke-linejoin="round" marker-end="url(#bcah)"/>
+  <text class="lp-note" x="336" y="44" font-size="12">false: the ordinary exit</text>
+  <text class="lp-box-t lp-exit-t" x="846" y="40" font-size="17">exit</text>
+  <path class="bc-break" d="M555,84 L555,36 Q555,24 567,24 L828,24" fill="none" stroke-linejoin="round" marker-end="url(#bcbreak)"/>
+  <text class="bc-break-t" x="800" y="16" font-size="13.5" text-anchor="end">break: no step, no test</text>
+  </svg>
+  <div class="callout" style="margin-top:0.2em">
+    The moment the target is found there is nothing left to look for, so <span class="bc-break-name">break</span> abandons the loop entirely: the step never runs and the test is never asked again.
+  </div>
+</section>
+
+<section>
+  <h2><code>continue</code>: skip this pass</h2>
+  <div class="loop-code">for (int i = 0; i &lt; n; ++i) {
+    if (hp[i] &lt;= 0) {
+        <span class="bc-kw-cont">continue;</span>   <span class="lp-dim">// skip the fallen</span>
+    }
+    total += hp[i];
+}</div>
+  <svg class="lp-svg" viewBox="0 0 940 226" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="bcah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="14" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#7d7a73"/></marker>
+    <marker id="bcbreak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="14" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#b3261e"/></marker>
+    <marker id="bccont" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="14" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2f6f43"/></marker>
+  </defs>
+  <rect class="lp-box lp-box-start" x="20" y="86" width="170" height="62" rx="8"/>
+  <text class="lp-box-t" x="105.0" y="125" font-size="19" text-anchor="middle">START</text>
+  <rect class="lp-box lp-box-test" x="232" y="86" width="170" height="62" rx="8"/>
+  <text class="lp-box-t" x="317.0" y="125" font-size="19" text-anchor="middle">TEST</text>
+  <rect class="lp-box lp-box-body" x="470" y="86" width="170" height="62" rx="8"/>
+  <text class="lp-box-t" x="555.0" y="125" font-size="19" text-anchor="middle">BODY</text>
+  <rect class="lp-box lp-box-step" x="690" y="86" width="170" height="62" rx="8"/>
+  <text class="lp-box-t" x="775.0" y="125" font-size="19" text-anchor="middle">STEP</text>
+  <path class="lp-arrow" d="M190,117 L226,117" fill="none" marker-end="url(#bcah)"/>
+  <path class="lp-arrow" d="M402,117 L464,117" fill="none" marker-end="url(#bcah)"/>
+  <path class="lp-arrow" d="M640,117 L684,117" fill="none" marker-end="url(#bcah)"/>
+  <path class="lp-arrow" d="M775,150 L775,182 Q775,194 763,194 L329,194 Q317,194 317,182 L317,151" fill="none" stroke-linejoin="round" marker-end="url(#bcah)"/>
+  <text class="lp-note" x="546" y="212" font-size="12.5" text-anchor="middle">the normal way round</text>
+  <path class="lp-arrow lp-exit" d="M317,84 L317,64 Q317,52 329,52 L828,52" fill="none" stroke-linejoin="round" marker-end="url(#bcah)"/>
+  <text class="lp-note" x="336" y="44" font-size="12">false: the ordinary exit</text>
+  <text class="lp-box-t lp-exit-t" x="846" y="40" font-size="17">exit</text>
+  <path class="bc-cont" d="M600,150 L600,166 Q600,178 612,178 L718,178 Q730,178 730,168 L730,149" fill="none" stroke-linejoin="round" marker-end="url(#bccont)"/>
+  <text class="bc-cont-t" x="592" y="182" font-size="13.5" text-anchor="end">continue: rejoins at the step</text>
+  </svg>
+  <div class="callout" style="margin-top:0.2em">
+    <span class="bc-cont-name">continue</span> abandons only the rest of the body, then rejoins at the <strong>step</strong>.<br>
+    Careful: a <code>while</code> has no step, so <code>continue</code> skips a counter at the bottom of the body and the loop hangs.
+  </div>
+</section>
+
+<section>
   <h2>Defining a Function</h2>
-  <pre data-line-numbers><code class="language-cpp" data-trim>
+  <pre><code class="language-cpp" data-trim data-line-numbers>
 int rollDamage(int dice, int sides) {
     int total = 0;
     for (int i = 0; i &lt; dice; ++i) {
@@ -270,36 +528,98 @@ int main() {
     int hit = rollDamage(2, 6);     // 2d6
 }
   </code></pre>
-  <div class="two-col" style="font-size:0.6em; margin-top:0.3em">
-    <div class="callout"><strong>Parameters</strong> (line 1): names with types, comma separated.</div>
-    <div class="callout"><strong>Arguments</strong> (line 11): the actual values you pass in.</div>
+  <div class="ln-row">
+    <div class="ln-card">
+      <div class="ln-head"><span class="ln-term">Parameters</span><span class="ln-chip">line 1</span></div>
+      <p class="ln-txt"><code>int dice, int sides</code> &mdash; a name and a type each, comma separated. They are local variables of the function.</p>
+    </div>
+    <div class="ln-card ln-card-b">
+      <div class="ln-head"><span class="ln-term">Arguments</span><span class="ln-chip">line 10</span></div>
+      <p class="ln-txt"><code>2, 6</code> &mdash; the values you pass at the call. Copied into the parameters, in order.</p>
+    </div>
   </div>
 </section>
 
 <section>
-  <h2>Define Before You Call</h2>
-  <p style="font-size:0.7em">C++ reads top to bottom. Calling a function the compiler hasn't seen yet is an error, so we declare it first with a <strong>prototype</strong>.</p>
-  <div class="two-col">
+  <h2>The Compiler Reads Top to Bottom</h2>
+  <pre style="font-size:0.5em"><code class="language-cpp" data-trim data-line-numbers>
+int main() {
+    int hit = rollDamage(2, 6);
+    cout &lt;&lt; hit &lt;&lt; endl;
+}
+
+int rollDamage(int dice, int sides) {
+    int total = 0;
+    for (int i = 0; i &lt; dice; ++i) total += rand() % sides + 1;
+    return total;
+}
+  </code></pre>
+  <p style="font-size:0.55em; margin:0.25em 0 0; color:#6a655c"><em>So what happens when I compile this?</em></p>
+  <div class="term fragment" data-fragment-index="1" style="width:100%">
+    <div class="t-row"><span class="t-cmd">$ g++ -std=c++17 dice.cpp</span></div>
+    <div class="t-row"><span class="t-warn">dice.cpp:2:15: error: &#39;rollDamage&#39; was not declared in this scope</span></div>
+    <div class="t-row"><span class="t-out">    2 |     int hit = rollDamage(2, 6);</span></div>
+    <div class="t-row"><span class="t-out">      |               ^~~~~~~~~~</span><span class="t-note">the definition is on line 6</span></div>
+  </div>
+  <div class="callout callout-maroon fragment" data-fragment-index="1" style="margin-top:0.35em">
+    The function <em>is</em> in the file, four lines further down. That does not help: at line 2 the compiler has not read it yet, so it cannot check the call.
+  </div>
+</section>
+
+<section>
+  <h2>A Prototype Is a Promise</h2>
+  <p style="font-size:0.6em; margin:0.1em 0 0">Put the signature at the top and the compiler knows what to expect long before it meets the body.</p>
+  <div class="pa-block">
+    <div class="pa-line pa-line-lbl"><span class="pa-part"><span class="pa-tok pa-ret">int</span><span class="pa-lbl pa-l-ret">what it hands back</span></span> <span class="pa-part"><span class="pa-tok pa-name">rollDamage</span><span class="pa-lbl pa-lbl-lo pa-l-name">the name callers use</span></span><span class="pa-part"><span class="pa-tok pa-args">(int dice, int sides)</span><span class="pa-lbl pa-l-args">what it expects, in order</span></span><span class="pa-part"><span class="pa-tok pa-end">;</span><span class="pa-lbl pa-lbl-lo pa-l-end">no body: that comes later</span></span></div>
+    <div class="pa-sep">&darr; further down, or in another file, the definition repeats it exactly &darr;</div>
+    <div class="pa-line"><span class="pa-tok pa-ret">int</span> <span class="pa-tok pa-name">rollDamage</span><span class="pa-tok pa-args">(int dice, int sides)</span> <span class="pa-tok pa-end">{</span> <span class="pa-dim">/* the body */</span> <span class="pa-tok pa-end">}</span></div>
+  </div>
+  <div class="callout" style="margin-top:0.35em">
+    Return type, name and parameter <strong>types</strong> must match. Parameter <em>names</em> need not: <code>int rollDamage(int, int);</code> is a legal prototype, though naming them documents the order.
+  </div>
+</section>
+
+<section>
+  <h2>Where the Two Halves Live</h2>
+  <div class="three-col">
     <div>
       <h3>dice.h</h3>
-      <pre style="font-size:0.52em"><code class="language-cpp" data-trim>
-int rollDamage(int dice, int sides);
+      <pre style="font-size:0.42em"><code class="language-cpp" data-trim>
+int rollDamage(int dice,
+               int sides);
       </code></pre>
-      <p style="font-size:0.55em">Just the signature, <em>what</em> exists.</p>
+      <p class="fc-note">The promise. Anyone who includes this may call the function.</p>
     </div>
     <div>
       <h3>dice.cpp</h3>
-      <pre style="font-size:0.46em"><code class="language-cpp" data-trim>
+      <pre style="font-size:0.42em"><code class="language-cpp" data-trim>
 #include "dice.h"
 
-int rollDamage(int dice, int sides) {
-    ...
+int rollDamage(int dice,
+               int sides) {
+    int total = 0;
+    for (int i = 0; i &lt; dice; ++i)
+        total += rand() % sides + 1;
+    return total;
 }
       </code></pre>
-      <p style="font-size:0.55em">The body, <em>how</em> it works.</p>
+      <p class="fc-note">The body. Compiled once, on its own.</p>
+    </div>
+    <div>
+      <h3>main.cpp</h3>
+      <pre style="font-size:0.42em"><code class="language-cpp" data-trim>
+#include "dice.h"
+
+int main() {
+    int hit = rollDamage(2, 6);
+}
+      </code></pre>
+      <p class="fc-note">Sees only the promise, never the body, and that is enough to compile.</p>
     </div>
   </div>
-  <div class="callout">Every <code>.cpp</code> that calls it just does <code>#include "dice.h"</code>. This is the header/source split from week 0, now with a reason.</div>
+  <div class="callout" style="margin-top:0.3em">
+    Same idea as week 0: the header says <em>what exists</em>, the source says <em>how it works</em>, and the linker joins them at the end.
+  </div>
 </section>
 
 <section>
@@ -325,33 +645,57 @@ void attack(const string &amp;spell);
 
 <section>
   <h2>Passing Arrays</h2>
-  <pre><code class="language-cpp" data-trim>
-void printParty(int hp[], int n);   // these two are
-void printParty(int *hp, int n);    // the same thing
+  <pre style="font-size:0.56em"><code class="language-cpp" data-trim>
+void printParty(int hp[], int n);   // int *hp means the same thing
 
 int party[] = { 12, 30, 8 };
 printParty(party, 3);               // nothing is copied
   </code></pre>
-  <div class="mem-diagram" style="max-width:600px">
-    <div class="mem-row">
-      <span class="mem-addr">0x7ffd10</span>
-      <span class="mem-val">12 &nbsp; 30 &nbsp; 8</span>
-      <span class="mem-lbl">← party</span>
-    </div>
-    <div class="mem-row">
-      <span class="mem-addr">hp (in function)</span>
-      <span class="mem-val">0x7ffd10</span>
-      <span class="mem-lbl">← just the address</span>
-    </div>
+  <svg class="pt-svg" viewBox="0 0 940 292" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="paah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
+  </defs>
+  <rect class="vm-frame" x="16" y="26" width="470" height="196" rx="7"/>
+  <path class="vm-bar" d="M16,33 a7,7 0 0 1 7,-7 h456 a7,7 0 0 1 7,7 v21 h-470 z"/>
+  <text class="vm-title" x="30" y="46" font-size="15">main</text>
+  <rect class="vm-frame" x="530" y="26" width="394" height="196" rx="7"/>
+  <path class="vm-bar" d="M530,33 a7,7 0 0 1 7,-7 h380 a7,7 0 0 1 7,7 v21 h-394 z"/>
+  <text class="vm-title" x="544" y="46" font-size="15">printParty(int hp[], int n)</text>
+  <text class="pt-name" x="46" y="80" font-size="16">int party[3]</text>
+  <rect class="pt-cell pt-live" x="46" y="104" width="118" height="56" rx="5"/>
+  <text class="pt-axis" x="52" y="98" font-size="12.5">[0]</text>
+  <text class="pt-val" x="105.0" y="141" font-size="23" text-anchor="middle">12</text>
+  <text class="pt-addr" x="105.0" y="180" font-size="13" text-anchor="middle">0x2004</text>
+  <rect class="pt-cell pt-live" x="172" y="104" width="118" height="56" rx="5"/>
+  <text class="pt-axis" x="178" y="98" font-size="12.5">[1]</text>
+  <text class="pt-val" x="231.0" y="141" font-size="23" text-anchor="middle">30</text>
+  <text class="pt-addr" x="231.0" y="180" font-size="13" text-anchor="middle">0x2008</text>
+  <rect class="pt-cell pt-live" x="298" y="104" width="118" height="56" rx="5"/>
+  <text class="pt-axis" x="304" y="98" font-size="12.5">[2]</text>
+  <text class="pt-val" x="357.0" y="141" font-size="23" text-anchor="middle">8</text>
+  <text class="pt-addr" x="357.0" y="180" font-size="13" text-anchor="middle">0x200C</text>
+  <text class="pt-name" x="660" y="98" font-size="16" text-anchor="middle">hp</text>
+  <rect class="pt-cell pt-ptr" x="560" y="104" width="200" height="56" rx="5"/>
+  <text class="pt-val" x="660" y="140" font-size="20" text-anchor="middle">0x2004</text>
+  <text class="pt-note" x="660" y="181" font-size="13" text-anchor="middle">one address, 8 bytes</text>
+  <text class="pt-name" x="840" y="98" font-size="16" text-anchor="middle">n</text>
+  <rect class="pt-cell pt-live" x="790" y="104" width="100" height="56" rx="5"/>
+  <text class="pt-val" x="840" y="141" font-size="23" text-anchor="middle">3</text>
+  <text class="pt-axis" x="840" y="181" font-size="13" text-anchor="middle">passed separately</text>
+  <path class="pt-arrow" d="M660,190 L660,244 Q660,256 648,256 L76,256 Q64,256 64,244 L64,168" fill="none" stroke-linejoin="round" marker-end="url(#paah)"/>
+  <text class="pt-note" x="382" y="276" font-size="14" text-anchor="middle">hp holds the address of party[0]: the array itself never moved</text>
+  </svg>
+  <div class="callout callout-maroon" style="margin-top:0.2em">
+    An array argument <strong>decays to a pointer</strong> to its first element, so the function cannot ask how long it is. That is why <code>n</code> has to travel with it.
   </div>
-  <div class="callout callout-maroon">An array argument decays to a <strong>pointer to its first element</strong>. The function gets an address, not a copy, which is why it must also be told the <code>size</code>.</div>
 </section>
 
 <section>
   <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
   <div class="pi-question">
     <strong>Which call passes <code>vals</code> more efficiently?</strong>
-    <pre style="font-size:0.56em"><code class="language-cpp" data-trim>
+    <pre style="font-size:0.68em"><code class="language-cpp" data-trim>
 void print(int *arr, int size);
 void print2(int arr[], int size);
 
@@ -375,7 +719,7 @@ print2(vals, 3);
   <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
   <div class="pi-question">
     <strong>Will the second call to <code>print2()</code> compile?</strong>
-    <pre style="font-size:0.56em"><code class="language-cpp" data-trim>
+    <pre style="font-size:0.68em"><code class="language-cpp" data-trim>
 void print2(int arr[], int size);
 
 int vals[] = { 1, 3, 4 };
@@ -433,26 +777,86 @@ int totalHP(const int hp[], int size) {
 
 <section>
   <h2>Which Way Does the Data Flow?</h2>
-  <div class="two-col">
-    <div>
-      <div class="callout" style="font-size:0.62em"><strong>IN</strong>: the function reads it, caller's value never changes</div>
-      <div class="callout" style="font-size:0.62em"><strong>OUT</strong>: the function fills it in; whatever was there is ignored</div>
-      <div class="callout" style="font-size:0.62em"><strong>IN/OUT</strong>: the function reads it <em>and</em> updates it</div>
-    </div>
-    <div>
-      <pre style="font-size:0.5em"><code class="language-cpp" data-trim>
-// IN
-int totalHP(const int hp[], int n);
-
-// OUT
-void rollStats(int &amp;str, int &amp;dex);
-
-// IN/OUT
-void applyDamage(int &amp;hp, int hit);
-      </code></pre>
-    </div>
+  <div class="flw-card">
+    <span class="flw-badge flw-in">IN</span>
+    <svg class="flw-svg" viewBox="0 0 430 104" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="flah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto">
+        <path d="M0,0 L10,5 L0,10 z" fill="#7d7a73"/></marker>
+    </defs>
+    <rect class="flw-box-c" x="6" y="28" width="148" height="54" rx="7"/>
+    <text class="flw-lbl" x="10" y="21">in main</text>
+    <text class="flw-nm" x="20" y="62" font-size="15">score</text>
+    <text class="flw-new" x="140" y="64" font-size="19" text-anchor="end">5</text>
+    <rect class="flw-box-f" x="276" y="28" width="148" height="54" rx="7"/>
+    <text class="flw-lbl" x="280" y="21">inside bump</text>
+    <text class="flw-nm" x="290" y="62" font-size="15">n</text>
+    <text class="flw-new" x="410" y="64" font-size="19" text-anchor="end">99</text>
+    <text class="flw-old" x="372" y="64" font-size="17" text-anchor="end">5</text>
+    <line class="flw-strike" x1="360" y1="58" x2="375" y2="58"/>
+    <path class="flw-arrow" d="M162,55.0 L268,55.0" fill="none" marker-end="url(#flah)"/>
+    <text class="flw-cap" x="215" y="47.0" font-size="12.5" text-anchor="middle">the value is copied</text>
+    <text class="flw-cap flw-ok" x="80.0" y="101" font-size="12.5" text-anchor="middle">still 5 afterwards</text>
+    <text class="flw-cap" x="350.0" y="101" font-size="12.5" text-anchor="middle">it changes only its copy</text>
+    </svg>
+    <div class="flw-code"><span class="flw-cm">// IN: the function gets a copy</span>
+<span class="flw-ty">void</span> <span class="flw-fn">bump</span>(<span class="flw-ty">int</span> n) { n = <span class="flw-nu">99</span>; }
+<span class="flw-ty">int</span> score = <span class="flw-nu">5</span>; <span class="flw-fn">bump</span>(score);  <span class="flw-cm">// score: 5</span></div>
   </div>
-  <div class="callout callout-maroon">Decide the <em>direction</em> first. The passing mechanism follows from it.</div>
+  <div class="flw-card">
+    <span class="flw-badge flw-out">OUT</span>
+    <svg class="flw-svg" viewBox="0 0 430 104" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="flah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto">
+        <path d="M0,0 L10,5 L0,10 z" fill="#7d7a73"/></marker>
+    </defs>
+    <rect class="flw-box-c" x="6" y="28" width="148" height="54" rx="7"/>
+    <text class="flw-lbl" x="10" y="21">in main</text>
+    <text class="flw-nm" x="20" y="62" font-size="15">str</text>
+    <text class="flw-new" x="140" y="64" font-size="19" text-anchor="end">17</text>
+    <text class="flw-old" x="102" y="64" font-size="17" text-anchor="end">?</text>
+    <rect class="flw-tag" x="276" y="36" width="148" height="38" rx="7"/>
+    <text class="flw-lbl" x="280" y="21">inside rollStats</text>
+    <text class="flw-nm" x="350.0" y="61" font-size="17" text-anchor="middle">&amp;str</text>
+    <line class="flw-lead" x1="276" y1="55" x2="164" y2="55"/>
+    <circle class="flw-dot" cx="160" cy="55" r="4"/>
+    <text class="flw-cap" x="215" y="48" font-size="12.5" text-anchor="middle">another name</text>
+    <text class="flw-cap" x="80.0" y="101" font-size="12.5" text-anchor="middle">one box, two names</text>
+    <text class="flw-cap" x="350.0" y="101" font-size="12.5" text-anchor="middle">the old value is gone</text>
+    </svg>
+    <div class="flw-code"><span class="flw-cm">// OUT: the function fills it in</span>
+<span class="flw-ty">void</span> <span class="flw-fn">rollStats</span>(<span class="flw-ty">int</span> &amp;str, <span class="flw-ty">int</span> &amp;dex);
+<span class="flw-ty">int</span> str, dex; <span class="flw-fn">rollStats</span>(str, dex);</div>
+  </div>
+  <div class="flw-card">
+    <span class="flw-badge flw-io">IN/OUT</span>
+    <svg class="flw-svg" viewBox="0 0 430 104" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="flah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto">
+        <path d="M0,0 L10,5 L0,10 z" fill="#7d7a73"/></marker>
+    </defs>
+    <rect class="flw-box-c" x="6" y="28" width="148" height="54" rx="7"/>
+    <text class="flw-lbl" x="10" y="21">in main</text>
+    <text class="flw-nm" x="20" y="62" font-size="15">hp</text>
+    <text class="flw-new" x="140" y="64" font-size="19" text-anchor="end">22</text>
+    <text class="flw-old" x="102" y="64" font-size="17" text-anchor="end">30</text>
+    <line class="flw-strike" x1="80" y1="58" x2="105" y2="58"/>
+    <rect class="flw-tag" x="276" y="36" width="148" height="38" rx="7"/>
+    <text class="flw-lbl" x="280" y="21">inside applyDamage</text>
+    <text class="flw-nm" x="350.0" y="61" font-size="17" text-anchor="middle">&amp;hp</text>
+    <line class="flw-lead" x1="276" y1="55" x2="164" y2="55"/>
+    <circle class="flw-dot" cx="160" cy="55" r="4"/>
+    <text class="flw-cap" x="215" y="48" font-size="12.5" text-anchor="middle">another name</text>
+    <text class="flw-cap" x="80.0" y="101" font-size="12.5" text-anchor="middle">one box, two names</text>
+    <text class="flw-cap" x="350.0" y="101" font-size="12.5" text-anchor="middle">reads 30, writes back 22</text>
+    </svg>
+    <div class="flw-code"><span class="flw-cm">// IN/OUT: reads it, writes it back</span>
+<span class="flw-ty">void</span> <span class="flw-fn">applyDamage</span>(<span class="flw-ty">int</span> &amp;hp, <span class="flw-ty">int</span> hit);
+<span class="flw-ty">int</span> hp = <span class="flw-nu">30</span>; <span class="flw-fn">applyDamage</span>(hp, <span class="flw-nu">8</span>);  <span class="flw-cm">// 22</span></div>
+  </div>
+  <div class="callout callout-maroon" style="margin-top:0.3em">
+    A copy is a <strong>second box</strong>, so the caller never sees the change. A reference is a <strong>second name for the same box</strong>, so the caller sees everything. Pick the direction first and the mechanism follows.
+  </div>
 </section>
 
 <section>
@@ -556,6 +960,14 @@ int main() {
   </div>
 </section>
 
+<section class="part-slide" data-background-color="#6E1C2E">
+  <span class="part-tag">Extra &middot; read on your own</span>
+  <h1>Building with <code>make</code></h1>
+  <div class="demo-rule"></div>
+  <p class="part-sub">The next two slides are yours to read outside class.</p>
+  <p class="part-note">We will walk through them together only if there is time left today. Nothing in <strong>a01</strong> asks you to write a makefile, so treat this as background for the projects later in the semester.</p>
+</section>
+
 <section>
   <h2>Building with <code>make</code></h2>
   <p style="font-size:0.68em">Three files, one command. <code>make</code> recompiles only what changed.</p>
@@ -596,7 +1008,7 @@ clean:
     <li>A function must be <strong>declared before it is called</strong>: that's what headers are for</li>
     <li>Arrays are passed as <strong>addresses</strong>, so functions need the size too</li>
     <li>Choose the direction (in / out / in&#8202;/&#8202;out) first, then the mechanism</li>
-    <li><code style='color:var(--gold)'>make</code> rebuilds only what changed, and tabs matter</li>
+    <li><em>Extra:</em> <code style='color:var(--gold)'>make</code> rebuilds only what changed, and tabs matter</li>
   </ul>
   <div class="next">Next: a01 →</div>
   <p class="credit-line">
