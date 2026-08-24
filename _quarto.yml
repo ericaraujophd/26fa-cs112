@@ -38,6 +38,7 @@ website:
       - content/assignments/index.qmd
       - section: "Course Information"
         contents:
+          - syllabus.qmd
           - policies/grading.qmd
           - policies/honesty.qmd
           - policies/classroom.qmd

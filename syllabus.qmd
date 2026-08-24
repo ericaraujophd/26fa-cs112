@@ -1,0 +1,142 @@
+---
+title: "Syllabus"
+subtitle: "CS 112 · Introduction to Data Structures · Fall 2026"
+---
+
+::: {.callout-note}
+**This website is the syllabus.** There is no separate document. Everything
+required of a Calvin syllabus is either on this page or on one of the pages
+linked from it, and this is the version that is kept current.
+:::
+
+## Course Information
+
+| | |
+|---|---|
+| **Course** | CS 112, Introduction to Data Structures |
+| **Credits** | 4 |
+| **Instructor** | Eric Araújo · [eric.araujo@calvin.edu](mailto:eric.araujo@calvin.edu) |
+| **Lecture** | MWF 12:15–1:20 PM · SB 382 |
+| **Lab A** | Tuesday 8:00–9:40 AM · SB 372 |
+| **Lab B** | Tuesday 10:20 AM–12:00 PM · SB 372 |
+| **Semester** | August 31 – December 10, 2026 |
+| **Announcements and grades** | Moodle |
+
+Office hours are by appointment, booked from the [home page](index.qmd). There
+are no fixed hours; book a slot whenever you need help.
+
+---
+
+## Course Description
+
+An intermediate programming course focusing on fundamental data structures and
+algorithms using C++. Students learn to design, implement, and analyze efficient
+data structures and algorithms. Topics include dynamic arrays, linked lists,
+stacks, queues, trees, hash tables, and sorting algorithms. Significant attention
+is given to algorithm analysis (Big-O notation) and object-oriented design in C++.
+
+## Prerequisites
+
+- CS 108 (Introduction to Computing) or equivalent
+- Familiarity with basic programming constructs: variables, loops, conditionals, functions
+- No prior C++ experience required, we will learn it together
+
+---
+
+## Course Objectives
+
+By the end of this course, students will be able to:
+
+1. Read, write, compile, and debug C++ programs using proper development tools.
+2. Apply object-oriented principles, classes, constructors, destructors, operator overloading, in C++.
+3. Implement fundamental data structures: dynamic arrays, linked lists, stacks, queues, binary search trees, AVL trees, hash tables.
+4. Analyze the time and space complexity of algorithms using Big-O notation.
+5. Select the appropriate data structure for a given problem and justify the choice.
+6. Apply recursion as a problem-solving strategy.
+7. Use the C++ Standard Template Library (STL) effectively.
+8. Write well-tested, readable, and maintainable C++ code.
+
+Week-by-week learning objectives are listed against each week on the
+[Schedule](content/schedule.qmd), and the 33 individual skills assessed at
+check-ins are on the [Skills and Check-Ins](content/checkins.qmd) page.
+
+---
+
+## Course Structure
+
+Each week follows the same rhythm:
+
+- **Monday, Wednesday, Friday** — lecture, SB 382, 12:15–1:20 PM
+- **Tuesday** — lab, SB 372 (Lab A 8:00–9:40 AM, Lab B 10:20 AM–12:00 PM)
+
+There is no separate lab and project split. Each week has **one assignment**,
+which you begin during the Tuesday lab and finish on your own time.
+
+Tutoring Assistants are available in SB 337 on Mondays and Thursdays, 7–9 PM.
+
+---
+
+## Everything else, and where it lives
+
+This page carries what is specific to the course as a whole. The details live on
+the pages below, which are the authoritative versions.
+
+| Topic | Where |
+|---|---|
+| Weekly topics, readings, slides, and learning objectives | [Schedule](content/schedule.qmd) |
+| Assignments | [Assignments](content/assignments/index.qmd) |
+| How your grade is determined, deadlines, the Final Window | [Grading](policies/grading.qmd) |
+| Check-ins: the mastery scale, the windows, all 33 skills | [Skills and Check-Ins](content/checkins.qmd) |
+| Academic integrity, plagiarism, **the AI policy** | [Academic Honesty](policies/honesty.qmd) |
+| Required materials, attendance, accommodations, diversity and inclusion, library help | [Classroom](policies/classroom.qmd) |
+
+---
+
+## Required Materials
+
+No textbook purchase is required. Everything you need is on this site. See
+[Classroom](policies/classroom.qmd) for the full list and for the Coder setup.
+
+---
+
+## Accessibility and Accommodations
+
+Calvin University is committed to providing equitable access to all students.
+Students with documented disabilities who wish to request accommodations should
+contact Disability Services. Students who have received an accommodation memo are
+encouraged to meet with me during the first two weeks of the semester to discuss
+how their accommodations will be implemented in this course. Students seeking
+reasonable modifications related to pregnancy or related conditions should
+contact the University's Title IX Director, Jamie Klop, to learn more about
+available supports and accommodations.
+
+---
+
+## Artificial Intelligence
+
+**No AI use is permitted in CS112.** Every piece of work you submit must be
+written by you, without assistance from ChatGPT, Copilot, Claude, or any similar
+tool. The reasoning, the consequences, and the instructor's own use of AI are set
+out in full on the [Academic Honesty](policies/honesty.qmd) page.
+
+---
+
+## If something goes wrong
+
+If you or someone else in this class is hurt by something I say or do, please
+tell me so we can work toward a remedy. See
+[Classroom](policies/classroom.qmd) for the full statement, including how to
+raise it with the department chair instead.
+
+If you experience or observe unlawful discrimination, you can report it to
+Calvin's [Safer Spaces](https://calvin.edu/offices-services/safer-spaces/report/)
+office, or contact the director, Jamie Klop, directly.
+
+If you would prefer to raise something about this course outside the department,
+Calvin's [Comment on Faculty](https://calvin.edu/go/comments-on-faculty) form goes
+directly to the appropriate Dean. It can also be used to say that something went
+well.
+
+---
+
+*Syllabus subject to change. Changes will be announced in class and on Moodle.*
