@@ -160,7 +160,7 @@ learning objectives are there too, folded away until you want them.
       <div class="res-rows">
 
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><a class="res-todo" href="assignments/gettingStarted.html">Getting Started</a> <span class="res-sub">(ungraded pre-lab)</span><br><a class="res-todo" data-opens="2026-08-31" href="assignments/a01.html">a01 , RPG Character Creator</a> <span class="res-sub">(begins)</span></div>
+        <div class="res-val"><a class="res-todo" href="assignments/gettingStarted.html">Getting Started</a> <span class="res-sub">(ungraded pre-lab)</span><br><a class="res-todo" data-opens="2026-08-31" href="assignments/a01.html">a01: RPG Character Creator</a></div>
 
         <div class="res-label">📖 Read</div>
         <div class="res-val"><a href="https://runestone.academy/runestone/books/published/cpp4python/index.html" target="_blank" rel="noopener">C++ for Python Programmers</a> <span class="res-sub">Ch. 1&ndash;2, Sec. 5.1&ndash;5.2</span></div>
@@ -218,7 +218,7 @@ learning objectives are there too, folded away until you want them.
       <div class="res-rows">
 
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><a class="res-todo" data-opens="2026-08-31" href="assignments/a01.html">a01 , RPG Character Creator</a> <span class="res-sub">(concludes)</span></div>
+        <div class="res-val"><a class="res-todo" data-opens="2026-09-07" href="assignments/a02.html">a02: Keystrokes</a></div>
 
         <div class="res-label">📖 Read</div>
         <div class="res-val"><a href="https://runestone.academy/runestone/books/published/cpp4python/index.html" target="_blank" rel="noopener">C++ for Python Programmers</a> <span class="res-sub">Ch. 3&ndash;4</span><br><a href="https://makefiletutorial.com/" target="_blank" rel="noopener">Makefile Tutorial</a></div>
@@ -271,7 +271,7 @@ learning objectives are there too, folded away until you want them.
       <div class="res-rows">
 
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><a class="res-todo" data-opens="2026-09-14" href="assignments/a02.html">a02 , Sandbox</a></div>
+        <div class="res-val"><a class="res-todo" data-opens="2026-09-14" href="assignments/a03.html">a03: Sandbox</a></div>
 
         <div class="res-label">📖 Read</div>
         <div class="res-val"><a href="https://runestone.academy/runestone/books/published/cpp4python/index.html" target="_blank" rel="noopener">C++ for Python Programmers</a> <span class="res-sub">Ch. 6&ndash;7</span></div>
@@ -322,7 +322,7 @@ learning objectives are there too, folded away until you want them.
       <div class="res-rows">
 
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><a class="res-todo" data-opens="2026-09-21" href="assignments/a03.html">a03 , Qualifying</a></div>
+        <div class="res-val"><a class="res-todo" data-opens="2026-09-21" href="assignments/a04.html">a04: Qualifying</a></div>
 
         <div class="res-label">📖 Read</div>
         <div class="res-val"><span class="res-tbd">to be announced</span></div>
@@ -375,7 +375,7 @@ learning objectives are there too, folded away until you want them.
       <div class="res-rows">
 
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><a class="res-todo" data-opens="2026-09-28" href="assignments/a04.html">a04 , Telemetry</a></div>
+        <div class="res-val"><a class="res-todo" data-opens="2026-09-28" href="assignments/a05.html">a05: Telemetry</a></div>
 
         <div class="res-label">📖 Read</div>
         <div class="res-val"><span class="res-tbd">to be announced</span></div>
@@ -428,7 +428,7 @@ learning objectives are there too, folded away until you want them.
       <div class="res-rows">
 
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><a class="res-todo" data-opens="2026-10-05" href="assignments/a05.html">a05 , Channels</a><span class="res-sep">·</span><a class="res-todo" data-opens="2026-10-05" href="assignments/a06.html">a06 , Race Data</a></div>
+        <div class="res-val"><a class="res-todo" data-opens="2026-10-05" href="assignments/a06.html">a06: Channels</a><span class="res-sep">·</span><a class="res-todo" data-opens="2026-10-05" href="assignments/a07.html">a07: Race Data</a></div>
 
         <div class="res-label">📖 Read</div>
         <div class="res-val"><span class="res-tbd">to be announced</span></div>
@@ -480,7 +480,7 @@ learning objectives are there too, folded away until you want them.
       <div class="res-rows">
 
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><a class="res-todo" data-opens="2026-10-12" href="assignments/a07.html">a07 , Finish the List</a></div>
+        <div class="res-val"><a class="res-todo" data-opens="2026-10-12" href="assignments/a08.html">a08: Finish the List</a></div>
 
         <div class="res-label">📖 Read</div>
         <div class="res-val"><span class="res-tbd">to be announced</span></div>
@@ -546,7 +546,7 @@ learning objectives are there too, folded away until you want them.
       <div class="res-rows">
 
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><a class="res-todo" data-opens="2026-10-23" href="assignments/a08.html">a08 , Stopwatch</a></div>
+        <div class="res-val"><a class="res-todo" data-opens="2026-10-23" href="assignments/a09.html">a09: Stopwatch</a></div>
 
         <div class="res-label">📖 Read</div>
         <div class="res-val"><span class="res-tbd">to be announced</span></div>
@@ -599,7 +599,7 @@ learning objectives are there too, folded away until you want them.
       <div class="res-rows">
 
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><a class="res-todo" data-opens="2026-11-02" href="assignments/a09.html">a09 , Stack and Queue</a><span class="res-sep">·</span><a class="res-todo" data-opens="2026-11-02" href="assignments/a10.html">a10 , HashTable</a></div>
+        <div class="res-val"><a class="res-todo" data-opens="2026-11-02" href="assignments/a10.html">a10: Stack and Queue</a><span class="res-sep">·</span><a class="res-todo" data-opens="2026-11-02" href="assignments/a11.html">a11: HashTable</a></div>
 
         <div class="res-label">📖 Read</div>
         <div class="res-val"><span class="res-tbd">to be announced</span></div>
@@ -652,7 +652,7 @@ learning objectives are there too, folded away until you want them.
       <div class="res-rows">
 
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><a class="res-todo" data-opens="2026-11-09" href="assignments/a11.html">a11 , Three Ways Through a Maze</a><span class="res-sep">·</span><a class="res-todo" data-opens="2026-11-09" href="assignments/a12.html">a12 , Snake</a></div>
+        <div class="res-val"><a class="res-todo" data-opens="2026-11-09" href="assignments/a12.html">a12: Three Ways Through a Maze</a><span class="res-sep">·</span><a class="res-todo" data-opens="2026-11-09" href="assignments/a13.html">a13: Snake</a></div>
 
         <div class="res-label">📖 Read</div>
         <div class="res-val"><span class="res-tbd">to be announced</span></div>
@@ -705,7 +705,7 @@ learning objectives are there too, folded away until you want them.
       <div class="res-rows">
 
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><a class="res-todo" data-opens="2026-11-16" href="assignments/a13.html">a13 , Index</a></div>
+        <div class="res-val"><a class="res-todo" data-opens="2026-11-16" href="assignments/a14.html">a14: Index</a></div>
 
         <div class="res-label">📖 Read</div>
         <div class="res-val"><span class="res-tbd">to be announced</span></div>
@@ -758,7 +758,7 @@ learning objectives are there too, folded away until you want them.
       <div class="res-rows">
 
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><span class="res-tbd">no assignment , a14 spans weeks 13&ndash;14</span></div>
+        <div class="res-val"><span class="res-tbd">no assignment , a15 spans weeks 13&ndash;14</span></div>
 
         <div class="res-label">📖 Read</div>
         <div class="res-val"><span class="res-tbd">to be announced</span></div>
@@ -814,7 +814,7 @@ learning objectives are there too, folded away until you want them.
       <div class="res-rows">
 
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><a class="res-todo" data-opens="2026-11-30" href="assignments/a14.html">a14 , Matrix Operations and OpenMP</a></div>
+        <div class="res-val"><a class="res-todo" data-opens="2026-11-30" href="assignments/a15.html">a15: Matrix Operations and OpenMP</a></div>
 
         <div class="res-label">📖 Read</div>
         <div class="res-val"><span class="res-tbd">to be announced</span></div>
@@ -865,7 +865,7 @@ learning objectives are there too, folded away until you want them.
       <div class="res-rows">
 
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><span class="res-tbd">a14 continues</span></div>
+        <div class="res-val"><span class="res-tbd">a15 continues</span></div>
 
         <div class="res-label">📖 Read</div>
         <div class="res-val"><span class="res-tbd">to be announced</span></div>

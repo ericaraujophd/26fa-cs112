@@ -160,10 +160,10 @@ Each assignment **opens on the Monday of its week**. You can see the whole term 
 </div>
 
 <section class="asg-week-group">
-  <div class="asg-week-head">
+  <div class="asg-week-head asg-week-multi">
     <span class="asg-week-num">Week 00</span>
     <span class="asg-week-dates">Aug 31 – Sep 5</span>
-    <span class="asg-week-count">1 assignment + 1 setup task</span>
+    <span class="asg-week-count">2 assignments + 1 setup task</span>
   </div>
   <div class="asg-grid">
     <a class="asg-card" href="gettingStarted.html">
@@ -183,7 +183,25 @@ Each assignment **opens on the Monday of its week**. You can see the whole term 
       </div>
       <div class="asg-name">RPG Character Creator</div>
       <div class="asg-desc">Variables, memory, control structures, and functions, in C++.</div>
-      <div class="asg-note">runs through Week 01</div>
+      <div class="asg-note">finish it at home during Week 00</div>
+    </a>
+  </div>
+</section>
+
+<section class="asg-week-group">
+  <div class="asg-week-head">
+    <span class="asg-week-num">Week 01</span>
+    <span class="asg-week-dates">Sep 7 – Sep 12</span>
+    <span class="asg-week-count">1 assignment</span>
+  </div>
+  <div class="asg-grid">
+    <a class="asg-card" data-opens="2026-09-07" href="a02.html">
+      <div class="asg-top">
+        <span class="asg-id">a02</span>
+        <span class="asg-status asg-live">Published</span>
+      </div>
+      <div class="asg-name">Keystrokes</div>
+      <div class="asg-desc">A programmable calculator with five faults in its firmware. Find them, then finish the machine.</div>
     </a>
   </div>
 </section>
@@ -195,9 +213,9 @@ Each assignment **opens on the Monday of its week**. You can see the whole term 
     <span class="asg-week-count">1 assignment</span>
   </div>
   <div class="asg-grid">
-    <a class="asg-card" data-opens="2026-09-14" href="a02.html">
+    <a class="asg-card" data-opens="2026-09-14" href="a03.html">
       <div class="asg-top">
-        <span class="asg-id">a02</span>
+        <span class="asg-id">a03</span>
         <span class="asg-status asg-live">Published</span>
       </div>
       <div class="asg-name">Sandbox</div>
@@ -213,9 +231,9 @@ Each assignment **opens on the Monday of its week**. You can see the whole term 
     <span class="asg-week-count">1 assignment</span>
   </div>
   <div class="asg-grid">
-    <a class="asg-card" data-opens="2026-09-21" href="a03.html">
+    <a class="asg-card" data-opens="2026-09-21" href="a04.html">
       <div class="asg-top">
-        <span class="asg-id">a03</span>
+        <span class="asg-id">a04</span>
         <span class="asg-status asg-live">Published</span>
       </div>
       <div class="asg-name">Qualifying</div>
@@ -231,9 +249,9 @@ Each assignment **opens on the Monday of its week**. You can see the whole term 
     <span class="asg-week-count">1 assignment</span>
   </div>
   <div class="asg-grid">
-    <a class="asg-card" data-opens="2026-09-28" href="a04.html">
+    <a class="asg-card" data-opens="2026-09-28" href="a05.html">
       <div class="asg-top">
-        <span class="asg-id">a04</span>
+        <span class="asg-id">a05</span>
         <span class="asg-status asg-live">Published</span>
       </div>
       <div class="asg-name">Telemetry</div>
@@ -249,18 +267,18 @@ Each assignment **opens on the Monday of its week**. You can see the whole term 
     <span class="asg-week-count">2 assignments</span>
   </div>
   <div class="asg-grid">
-    <a class="asg-card" data-opens="2026-10-05" href="a05.html">
+    <a class="asg-card" data-opens="2026-10-05" href="a06.html">
       <div class="asg-top">
-        <span class="asg-id">a05</span>
+        <span class="asg-id">a06</span>
         <span class="asg-status asg-live">Published</span>
       </div>
       <div class="asg-name">Channels</div>
       <div class="asg-desc">One container, three types, turning last week's class into a template.</div>
     </a>
 
-    <a class="asg-card" data-opens="2026-10-05" href="a06.html">
+    <a class="asg-card" data-opens="2026-10-05" href="a07.html">
       <div class="asg-top">
-        <span class="asg-id">a06</span>
+        <span class="asg-id">a07</span>
         <span class="asg-status asg-live">Published</span>
       </div>
       <div class="asg-name">Race Data</div>
@@ -276,9 +294,9 @@ Each assignment **opens on the Monday of its week**. You can see the whole term 
     <span class="asg-week-count">1 assignment</span>
   </div>
   <div class="asg-grid">
-    <a class="asg-card" data-opens="2026-10-12" href="a07.html">
+    <a class="asg-card" data-opens="2026-10-12" href="a08.html">
       <div class="asg-top">
-        <span class="asg-id">a07</span>
+        <span class="asg-id">a08</span>
         <span class="asg-status asg-live">Published</span>
       </div>
       <div class="asg-name">Finish the List</div>
@@ -294,9 +312,9 @@ Each assignment **opens on the Monday of its week**. You can see the whole term 
     <span class="asg-week-count">1 assignment</span>
   </div>
   <div class="asg-grid">
-    <a class="asg-card" data-opens="2026-10-23" href="a08.html">
+    <a class="asg-card" data-opens="2026-10-23" href="a09.html">
       <div class="asg-top">
-        <span class="asg-id">a08</span>
+        <span class="asg-id">a09</span>
         <span class="asg-status asg-live">Published</span>
       </div>
       <div class="asg-name">Stopwatch</div>
@@ -312,17 +330,17 @@ Each assignment **opens on the Monday of its week**. You can see the whole term 
     <span class="asg-week-count">2 assignments</span>
   </div>
   <div class="asg-grid">
-    <a class="asg-card" data-opens="2026-11-02" href="a09.html">
+    <a class="asg-card" data-opens="2026-11-02" href="a10.html">
       <div class="asg-top">
-        <span class="asg-id">a09</span>
+        <span class="asg-id">a10</span>
         <span class="asg-status asg-live">Published</span>
       </div>
       <div class="asg-name">Stack and Queue</div>
       <div class="asg-desc">Two containers, nine TODOs, and one array bent into a circle.</div>
     </a>
-    <a class="asg-card" data-opens="2026-11-02" href="a10.html">
+    <a class="asg-card" data-opens="2026-11-02" href="a11.html">
       <div class="asg-top">
-        <span class="asg-id">a10</span>
+        <span class="asg-id">a11</span>
         <span class="asg-status asg-live">Published</span>
       </div>
       <div class="asg-name">HashTable</div>
@@ -338,17 +356,17 @@ Each assignment **opens on the Monday of its week**. You can see the whole term 
     <span class="asg-week-count">2 assignments</span>
   </div>
   <div class="asg-grid">
-    <a class="asg-card" data-opens="2026-11-09" href="a11.html">
+    <a class="asg-card" data-opens="2026-11-09" href="a12.html">
       <div class="asg-top">
-        <span class="asg-id">a11</span>
+        <span class="asg-id">a12</span>
         <span class="asg-status asg-live">Published</span>
       </div>
       <div class="asg-name">Three Ways Through a Maze</div>
       <div class="asg-desc">One algorithm, two containers, and then no container at all.</div>
     </a>
-    <a class="asg-card" data-opens="2026-11-09" href="a12.html">
+    <a class="asg-card" data-opens="2026-11-09" href="a13.html">
       <div class="asg-top">
-        <span class="asg-id">a12</span>
+        <span class="asg-id">a13</span>
         <span class="asg-status asg-live">Published</span>
       </div>
       <div class="asg-name">Snake</div>
@@ -364,9 +382,9 @@ Each assignment **opens on the Monday of its week**. You can see the whole term 
     <span class="asg-week-count">1 assignment</span>
   </div>
   <div class="asg-grid">
-    <a class="asg-card" data-opens="2026-11-16" href="a13.html">
+    <a class="asg-card" data-opens="2026-11-16" href="a14.html">
       <div class="asg-top">
-        <span class="asg-id">a13</span>
+        <span class="asg-id">a14</span>
         <span class="asg-status asg-live">Published</span>
       </div>
       <div class="asg-name">Index</div>
@@ -399,9 +417,9 @@ Each assignment **opens on the Monday of its week**. You can see the whole term 
     <span class="asg-week-count">1 assignment</span>
   </div>
   <div class="asg-grid">
-    <a class="asg-card" data-opens="2026-11-30" href="a14.html">
+    <a class="asg-card" data-opens="2026-11-30" href="a15.html">
       <div class="asg-top">
-        <span class="asg-id">a14</span>
+        <span class="asg-id">a15</span>
         <span class="asg-status asg-soon">Coming soon</span>
       </div>
       <div class="asg-name">Matrix Operations and OpenMP</div>

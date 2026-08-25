@@ -144,7 +144,7 @@ The guard makes the second paste do nothing. The first time through,
 `FUNCTIONS_H` is not defined, so the compiler defines it and reads the file. Any
 later time, it is already defined, so everything up to `#endif` is skipped.
 
-You will write your own from a03 onward, when you start creating classes. The
+You will write your own from a04 onward, when you start creating classes. The
 convention is the file's name in capitals with the dot turned into an
 underscore, so `Queue.h` gets `QUEUE_H`.
 :::

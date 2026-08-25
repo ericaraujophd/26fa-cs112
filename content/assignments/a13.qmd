@@ -1,86 +1,89 @@
 ---
-title: "Assignment 13: Index"
-subtitle: "A tree that keeps its promise, and a shape that does not"
+title: "Assignment 12: Snake"
+subtitle: "The snake is a queue. Not like a queue, a queue."
 ---
 
 ::: {.callout-note}
 Your own private GitHub repository is waiting for you (see
 [Getting the code](#getting-the-code) below), clone it and open it in VS Code.
 
-**Plan to set aside about 3 hours.** The tree (§4) is the bulk of it; parts 2,
-3 and 4 are short once it works. `findings.txt` (§8) is worth taking seriously
-it is where the assignment actually happens.
+**Plan to set aside about 2 to 2.5 hours.** There is no new data structure
+here and no new C++, this is the week's second assignment and it is meant to
+be the lighter one. TODO 3 is the heart of it and is four lines long.
 :::
 
 ## Objectives
 
 By the end of this assignment, you will be able to:
 
-- State the binary search tree property, and explain why it makes a search cheap
-- Implement `insert`, `contains` and `getHeight` recursively, on a structure
-  with two children per node
-- Explain why an in-order traversal of a BST comes out sorted, without any
-  sorting code
-- Use `std::map` for the same job, and say what it gives you that your tree
-  does not
-- **Measure** the height of trees you built yourself, and compare that with
-  `lg(N)`
-- Put a number on the constant that Big-Oh throws away
+- Recognise a queue in the wild, in a place where nobody labelled it one
+- Implement moving, growing and dying in terms of one enqueue and one dequeue
+  per frame
+- Explain why "growing" needs no code of its own, only a dequeue that does not
+  happen
+- Use modular arithmetic to wrap a coordinate round the edge of a grid
+- Say why a game with random elements can still be graded, and what makes that
+  possible
 
 ---
 
-This assignment covers skills **F1** (implement BST insertion and traversals)
-and **G1**/**G2** (use the STL containers), from clusters **F** and **G**.
-
-::: {.callout-important}
-**Window 2's reference date is Friday of this week, Nov 20.** You are preparing
-for a check-in in the same week you do this, which is why this assignment is
-deliberately moderate. Do not let it crowd out your preparation.
-:::
+This assignment applies course skill **C6** (implement a queue with O(1)
+enqueue and dequeue) rather than teaching a new one. It is week 10's second
+assignment, and it is the shorter of the two on purpose, a12 is the one with
+the weight in it.
 
 ::: {.callout-note}
-**Lab and homework.** You start this in lab on **Tuesday Nov 17**, with
-Monday's lecture on the BST property and `insert` behind you. §4's TODOs 1–3
-need only Monday.
-
-TODO 7 uses `std::map`, which is **Friday's** lecture, but it is five lines
-and the comment in the file tells you what you need, so do not wait for it if
-you are ready.
-
-**There is no `remove` in this assignment.** Wednesday's lecture codes that one
-live, on the board, together.
+**This one is homework.** Tuesday's lab belongs to a12. Nothing here needs a
+lecture you have not had: it is week 9's Queue, applied.
 :::
 
 ---
 
 ## 1. Introduction
 
-Every container you have built this semester is a promise about where things
-are.
+Watch a snake move.
 
-An array promises that the thing you want is at a place you can compute. A
-linked list promises nothing about place, only about order. A stack promises
-the newest thing; a queue the oldest. a10's hash table promises that a key can
-be turned into a place, which is a strange promise until you notice that a key
-is not a number and a place is.
+```
+frame 1     ####@.......
+frame 2     .####@......
+frame 3     ..####@.....
+frame 4     ...####@....
+```
 
-A tree promises something none of them do:
+Look at what is actually happening. A square appears at the front. A square
+disappears at the back. **Nothing in the middle moves at all.**
 
-> **everything smaller is on one side, everything larger is on the other, and
-> that is true at every node, all the way down.**
+New in at one end, old out at the other, everything in between untouched.
+That is a queue. Not a queue-like thing, not a useful analogy for a queue, the
+snake's body *is* a `Queue<Segment>`, and the entire animation is:
 
-That is the **binary search tree property**, and one rule kept everywhere is
-the whole of it. It buys two things that look unrelated and are not:
+```cpp
+myBody.enqueue(newHead);      // grow a head
+myBody.dequeue();             // lose a tail
+```
 
-- **Searching is cheap.** At each node you learn which half of what remains you
-  can stop caring about. Half, then half of that, then half of that again.
-- **The items are already in order.** Walk left, then the node, then right, and
-  the items come out sorted, with no sorting code anywhere.
+once per frame.
 
-You will use both. And then you will measure the thing nobody tells you at
-first, which is that **the promise is only as good as the shape, and the shape
-is not a property of the tree.** It is a property of the order the data
-arrived in.
+And then eating, which is the part worth sitting with:
+
+> **To grow, skip the dequeue.**
+
+That is all of it. The head keeps advancing, nothing leaves at the back, and
+the snake is one segment longer for every frame you skip. There is no "grow"
+function in this assignment, and there is nothing anywhere that shuffles
+segments along. You will write four lines in TODO 3, and one of them is a
+`return`.
+
+::: {.callout-note}
+**There is no better fit between a data structure and a problem in this
+course**, and it is worth noticing how little code a good fit costs you. The
+same game written over a `vector` needs to decide what to do about the tail on
+every frame, shift everything down, or track an offset, or reverse the order
+and pay somewhere else. Over a queue, the question does not come up.
+
+That is the thing to take away from this assignment. Choosing the right
+structure does not make the code faster. It makes the code *disappear*.
+:::
 
 ---
 
@@ -95,7 +98,7 @@ to accept and nothing to set up, if you are on the roster, it is there.
 gh repo clone 26fa-cs112/cs112-a13-YOURUSERNAME
 cd cs112-a13-YOURUSERNAME
 make
-./a13
+./a13 moves/circle.txt 20
 make test
 ```
 
@@ -128,328 +131,211 @@ so anything written outside it has to be moved by hand later, and that is a
 worse afternoon than a short wait.
 :::
 
-`make` succeeds, `./a13` stops and tells you to do TODO 1, and `make test`
-reports **1 / 36**.
+`make` succeeds, `./a13` draws an empty board, and `make test` reports
+**5 / 30**.
 
 ---
 
 ## 3. What You Were Given
 
-**You edit three files: `BST.h`, `Index.cpp` and `findings.txt`.** Nine TODOs.
+**You edit one file: `Snake.cpp`.** Six TODOs.
 
 | File | Yours? | What it is |
 |---|---|---|
-| `BST.h` | **yes** | the tree, TODOs 1–5 |
-| `Index.cpp` | **yes** | TODOs 6–8 |
-| `findings.txt` | **yes** | TODO 9, the four questions |
-| `Index.h` | no | the specification. Read this first. |
-| `given.cpp` | no | file loading, the sampler, the statistics, the chart |
-| `main.cpp` | no | runs all four parts |
-| `Exceptions.h` | no | `BSTException` |
-| `fieldnotes.txt` | no | the text you index |
-| `words.txt` | no | a10's dictionary, already sorted |
+| `Snake.cpp` | **yes** | TODOs 1–6 |
+| `Snake.h` | no | the specification. Read this first. |
+| `given.cpp` | no | the constructor, `step()`, and the random source |
+| `render.cpp` | no | colour |
+| `main.cpp` | no | plays a scripted game |
+| `Queue.h` | **replaceable** | a working Queue, drop in your own a10 one if you like |
+| `moves/` | no | scripts of moves |
 
-::: {.callout-note}
-**Header-only, for the third time.** `BST` is a class template, so its
-definitions live in `BST.h` below the class, the same rule as `Trace` in a05,
-`List` in a07, and `Stack` and `Queue` in a09. There is no `BST.cpp` and that
-is not an oversight.
-:::
+### Read `step()` in `given.cpp`
 
-### Every operation is written twice
-
-This is the one structural thing to get straight before you start.
+It is the whole game loop, it decides the order your six functions are called
+in, and it settles a question you would otherwise have to guess at:
 
 ```
-BST::insert     handles the empty tree, keeps the count, and otherwise
-                passes the buck to the root node
-Node::insert    the recursive one, decides left or right, and either
-                recurses or attaches a new Node
+1. work out where the head is going        (your nextHead)
+2. if that square is the snake, it is over (your detectDeath)
+3. notice whether we are about to eat      (your detectTarget)
+4. move                                    (your updateSnake)
+5. if we ate, put a new target down        (your plantTarget)
 ```
 
-The `BST` method is the doorway; the `Node` method does the work. Keep that
-split and each half stays about four lines long. Merge them and you will fight
-the null root forever.
+Step 2 happens **before** step 4, so the tail still counts as part of the snake
+at the moment you decide whether you crashed. Turning into the square your tail
+is about to leave kills you. Some versions of Snake are kinder; this one is not,
+and the rule is at least simple.
+
+### You never write an escape code
+
+`render.cpp` is given complete. It uses the same trick a03 did: the half-block
+character `▀` fills the top half of a terminal cell with the foreground colour
+and leaves the bottom half showing the background, so one printed character
+draws two grid rows and the pixels come out square.
+
+Everything you write works on a plain `char` grid. Colour is a mapping applied
+at the very end, and nowhere else.
 
 ---
 
-## 4. TODOs 1 to 5, the tree {#the-tree}
+## 4. The six TODOs
 
-**TODO 1, the constructor.** Two lines.
+**TODO 1, `drawSnake`.** Paint `BODY` on every occupied square, then `HEAD` on
+top, then `TARGET`. Walk `myOccupied`, the 2D array of bools the class keeps;
+do not take segments out of the queue to look at them, because a queue only
+lets you see its front and you would be dismantling the snake to read it.
 
-**TODO 2, `insert`.** Three cases, and they are exactly the three ways two
-items can compare: smaller goes left, larger goes right, equal is already here
-and **throws**.
+Do this one first even though it is not the interesting one. Once it works you
+can *see* everything else you write.
 
-::: {.callout-note}
-**Why throw on a duplicate?** There is nowhere sensible to put a second copy of
-a value that is already in the tree, it is neither less than nor greater than
-itself. Silently ignoring it would be defensible, but it throws away
-information the caller wants.
-
-And this caller wants it very much. Counting how often `insert` refuses is how
-§5's index counts repeated words and how §7's experiment counts duplicate
-draws. The refusal is not an error condition; it is a measurement.
-
-```cpp
-try {
-    tree.insert(word);
-    ++distinct;
-} catch (BSTException&) {
-    ++repeats;
-}
-```
-:::
+**TODO 2, `nextHead`.** One square in the given direction, and the field
+wraps.
 
 ::: {.callout-warning}
-`BST::insert` must count **after** the recursive call, not before. `Node::insert`
-throws when the item is already there, and a refused insert must not make the
-tree think it grew.
-:::
-
-**TODO 3, `contains`.** The same walk, without the writing. **Return what the
-recursive call gives you**, dropping that answer and falling off the end of the
-function was the single most common way to lose marks on this in spring.
-
-**TODO 4, `getHeight`.** Heights here count **nodes**, not edges:
-
-| | |
-|---|---|
-| an empty tree | 0 |
-| one node | 1 |
-| a root with one child | 2 |
-
-The recursive definition is one line: *a node's height is one more than the
-taller of its two subtrees*. The interesting part is the base case, and it is
-more interesting than it looks, you can either say outright that a childless
-node has height 1, or decide that a missing subtree has height 0 and let it
-fall out of the arithmetic. The second is shorter and worth working out.
-
-**Everything in §7 rests on this method.** Check it against a tree you have
-drawn on paper before you trust it.
-
-**TODO 5, the two traversals.** `traversePreorder` is written for you as the
-model. Copy it and move one line:
-
-```
-pre-order    me, left, right
-in-order     left, me, right
-post-order   left, right, me
-```
-
-::: {.callout-note}
-**In-order is why it is a *search* tree and not just any tree.** Everything to
-the left of a node is smaller and everything to the right is larger, so
-walking left, then me, then right visits the items in ascending order.
-
-Your index will print itself alphabetically and nothing will have sorted it.
-:::
-
----
-
-## 5. TODOs 6 and 7, index a text, twice {#the-index}
-
-**TODO 6, `indexText`.** Put every word of the text into the tree. Each
-successful insert is a word you had not seen; each `BSTException` is a
-repetition. An in-order traversal then prints the vocabulary alphabetically.
-
-**TODO 7, `indexWithMap`.** The same job, about five lines:
+`%` alone will not wrap a coordinate. In C++ `-1 % 24` is `-1`, not `23`. Add
+the size back first:
 
 ```cpp
-counts[word]++;
+(row - 1 + ROWS) % ROWS
 ```
 
-A missing key is created with a value-initialised `int`, which is 0, and then
-incremented.
-
-::: {.callout-important}
-**Look at what the map does that your tree does not.**
-
-Your `BST<string>` is a **set**. It remembers *which* words appeared, and
-catching the exception is the only way to learn that one appeared twice.
-
-A `map` is a set with a **value attached to every key**, so it can hold the
-count itself. That is the whole difference between `std::set` and `std::map`,
-and it is Friday's lecture, which you will have had by the time you read this,
-or will have shortly.
-
-A `map` also walks in key order, for exactly the same reason your in-order
-traversal does: it is a balanced binary search tree underneath. You are not
-using a different idea. You are using a better-built version of the one you
-just wrote.
+You met this exact trap in a10, in the circular queue's `getSize`, and it is
+here for the same reason: the remainder operator does not do what you want on
+the way down. It is worth noticing that a wrapping grid and a circular array
+are the same idea wearing different clothes.
 :::
 
----
-
-## 6. TODO 8, one trial
-
-`runTrial` builds a fresh tree from a list of words and reports how tall it came
-out. **Three lines, if you use TODO 6 to do the inserting**, which you should;
-it already counts the two things a trial wants.
-
-Make the tree a local variable so its destructor frees it. `main.cpp` runs this
-ten times on twenty thousand words each.
-
----
-
-## 7. The experiment {#the-experiment}
-
-Run `./a13` and look at what it prints, and at `results.html`.
-
-### Ten trees from random samples
-
-Ten times, the program draws 20,000 words at random from the dictionary, **with
-replacement**, so the same word can come up twice, and builds a tree. On a
-typical run:
+**TODO 3, `updateSnake`.** The queue. Four lines:
 
 ```
-   trial   height   distinct   duplicates
-       1       36      17605         2395
-       2       33      17531         2469
-       ...
-   smallest 31   largest 36   mean 33.40   median 33.00   stdev 1.85
-   lg(N) for N = 17516 is 14.10
+the new head joins the back of the queue, and becomes myHead
+its square is now occupied
+if myGrowth is above zero:  spend one of it and STOP
+otherwise:                  the tail leaves the front, freeing its square
 ```
 
-Seventeen and a half thousand words, in a tree **thirty-three** deep. That is
-what `O(lg N)` looks like when you measure it rather than assert it.
+That third line is eating. `step()` adds `GROW_BY` to `myGrowth` when the snake
+eats; each frame after that skips the dequeue once. The frame that eats is
+itself the first frame of growing, so a snake of 1 becomes a snake of
+`1 + GROW_BY` over `GROW_BY` frames.
+
+**TODO 4, `detectDeath`.** One line: is that square already occupied?
+
+**TODO 5, `detectTarget`.** One line: is that square the target?
+
+**TODO 6, `plantTarget`.** A new target on a square the snake is not on, by
+**exactly** this procedure:
+
+```
+repeat:
+    row = nextRandom() % ROWS          ← the row FIRST
+    col = nextRandom() % COLS          ← then the column
+until (row, col) is free
+```
+
+Two numbers per attempt, row before column, a fresh pair every attempt. §5
+explains why the order is not a matter of taste.
+
+---
+
+## 5. Why a random game can be graded at all {#determinism}
+
+A game with random elements sounds ungradeable. Play it twice and you get two
+different games; there is nothing to compare against.
+
+Except that the randomness is not random.
+
+`nextRandom()` in `given.cpp` is a **linear congruential generator**: multiply
+the last number by something, add something, keep the middle bits. Give it the
+same starting number and it produces the same sequence, in the same order, on
+every machine that has ever existed.
+
+```cpp
+myRandom = myRandom * 1103515245u + 12345u;
+return (myRandom >> 16) & 0x7FFFu;
+```
+
+`main.cpp` starts every game from the same seed, 2026. So the first target is
+always at row 16, column 38, on your laptop, on the grading machine, in
+February.
 
 ::: {.callout-note}
-**Why the experiment gives the same answer on every machine.** The sampler in
-`given.cpp` is a linear congruential generator with a fixed seed, the same one
-a12's snake uses. It is not a good source of randomness and is not trying to be;
-it is *repeatable*, which is what makes a measured height something a grader can
-check. Genuinely random data would give a different answer every run and there
-would be nothing to compare against.
+**Every game you have ever played does this.** A game's world is a seed and a
+formula, which is why two players given the same seed get the same map, and why
+a speedrunner can memorise where an item will be. "Random" in a game almost
+never means unpredictable; it means *you* cannot predict it.
 :::
 
-### The same words, two orders
+That is what makes TODO 6's procedure non-negotiable. The grader replays whole
+games and compares the board at the end. If you draw the column before the row,
+your first target lands somewhere else, your snake eats at a different moment,
+and every single frame after that differs. There is a check that compares your
+first ten targets against the right ones, precisely so that this failure shows
+up as "your targets are in the wrong places" rather than as an unexplained
+mismatch two hundred frames later.
 
-Then the program takes 5,000 words and inserts them twice: shuffled, and in the
-order they already sit in `words.txt`, which is alphabetical.
+### The other half: the game is scripted
 
-```
-   shuffled first:      height 30
-   already in order:    height 5000
-   lg(5000) is 12.29
-```
-
-**Five thousand.** Every word is greater than the one before it, so every word
-goes right, and a tree that only ever goes right is a linked list that has
-forgotten what it is.
-
-Look up a word in each:
-
-```
-   in the shuffled tree:   0.036 microseconds
-   in the sorted tree:     24.684 microseconds
-   the shape cost you a factor of 690.
-```
-
-::: {.callout-important}
-**Nothing went wrong.** The code is correct. Every node still keeps the BST
-property. The structure is still a binary search tree by every definition in
-Monday's lecture.
-
-It is simply useless, because usefulness was never a property of the
-definition. It was a property of the **shape**, and the shape is a property of
-the **order the data arrived in**, which is not something the tree controls or
-even knows about.
-
-Sorted input is not an exotic case, either. It is one of the commonest ways
-data arrives.
-:::
-
-::: {.callout-note}
-## This is why week 12 exists
-
-There are two honest responses to what you just measured.
-
-The first is to **watch**, to measure the height of the trees you actually
-build, on the data you actually have. That is this assignment, and it is a
-skill.
-
-The second is to make the structure **defend itself**, so that no order of
-arrival can ruin it. That is a *rotation*, and it is what next week is for.
-
-You are meeting the problem a week before you meet the solution, on purpose. A
-solution to a problem you have watched happen is a very different thing from a
-solution to a problem you were told about.
-:::
-
-::: {.callout-warning}
-**Why 5,000 and not all 73,419.** Inserting the whole sorted dictionary into an
-unbalanced tree is about 2.7 billion comparisons, and it would hang. The
-collapse is exactly as visible at 5,000, and it already takes noticeably
-longer than the shuffled case, which is itself the point.
-:::
-
----
-
-## 8. TODO 9, `findings.txt` {#findings}
-
-Three numbers out of your own run, and four questions. These four are spring's,
-kept because they are better than anything newer would be.
-
-1. Is `lg(N)` or `N` a better approximation for your measured heights? Why?
-2. How much variance is there in the ten heights? Is that surprising?
-3. How many duplicate values were there on average? Is that surprising?
-4. Big-Oh `O(f(n))` implies constants `a` and `b` such that `a·f(n) + b`
-   describes the reality it approximates. A balanced BST of N items has height
-   `O(lg N)`. **Using your experimental results, what is a reasonable value for
-   `a`?**
-
-::: {.callout-important}
-**Question 4 is the sharpest question in this course.**
-
-Big-Oh deliberately throws the constant away. It tells you the height is
-`O(lg N)` and refuses to say whether that means 14 or 140. You have now
-measured it: you know `lg(N)`, and you know the height you actually got.
-Dividing one by the other puts the constant back, as a number you obtained
-rather than one you were given.
-
-That is what a08 was building towards, and this is where it pays off.
-:::
-
-Two of the four are graded on a factual point rather than on prose: **answer 1
-must start with `lg` or `N`**, and **answer 4 must start with your value for
-`a`, as a number**. The rest of each answer wants at least twenty words. Nobody
-is marking the writing.
-
----
-
-## 9. Testing Your Work
+Reading arrow keys as they are pressed needs a library that takes over the
+terminal, and a grader has no terminal to take over. So the game is played from
+a **script**: a file of `U`, `D`, `L` and `R`, one per frame.
 
 ```bash
-make test         # all 36 checks
+./a13 moves/greedy.txt 309 --watch
+```
+
+`greedy.txt` was written by steering toward the target on every frame. It eats
+seventeen times, reaches sixty-nine segments, and survives. Watch it once, it
+is the payoff for TODO 3, and it makes the "skip the dequeue" idea concrete in
+a way that no amount of prose will.
+
+Then watch `moves/suicide.txt`, which grows a little and then drives into
+itself.
+
+---
+
+## 6. Testing Your Work
+
+```bash
+make test         # all 30 checks
 ```
 
 ::: {.callout-important}
 **There are no hidden tests.** What you run with `make test` is exactly what the
-grader runs, all 36 checks, every one of them in a file in your repository.
+grader runs, all 30 checks, every one of them in a file in your repository.
 :::
 
 | | |
 |---|---|
-| 6 | the tree, insert, contains, duplicates |
-| 5 | height |
-| 5 | the three traversals |
-| 7 | the index and the map |
-| 4 | the experiment |
-| 5 | the program runs, and `results.html` |
-| 4 | `findings.txt` |
+| 4 | `nextHead`, moving, and wrapping at the edges |
+| 6 | the queue, length, the tail, and growing after eating |
+| 4 | death |
+| 4 | the target |
+| 4 | drawing |
+| 8 | whole games, replayed and compared |
 
-**Heights are graded exactly; microseconds are not graded at all.** A height is
-a fact about the data and the order it arrived in, the same on every machine.
-Your timings are a fact about your laptop at that moment. Same rule as a08.
+The last eight run `./a13` on a script and compare the board the game ends on
+against a **fingerprint**, a SHA-256 of the right answer. A fingerprint tells
+you whether you got it right and nothing whatsoever about what the answer is,
+which is how every check can be visible without the answers being visible too.
+Two of those scripts are generated inside `test.py` rather than shipped in
+`moves/`, so a solution tuned to the files you can read still has to be right.
 
-The check named *"Trial: a sorted sample collapses to a height equal to its
-size"* is the one this whole assignment is built around, and it is exact: N
-sorted items must give a tree of height N, for several values of N.
+If the twenty-two single-function checks pass and the replays do not, look at
+TODO 6 first. One target in the wrong place changes everything after it.
+
+Run one on its own while you are debugging:
+
+```bash
+make checks
+./checks "Snake: eating makes it longer by exactly GROW_BY"
+```
 
 ---
 
-## 10. Submit
+## 7. Submit
 
 ```bash
 git add .
@@ -457,29 +343,31 @@ git commit -m "Complete a13"
 git push
 ```
 
-`findings.txt` must be committed. `results.html` need not be.
-
 ::: {.callout-important}
 Put your name at the top of `README.md` before your final push.
 :::
 
-Push as often as you like, the most recent submission counts, and there is no
-deadline beyond the last day of classes.
+Every push is checked automatically. Push as often as you like, the most recent
+submission counts, and there is no deadline beyond the last day of classes.
 
 ---
 
 ::: {.callout-note}
-## The last container you will build by hand
+## If you want to keep playing
 
-That is thirteen assignments and eight containers: a growing array, a linked
-list, a stack, a queue, a hash table, and now a search tree, plus every STL
-container you have reached for along the way.
+None of this is graded and none of it is required. But the pieces are all here:
 
-Not one of them is fast at everything. There is no such container and there
-never will be, which is why the course is a tour rather than an answer.
-Choosing well is the whole job, and measuring is how you find out whether you
-chose well.
+- **Play it yourself.** Read a direction from `cin` each frame instead of from
+  a script. It is not a real game, you have to press enter, but it is yours.
+- **Walls.** Make the edges lethal instead of wrapping: one condition in
+  `nextHead` and one in `detectDeath`.
+- **Two targets at once.** `plantTarget` twice, and check both.
+- **A faster snake as it grows.** `usleep` in `render.cpp` takes a number.
+- **Write your own script** that beats seventeen targets. `greedy.txt` steers
+  toward the target and nothing else, which is why it eventually traps itself.
+  A script that also avoided its own body would do better.
 
-Next week the tree learns to defend its own shape. After that, the last
-assignment is not about containers at all.
+The last one is not a small exercise, and it is worth knowing why: deciding
+where to go next, given what you know about the board, is a search problem,
+and you wrote three of those last week.
 :::
