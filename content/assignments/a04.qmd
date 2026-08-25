@@ -1,111 +1,114 @@
 ---
-title: "Assignment 04: Telemetry"
-subtitle: "A container that owns its memory, and what that costs"
+title: "Assignment 03: Qualifying"
+subtitle: "Two classes, a leaderboard, and the operator that prints it"
 ---
 
 ::: {.callout-note}
 Your own private GitHub repository is waiting for you (see
 [Getting the code](#getting-the-code) below), clone it and open it in VS Code.
 
-**Plan to set aside about 3.75 to 4.25 hours.** `append` (§7) and the copy
-constructor (§10) are the two long sections. §9 is an experiment rather than a
-task, it takes about twenty minutes and it is the most important twenty minutes
-of the week.
+**Plan to set aside about 3.75 to 4.25 hours.** This is the longest assignment
+so far, and it is deliberately spread across the whole week, §5 is designed to
+be reachable in Tuesday's lab, and the rest unlocks as the lectures happen.
+`findPositionFor` (§9) and `addLap` (§10) are where most people slow down.
 :::
 
 ## Objectives
 
 By the end of this assignment, you will be able to:
 
-- Allocate an array on the heap with `new[]` and release it with `delete[]`
-- Explain the difference between the stack and the heap, and say which one a
-  container has to put its data in
-- Keep `size` and `capacity` apart, and explain why that makes appending cheap
-- Grow an array by allocating a bigger one, copying, and freeing the old one
-- Write a destructor, and say exactly when C++ runs it
-- Explain what the compiler's default copy constructor does to a pointer member,
-  and why that is a disaster
-- Write a deep copy constructor and a deep assignment operator
-- Name the three situations that call a copy constructor
-- Guard an assignment operator against self-assignment, and explain what goes
-  wrong without it
-- Overload `operator[]` to return a reference, and say why a `const` version is
-  also needed
-- Recognise a double free and a use-after-free from the symptoms, and find one
-  in a debugger
+- Define a class split across a `.h` and a `.cpp`, and explain what each half is for
+- Choose what belongs in `public` and what belongs in `private`, and say why
+- Write a default constructor and an explicit-value constructor for the same class
+- Make a member immutable by giving it no setter, and explain when that is right
+- Mark a method `const`, and explain what breaks if you do not
+- Throw `invalid_argument` from a setter that is handed an illegal value
+- Format a number for display with `setw`, `setfill` and `setprecision`
+- Write a class that owns a fixed array and keeps it sorted as things are inserted
+- Split a method into private helper methods, and explain why that is easier to test
+- Overload `operator<<` as a free function returning `ostream&`
+- Write your own unit tests, before the code they test
 
-These objectives map to course skills **A3** and **B4**, both of which are
-assessed at **Window 1** on Oct 23, and both of which are *persistent*, they can
-come back at any later check-in. This assignment also introduces **C1**, which
-you finish next week.
+These objectives map to course skills **B1**, **B2**, **B3**, and **B5**, all
+four of cluster B, which is assessed at **Window 1** on Oct 23.
 
 ::: {.callout-note}
-**Lab and homework.** You start this in lab on Tuesday, when you will have had
-Monday's lecture on `new`, `delete`, and the heap, enough for §3 through §6.
-Wednesday's lecture covers growing an array and the destructor, which is §7 and
-§8. Friday's covers copying, which is §10 onward.
-
-**§9 is deliberately placed between Wednesday and Friday.** You will hit a
-problem there that Friday's lecture is the answer to. That is not a mistake in
-the ordering; it is the ordering.
+**Lab and homework.** You start this in lab on Tuesday, and by then you will have
+had Monday's lecture on classes, enough for §3, §4, §5, §7 and §8. Constructors come on Wednesday and `operator<<` on Friday. The sections
+below are in the order you can actually do them, and each one says which lecture
+unlocks it. **Do not try to write `operator<<` in lab on Tuesday**, it has not
+been taught yet, and you are not behind.
 :::
 
 ---
 
 ## 1. Introduction
 
-An F1 car is covered in sensors. Over one qualifying lap it logs a stream of
-samples, speed, throttle, brake, steering, hundreds of channels, and the
-engineers in the garage compare this lap against the best lap of the session to
-find out where the time went. That comparison is the wiggling bar you see across
-the bottom of a broadcast: **the delta**.
+A Formula 1 qualifying session is a leaderboard that updates itself. Drivers go
+out, set flying laps, and the timing screen keeps them in order,
+fastest at the top. It is the same problem as a high-score table, except for one
+detail that makes it much more interesting to build.
 
-You are going to build the container that holds one lap of it.
+**Only the top ten go through.** Q2 ends with the ten fastest drivers advancing
+to Q3 and everyone else eliminated. So a board that holds exactly ten laps and
+throws away the eleventh is not a rule somebody invented to make the assignment
+harder, it is the sport. When a driver sets a lap quick enough for P4, everyone
+below shuffles down one, and whoever was P10 is out. That shuffle is the heart of
+this assignment.
 
-Here is the problem, and it is the whole reason this week exists. **Nobody knows
-how many samples a lap has until the file has been read.** A short street circuit
-and a long one differ by a factor of three. A different logging rate changes it
-again. And every array you have written so far in this course has had its size
-fixed when the program was *compiled*:
+You will build two classes:
 
-```cpp
-char grid[64][128];        // a02, decided by you, in advance
-Lap myLaps[10];            // a03, decided by you, in advance
-Sample lap[???];           // a04, decided by a file you have not read yet
-```
+- **`Lap`**, one flying lap. Who set it, for which team, how long it took, and
+  whether the stewards deleted it.
+- **`QualifyingSession`**, the timing screen. It owns an array of ten `Lap`
+  objects and keeps them in order as laps arrive.
 
-There is no number you can put in those brackets that is right. Too small and
-the program is broken on the next circuit; too large and you are wasting most of
-it on every lap. You need an array whose size is decided while the program is
-*running*, and that is what `new[]` is for.
-
-The catch, and this is the part that takes a week, is that memory you ask for
-this way is **yours until you give it back**. Nothing cleans up after you. A
-`Trace` that forgets to give its array back leaks. A `Trace` that gives the same
-array back twice crashes. And a `Trace` that gets copied without thinking hard
-about it does both.
+(F1 teams are officially called *Constructors*, and you are about to spend a week
+writing constructors. That is a coincidence and nothing in this assignment
+depends on it, the member is called `myTeam`.)
 
 ::: {.callout-tip}
-**Everything you need to know about the sport**, again in three sentences.
-Drivers set timed laps, and the fastest lap wins, so a smaller number is better.
-A lap is divided into segments, and the time spent in each one is logged
-separately. Comparing this lap's segments against the best lap's shows exactly
-where a driver gained or lost time.
+**Everything you need to know about F1**, in three sentences. Drivers set timed
+laps; the fastest lap wins, so a *smaller* number is *better*. Qualifying runs in
+knockout rounds, and only the ten fastest drivers make the final round. If a
+driver puts a wheel outside the white lines, the stewards delete that lap.
+
+That is the whole sport, for our purposes. You do not need to follow it, and no
+check anywhere depends on knowing anything else.
 :::
 
-### Where the data comes from
+### Why a class at all?
 
-`laps.txt` holds two lines of numbers. Each number is the time in seconds spent
-in one segment of the lap. Line 1 is the best lap of the session so far; line 2
-is the lap that has just finished.
+In week 2 you wrote functions that took a grid, a row count and a column count,
+and passed all three around together everywhere. By the end, `loadWorld` had
+eight parameters and you could feel it.
 
-```
-2.959 4.479 2.63 4.217 3.099 ...      <- best lap, 24 segments
-3.038 4.307 2.772 4.086 3.157 ...     <- this lap
-```
+A class is the fix. `Lap` bundles a driver, a team, a time and a flag into one
+thing you can pass as one argument, copy with one `=`, and put in an array. More
+than that, it lets you decide what the *rest of the program* is allowed to do
+with it, and that turns out to matter more than the bundling.
 
-Subtract one from the other and you have the delta. Find the most negative
-number and you have the corner where the driver gained the most.
+Here is the Python you already know, next to the C++ you are about to write:
+
+| Idea | Python | C++ |
+|---|---|---|
+| Define a class | `class Lap:` | `class Lap { ... };`, note the semicolon |
+| Constructor | `def __init__(self, driver):` | `Lap(string driver);`, named after the class |
+| Data member | `self.driver = driver` | `myDriver = driver;` |
+| "Do not touch this" | `_driver`, a convention | `private:`, enforced by the compiler |
+| Printing | `def __str__(self):` | `ostream& operator<<(...)` |
+| Method that reads only | *(no equivalent)* | `string getDriver() const;` |
+
+The two rows worth staring at are the last three. Python asks you nicely not to
+touch `_driver`. C++ makes it a compile error. And `const` is a promise the
+compiler holds you to.
+
+::: {.callout-tip}
+Open **`reference/Pair.h`** and **`reference/Pair.cpp`** in your repository. That
+is the class from Monday's lecture, complete, and `Lap` has exactly the same
+shape: a header full of promises, a `.cpp` full of `Pair::` implementations, and
+an `operator<<` at the bottom. When you are stuck on syntax, look there first.
+:::
 
 ---
 
@@ -159,622 +162,557 @@ make
 make test
 ```
 
-`make` should succeed and `make test` should report **1 / 36**. Both are correct:
-the starter compiles, and almost nothing works yet.
+`make` should succeed. `make test` should report **3 / 40**. Both of those are
+correct: the starter compiles, and almost nothing works yet. Those 37 failures
+are your to-do list, and they will tick over one at a time.
 
 
 ---
 
-## 3. The Shape of the Repository
+## 3. The Shape of the Repository {#the-shape}
 
-**You edit two files: `Trace.cpp` and `Delta.cpp`.** That is all. Thirteen TODOs
-between them, in the order they appear in the files.
+*(You can read this on Tuesday, nothing here needs a lecture you have not had.)*
 
 | File | Yours? | What it is |
 |---|:--:|---|
-| **`Trace.cpp`** | ✎ | TODOs 1–11. The container. |
-| **`Delta.cpp`** | ✎ | TODOs 12–13. The application logic. |
-| `Trace.h` | | The class. **Read this first**, it is the whole design in one page. |
-| `Delta.h` | | What the three application functions promise |
-| `checks.cpp` | | The course's checks. Read them; they are the specification. |
-| `main.cpp` | | The application, reads `laps.txt`, prints the delta |
-| `experiment.cpp` | | The short program §9 asks you to run |
-| `laps.txt`, `broken.txt` | | Two laps, and two laps that do not match |
-| `makefile`, `test.py` | | Build and check |
-
-Two methods, `setSize` and `operator==`, are **written for you** in the middle of
-`Trace.cpp`. `setSize` is not there to save you time, it is there to be read.
-It is the same allocate-copy-delete pattern you are about to write in `append`,
-worked out in full, with the mistake that costs most people a mark called out in
-a comment.
+| `Lap.h` | ✎ | The `Lap` class's promises. You add the private data. |
+| `Lap.cpp` | ✎ | The implementations. TODOs 2–6 and 8. |
+| `QualifyingSession.h` | ✎ | The session's promises. You add the private half. |
+| `QualifyingSession.cpp` | ✎ | TODOs 9–12. **Not compiled until you do §8.** |
+| `tests.cpp` | ✎ | **Your own tests.** Writing them is part of the assignment. |
+| `makefile` | ✎ | Two lines near the top, in §8. |
+| `checks_lap.cpp` | | The course's checks on `Lap`. Read them. |
+| `checks_session.cpp` | | The course's checks on the session. Read them too. |
+| `main.cpp` | | The demo program that prints a timing screen |
+| `laps.txt` | | Fifteen laps. Ten will make the cut. |
+| `reference/Pair.*` | | Monday's lecture example |
 
 ::: {.callout-important}
 **There are no hidden tests in this course.** Every check that decides your grade
-is in `test.py` and `checks.cpp`, in your repository, readable right now. What
-`make test` runs is exactly what the grader runs.
+is in `test.py` and in the two `checks_*.cpp` files, in your repository, readable
+right now. What `make test` runs is exactly what the grader runs.
 
-Grading re-copies the official `test.py` and `checks.cpp` over yours before
-running, so editing them changes nothing about your score, and `make test`
-checks `checks.cpp` against its shipped fingerprint and warns you if it has been
-edited, because a local score that does not match your real one is worse than
-useless.
+Grading does re-copy the official `test.py` and `checks_*.cpp` over yours before
+running, so editing them changes nothing about your score. But there is nothing
+in them you were not meant to see.
 :::
+
+### Read the checks before you write anything
+
+Open `checks_lap.cpp`. It is about a hundred lines and it will take you five
+minutes, and it tells you precisely what `Lap` has to do, in a form the compiler
+can verify, which is more than any paragraph of English on this page can manage.
+
+It is also the best model you have for §11, where you write tests of your own.
+Notice three habits worth stealing:
+
+- **one `SECTION` per behaviour**, named so that a failure tells you what broke
+- **the boundary cases, not just the easy one**, `setTime(0)` and `setTime(-1)`,
+  not only `setTime(90.0)`
+- **`REQUIRE_THROWS_AS` for the refusals**, so "it rejected that" is a tested
+  behaviour rather than something you hope happens
 
 ---
 
-## 4. What a `Trace` Has to Remember
+## 4. `Lap`, and What `private` Is For
 
-Open **`Trace.h`**. Everything about the design is in there, and the three lines
-that matter are at the bottom:
+*(Tuesday, after Monday's lecture.)*
 
-```cpp
-private:
-    Sample*  mySamples;      // the ADDRESS of an array on the heap
-    unsigned mySize;         // how many samples are in it
-    unsigned myCapacity;     // how many it has room for
-```
+A `Lap` holds four things:
 
-Read `mySamples` carefully. It is a **pointer**. It does not contain any samples;
-it contains the address where the samples are. The samples themselves live in a
-block of memory that you will ask for with `new[]`, and that block is not part of
-the `Trace` object at all, it is somewhere else entirely, and the `Trace` just
-knows where.
-
-That is new. In a02 your grid *was* the array. In a03 `Lap myLaps[10]` *was* ten
-laps. Here the object is three small numbers, one of which is a signpost.
-
-### Why two counts?
-
-Because growing is expensive. Growing means allocating a bigger array, copying
-everything across, and freeing the old one, the cost of which is proportional to
-how much is already there. If the array were always exactly as big as the number
-of samples in it, **every single `append` would do all of that**.
-
-So `Trace` keeps slack. `myCapacity` is how big the array is; `mySize` is how
-much of it is in use. Most appends just write into a slot that is already there
-and bump the count: two operations, no matter how long the trace is. Only when
-the array is genuinely full does it grow, and then it **doubles**, so that the
-next growth is twice as far away as the last one.
-
-::: {.callout-tip}
-This is the single most important idea in the week, and it is why `vector` is
-fast. Next week you will do the arithmetic properly and put a name to it. This
-week, just get the feel of it: *appending is cheap because growing is rare.*
-:::
-
----
-
-## 5. Making a `Trace`
-
-*(Tuesday.)*
-
-### TODO 1, the default constructor
-
-An empty trace owns nothing:
-
-```cpp
-mySamples  = nullptr;      // deliberately pointing at nothing
-mySize     = 0;
-myCapacity = 0;
-```
-
-`nullptr` is not the same as leaving `mySamples` uninitialised. An uninitialised
-pointer holds whatever bytes happened to be in that memory, and a `delete[]` on
-that is a crash, usually somewhere else entirely, minutes later.
-
-### TODO 2, the explicit-value constructor
-
-`Trace t(400);` should give 400 samples, all zero.
-
-```cpp
-mySize = myCapacity = n;
-if (n > 0) {
-    mySamples = new Sample[n];      // ask for the memory
-    // ... then set every element to 0
-} else {
-    mySamples = nullptr;
-}
-```
-
-`new Sample[n]` asks the operating system for room for `n` Samples and hands back
-the address of the first one. **`n` does not have to be known when the program is
-compiled**, which is the entire reason this class can exist.
-
-::: {.callout-warning}
-Every `new[]` is half of a promise. The other half is `delete[]`, and you write it
-in §7. Get into the habit now of not typing one without knowing where the other
-one is going to live.
-:::
-
-### TODO 3, `getSize` and `getCapacity`
-
-Two one-line getters, both `const`.
-
-There is deliberately **no** getter for `mySamples`. Handing out the address of
-your array would let any code anywhere write into it, and the class could no
-longer promise anything about its own contents, including that `mySize` is
-still true.
-
----
-
-## 6. Reading and Writing Samples
-
-*(Tuesday. This is the last section Monday's lecture unlocks.)*
-
-### TODO 4, `getSample` and `setSample`
-
-Read and write one sample, with a bounds check:
-
-```cpp
-if (i >= mySize) {
-    throw range_error("your message here");
-}
-```
-
-::: {.callout-warning}
-**`i` is `unsigned`, and that is a trap rather than a convenience.** An unsigned
-number can never be negative, so if a caller passes `-1`, it does not arrive as
-`-1`. It arrives as `4294967295`, which sails straight past any `i < 0` test you
-might write and then indexes four billion elements past the end of your array.
-
-A single `i >= mySize` catches both a negative argument and a too-large one,
-which is why that is the only test you need. If you write `i < 0` as well and
-compile with `-Wextra`, the compiler will tell you it is always false, and it
-will be right.
-:::
-
-Note the bound is `mySize`, not `myCapacity`. The array may well have room for
-more samples than the trace is holding; those slots exist but they are not part
-of the trace, and handing one out would be handing out a number nobody stored.
-
-**Run `make test` now.** You should be passing Part 1 and the first half of
-Part 2, the other two need the subscript operators, which are Wednesday's work.
-That is a good place to stop on Tuesday.
-
----
-
-## 7. Growing, and Giving Memory Back
-
-*(Wednesday.)*
-
-**Before you write anything in this section, read the `setSize` that is already
-written in the middle of `Trace.cpp`.** It is the pattern you are about to use,
-spelled out, and the comments above it point at the mistake that cost spring's
-students more marks than anything else in the course.
-
-### TODO 5, `append`
-
-Add one sample to the end, growing if there is no room:
-
-```
-if the array is full (mySize == myCapacity):
-    1. new capacity = 1 if capacity was 0, otherwise capacity * 2
-    2. allocate a new array of that size
-    3. copy the mySize samples you have into it
-    4. delete[] the old array
-    5. point mySamples at the new one; update myCapacity
-then, either way:
-    6. put the sample at index mySize, and increase mySize
-```
-
-::: {.callout-warning}
-**Steps 3 and 4 are in that order for a reason.** Delete the old array before
-you have copied out of it and you are copying from memory that is no longer
-yours. It will often appear to work, the bytes are usually still sitting there
-untouched, right up until the moment something else has reused them. Bugs that
-work by luck are the worst kind, because they pass your tests and fail in a
-demo.
-:::
-
-### TODO 6, the destructor
-
-This is the second half of every `new[]` you have written.
-
-C++ runs an object's destructor when the object stops existing: when a local
-variable goes out of scope, when a temporary has been used, when something it
-was part of is destroyed. You never call it yourself. Its job is to give back
-whatever the object was holding.
-
-```cpp
-Trace::~Trace() {
-    delete[] mySamples;
-    mySamples  = nullptr;
-    mySize     = 0;
-    myCapacity = 0;
-}
-```
-
-::: {.callout-warning}
-**`delete[]`, with the brackets**, for anything that came from `new[]`. Plain
-`delete` on an array is undefined behaviour. On an array of `double` it usually
-appears to work; AddressSanitizer catches it as an `alloc-dealloc-mismatch`, and
-for an array of objects it would run only the first element's destructor.
-Undefined means you do not get to reason about what it does.
-:::
-
-Only the first line is strictly necessary; the object is about to cease to exist,
-so resetting its members changes nothing. Write them anyway. It costs nothing,
-and it converts one whole class of bug, using an object after it was destroyed,
-from silent corruption into an obvious zero.
-
-`delete[] nullptr;` is explicitly legal and does nothing, so an empty trace needs
-no special case.
-
----
-
-## 8. Subscripts and Arithmetic
-
-*(Wednesday.)*
-
-### TODO 7, `operator[]`, both of them
-
-`t[i]` with a bounds check, exactly like `getSample`. Two differences.
-
-**The first returns `Sample&`, a reference.** That is what makes this work:
-
-```cpp
-t[0] = 9.5;
-```
-
-Because `t[0]` returns a reference, it *names* the element in the array, so
-assigning to it assigns to the array. Return `Sample` by value instead and that
-line does not even compile, because you cannot assign to a copy that is about to
-be thrown away.
-
-**The second is the same code, `const` twice**: `const Sample&` coming back, and
-`const` after the parameter list. It exists for this:
-
-```cpp
-const Trace& frozen = someTrace;
-cout << frozen[2];                  // needs the const version
-```
-
-Only `const` methods can be called on a `const` object. Your own `operator+` and
-`operator<<` both take `const Trace&`, so without this overload they cannot read
-the trace they were handed. The two are not duplicates, they are the read-write
-door and the read-only door, and a class needs both.
-
-### TODO 8, `operator+` and `operator-`
-
-Elementwise, and refusing traces of different lengths:
-
-```cpp
-throw invalid_argument("your message here");
-```
-
-Note the return type: `Trace`, **by value**. The result is a brand-new trace that
-did not exist before the call, so there is nothing to return a reference *to*,
-returning a reference to a local would be a reference to something that has just
-been destroyed.
-
-::: {.callout-important}
-**When these work, stop.** Do not start TODO 9. Go to §9 below, which asks you to
-predict something and then run it. The rest of the week only works if you meet
-the problem before you meet the answer.
-:::
-
----
-
-## 9. The Experiment {#the-experiment}
-
-You now have a class that allocates memory, and a destructor that frees it. All
-five of the checks in Part 4 are still failing, and copying probably looks like
-the least of your worries.
-
-Your repository contains a short program called `experiment.cpp`. Open it. The
-middle of it is this:
-
-```cpp
-Trace a;   a.append(1);  a.append(2);  a.append(3);
-Trace b;   b.append(10); b.append(20); b.append(30);
-
-Trace sum;          // an empty trace
-sum = a + b;        // <- this line
-
-cout << "sum is  " << sum << endl;
-```
-
-**Write down your answer to this before you run anything:**
-
-> What does `sum is` print?
-
-You know what `operator+` does, you wrote it an hour ago. Write down the three
-numbers you expect.
-
-Now run it:
-
-```bash
-make experiment
-./experiment
-```
-
-::: {.callout-warning}
-If the numbers are the three you predicted **and** the program exits normally,
-run it two or three more times. Then run `make test` and look at Part 4. If
-those pass too, you have somehow already written a deep copy constructor and an
-assignment operator, which is not possible yet, come and find me, because
-something odd is going on.
-:::
-
-For almost everyone, `sum is` prints something like
-
-```
-sum is  4.67695e-310 1.74622e+142 33
-```
-
-and then the program dies:
-
-```
-free(): double free detected in tcache 2
-Aborted
-```
-
-**Nothing in your code is wrong.** Read `operator+` again, it is correct. Read
-`append`, it is correct. This is not a bug you can find by reading, which is
-exactly why you are being asked to find it another way.
-
-### What just happened
-
-Look at that one line again:
-
-```cpp
-sum = a + b;
-```
-
-Three things happen, in this order:
-
-1. `a + b` runs, and builds a `Trace` holding the array `{11, 22, 33}`. It is a
-   **temporary**, it has no name and it will not live past the end of this line.
-2. That temporary is **copied** into `sum` by `operator=`. Open `Trace.cpp` and
-   look at the one the starter shipped: it is the compiler's own version,
-   written out by hand so that you can see it. It copies each member exactly as
-   it finds it. `mySize` and `myCapacity` copy fine. `mySamples` is a pointer,
-   so what gets copied is **the address**.
-3. The line ends, so the temporary is destroyed, so your destructor runs, and
-   `delete[] mySamples` frees the array.
-
-Which array? The only one there ever was. `sum` is now holding the address of
-memory that has been given back to the system. Reading it prints whatever has
-landed there since. Destroying `sum` at the end of `main` frees the same block a
-second time, and *that* is the `double free` the program aborted on.
-
-Two objects. One array. Two destructors.
-
-### See it happen
-
-Do this, it takes five minutes and it is the difference between believing the
-paragraph above and knowing it.
-
-1. Put a breakpoint on the `delete[]` line in your destructor.
-2. Press **F5** and choose **Debug the §9 experiment**.
-3. When it stops, look at `mySamples` in the **Variables** panel. Write down the
-   address, it will look like `0x5555555592a0`.
-4. Press **F5** to continue. It will stop in the destructor again, and again,
-   as `a`, `b` and `sum` are destroyed at the end of `main`.
-
-**Compare the addresses.** One of them appears twice. That is the whole bug, in
-one number.
-
-::: {.callout-tip}
-**Why did none of your other tests catch this?** Make a scratch copy of
-`experiment.cpp`, call it anything you like, it is not graded, and add this
-line to the copy:
-
-```cpp
-Trace other = a + b;        // initialisation, not assignment
-```
-
-That one does *not* crash. When you initialise a new object from a function's
-return value, the compiler builds the result directly in the destination and
-skips the copy entirely, since C++17 it is required to, not merely allowed, so
-there is no second object, no second destructor, and no bug. It is called copy
-elision.
-
-This is worth knowing for a reason beyond passing the check: **the bug was
-always there, and one perfectly reasonable way of writing the test hid it.** The
-version in `checks.cpp` is deliberately written as two statements to make sure
-the copy really happens. Tests that appear to pass are not the same as code that
-works.
-:::
-
----
-
-## 10. The Rule of Three
-
-*(Friday.)*
-
-The copy constructor and `operator=` in your `Trace.cpp` are the compiler's own,
-written out by hand so §9 could show you them failing. Both do the wrong thing
-for a class that owns memory. Replace them.
-
-### TODO 9, the copy constructor
-
-A constructor whose job is to build a trace that is a separate, equal copy:
-
-```cpp
-Trace::Trace(const Trace& original) {
-    // 1. copy mySize and myCapacity
-    // 2. if the original owns an array:
-    //       allocate your own, of myCapacity Samples
-    //       copy the original's mySize samples into it
-    //    otherwise:
-    //       mySamples = nullptr;
-}
-```
-
-The word that matters is *own*. Every `Trace` must be the sole owner of its
-array, because every `Trace` is going to free that array when it dies.
-
-::: {.callout-warning}
-**The parameter is `const Trace&`, and it has to be a reference.** A by-value
-parameter would be copied on the way in, which would call the copy constructor
-whose parameter would be copied on the way in, which would call the copy
-constructor…
-
-The compiler will not stop you. It compiles, runs, and overflows the stack.
-:::
-
-### TODO 10, `operator=`
-
-Assignment does everything the copy constructor does, plus one thing before and
-one thing after:
-
-```cpp
-Trace& Trace::operator=(const Trace& rhs) {
-    if (this != &rhs) {          // 1. the self-assignment guard
-        delete[] mySamples;      // 2. free what we were holding
-        // 3. ... then exactly TODO 9
-    }
-    return *this;                // 4.
-}
-```
-
-**Step 1 is not paranoia.** Someone will eventually write `t = t`, almost always
-by accident, through two references or two pointers that turn out to name the
-same object. Without the guard, step 2 frees the array and step 3 then copies out
-of the memory it has just freed. `this` is a pointer to the object the method was
-called on, so `this != &rhs` is asking "are these actually two different
-objects?"
-
-**Step 4 is why the return type is `Trace&`.** It lets `a = b = c` work, the same
-way returning `ostream&` made `cout << a << b` work in week 3.
-
-### Now run the experiment again
-
-```bash
-make experiment
-./experiment
-```
-
-It prints `11 22 33` and exits cleanly. Nothing else changed.
-
-::: {.callout-important}
-**The rule of three.** A class that needs any one of
-
-- a destructor
-- a copy constructor
-- an assignment operator
-
-needs **all three**. They are the three ways an object can be duplicated or
-disposed of, and the compiler's versions of all three are fine right up until the
-class owns something, at which point leaving any of them to the compiler leaves
-a hole.
-
-Your `Trace` needed a destructor the moment it called `new[]`. Everything since
-§9 has been the consequence.
-:::
-
-### The three situations that copy
-
-Now that you have watched one of them, here are all three. A copy constructor
-runs when an object is:
-
-| | Looks like | You saw it in |
+| Member | Type | Mutable? |
 |---|---|---|
-| **initialised from another** | `Trace b(a);` or `Trace b = a;` | Part 4's first check |
-| **passed to a by-value parameter** | `f(a)` where `f` takes `Trace` | Part 4's fourth check |
-| **returned by value** | `return result;` | §9, or rather, §9's tip, where you saw the compiler skip it |
+| `myDriver` | `string` | **immutable**, no setter |
+| `myTeam` | `string` | **immutable**, no setter |
+| `myTime` | `double` (seconds) | mutable |
+| `myDeleted` | `bool` | mutable |
 
-`make test` should now clear Part 4 entirely. If Part 8, the memory checks,
-is still red, the message will tell you whether the problem is a crash or a leak.
+Two of those get setters and two do not, and the difference is the point of §4.
 
----
+A lap was set by one driver, for one team. Nothing that happens later changes
+that, not a new time, not a deletion, not a pit stop. So there is no
+`setDriver`, and its absence *is* the design. In C++ you do not need a keyword to
+make a member immutable; you make it private and then decline to write a way to
+change it. Anyone who wants a different driver has to make a different `Lap`,
+which is exactly right.
 
-## 11. Streams
+The time, though, changes constantly during a session, a driver sets one lap,
+then a better one. And the stewards can delete a lap minutes after it was set.
+Those two get setters.
 
-*(Friday.)*
+::: {.callout-note}
+**`myDeleted` is track limits.** F1 cars have to keep four wheels inside the white
+lines; run wide and the stewards strike the lap off. It is a real mutable
+`bool`, not a flag invented to give you a `bool` to practise on.
 
-### TODO 11, `writeTo`, `readFrom`, `operator<<`
+For this assignment a deleted lap still counts on the leaderboard, it just
+prints with a marker. Resist the urge to make deletion remove the lap from the
+board; that is a bigger design than this week needs, and no check asks for it.
+:::
 
-`writeTo` sends every sample to the stream, each followed by **one space**,
-including the last. Nothing else, no size, no newline, no brackets:
+### TODO 1, the private section of `Lap.h`
 
-```
-1.5 2.5 3.5
-```
+Open `Lap.h`. All the prototypes are written for you; what is missing is the
+`private:` block. Declare the four members with the names and types in the table
+above.
 
-`readFrom` replaces whatever the trace holds with everything the stream has:
+The `my` prefix is a course convention. Inside a method it lets you tell a data
+member from a parameter at a glance, which matters more than you would think in a
+constructor whose parameter is called `driver` and whose member is `myDriver`.
+
+### TODO 2 and 3, the two constructors
+
+*(Wednesday's lecture is about constructors, but these two are simple enough to
+attempt in lab, and the tests will tell you if you have them right.)*
+
+A constructor has the **same name as the class** and **no return type at all**,
+not even `void`. It runs automatically whenever a `Lap` is created, and its job is
+to leave the object valid: no member holding whatever happened to be in that
+memory already.
 
 ```cpp
-setSize(0);                 // empty this trace
-Sample s;
-while (in >> s) {
-    append(s);
+Lap::Lap() {
+    // set every member to its default
+}
+
+Lap::Lap(string driver, string team) {
+    // store the two immutable fields; default the rest
 }
 ```
 
-`in >> s` is true while it succeeds and false once the stream has nothing left,
-so the loop stops on its own. This is week 2's end-of-file idea again, and it is
-what lets a lap be any length at all. Nothing has to know the count in advance,
-which is the promise §1 made.
+Two functions with the same name is legal here, C++ picks by the arguments:
 
-`operator<<` is a free function that calls `writeTo` and returns the stream,
-exactly as in week 3.
+```cpp
+Lap a;                          // calls the first
+Lap b("Leclerc", "Ferrari");    // calls the second
+```
+
+Defaults: empty driver, empty team, time `0.0`, not deleted. A `Lap` exists
+before a time has been set for it, that is why the explicit-value constructor
+takes only two arguments.
+
+### TODO 4, the getters, and `const`
+
+Four one-line methods. The interesting part is the word at the end:
+
+```cpp
+string Lap::getDriver() const {
+```
+
+`const` after the parameter list is a promise that this method does not modify
+the object. It is not decoration. Only `const` methods can be called on a `const`
+object, and the `operator<<` you write in §8 takes `const Lap&`, so if you leave
+`const` off a getter, the printing code will not compile, with an error message
+that will not obviously be about the getter.
+
+Write it now and you never think about it again.
 
 ---
 
-## 12. Where the Time Went
+## 5. Refusing Bad Input
+
+*(Tuesday. This is the last thing designed to fit in lab.)*
+
+### TODO 5, the setters
+
+`setDeleted` is a one-liner.
+
+`setTime` has a decision to make first. A lap time of zero or less is not a slow
+lap, it is nonsense, and a class that quietly stores nonsense is worse than one
+that refuses:
+
+```cpp
+#include <stdexcept>
+
+void Lap::setTime(double seconds) {
+    if (seconds <= 0) {
+        throw invalid_argument("your message here");
+    }
+    // ... otherwise store it
+}
+```
+
+Do **not** change the stored time when you reject a value; a rejected call should
+leave the object exactly as it was.
+
+::: {.callout-tip}
+This is the week 2 idea one level down. Back then a broken *file* made
+`loadWorld` throw. Now a broken *value* makes a method throw. Same mechanism,
+same reason: the function cannot do what it was asked, so it says so rather than
+inventing an answer, and the caller decides what to do about it.
+:::
+
+### TODO 6, `formatTime`
+
+Turn the stored `double` into what a timing screen shows:
+
+| Stored | Printed |
+|---|---|
+| `83.456` | `1:23.456` |
+| `59.9` | `0:59.900` |
+| `125.004` | `2:05.004` |
+| `120.0` | `2:00.000` |
+
+The minutes column is always there, seconds are always two digits, and there are
+always exactly three decimals, F1 times to the millisecond.
+
+Build the string with an `ostringstream`, which behaves exactly like `cout`
+except the result lands in a string:
+
+```cpp
+#include <sstream>
+
+ostringstream out;
+out << minutes << ":" << /* the seconds part */ ;
+return out.str();
+```
+
+Three manipulators do the padding, and you met `setw` in week 2:
+
+| | |
+|---|---|
+| `setw(6)` | at least six characters wide |
+| `setfill('0')` | pad with zeros instead of spaces |
+| `fixed << setprecision(3)` | exactly three digits after the point |
+
+Six is not a magic number: `05.004` is two digits, a point, and three more. Get
+the minutes with integer division, then subtract them off to find the seconds
+that are left.
+
+::: {.callout-warning}
+`setprecision` behaves differently with and without `fixed`. On its own it counts
+*significant figures*; with `fixed` it counts *digits after the point*. You want
+the second. If you get `2:05` where you expected `2:05.004`, this is why.
+:::
+
+Run `make test`. You should now be passing every check in Part 1 except the two
+printing ones, which are Friday's work. **That is a good place to stop on
+Tuesday.**
+
+---
+
+## 6. What Happens Next
+
+Wednesday's lecture is constructors, destructors, and testing them. Friday's is
+operator overloading. The rest of this page assumes them, in that order:
+
+| Section | Unlocked by |
+|---|---|
+| §7 the private half of the session, §8 the makefile | Monday (already had) |
+| §9, §10 the constructor and the sorting | Wednesday |
+| §11 your own tests | Wednesday |
+| §12 both `operator<<`s | Friday |
+
+---
+
+## 7. The Session's Private Half
+
+*(Tuesday, this is the last thing Monday's lecture unlocks.)*
+
+### TODO 7, the private section of `QualifyingSession.h`
+
+Two kinds of thing go below `private:` here.
+
+**The data:**
+
+```cpp
+Lap myLaps[MAX_LAPS];     // the board itself, ten Lap OBJECTS
+int myNumLaps;            // how many of those slots are in use
+```
+
+Look hard at that first line. It is an array of ten `Lap` objects, not pointers,
+not references, and **declaring it runs your `Lap` default constructor ten
+times**, before a single lap has been added.
+
+That is what a default constructor is *for*. An array of objects cannot exist
+without one: the array has to be made, so every element has to be made, so every
+element needs a constructor that takes no arguments. If you want to watch it
+happen, put a breakpoint in `Lap::Lap()` and press **F5**.
+
+**And the two helper methods:**
+
+```cpp
+int  findPositionFor(double time) const;
+void shiftDown(int from);
+```
+
+These are private because they are machinery. Nobody outside the class should be
+shuffling the board by hand, the only thing the outside world gets to do is
+`addLap`, and the class decides what that means.
+
+::: {.callout-tip}
+Splitting `addLap` into two helpers is not busywork. Each one is a loop small
+enough to hold in your head and reason about alone, and `addLap` itself becomes
+about five lines that read like the rule they implement. When it goes wrong,
+and it will, you will be debugging one loop, not three tangled together.
+:::
+
+---
+
+## 8. Teaching `make` About a New File
+
+*(Tuesday, straight after §7.)*
+
+Open the `makefile`. Near the top are two lines:
+
+```makefile
+SOURCES = Lap.cpp
+
+CHECKS  = checks_lap.cpp tests.cpp
+```
+
+`make` does not go looking for source files. It compiles what these lines name
+and nothing else, which is why `QualifyingSession.cpp` and `checks_session.cpp`
+are, at this moment, just text sitting on disk.
+
+Add them. Space separated, and do not remove what is already there:
+
+```makefile
+SOURCES = Lap.cpp QualifyingSession.cpp
+
+CHECKS  = checks_lap.cpp checks_session.cpp tests.cpp
+```
+
+Now `make test` builds and runs the session checks too. Your score jumps a
+little, a couple of them pass against the stubs already, and then stops.
+The rest is §9 onward.
+
+::: {.callout-warning}
+**"undefined reference to..." is not a syntax error.** If you add
+`checks_session.cpp` but forget `QualifyingSession.cpp`, you get a wall of
+messages like:
+
+```
+undefined reference to `QualifyingSession::addLap(Lap)'
+```
+
+That is the **linker**, not the compiler, and it means something called a
+function that was never built, not that you wrote it wrong. When you see
+"undefined reference", check the makefile before you touch your code. This is
+worth learning now; it is the single most confusing C++ error message for
+beginners, and it almost always means a missing file rather than a missing
+brain cell.
+:::
+
+---
+
+## 9. Where Does This Lap Go?
+
+*(Wednesday.)*
+
+### TODO 9, the constructor
+
+Shorter than you expect. `Lap myLaps[MAX_LAPS];` has already default-constructed
+all ten laps by the time the constructor body starts. Set the count and you are
+done.
+
+Compare that with the version of this class CS112 built last spring, which stored
+plain `int` scores and had to loop over the array zeroing every slot. Objects
+that know how to initialise themselves save you that loop.
+
+### TODO 10, `findPositionFor`
+
+Return the index where a lap of this time belongs, or `-1` if it belongs nowhere.
+
+Walk the ten slots with a `for` loop. At slot `i` there are three cases:
+
+| Situation | Answer |
+|---|---|
+| `i` is past the laps set so far | an empty slot inside the ten, return `i` |
+| this time is faster than slot `i` | it goes above that lap, return `i` |
+| otherwise | keep looking |
+
+If the loop finishes without returning, the board is full of ten faster laps and
+this one is eliminated: return `-1`.
+
+::: {.callout-important}
+**The board sorts ASCENDING.** The fastest lap is the *smallest* number and lives
+at index `0`. Everything about this assignment runs the opposite way round from a
+high-score table, and it is worth saying out loud once, because your instinct
+will be wrong all week: **"faster" means "less than".**
+:::
+
+::: {.callout-important}
+**Ties.** Two laps to the same thousandth is rare, but it happens, and the answer
+cannot be left to chance. Real F1 gives the position to whoever set the time
+**first**. So a new lap goes above an existing one only when it is *strictly*
+faster.
+
+That is a single character: compare with `<`, not `<=`. There is a check for it.
+:::
+
+---
+
+## 10. Making Room
+
+*(Wednesday.)*
+
+### TODO 11, `shiftDown`, then `addLap`
+
+`shiftDown(from)` opens a gap at index `from` by moving everything below it down
+one place. **Write it as a `for` loop**, like `findPositionFor`, this is
+array-traversal practice, and there is a check for it. Whatever was in the last slot is pushed off the end of the board and
+is gone, not a bug, that is elimination.
+
+::: {.callout-warning}
+Think about which end to start from. If you copy downward starting from the top
+of the array, you overwrite the very values you still have to move, and the whole
+board ends up holding the same lap ten times.
+
+This is the same visit-order trap as a03's falling sand, in three lines instead
+of thirty. If you are not sure which direction is right, do not guess, put a
+breakpoint in the loop and watch the array in the Variables panel.
+:::
+
+Then `addLap`, which is short because the helpers did the work:
+
+1. ask `findPositionFor` where this lap goes
+2. if the answer was `-1`, the lap is eliminated, return, and change nothing
+3. `shiftDown` to open the gap
+4. put the lap in
+5. increase the count, **but only if the board was not already full**
+
+Step 5 is the one people get wrong. When the board is already full, a lap arrives
+*and* a lap is pushed off the end, so the count does not move. Ten in, ten out.
+
+### TODO 11b, `getLap` and `getNumLaps`
+
+`getNumLaps` is a one-line getter.
+
+`getLap(i)` has to defend itself. `myLaps` always has ten slots, but only the
+first `getNumLaps()` of them mean anything, and reading past that is exactly the
+kind of array bug C++ lets you commit in silence. Throw `invalid_argument` if `i`
+is below `0` or at/above `getNumLaps()`.
+
+---
+
+## 11. Your Own Tests
+
+*(Wednesday, Wednesday's lecture is partly about this.)*
+
+`tests.cpp` is yours. Tag every `TEST_CASE` you write with `[mine]`, so that
+
+```bash
+./tester "[mine]"
+```
+
+runs your tests and nothing else. You need **at least 4 test cases and 15
+`REQUIRE`s**, and at least one must check that something illegal is *refused*
+with `REQUIRE_THROWS_AS`. That is a floor, not a target.
+
+They also have to **pass**. A failing test of your own costs a check, the same as
+any other, either the code is wrong or the test is, and finding out which is the
+job.
+
+**What makes a test worth writing** is not "does the code run". A test earns its
+place by being able to fail for a reason you can name. Before writing one, finish
+this sentence: *"this fails if I got ______ wrong."* If you cannot finish it, the
+test is not telling you anything.
+
+Places to look, none of which the course checks cover:
+
+- a lap time that is very small, or very large
+- a lap added at each end of the board, and into the middle
+- the board at exactly nine laps, and at exactly ten
+- what a getter returns after a setter has been called twice
+- a deleted lap that is still fast enough for P1
+
+::: {.callout-tip}
+**Write the test before the code.** It feels backwards for about ten minutes.
+
+The reason it is worth it: a test written *afterwards* tends to describe what you
+built, while a test written *first* describes what you meant to build, and only
+the second kind can tell you that you built the wrong thing. That is the whole
+argument for test-driven development, and this is the week you try it.
+:::
+
+---
+
+## 12. Printing
 
 *(Friday.)*
 
-Open **`Delta.cpp`**.
+### TODO 8, `operator<<` for a `Lap`
 
-### TODO 12, `deltaTrace`
+One row: the driver, the team, the formatted time, and, only if the lap was
+deleted, the word `DELETED`. Use `setw()` to line the columns up. The exact
+widths are yours; the checks look for the pieces, not the padding.
 
-This lap minus the best lap, in that order. A negative delta means this lap was
-faster through that segment.
+Two things about the signature, both from Friday's lecture:
 
-It is one line, and that is the point of it. You already wrote elementwise
-subtraction, and you already made it refuse laps of different lengths. All this
-function does is give the operation a name that the rest of the program can read.
+**It is a free function, not a method.** There is no `Lap::` in front of it. The
+left operand of `cout << lap` is the *stream*, not the lap, and a method's left
+operand is always its own object, so this simply cannot be a method on `Lap`.
 
-Get the order right: `best - current` would flip the sign of every number on the
-timing screen, which is the sort of bug that looks entirely plausible until a
-driver is told they lost time on their best sector.
+**It returns `ostream&`**, a reference to the same stream it was handed:
 
-### TODO 13, `biggestGainAt` and `biggestLossAt`
+```cpp
+ostream& operator<<(ostream& out, const Lap& lap) {
+    // ... print things to out ...
+    return out;
+}
+```
 
-The index of the most negative delta, and the index of the most positive one.
-Both are the standard find-the-extreme loop: assume index 0, walk the rest, take
-over when you find something better.
+That return is what makes `cout << a << b` work. `<<` groups left to right, so
+that line is really `(cout << a) << b`, the first call has to hand the stream to
+the second. A version returning `void` compiles fine on its own and then fails
+the moment anyone chains it. There is a check for exactly that.
 
-Three details the checks look at:
+A reference, not a copy, because streams cannot be copied.
 
-- They return an **index**, not a value. The caller wants to know *where*.
-- **Ties go to the earlier segment.** Use a strict comparison and the first one
-  you met wins by default.
-- An **empty** delta has no answer, so `throw invalid_argument` rather than
-  inventing one. There is no best of nothing.
+Because it is not a method, it has no special access to private members, it goes
+through the getters. Which is why the getters exist.
 
-A lap that was slower everywhere still has a biggest gain, it is just the least
-bad segment. Do not special-case it.
+::: {.callout-tip}
+`reference/Pair.cpp` has a worked `operator<<` at the bottom. It is four lines.
+:::
+
+### TODO 12, `operator<<` for the session
+
+The timing screen:
+
+```
+ P  DRIVER        TEAM             TIME       GAP
+ 1  Verstappen    RedBull      1:16.483         -
+ 2  Norris        McLaren      1:16.512    +0.029
+ 3  Leclerc       Ferrari      1:16.604    +0.121
+```
+
+*(Illustrative, those are not the laps in your `laps.txt`.)*
+
+For each lap on the board, in order:
+
+- **the position**, the index plus one. An array starts at 0; a leaderboard
+  starts at 1.
+- **the lap itself.** You already wrote a `Lap` `operator<<` in TODO 8, so this
+  is `out << session.getLap(i)`. Do not print the driver and team again by hand
+ , reuse what you built. And print the *formatted* time, never the raw
+  `double`: a board showing `76.483` instead of `1:16.483` fails a check.
+- **the gap to the leader**, this lap's time minus the time at position 0,
+  to three decimals, with a leading `+`. P1 has no gap; print `-` instead.
+
+Real timing screens show the gap rather than a raw time for everyone, because
+nobody watching cares that P7 did a 1:16.858, they care that it was six tenths
+off. Build the gap with an `ostringstream` the way you built `formatTime`, so
+`setw()` can line the column up afterwards.
+
+This function is not a method either, so it works through the public getters,
+which is why `getNumLaps()` and `getLap()` are public and the helpers are not.
 
 ### Now look at it
 
 ```bash
-make telemetry
-./telemetry
+make qualifying
+./qualifying
 ```
 
-```
-  TELEMETRY, 24 segments
-  best lap     80.230
-  this lap     79.535
-  delta        -0.695
+`main.cpp` reads fifteen laps out of `laps.txt`, hands every one of them to a
+`QualifyingSession`, and prints the board. Ten drivers survive.
 
-  SEG      BEST     THIS    DELTA
-    1     2.959    3.038   +0.079
-    2     4.479    4.307   -0.172
-    ...
-    8     4.589    4.177   -0.412   best gain
-    ...
-   19     2.604    2.981   +0.377   worst loss
-```
-
-Read `main.cpp` afterwards. It never allocates anything, never counts anything,
-never asks how long a lap is. It reads a line, hands it to `readFrom`, and lets
-the `Trace` be whatever size it needs to be. That is the payoff for the whole
-week.
+Read `main.cpp` afterwards. It is about thirty lines and it never sorts anything,
+never compares two times, never touches an array. It hands laps over one at a
+time and asks the session to print itself. Everything that makes the board
+correct lives inside your class, and that is what a class is for.
 
 ---
 
@@ -784,46 +722,38 @@ week.
 make test
 ```
 
-Thirty-six checks, in nine groups:
+Forty checks, in seven groups:
 
 | Group | What it looks at |
 |---|---|
-| **Construction** (4) | TODOs 1–2 |
-| **Element access** (4) | TODOs 4 and 7 |
-| **Growth** (4) | TODO 5, and the given `setSize` |
-| **Copying** (5) | TODOs 9–10, the point of the week |
-| **Arithmetic** (4) | TODO 8, and the given `operator==` |
-| **Streams** (3) | TODO 11 |
-| **The delta application** (6) | TODOs 12–13, and the program end to end |
-| **Memory** (2) | no crashes, and no leaks |
-| **More cases** (4) | the same requirements on sizes and values you have not seen |
+| **Lap** (8) | the checks in `checks_lap.cpp` |
+| **Class layout** (4) | your private sections, and that the immutables have no setters |
+| **QualifyingSession** (12) | the checks in `checks_session.cpp` |
+| **The helpers** (4) | both are private, and both use a `for` loop |
+| **Your build** (3) | your makefile compiles both check files; `./qualifying` builds and runs |
+| **Your tests** (3) | see §11 |
+| **More cases** (6) | values that appear nowhere in the checks files |
 
 ::: {.callout-note}
-**About the memory checks.** They build a small program that creates, copies,
-assigns and destroys several thousand `Trace` objects, and run it under a memory
-sanitizer. That catches two things ordinary tests miss: freeing the same block
-twice, and never freeing it at all.
-
-A leak does not make a test fail on its own, the program still produces the
-right answers, right up until it runs out of memory. That is precisely why the
-destructor and the copy constructor have to be *reasoned about* rather than
-guessed at, and why this group exists.
+The 20 class checks do not run through the `./tester` your makefile builds.
+`make test` compiles `checks_lap.cpp` and `checks_session.cpp` itself, straight
+against your `Lap.cpp` and `QualifyingSession.cpp`. Your `./tester` is yours,
+you decide what goes in it, and you should, which is exactly why it cannot be
+the thing that decides whether your classes are right. One check does look at
+your `./tester`, and it is the one about your makefile.
 :::
 
-Every failure comes with a hint. Work the groups in order; they follow the TODOs.
+That last group exists so that code which genuinely works passes and code tuned
+to the examples on this page does not. It is not hidden, it is printed in
+`test.py` where you can read it.
+
+Every failure comes with a hint. Work through them in order; the four TODO groups
+are independent enough that each one turns its own checks green as you go.
 
 ::: {.callout-tip}
-Focus on one group at a time with a tag:
-
-```bash
-./tester "[copy]"          # only the copying checks
-./tester "[growth]"        # only append and setSize
-```
-
-A tag needs its brackets. A test *name* needs the full name, or a prefix with a
-`*` on the end, `./tester "Copy: construct*"` works, and `./tester "Copy:
-construct"` matches nothing, prints almost nothing, and exits successfully,
-which looks a lot like passing.
+`./tester` needs a test's **full** name, or a prefix with a `*` on the end.
+`./tester "Lap: format*"` works; `./tester "Lap: format"` matches nothing, prints
+almost nothing, and exits successfully, which looks a lot like passing.
 :::
 
 ---

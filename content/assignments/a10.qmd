@@ -1,87 +1,99 @@
 ---
-title: "Assignment 10: HashTable"
-subtitle: "Stop searching for the index. Compute it."
+title: "Assignment 09: Stack and Queue"
+subtitle: "Two containers, nine TODOs, and one array bent into a circle"
 ---
 
 ::: {.callout-note}
 Your own private GitHub repository is waiting for you (see
 [Getting the code](#getting-the-code) below), clone it and open it in VS Code.
 
-**Plan to set aside about 2 to 2.5 hours.** TODOs 1–5 are short and get the
-machinery working. **TODO 6 is the assignment**, it is where you make the hash
-function good, and it is the part that can run long. Spring's rule was a good
-one: stop after an hour of tuning.
+**Plan to set aside about 2.5 hours.** The Stack (§4) is short and you should
+finish it in lab. The Queue (§6–§8) is the substance, and §7, the circular
+array, is where the time goes. Read §7 before you write any of it.
 :::
 
 ## Objectives
 
 By the end of this assignment, you will be able to:
 
-- Explain what a hash function is for, and why an array subscript cannot take a
-  string
-- Write a hash function that is deterministic, in range, and independent of how
-  much is in the table
-- Explain why chaining makes collisions survivable rather than fatal
-- Measure how evenly a hash function distributes real data, and improve it from
-  the measurement
-- Say what a load factor is, and name the trade it describes
-- Compare membership testing in a hash table against a linear scan, with numbers
+- Say what an Abstract Data Type is, and why the operations are the definition
+  and the storage is not
+- Implement a Stack whose `push` and `pop` are both O(1)
+- Implement a Queue whose `enqueue` and `dequeue` are both O(1)
+- Explain why the obvious array queue is O(n), and what a circular array changes
+- Use the remainder operator to move an index around a ring
+- Explain why "front equals back" is ambiguous, and defend one of the two
+  standard fixes for it
+- Define your own exception type, throw it, and catch it
+- Write a class template whose definitions live in its header
 
 ---
 
-This assignment covers course skill **C7** (implement and use a hash table with
-a reasonable hash function), from cluster **C**, assessed at **Window 2** on
-Nov 20. It is the second of week 9's two assignments; a09 was the first.
+This assignment covers course skills **C5** (implement a stack with O(1) push
+and pop) and **C6** (implement a queue with O(1) enqueue and dequeue), from
+cluster **C**, assessed at **Window 2** on Nov 20.
 
 ::: {.callout-note}
-**This one is homework, not lab.** The hash table is **Friday's** lecture
-(Nov 6), so this assignment starts after it. Tuesday's lab session belongs to
-a09.
+**Lab and homework.** You start this in lab on **Tuesday Nov 3**. By then you
+will have had Monday's lecture on ADTs and the Stack, which is everything §1
+through §5 needs.
 
-Nothing here depends on a09, different container, different question, so if
-a09 is still giving you trouble, it is fine to do these in either order.
+**§4 and §5 are the lab.** TODOs 1–4 and the exception types. A typical student
+finishes them in the session.
+
+**§6 onwards is homework, after Wednesday's lecture.** The circular array is
+Wednesday's material, and TODO 5 asks you to make a decision that lecture is
+about. You *can* read §7 ahead and get going, it is written to stand on its
+own, but do not be alarmed if you would rather wait for the pictures on the
+board first.
 :::
 
 ---
 
 ## 1. Introduction
 
-Every container you have built this semester answers the same question in
-different ways: **what is at position `i`?**
+You have built two containers this semester. In week 4 you built `Vec`, which is
+an array that grows. In week 6 you built `List`, which is a chain of nodes. Both
+of them let you put things anywhere and take things from anywhere.
 
-`Vec` answers it by arithmetic, the address of element `i` is the start plus
-`i` times the element size, so it is instant. `List` answers it by walking. A
-`Stack` and a `Queue` answer it only for one particular `i` and refuse the rest.
-All of them are about **order**.
+This week you build two containers that are deliberately *less* capable than
+that, and the restriction is the whole point.
 
-This week's container answers a different question, and has no order at all:
+A **Stack** only lets you touch the item that arrived most recently. A **Queue**
+only lets you touch the item that arrived first. Neither will let you reach into
+the middle. That sounds like a downgrade until you notice what it buys: because
+there is only one place anything can happen, everything can happen in constant
+time, no matter how much is in there.
 
-> **Is this here?**
+You already use both of these every day:
 
-You already know how to answer that with what you have: walk the container and
-compare. For 73,419 words, that is up to 73,419 string comparisons for every
-question you ask, and every one of them for a word that turns out *not* to be
-there, since you only know it is absent once you have looked everywhere.
-
-A hash table answers the same question by looking in **one** place. Not by
-searching faster. By not searching.
+| | |
+|---|---|
+| Ctrl-Z | a stack of the things you did |
+| the Back button | a stack of the pages you visited |
+| a function call | a stack, which is why it is called *the* call stack |
+| `{ [ ( ) ] }` matching | a stack, in every compiler ever written |
+| a print queue | a queue |
+| customer service | a queue, and everyone notices immediately when it is not |
+| breadth-first search | a queue, you will write one in a12 |
 
 ::: {.callout-note}
-**Why string keys are the whole justification.**
+**The idea Monday's lecture opens on: an Abstract Data Type.**
 
-If your keys were numbers 0 to 99, you would not need any of this, you would
-use an array of 100 slots, put item 47 at index 47, and go straight there.
-That is what an array *is*.
+An ADT is a set of operations and a promise about what they do, and *nothing
+else*. "A Stack is something you can push onto, peek at, and pop from, where pop
+gives you back the most recent push." That is the entire definition. It says
+nothing about arrays, nothing about nodes, nothing about memory.
 
-The trouble is that `myArray["gargoyle"]` is not a thing. A subscript has to be
-a number, and a word is not one. And you cannot make an array with one slot per
-possible spelling: at 22 letters, there are more of those than there are atoms
-worth of memory.
+That silence is deliberate. You could build this week's Stack on top of your
+`Vec`, or on top of your `List`, or on a raw array, and every one of them would
+be a Stack, because a Stack is defined by what it promises and not by what it is
+made of. You have now built both possible underneaths, so this is a real choice
+rather than a hypothetical one.
 
-So: **manufacture a number out of the word.** Something small, something
-repeatable, something that spreads different words to different slots. That
-function is the hash function, and this entire assignment is about how hard the
-last of those three is.
+We use a raw array here, for two reasons: it is the version where the O(1)
+requirement is visible in the code you write, and it is the version that forces
+you to meet the circular array, which is the idea this week is really about.
 :::
 
 ---
@@ -137,346 +149,616 @@ make
 make test
 ```
 
-`make` succeeds, `./a10` stops immediately and tells you to do TODO 1, and
-`make test` reports **8 / 30**.
+`make` succeeds, `./a10` prints a demonstration in which nothing works, and
+`make test` reports **5 / 36**. All three are correct. Two of those five are the
+constructor checks, which are given to you; the other three are the
+constant-time checks, which an empty function passes for free.
 
 
 ---
 
 ## 3. What You Were Given
 
-**You edit two files: `HashTable.cpp` and `findings.txt`.** Seven TODOs between
-them.
+**You edit two files: `Stack.h` and `Queue.h`.** Nine TODOs between them.
 
 | File | Yours? | What it is |
 |---|---|---|
-| `HashTable.cpp` | **yes** | TODOs 1–6 |
-| `findings.txt` | **yes** | TODO 7, what you measured |
-| `HashTable.h` | no | the specification. Read this first. |
-| `main.cpp` | no | the experiment: load, describe, race |
-| `Timer.h` | no | a08's stopwatch, unchanged |
-| `words.txt` | no | 73,419 words |
+| `Stack.h` | **yes** | the Stack class, and TODOs 1–4 |
+| `Queue.h` | **yes** | the Queue class, and TODOs 5–9 |
+| `Exceptions.h` | no | `StackException` and `QueueException` |
+| `main.cpp` | no | a demonstration program, read it, it is short |
 | `checks.cpp` | no | the course's checks |
 | `catch.hpp`, `catchmain.cpp`, `makefile`, `test.py` | no | framework, build, grader |
 
-### The dictionary
+::: {.callout-note}
+**There is no `Stack.cpp` and no `Queue.cpp`, and that is not an oversight.**
 
-`words.txt` is a real spell-checker word list, SCOWL, filtered to 73,419
-lowercase words made only of letters. `WORDS-LICENSE.txt` records exactly where
-it came from, what was done to it, and the licence that permits it to be here.
-Read it; knowing the provenance of your data is part of the job.
+Both classes are templates. A template is not code, it is a recipe for making
+code, and the compiler cannot bake it until some file says `Stack<int>` and
+tells it what an `Item` is. That happens in whatever `.cpp` uses the class, and
+the compiler has to be able to see the recipe *from there*. So the definitions
+go in the header, underneath the class, where every `#include` carries them
+along.
 
-Being a real word list, it contains proper nouns, brand names, and the odd word
-you would not choose. It was not hand-curated. It is data to be hashed.
+You have met this twice: `Trace` in a06 and `List` in a08. Same rule, and this
+time it is set up for you from the start.
+:::
 
-### Chaining
-
-Each bucket in the table is a `list<string>`, and words that hash to the same
-bucket simply live in the same list. That is **chaining**, and it is why a
-collision is not an error:
-
-```
-                  ┌──────────────────────────────────────┐
-    bucket 0   →  │ "gargoyle" → "meridian" → "plimth"    │
-                  ├──────────────────────────────────────┤
-    bucket 1   →  │ "banjo"                               │
-                  ├──────────────────────────────────────┤
-    bucket 2   →  │ (empty)                               │
-                  ├──────────────────────────────────────┤
-    bucket 3   →  │ "juniper" → "obsidian"                │
-                  └──────────────────────────────────────┘
-```
-
-`contains("meridian")` hashes once to get **0**, then walks bucket 0, three
-entries, and stops. It never looks at buckets 1, 2 or 3, and it would not look
-at bucket 500 either.
-
-So the cost of a lookup is **the length of one bucket**. Which is why the
-question "how evenly does my hash spread things out?" is not an aesthetic one.
-It is the only question that matters.
+The methods that manage memory, the constructor, the copy constructor, the
+destructor and `operator=`, are **given to you complete** in both files, except
+for one line of `Queue`'s constructor. You wrote all four of these by hand in
+a05 and again in a08; this week the interesting part is elsewhere, so they are
+done. Read them anyway. `Stack`'s copy constructor copies the whole array rather
+than just the live part, and the comment says why.
 
 ---
 
-## 4. TODOs 1 to 5, get it working
+## 4. The Stack {#the-stack}
 
-None of these five is hard, and none of them is the point. They exist to get you
-to the place where you can *see* what your hash function is doing.
+Four TODOs, all in `Stack.h`. This is the lab.
 
-**TODO 1, the constructor.** Two lines: `myTable.resize(TABLE_SIZE)` and set
-`mySize`.
+### Where the top is {#where-the-top-is}
+
+Everything in this section comes out of one picture. Here is a `Stack<char>`
+with capacity 6, holding three items:
+
+```
+index:      0     1     2     3     4     5
+          ┌─────┬─────┬─────┬─────┬─────┬─────┐
+myArray:  │  A  │  B  │  C  │  ?  │  ?  │  ?  │
+          └─────┴─────┴─────┴─────┴─────┴─────┘
+                              ▲
+                              │
+                          mySize = 3
+```
+
+`mySize` is 3, and there are three items. But look at where 3 lands when you use
+it as an *index*: it points at the first slot that is free.
+
+**`mySize` means two things at once, and they are both true.** It is how many
+items you are holding, and it is the index where the next item goes. That is not
+a coincidence, it is what counting from zero does for you, and it is the whole
+reason a stack's push and pop are one line each.
+
+Read the picture again with that in mind:
+
+| Question | Answer | Why |
+|---|---|---|
+| Where does the next item go? | `myArray[mySize]` | that is the first free slot |
+| Where is the top item now? | `myArray[mySize - 1]` | one below the first free slot |
+| Is it empty? | `mySize == 0` | no items |
+| Is it full? | `mySize == myCapacity` | the first free slot is off the end |
+
+Those four rows are TODOs 1 through 3. The `- 1` in the second row is the single
+most common mistake in this assignment; it is there because `mySize` is a
+*count* in one meaning and an *index* in the other, and a count of three items
+ends at index two.
 
 ::: {.callout-warning}
-**Do TODO 1 before TODO 3.** A table whose constructor has not run has an empty
-`myTable`, and `myTable[b]` on a bucket that does not exist does not politely
-fail, it writes over memory belonging to something else, and the crash turns
-up somewhere unrelated half an hour later. `main.cpp` checks for this and stops
-rather than letting it happen.
+**Never write to `myArray[myCapacity]`.** When `mySize == myCapacity`, the "first
+free slot" is one past the end of the array, and there is nothing there. C++ will
+not stop you, it will write over whatever memory happens to be next and carry
+on cheerfully, and you will find out about it half an hour later somewhere
+completely unrelated. That is what the `isFull()` check at the top of `push` is
+for, and it is why it goes *first*.
 :::
 
-**TODO 2, `hash`.** Write the **simplest** thing that obeys the three rules in
-the spec. The one from Friday's slides, add the first character to the last
-character, then `% TABLE_SIZE`, obeys all three. It is also a bad hash
-function, as you are about to measure, and that is exactly why you start with
-it.
+### TODO 1, `isEmpty` and `isFull`
 
-**TODO 3, `insert`.** Hash, `push_back` onto that bucket, increment `mySize`.
-You do **not** need to check whether the word is already there; the dictionary
-has no duplicates and the spec says so.
+One line each, from the table above. Do these first: `push`, `pop` and
+`peekTop` all call them, so a mistake here becomes a mysterious failure three
+TODOs later.
 
-**TODO 4, `contains`.** Hash, walk that one bucket, compare. Note what it does
-not do: it never looks in another bucket, and it never looks at `mySize`.
+### TODO 2, `push`
 
-**TODO 5, `writeStats`.** The exact output format is in the comment in
-`HashTable.cpp`, and the checks compare against it line for line. This is the
-instrument. Until it exists you are guessing.
+Three steps, in order: refuse if full, store the item, update `mySize`.
 
-Run `./a10` at this point. Keep the output; you are about to improve on it.
+```
+          ┌─────┬─────┬─────┬─────┬─────┬─────┐
+before    │  A  │  B  │  C  │  ?  │  ?  │  ?  │   mySize = 3
+          └─────┴─────┴─────┴─────┴─────┴─────┘
+                              ▲ store D here
+          ┌─────┬─────┬─────┬─────┬─────┬─────┐
+after     │  A  │  B  │  C  │  D  │  ?  │  ?  │   mySize = 4
+          └─────┴─────┴─────┴─────┴─────┴─────┘
+```
+
+The refusal is `throw StackException("push()", "stack is full");`. `throw` leaves
+the function on the spot, exactly the way `return` does, so you do not need an
+`else` after it.
+
+### TODO 3, `peekTop`
+
+Refuse if empty, otherwise hand back the top item and change nothing. Watch the
+index: `peekTop` reads from a *different* slot than the one `push` writes to,
+and the difference is the `- 1`.
+
+### TODO 4, `pop`
+
+Refuse if empty, otherwise shrink by one and return what was on top.
+
+```
+          ┌─────┬─────┬─────┬─────┬─────┬─────┐
+before    │  A  │  B  │  C  │  D  │  ?  │  ?  │   mySize = 4
+          └─────┴─────┴─────┴─────┴─────┴─────┘
+          ┌─────┬─────┬─────┬─────┬─────┬─────┐
+after     │  A  │  B  │  C  │  D  │  ?  │  ?  │   mySize = 3
+          └─────┴─────┴─────┴─────┴─────┴─────┘
+                              ▲ D is still sitting there
+```
+
+Notice what the picture does **not** show: nothing was erased. `pop` does not
+have to clear the slot, zero it, or move anything. "Removing" an item from an
+array-backed stack means nothing more than agreeing to stop counting it. The
+bytes are still there, but nothing will ever read them again, because the next
+`push` writes over that slot.
+
+That is exactly why `pop` is O(1), it moves no data at all, and it is the same
+insight that the Queue will need in a much less obvious form.
+
+::: {.callout-tip}
+If you decrement `mySize` first, the item you want is at `myArray[mySize]`. If
+you read the item first, it is at `myArray[mySize - 1]`. Both are correct. Pick
+one and be consistent; mixing them is how you end up returning the wrong item.
+:::
 
 ---
 
-## 5. What you will see, and why it is bad {#what-you-will-see}
+## 5. Exceptions {#exceptions}
 
-With the first-plus-last-character hash and `TABLE_SIZE` at 200, `stats.txt`
-says something close to this:
+There is no honest value for `pop()` to return when the stack is empty. Any
+`Item` it handed back would be a lie, and the caller would believe it.
+
+So it refuses, out loud. `Exceptions.h` is given to you complete and defines two
+types:
+
+```cpp
+throw StackException("pop()", "stack is empty");
+throw QueueException("enqueue()", "queue is full");
+```
+
+Two fields, not one sentence: *where* the trouble happened is something the
+class knows, and *what* the trouble was is something the situation knows.
+
+A caller who wants to survive this writes:
+
+```cpp
+try {
+    Item x = s.pop();
+} catch (StackException& e) {
+    cerr << e << endl;      // StackException in pop(): stack is empty
+}
+```
+
+`main.cpp` does exactly that, at the bottom, so you can watch it happen.
+
+::: {.callout-note}
+**Why a class of your own rather than throwing a string?** Because `catch`
+selects on type. A `catch (StackException&)` catches the failures a Stack
+produces and nothing else. If everybody threw strings, that same `catch` would
+swallow unrelated failures from three layers down and pretend it had handled
+them.
+
+The checks only require that the right *type* comes out. The two message
+strings are for whoever reads the output, so make them useful.
+:::
+
+---
+
+## 6. The Queue, the obvious way, and why it does not work {#the-obvious-queue}
+
+A Queue is first in, first out. Items leave in the order they arrived.
+
+Try the obvious design. Keep the front of the line at index 0. Enqueue at the
+end, like a stack. Dequeue from the front:
 
 ```
-words: 73419
-buckets: 200
-empty buckets: 150
-largest bucket: 4233
-average per bucket: 367.10
+          ┌─────┬─────┬─────┬─────┬─────┬─────┐
+          │ Ada │Grace│Alan │  ?  │  ?  │  ?  │
+          └─────┴─────┴─────┴─────┴─────┴─────┘
+             ▲ dequeue takes this one
 ```
 
-**Three quarters of the table is empty**, and one bucket holds 4,233 words,
-eleven times what it should. A lookup that lands there compares against all
-4,233 of them.
+Ada leaves. Now index 0 is empty and Grace is at index 1, but we said the front
+of the line lives at index 0. So we shuffle everyone down:
 
-Here is why, and the reason is worth more than the fix.
+```
+          ┌─────┬─────┬─────┬─────┬─────┬─────┐
+          │Grace│Alan │  ?  │  ?  │  ?  │  ?  │
+          └─────┴─────┴─────┴─────┴─────┴─────┘
+```
 
-A lowercase letter is a number between 97 and 122. So `word[0] + word[last]` is
-somewhere between 194 and 244, **fifty-one possible values, for every word in
-the English language.** Taking `% 200` of a number in that range does nothing at
-all: 194 through 199 stay put, 200 through 244 wrap to 0 through 44. Buckets 45
-to 193 can never be reached, no matter how many words you insert or how big you
-make the table.
+It works. It is also **O(n)**, and you have met this exact cost before: it is
+`Vec::prepend` from week 4, wearing a different hat. Every dequeue touches every
+remaining item. A queue of ten thousand jobs does ten thousand moves to serve
+one of them, and the second one does 9,999 more.
 
 ::: {.callout-important}
-**Making `TABLE_SIZE` bigger cannot fix this.** At 250 buckets the same hash
-reaches even fewer of them, because the range of values it produces did not
-change. A hash function that only produces fifty different answers can only ever
-use fifty buckets.
+**Both of a Queue's operations have to be O(1). That is the requirement, and
+this design fails it.** A queue that shifts is not a slightly-worse queue; it is
+a different data structure with the same interface.
 
-That is the trap this section exists to spring. The problem is not the size of
-the table. The problem is that the hash function is throwing away almost all of
-the word.
+Four of the thirty-six checks read `Stack.h` and `Queue.h` as text and fail you
+if there is a loop inside `push`, `pop`, `enqueue`, `dequeue`, `peekTop`,
+`peekFront`, `getSize`, `isEmpty` or `isFull`. A shifting queue gives every
+right answer, so no behavioural check could ever catch it, and timing it on a
+shared grading machine would not be trustworthy. Reading the source is the only
+honest way to hold you to the thing this assignment is actually about.
 :::
 
-Notice what it throws away. `word[0]` and `word[last]`, everything in between
-is ignored, so "gargoyle" and "gale" and "guacamole" are indistinguishable to
-it. And the two characters it does look at are **added**, so "on" and "no" get
-the same answer, as do "stop", "spot", "pots" and "tops".
+So: **do not move the data. Move the ends.**
+
+Keep an index that says where the front currently is, and stop insisting it is
+zero. Dequeue becomes "add one to `myFront`", which is O(1) and obviously right:
+
+```
+          ┌─────┬─────┬─────┬─────┬─────┬─────┐
+          │ Ada │Grace│Alan │  ?  │  ?  │  ?  │   myFront = 0
+          └─────┴─────┴─────┴─────┴─────┴─────┘
+             ▲ front
+                                                  ...serve Ada...
+          ┌─────┬─────┬─────┬─────┬─────┬─────┐
+          │ --- │Grace│Alan │  ?  │  ?  │  ?  │   myFront = 1
+          └─────┴─────┴─────┴─────┴─────┴─────┘
+                   ▲ front
+```
+
+Which fixes the speed and creates a new problem. Keep serving and keep adding,
+and the whole line **walks off the right-hand end of the array** while a growing
+run of perfectly good slots sits abandoned on the left:
+
+```
+          ┌─────┬─────┬─────┬─────┬─────┬─────┐
+          │ --- │ --- │ --- │ --- │Kath │Doro │   myFront = 4
+          └─────┴─────┴─────┴─────┴─────┴─────┘
+           ── four wasted slots ──            ▲ and nowhere left to add
+```
+
+Four free slots and the queue says it is full. That is the problem §7 solves.
 
 ---
 
-## 6. TODO 6, make it good {#make-it-good}
+## 7. Going in a circle {#going-in-a-circle}
 
-Two dials, and they interact:
+This is the idea of the week. Take your time with it.
 
-- the arithmetic inside `hash`
-- `TABLE_SIZE`, the constant at the top of `HashTable.cpp`
+### The trick, in one operator
 
-### The bar
+Pretend the array has no ends. When an index walks off the right-hand side, it
+comes back on the left:
 
-Both numbers come straight out of your own `stats.txt`, so you can tell whether
-you have cleared it before you push:
+```
+                    ┌─────┐
+              ┌─────┤  0  ├─────┐
+              │     └─────┘     │
+           ┌──┴──┐           ┌──┴──┐
+           │  5  │           │  1  │
+           └──┬──┘           └──┬──┘
+              │                 │
+           ┌──┴──┐           ┌──┴──┐
+           │  4  │           │  2  │
+           └──┬──┘           └──┬──┘
+              │     ┌─────┐     │
+              └─────┤  3  ├─────┘
+                    └─────┘
+```
+
+It is still a perfectly ordinary array in memory, nothing is bent, nothing is
+linked. The circle exists entirely in how you do the arithmetic. One operator
+makes it happen:
+
+```cpp
+i = (i + 1) % mySlots;
+```
+
+For an array of 6, that takes 0→1→2→3→4→5→**0**→1→… and never leaves the array.
+`5 + 1` is 6, and `6 % 6` is 0. That is all a circular array is.
+
+::: {.callout-tip}
+**Every index you move in `Queue.h` moves with `% mySlots`.** If you have
+written `+ 1` without a `%` anywhere in that file, that is a bug waiting for the
+right test to find it. There are exactly two places an index moves: the end of
+`enqueue` and the middle of `dequeue`.
+:::
+
+### Watch it go round
+
+A queue of capacity 3, storing in an array, let us say 4 slots long, for
+reasons that become clear in a moment. `F` marks the front, `B` marks the next
+free slot.
+
+```
+start            ┌─────┬─────┬─────┬─────┐
+                 │  ?  │  ?  │  ?  │  ?  │      F=0  B=0   size 0
+                 └─────┴─────┴─────┴─────┘
+                   FB
+
+enqueue A        ┌─────┬─────┬─────┬─────┐
+                 │  A  │  ?  │  ?  │  ?  │      F=0  B=1   size 1
+                 └─────┴─────┴─────┴─────┘
+                    F     B
+
+enqueue B        ┌─────┬─────┬─────┬─────┐
+                 │  A  │  B  │  ?  │  ?  │      F=0  B=2   size 2
+                 └─────┴─────┴─────┴─────┘
+                    F           B
+
+enqueue C        ┌─────┬─────┬─────┬─────┐
+                 │  A  │  B  │  C  │  ?  │      F=0  B=3   size 3 : FULL
+                 └─────┴─────┴─────┴─────┘
+                    F                 B
+
+dequeue → A      ┌─────┬─────┬─────┬─────┐
+                 │ --- │  B  │  C  │  ?  │      F=1  B=3   size 2
+                 └─────┴─────┴─────┴─────┘
+                          F           B
+
+dequeue → B      ┌─────┬─────┬─────┬─────┐
+                 │ --- │ --- │  C  │  ?  │      F=2  B=3   size 1
+                 └─────┴─────┴─────┴─────┘
+                                F     B
+
+enqueue D        ┌─────┬─────┬─────┬─────┐
+                 │ --- │ --- │  C  │  D  │      F=2  B=0   size 2
+                 └─────┴─────┴─────┴─────┘
+                   B            F
+                   ▲ B wrapped: (3 + 1) % 4 = 0
+
+enqueue E        ┌─────┬─────┬─────┬─────┐
+                 │  E  │ --- │  C  │  D  │      F=2  B=1   size 3 : FULL
+                 └─────┴─────┴─────┴─────┘
+                          B     F
+```
+
+E landed at index 0, a slot that was used and given back, and the queue is
+holding C, D, E in that order even though they sit in the array as E, _, C, D.
+The array order stopped being the queue order the moment the front moved, and
+that is fine, because `myFront` is the only thing that decides who is next.
+
+::: {.callout-tip}
+**Do this one on paper before you write TODO 7 and TODO 9.** Capacity 3 again,
+but a 4-slot array: enqueue A, B, C, dequeue, dequeue, enqueue D, enqueue E,
+dequeue, dequeue, dequeue. Write down `F` and `B` after every single step. If
+your paper trace and your code ever disagree, the paper is right and you have
+found your bug in about ninety seconds.
+:::
+
+### The problem nobody expects {#full-and-empty}
+
+Look at the very first picture and the very last one.
+
+```
+empty            ┌─────┬─────┬─────┬─────┐
+                 │  ?  │  ?  │  ?  │  ?  │      F=0  B=0
+                 └─────┴─────┴─────┴─────┘
+
+full             ┌─────┬─────┬─────┬─────┐
+                 │  W  │  X  │  Y  │  Z  │      F=0  B=0
+                 └─────┴─────┴─────┴─────┘
+```
+
+**`F == B` in both.** An empty queue and a completely full one are, as far as
+the two indices are concerned, identical. Every enqueue moves `B` forward one;
+after four of them in a 4-slot array, `B` has gone all the way round and landed
+back where it started.
+
+This is not an edge case you can code around. The two indices simply do not
+carry enough information to distinguish those two states: two numbers in the
+range 0..3 can describe 16 situations, and there are 17 things a 4-slot queue
+can be doing (empty, 1 item, 2, 3, 4, at each of 4 rotations, minus the ones
+that coincide). You need one more bit of information from *somewhere*.
+
+There are exactly two standard places to get it, and this is the decision
+**TODO 5** asks you to make.
+
+### Fix one: waste a slot
+
+Never let the queue fill the array. If a 4-slot array is only ever allowed to
+hold 3 items, then `B` can never catch up to `F` from behind, and `F == B`
+means empty and nothing else.
+
+The cost is one `Item` of memory that is never used. The benefit is that you
+keep no count at all.
+
+```
+capacity 3, array of 4, the fullest this is ever allowed to get:
+
+                 ┌─────┬─────┬─────┬─────┐
+                 │  W  │  X  │  Y  │  ?  │     F=0  B=3
+                 └─────┴─────┴─────┴─────┘
+                    F                 B
+                                        ▲ index 3 stays empty on purpose
+```
 
 | | |
 |---|---|
-| **empty buckets** | at most **2** |
-| **largest bucket** | at most **3 ×** the average |
+| array length | `mySlots = myCapacity + 1` |
+| empty | `myFront == myBack` |
+| full | `(myBack + 1) % mySlots == myFront` |
+| size | `(myBack + mySlots - myFront) % mySlots` |
+| enqueue | store at `myBack`, then `myBack = (myBack + 1) % mySlots` |
+| dequeue | read at `myFront`, then `myFront = (myFront + 1) % mySlots` |
+| unused member | `myCount` |
 
-The average is words divided by buckets, so at `TABLE_SIZE = 200` it is 367 and
-the largest bucket must be under about 1,100. A good hash gets the largest
-bucket under **1.5 ×** the average without much trouble; that is not required,
-but it is what you are aiming at, and it is a much better target than "3".
+Read the "full" row out loud: *the queue is full when adding one more would make
+back equal front.* Which is exactly the collision we are refusing to allow.
 
 ::: {.callout-warning}
-**`TABLE_SIZE` must stay between 100 and 250.** There is a check.
+**The size formula has a `+ mySlots` in it, and it is not decoration.**
 
-That cap is the exercise. With 73,419 words and 250 buckets you *cannot* avoid
-collisions, roughly three hundred words per bucket is the best anyone can do.
-A hash function that only looks good when there is room to spare has not solved
-anything; it has just been given enough space to hide in.
+`myBack` is often at a *lower* index than `myFront`, that is what wrapping
+means. So `myBack - myFront` goes negative. These members are `unsigned`, and
+unsigned arithmetic does not have negative numbers: `1u - 2u` is not `-1`, it is
+4,294,967,295. Taking `% mySlots` of that gives you an answer that is confidently
+wrong rather than obviously wrong, which is worse.
+
+Adding `mySlots` first pushes the whole thing back above zero without changing
+the remainder. `(myBack + mySlots - myFront) % mySlots` is always right.
 :::
 
-### Where to look
+### Fix two: keep a count
 
-Do not go and find a famous hash function to paste in. Reason from §5, the
-naive hash fails for two specific reasons, and fixing either one helps:
+Store the number of items. Then `F == B` never has to mean anything, because you
+ask `myCount` instead. The array can be exactly as long as the capacity, and
+every slot gets used.
 
-**It ignores most of the word.** A hash that adds up *every* character sees the
-whole word. That alone gets you from fifty possible values to several hundred,
-and it clears the bar. Try it; it takes one line, and it is a big improvement.
+The cost is that `myCount` is a third thing that has to stay correct: every
+`enqueue` has to remember `++myCount` and every `dequeue` has to remember
+`--myCount`, forever, in every path through the function.
 
-**Addition does not care about order.** Once every character is in the sum,
-"stop" and "pots" still collide, because addition throws the ordering away. To
-fix that you need each character's **position** to change its contribution,
-multiply the running total by something before adding the next character, or
-weight each character by its index. That is what takes the largest bucket from
-about 1.6 × the average down to about 1.1 ×.
+```
+capacity 3, array of 3, holding all three:
 
-::: {.callout-tip}
-**Watch out for overflow, but do not be afraid of it.** Multiply a running
-total by a number for every character of a long word and you will exceed what an
-`unsigned` can hold. That is fine: unsigned arithmetic in C++ wraps around
-cleanly rather than being undefined, and wrapping is a perfectly good way to mix
-bits. Use `unsigned long long` for the running total if you like the extra room.
+                 ┌─────┬─────┬─────┐
+                 │  W  │  X  │  Y  │            F=0  myCount=3
+                 └─────┴─────┴─────┘
+                    F
+```
 
-What you must not do is take `% TABLE_SIZE` in the middle of the loop. Do the
-arithmetic, then take the remainder once, at the end.
+| | |
+|---|---|
+| array length | `mySlots = myCapacity` |
+| empty | `myCount == 0` |
+| full | `myCount == myCapacity` |
+| size | `myCount` |
+| enqueue | store at `(myFront + myCount) % mySlots`, then `++myCount` |
+| dequeue | read at `myFront`, then `myFront = (myFront + 1) % mySlots` and `--myCount` |
+| unused member | `myBack` |
+
+### Which one should you pick?
+
+Either. They are both standard, both correct, and both O(1), and real libraries
+ship both. The trade is small and real:
+
+| | wasted slot | separate count |
+|---|---|---|
+| memory | one `Item` more than it needs | exactly what it needs |
+| members to keep in step | two | three |
+| `getSize` | arithmetic | just read it |
+| `isFull` | the fiddly line | trivial |
+| easiest to get wrong | the `+ mySlots` in `getSize` | forgetting `--myCount` on one path |
+
+Pick the one whose failure mode you would rather debug. Then **write down which
+one you picked and why**, in the `MY CHOICE` line in the constructor. That line
+is graded, not the prose, but its presence and its having a reason of at least
+six words in it.
+
+::: {.callout-note}
+**Why a comment is worth a mark.** Every genuinely confusing bug students hit in
+this file comes from writing half of one technique and half of the other, a
+`myCount` that gets incremented next to an `isFull` that compares indices. That
+does not happen to people who wrote down which one they were doing before they
+started. The comment is not busywork; it is the fix.
 :::
-
-::: {.callout-tip}
-**The two dials really do interact.** If your multiplier and your `TABLE_SIZE`
-share a factor, the multiplication stops mattering and the distribution collapses
-a table size of 217 with a multiplier of 31 is much worse than 216 or 218,
-because 217 is 7 × 31. If a hash you believe in is producing a bad distribution,
-change `TABLE_SIZE` before you change the hash. A prime is a safe choice, and
-241 is prime.
-:::
-
-Finally, fill in the `MY HASH:` line inside `hash`, what your final algorithm
-is, and why you think it distributes well. That line is graded: not the prose,
-but that a real explanation is there.
-
-**Stop after an hour of tuning.** You are looking for a hash that is clearly
-good, not the best hash function in the world.
 
 ---
 
-## 7. The race, and what it costs {#the-race}
+## 8. TODOs 5 through 9 {#the-queue-todos}
 
-Once the table is built, `./a10` asks forty membership questions three ways and
-prints something like this:
+All in `Queue.h`. The class carries six data members, and **you will use five of
+them.** Which one you leave alone is precisely the choice you just made.
 
-```
-Asked 800 membership questions, three ways:
-
-  linear scan of the vector:      138.121 microseconds per question    (no buckets at all)
-  your HashTable:                   5.204 microseconds per question    (241 buckets)
-  std::unordered_set:               0.044 microseconds per question    (85229 buckets)
-
-  yours was 26.5 times faster than the linear scan.
-  your load factor, words per bucket, is 304.6, against the STL's 0.9.
+```cpp
+Item*    myArray;      // the circular array
+unsigned myCapacity;   // how many ITEMS the queue can hold
+unsigned mySlots;      // how many slots myArray really has
+unsigned myFront;      // index of the front item, BOTH techniques
+unsigned myCount;      // number of items, COUNT technique
+unsigned myBack;       // index of the next free slot, WASTED-SLOT technique
 ```
 
-Twenty of those forty words are in the dictionary and twenty are not, on
-purpose. A **failed** lookup is the interesting one: the linear scan has to look
-at all 73,419 words before it can say no, while your table looks in one bucket
-and says no immediately.
+Note that `myCapacity` and `mySlots` are different numbers, and the difference is
+the entire wasted-slot technique. `getCapacity()` reports `myCapacity`, what the
+caller asked for. Every `%` uses `mySlots`, how long the array really is.
 
-### Why only twenty-six times, and not seventy-three thousand?
+**TODO 5**, write the `MY CHOICE` line, then make `mySlots` agree with it. It
+ships set to `capacity`; one of the two techniques needs it to be `capacity + 1`.
+Leave the `new Item[mySlots]` line alone, it allocates whatever length you
+decided on.
 
-Because your table is **three hundred words deep**. You hash once, instant,
-and then walk a list of three hundred strings. You have replaced 73,419
-comparisons with about 150, which is a factor of a few hundred, not a factor of
-73,419.
+**TODO 6**, `isEmpty`, `isFull`, `getSize`, from your technique's table above.
+One line each. Do not write a loop in `getSize`; there is a check for that.
 
-That number has a name. **Load factor** is items divided by buckets, and it is
-the single number that says how fast a hash table will be. Yours is about 300.
-The Standard Library's is about 0.9, it keeps roughly one word per bucket, so
-its bucket walk is one comparison and it is another hundred times faster than
-yours.
+**TODO 7**, `enqueue`. Refuse if full, store at the back, move the back index
+(with `%`). Refusing must leave every index exactly as it was.
 
-::: {.callout-note}
-**This is the time-space trade-off, and you can see all three points on it.**
+**TODO 8**, `peekFront`. Refuse if empty, otherwise return `myArray[myFront]`.
+Unlike the Stack, `myFront` is the index of a real item, not of a free slot, so
+there is no `- 1` here.
 
-| | buckets | memory for buckets | per question |
-|---|---|---|---|
-| linear scan | none | none | ~138 µs |
-| your table | 241 | tiny | ~5 µs |
-| `std::unordered_set` | 85,229 | substantial | ~0.04 µs |
+**TODO 9**, `dequeue`. Refuse if empty, read the front, move `myFront` (with
+`%`), adjust `myCount` if that is your technique, return the item. Nothing is
+erased and nothing is moved, same as `Stack::pop`, for the same reason.
 
-The STL's table is faster because it **bought** speed with memory, and it keeps
-buying: when the load factor creeps above 1 it allocates a bigger array and
-rehashes everything into it. That is what "resize" means for a hash table, and
-it is why real ones are fast.
-
-Your table is capped at 250 buckets so that you have to face the distribution
-problem instead of dodging it with space. Given the constraint, twenty-six times
-faster than searching is the honest answer, and it is worth knowing that the
-constraint, not your hash, is what is holding the number down.
+::: {.callout-warning}
+**A capacity of 1 is legal and it is where mistakes show up.** With the
+wasted-slot technique that is an array of 2. Try it on paper: enqueue, dequeue,
+enqueue, dequeue. There is a check for it.
 :::
-
-You are not asked to implement resizing, and `std::unordered_set` is there only
-to show you the far end of the trade. Do not try to beat it.
-
----
-
-## 8. TODO 7, `findings.txt`
-
-Five numbers and three sentences.
-
-The three counts, `table-size`, `empty-buckets`, `largest-bucket`, come
-straight out of **your own** `stats.txt`, and they are checked against it. If
-you change your hash or your table size after writing them down, run `./a10`
-again and copy the new ones.
-
-The two timings come from what `./a10` prints at the end. They are graded only
-for being present and positive.
-
-::: {.callout-note}
-**Why the timings are not graded against a target.** The grading machine is
-shared with other jobs and is not your laptop. Your microseconds are true about
-your computer at that moment; the *distribution* of your hash is true
-everywhere. So the distribution is what carries the marks, and the timings are
-graded the way a08's were, that you ran the experiment and wrote down what you
-saw.
-:::
-
-The three sentences want at least twelve words each. Nobody is marking the
-prose. The third one, why an array indexed by the word itself is not an
-option, is the one worth thinking about, because it is the reason this whole
-data structure exists.
 
 ---
 
 ## 9. Testing Your Work
 
 ```bash
-make test         # all 30 checks
+make test         # all 36 checks
 ```
 
 ::: {.callout-important}
 **There are no hidden tests.** What you run with `make test` is exactly what the
-grader runs, all 30 checks, every one of them in a file in your repository.
+grader runs, all 36 checks, every one of them in a file in your repository.
+Read `checks.cpp`: it is the specification, written out.
 :::
+
+The 36 break down like this:
 
 | | |
 |---|---|
-| 9 | the table: insert, contains, getSize, buckets |
-| 6 | collisions, and the hash function's three rules |
-| 5 | `writeStats` |
-| 5 | the experiment against the real dictionary, including the two distribution checks |
-| 5 | `findings.txt` and the `MY HASH` line |
+| 14 | the Stack |
+| 16 | the Queue |
+| 2 | long generated sequences, compared against `std::vector` and `std::deque` |
+| 3 | constant time, read out of your source |
+| 1 | your `MY CHOICE` line |
 
-Each check runs in its own process, so a crash costs you that check rather than
-the whole run.
+**Not one of the 32 behavioural checks can tell which technique you chose.**
+They call the public methods and look at what comes back, which is the only
+thing an ADT promises. Both techniques score 36 out of 36; this was verified
+against complete implementations of each.
 
-::: {.callout-note}
-**Nothing in `checks.cpp` says what your hash must be.** It cannot, choosing
-one is TODO 6. What it checks is that whatever you chose obeys the three rules,
-and that the table built on top of it gives the right answers. The two
-distribution checks live in `test.py` instead, because they need the whole
-73,419-word file.
-:::
+Each check runs in its own process. An index that goes off the end of the array
+can crash your program, and if all 36 shared one process a crash in the second
+one would take the other 34 with it. This way it costs you exactly the check it
+happened in.
 
-Run one on its own while you are debugging:
+Run a single check while you are debugging:
 
 ```bash
 make checks
-./checks "Hash: the answer is always a real bucket number"
+./checks "Queue: the array wraps around"
 ```
+
+::: {.callout-tip}
+**A suggested order, with the score you should see.** Start at 5. TODO 1 takes
+you to **6**; TODOs 2–4 finish the Stack and take you to **19**. Then read §7
+properly. TODOs 5 and 6 only get you to **21**, most of the Queue checks need
+`enqueue` before they can test anything at all, and 7, 8 and 9 together take
+you the rest of the way to **36**.
+
+So the Queue looks unrewarding right up until it suddenly is not. Do not read
+21 as a sign that §7 went badly.
+
+If you are stuck below 19 on the Stack, the problem is almost certainly the
+index in `peekTop` or `pop`, and §4 has the picture.
+:::
+
+::: {.callout-note}
+**The two long checks** run five thousand pushes and pops, and five thousand
+enqueues and dequeues, in an order generated by a formula, and compare every
+single operation against what the Standard Library's containers do with the same
+sequence. They are the ones most likely to catch a wrap-around mistake that only
+shows up on a particular pattern. They are also completely deterministic, so if
+one fails it will fail the same way every time you run it.
+:::
 
 ---
 
@@ -488,29 +770,31 @@ git commit -m "Complete a10"
 git push
 ```
 
-`findings.txt` needs to be committed. `stats.txt` does not, the grader runs
-`./a10` itself.
-
 ::: {.callout-important}
 Put your name at the top of `README.md` before your final push.
 :::
 
-Every push is checked automatically. Push as often as you like, the most recent
-submission counts, and there is no deadline on this assignment beyond the last
-day of classes.
+**Every push is checked automatically.** Within a minute or two the **Actions**
+tab of your repository shows a run named **Autograde**. Open it: the job summary
+says how many checks passed, and names any that failed. Push as often as you
+like, the most recent submission is the one that counts, and there is no
+deadline on this assignment beyond the last day of classes.
 
 ---
 
 ::: {.callout-note}
-## The container you did not have to write
+## You are going to use these again
 
-`std::unordered_set` in `main.cpp` is the Standard Library's version of what you
-just built: the same idea, chaining and all, with resizing added and thirty
-years of tuning on top.
+Not as an exercise, as tools.
 
-In week 11 you will use `std::set` and `std::map` properly, and one of the first
-questions you will have to answer about each is whether you want the ordered
-version or the hashed one. Having built the hashed one by hand, you already know
-what you are choosing between, and, more usefully, what a bad hash function
-would do to your program if you ever have to supply one for a type of your own.
+In **a12** you will solve a maze twice with the same code, once using a Stack and
+once using a Queue, and watch the two containers produce depth-first and
+breadth-first search from an otherwise identical algorithm. In **a13** a Queue
+*is* the snake: enqueue the new head, dequeue the tail, and the animation falls
+out of it.
+
+Both of those assignments ship a working `Stack` and `Queue` in case yours is
+not finished, so a rough week here does not cost you two more. But they are
+written expecting you to drop your own in, and it is a good feeling when
+`Stack<Cell>` just works.
 :::

@@ -1,99 +1,83 @@
 ---
-title: "Assignment 07: Finish the List"
-subtitle: "Four methods, a template, and a chain of Nodes that frees itself"
+title: "Assignment 06: Race Data"
+subtitle: "A season of results, and the container you did not have to write"
 ---
 
 ::: {.callout-note}
 Your own private GitHub repository is waiting for you (see
 [Getting the code](#getting-the-code) below), clone it and open it in VS Code.
 
-**Plan to set aside about 2 to 2.5 hours.** This is the shortest assignment of
-the semester, deliberately, see the note below. `append` (§4) and the copy
-constructor (§6) are the two that take real thought.
+**Plan to set aside about 2 to 2.5 hours.** `readResults` (§6) and the menu (§9)
+are the two longest sections. §10 is yours to make as small or as large as you
+like.
 :::
 
 ## Objectives
 
 By the end of this assignment, you will be able to:
 
-- Add a Node to the end of a linked list in constant time, and say why keeping
-  `myLast` is what makes that possible
-- Walk a linked list with a `curr` pointer, and stop correctly at `nullptr`
-- Search a linked list and report a position, or report that there is none
-- Write a copy constructor for a structure built from pointers, and explain what
-  goes wrong without one
-- Compare two linked lists by walking both at once
-- Explain the destructor chain reaction: how deleting one Node frees the rest
-- Convert a pair of classes into class templates, and say which uses of a class
-  name change and which do not
-- Write your own Catch2 test cases, before the code they test
+- Use `vector`'s `size()`, `operator[]` and `push_back()` on a container you did
+  not write
+- Explain what an iterator is, and what `begin()` and `end()` point at
+- Say what "past-the-end" means and why `find` returns `end()` when it fails
+- Search a `vector` with `std::find`, and sort one with `std::sort`
+- Build a sorted, de-duplicated list by accumulating and then sorting
+- Read a CSV file into a `vector` of records
+- Explain why a large container is passed by const reference, and what passing
+  it by value would cost
+- Design and write a query of your own against a real dataset
 
-This assignment covers course skill **C3**, *implement a linked list with
-correct pointer manipulation*, from cluster **C**, Linear Data Structures,
-assessed at **Window 2** on Nov 20.
-
-::: {.callout-important}
-**This one is deliberately small, and here is why.**
-
-Fall Break runs **Oct 16–21**, and **Window 1 is Oct 23**, the Monday you come
-back. The break is when you prepare for your first check-in, and that check-in
-is the one that sets your expectations for the whole scheme.
-
-So this assignment is built to be finished in the week, not carried into the
-break. If it is taking you much more than two and a half hours, something has
-gone wrong, come and find me rather than pushing through.
-:::
+This assignment covers course skills **C1** and **C2**, from cluster **C**,
+Linear Data Structures, assessed at **Window 2** on Nov 20.
 
 ::: {.callout-note}
-**Lab and homework.** You start this in lab on Tuesday, when you will have had
-Monday's lecture on `Node`, `List` and traversing, enough for **§3 and §5**:
-reading the given code, and `getIndexOf`, which only ever walks the list.
+**This one is homework.** `a06` is the assignment you start in Tuesday's lab.
+This one needs Wednesday's lecture on `vector` and iterators, so it opens after
+that.
 
-Wednesday covers `prepend`, `append`, the destructor chain reaction, and what
-each operation costs. **§4, §6 and §7** need it, so those are homework.
-
-**There is no Friday class**, Fall Break starts Oct 16.
-
-§8, the templatize step, needs nothing from this week at all. You did it last
-week to `Trace`.
+Friday's lecture, what a dynamic array costs, and what "amortized constant
+time" means, is the other half of the story, and it is not needed for anything
+here. Nothing in this assignment asks you to measure anything.
 :::
 
 ---
 
 ## 1. Introduction
 
-A `vector`, and the `Trace` you built before it, keeps its items in one
-contiguous block. That is what makes `list[5000]` instant: the computer knows
-the address of the first item and how big each one is, so it can do arithmetic
-instead of searching.
+You have spent two weeks building a container. `Trace` grew when it ran out of
+room, copied itself properly, freed what it owned, and last week became a
+template so it could hold anything. It is a real, working dynamic array, and you
+wrote every line of it.
 
-It is also what makes inserting at the front miserable. There is no room in
-front of the first item, so everything has to shift up one place to make some.
-On a list of a million, adding one item at the front means moving a million
-items.
+Now put it away.
 
-A linked list gives that up on purpose.
+```cpp
+#include <vector>
 
-```
-myFirst → [ 11 | •, ]→[ 22 | •, ]→[ 33 | / ]     myLast → the third Node
+vector<double> speeds;
+speeds.push_back(322.0);
 ```
 
-Each item lives in its own little block on the heap, a **Node**, and each Node
-holds the address of the next one. Nothing is contiguous. Nothing is indexed. To
-reach the fifth item you start at the front and follow four pointers.
-
-In exchange, adding at the front is three operations no matter how long the list
-is: make a Node, point it at the old front, move `myFirst`. Nothing shifts,
-because nothing is in anybody's way.
-
-Monday's lecture built the class. This week you finish it.
+That is the C++ standard library's dynamic array. It does everything `Trace`
+does and rather more, it is written by people who have been arguing about it for
+thirty years, and it has been sitting in `<vector>` the entire time.
 
 ::: {.callout-note}
-**Two classes, not one.** `Node` is one item and one pointer, and that is all it
-is, plumbing, with nothing to protect, which is why its members are public.
-`List` is the handle: it remembers where the chain starts, where it ends, and
-how long it is. Neither is useful without the other.
+**So why did you build one?**
+
+Because `vector` is not magic, and now you know it is not. You know that
+`push_back` sometimes has to allocate a bigger array and copy everything across.
+You know why `size` and `capacity` are different numbers. You know that handing
+one to a function by value copies every element. You know what the destructor
+has to do.
+
+Someone who has only ever *used* `vector` knows none of that, and it shows the
+first time they write a loop that copies a big one on every iteration. This is
+the week you get to use the good one, and you get to use it with your eyes open.
 :::
+
+The data is a real Formula 1 season: every driver's result at every Grand Prix
+of 2024. 479 rows. You will read it into a `vector`, and then ask it questions.
 
 ---
 
@@ -147,343 +131,406 @@ make
 make test
 ```
 
-`make` succeeds and `make test` reports **5 / 31**. Both are correct: the
-starter compiles, and the five that pass mostly pass because an empty answer
-happens to match an empty question.
+`make` succeeds and `make test` reports **10 / 40**. Both are correct: the
+starter compiles, and the ten that pass are mostly passing because an empty
+answer happens to match an empty question.
 
 
 ---
 
-## 3. What You Were Given
+## 3. The Shape of the Repository
 
-**You edit three files: `List.cpp`, `List.h` and `tests.cpp`**, and delete
-`List.cpp` at the end.
+**You edit two files: `Season.cpp` and `main.cpp`.** Five TODOs between them.
 
 | File | Yours? | What it is |
 |---|---|---|
-| `List.h` | **yes**, at step 5 | the two classes. Read it first. |
-| `List.cpp` | **yes** | steps 1–4. Step 5 **deletes** it. |
-| `tests.cpp` | **yes** | your own tests, a graded deliverable |
-| `makefile` | **yes**, at step 5 | `List.o` has to come out of it |
+| `Season.cpp` | **yes** | TODOs 1, 2, 3 and 5 |
+| `main.cpp` | **yes** | TODO 4, the menu |
+| `Result.h` | no | one row of the file, as a `struct`. Read it first. |
+| `Season.h` | no | the specification for everything you write |
+| `season2024.csv` | no | the data |
+| `broken.csv` | no | a deliberately malformed file, for the error path |
 | `checks.cpp` | no | the course's checks. Read them, they are the specification. |
 | `catch.hpp`, `catchmain.cpp` | no | the test framework |
-| `test.py` | no | the grader |
+| `sample-output.txt` | no | what `./season` looks like when you are done |
+| `makefile`, `test.py` | no | the build and the grader |
 
-Already written for you, from Monday's lecture: the `Node` constructor and
-destructor, the `List` constructor and destructor, `prepend`, `getSize` and
-`writeTo`.
+### The data is real
 
-### Read the destructor first
+`season2024.csv` is every classified result of the 2024 Formula 1 season, pulled
+from the Ergast/Jolpica timing API. Real drivers, real teams, real circuits, real
+finishing positions and points. One header line and 479 result rows:
 
-```cpp
-Node::~Node() {
-    delete myNext;
-    myNext = nullptr;
-}
+```
+season,round,race,circuit,country,date,driver,team,grid,position,points,status
+2024,1,Bahrain Grand Prix,Bahrain International Circuit,Bahrain,2024-03-02,Max Verstappen,Red Bull,1,1,26.0,Finished
 ```
 
-Four words, and they are the most important four in the file. Deleting one Node
-deletes the one after it, which deletes the one after *that*, and so on to the
-end of the chain. So the `List` destructor does not need a loop:
+That matters more than it sounds. It means you can look the answers up. If your
+program says Ferrari fielded a driver who was never in the car, you will know,
+because the season actually happened.
 
-```cpp
-List::~List() {
-    delete myFirst;          // and the chain reaction takes the rest
-    ...
-}
-```
+It also means the data is **messy in ways invented data never is**:
 
-One `delete`, and the whole list is gone.
+- **Five teams used three drivers, not two.** Oliver Bearman stood in for Carlos
+  Sainz at Jeddah and then drove twice for Haas. Logan Sargeant was replaced by
+  Franco Colapinto mid-season, Daniel Ricciardo by Liam Lawson, and Jack Doohan
+  drove one race for Alpine at the end of the year.
+- **One driver appears under two teams.** Bearman raced for Ferrari *and* Haas
+  in the same season.
+- **Not every result is a finish.** `status` is `Finished`, `Lapped`, `Retired`,
+  `Did not start` or `Disqualified`.
+- **`grid` is sometimes 0**, which means a pit-lane start rather than a grid slot.
+
+That mess is the reason the functions below have to de-duplicate rather than
+assume. A tidy made-up season would not have taught you that.
 
 ::: {.callout-warning}
-**The same mechanism is why a single lost pointer leaks everything behind it.**
-If any Node's `myNext` gets overwritten before the Node it pointed at is freed,
-every Node past that point becomes unreachable, nothing in the program knows
-where they are any more, so nothing can ever free them. Two of the checks run
-your list under a memory sanitizer for exactly this reason.
+**One thing this file does not have.** These are race results only, so the
+`points` column does not include sprint points. Add up Max Verstappen's column
+and you get 399, not the 437 he finished the championship on, the missing 38
+came from the six sprint races. Nothing in this assignment depends on it, but if
+you go looking for the championship table, that is why your numbers are 20-odd
+points light.
 :::
 
-### Read `prepend` second
+---
 
-`prepend` is the worked example that `append` is meant to be read against, and
-it is the one Monday's slides animate.
+## 4. The Container You Were Given
+
+Three operations do almost everything in this assignment.
 
 ```cpp
-void List::prepend(const Item& it) {
-    Node* newNode = new Node(it, myFirst);   // built pointing at the old front
+vector<string> teams;              // empty, owns nothing yet
 
-    if (myFirst == nullptr) {                // the list was empty
-        myFirst = newNode;
-        myLast  = newNode;
-    } else {
-        myFirst = newNode;
+teams.push_back("Ferrari");        // add to the end; grows if it has to
+teams.push_back("McLaren");
+
+teams.size();                      // 2
+teams[0];                          // "Ferrari"
+teams[1] = "Mercedes";             // subscript works on both sides
+```
+
+You have written every one of these. `push_back` is `append`. `size()` is
+`getSize()`. `operator[]` is the one you had to write twice, once `const`.
+
+Two differences worth knowing:
+
+- **`vector` has no bounds checking on `operator[]`.** `teams[99]` on a vector of
+  two does not throw; it reads whatever is at that address. Your `Trace` threw a
+  `range_error` and was kinder than the real thing. (`vector::at()` does throw,
+  if you want it.)
+- **`vector<Result>` works** without you doing anything, because `vector` is a
+  template, the same mechanism you built last week, applied to a type someone
+  else wrote.
+
+---
+
+## 5. Iterators
+
+`push_back`, `size` and `[]` are the container. The *algorithms*, `find`,
+`sort`, and about ninety others, do not take a container at all. They take a
+pair of **iterators**.
+
+An iterator is a position in a container. `begin()` is the first element:
+
+```cpp
+teams.begin()          // points at teams[0]
+teams.end()            // points ONE PAST the last element
+```
+
+`end()` is the strange one, and it is worth being precise about. It does not
+point at the last element. It points at the position *after* the last element,
+somewhere you may never read from. It exists so that a range can be written as a
+pair, `[begin, end)`, and so that an empty container has `begin() == end()`
+without any special case.
+
+That is also why:
+
+```cpp
+if (find(teams.begin(), teams.end(), "Ferrari") == teams.end()) {
+    // not found
+}
+```
+
+reads the way it does. `find` walks the range and returns *where* it found the
+value. If it never found it, the only position left to return is the one past
+the end, so `== end()` means "not there".
+
+```cpp
+sort(teams.begin(), teams.end());     // the same pair, sorting the range
+```
+
+`sort` on a `vector<string>` puts them in alphabetical order without being told
+how, because `string` already knows how to compare itself.
+
+Both live in `<algorithm>`, which the starter already includes.
+
+---
+
+## 6. TODO 1, Reading the File
+
+`readResults(filename)` turns the whole file into a `vector<Result>`.
+
+Open `Result.h` first. It is a `struct`, a class whose members are public by
+default, with twelve members in the same order as the file's columns. A
+`Result` has no behaviour; it is twelve values that travel together, so there is
+nothing to hide and nothing to enforce.
+
+You are given a helper:
+
+```cpp
+vector<string> splitOnCommas(const string& line);
+```
+
+Read it before you use it. It is four lines, and it is the same vector
+operations you are about to write: an empty vector, `push_back` in a loop, and
+the vector handed back by value.
+
+What `readResults` does:
+
+1. Open the file. If it will not open, throw
+   `invalid_argument("cannot open file: " + filename)`.
+2. Read the first line with `getline` and **throw it away**, it is the header.
+3. For every line after that: skip it if it is blank; split it; if you did not
+   get exactly 12 fields, throw; otherwise fill in a `Result` and `push_back` it.
+4. Return the vector.
+
+Four columns are numbers and arrive as text, so they need converting:
+
+```cpp
+r.season   = stoi(fields[0]);      // string → int
+r.grid     = stoi(fields[8]);
+r.position = stoi(fields[9]);
+r.points   = stod(fields[10]);     // string → double
+```
+
+The other eight go straight across: `r.race = fields[2];`
+
+::: {.callout-tip}
+**`return results;` is not expensive**, even though it looks like it copies 479
+Results out of the function. The compiler builds the vector directly in the
+caller's variable, it never exists twice. This is the one place you do not have
+to think about copying a big container, and it is why a function *can* just hand
+you a vector.
+
+Passing one *in* is a different story. That is §11.
+:::
+
+---
+
+## 7. TODO 2, Every Team, Once
+
+`collectAllTeams(results)` returns every team that appears, in alphabetical
+order, with no duplicates. Ten teams are mentioned 479 times between them; you
+want the ten.
+
+The algorithm is: **accumulate, then sort.**
+
+```cpp
+vector<string> teams;
+
+for (unsigned i = 0; i < results.size(); i++) {
+    if (find(teams.begin(), teams.end(), results[i].team) == teams.end()) {
+        teams.push_back(results[i].team);
     }
-    mySize++;
 }
+sort(teams.begin(), teams.end());
+return teams;
 ```
 
-Notice that the new Node is created *already pointing at* the old first Node,
-that is what the second constructor argument is for. The only special case is
-the empty list, where the new Node is also the last one.
+Two things to notice.
 
----
+**The `find` searches `teams`, not `results`.** You are asking "have I collected
+this one already?", so the range you search is the one you are building. Getting
+this backwards is the most common way to write this function wrong, and it
+usually still compiles.
 
-## 4. Step 1, `append`
-
-Add an item to the **end** of the list.
-
-```
-before:   myFirst → [a] → [b] → nullptr           myLast → [b]
-after:    myFirst → [a] → [b] → [c] → nullptr     myLast → [c]
-```
-
-::: {.callout-tip}
-**DRAW PICTURES.** Or don't draw pictures, if you want this step to take much
-longer.
-
-Genuinely: sketch the three boxes and the arrows, then work out which arrows
-have to change and in what order. Every pointer bug in this assignment is a
-picture you did not draw.
-:::
-
-The new Node goes on the end, so nothing comes after it:
-
-```cpp
-Node* newNode = new Node(it, nullptr);
-```
-
-Then two cases. If the list is **empty**, the new Node is both the first and the
-last. If it is **not**, the Node that used to be last has to be told about the
-new one, `myLast->myNext = newNode;`, and then `myLast` moves to it. Either
-way `mySize` goes up by one.
-
-::: {.callout-warning}
-**You do not need a loop.**
-
-`myLast` is already the address of the last Node. That is the entire reason the
-class keeps it, it turns "add to the end" from a walk down the whole chain into
-two assignments.
-
-Walking from `myFirst` to find the end produces the right answer and will pass
-most of the append checks. One of them looks at your code and fails it anyway,
-because on a long list the difference is the whole point of storing `myLast` in
-the first place.
-:::
-
-The append tests are already written for you in `tests.cpp`. They are the shape
-the ones you write should take.
-
----
-
-## 5. Step 2, `getIndexOf`
-
-```cpp
-int getIndexOf(const Item& it) const;
-```
-
-Return the index of the first Node holding `it`, counting from 0, or `-1` if it
-is not in the list.
-
-```
-list holds  11 22 33 22
-
-getIndexOf(11)  →  0
-getIndexOf(22)  →  1        the FIRST one
-getIndexOf(99)  → -1
-```
-
-An empty list returns `-1` for everything.
-
-### How to walk a list
-
-This is the traversal from Monday, and it is the pattern for every method that
-has to look at every Node:
-
-```cpp
-for (Node* curr = myFirst; curr != nullptr; curr = curr->myNext) {
-    ...
-}
-```
-
-`curr` starts at the front. `curr = curr->myNext` is the step. The loop ends
-when `curr` falls off the end and becomes `nullptr`. You will write this loop
-three more times before the semester is out.
-
-### Write the test first
-
-`tests.cpp` has an empty `TEST_CASE("lookfor")` waiting for you. **The name is
-required**, the grader looks for it.
-
-Fill it in *before* you write the method, and run it. It should fail.
+**The `sort` is outside the loop.** Sorting after each `push_back` gives the same
+answer and does the work over and over. Collect first; order once at the end.
 
 ::: {.callout-note}
-**Why bother, when you know it will fail?**
-
-Because a test you have never seen fail is a test you have no reason to trust.
-A `REQUIRE` inside a `SECTION` you forgot to call, an assertion that compares a
-thing to itself, these pass silently and tell you nothing, and you cannot tell
-them apart from a real test by looking. Watching it go red once is the only
-cheap way to know it is wired up.
+This is deliberately not the shortest way to write it. `std::set` would
+de-duplicate and sort in one move, and later in the course you will use it. The
+point of doing it this way now is that `find` and `sort` over a pair of
+iterators is the shape almost every STL algorithm has, and it is worth writing
+by hand once before you let a container do it for you.
 :::
-
-Worth covering: an item at the front, one in the middle, one at the end, one
-that is not there at all, and an empty list.
 
 ---
 
-## 6. Step 3, The Copy Constructor
+## 8. TODO 3, One Team's Drivers
 
-You knew it was coming.
+`getDriversForTeam(results, team)` is the same shape with one extra condition:
+only look at results whose `team` matches the one you were asked about.
 
-`a04` taught you why: without one, copying a `List` copies the three members and
-leaves two Lists pointing at **one** chain of Nodes. Both destructors then run.
-The first frees the chain; the second frees it again, and the program dies
-somewhere unrelated with a message about heap corruption.
-
-### The algorithm
-
-Shorter than you might expect, because `append` already does the hard part:
-
-1. Set `myFirst`, `myLast` and `mySize` to the same defaults `List()` uses.
-2. Walk `original`'s chain, calling `append()` on each item as you go.
-
-That is the whole thing. Each `append` allocates a **new** Node on *this* list,
-which is exactly what makes the copy deep.
-
-::: {.callout-warning}
-**Step 1 is not optional.** An object under construction holds whatever happened
-to be in that memory until you put something there, and `append` is about to
-read `myFirst` and `myLast`. If they hold garbage, `append` will follow it.
-
-This is the single most common way to lose points on this step, and the symptom
-is a crash that looks nothing like the cause.
-:::
-
-Test case name: **`"copy"`**. Three sections are worth having, an empty list, a
-one-item list, and a longer one. The interesting assertion in all three is that
-the copy is **independent**: append to the original afterwards, and the copy
-should not change.
+- Match the whole string with `==`. `"Apple"` must not match `"Apple Junior"`.
+- A team nobody drove for gives an **empty vector**. That is an answer, not an
+  error, do not throw.
+- Do not assume two drivers. Five teams used three in 2024, and that is the
+  whole reason this function de-duplicates instead of just collecting the first
+  two names it sees.
 
 ---
 
-## 7. Step 4, `operator==`
+## 9. TODO 4, The Menu
 
-Two lists are equal when they have the same number of items and the same items
-in the same order.
+In `main.cpp`. Everything around this block is written for you; this is the part
+that talks to whoever is running the program.
 
-Different sizes means not equal, and you can say so before comparing anything.
-After that, walk **both** lists at once:
+Print the numbered team list once, before the loop. Then loop: prompt, read a
+line, act on it.
 
-```cpp
-Node* a = myFirst;
-Node* b = rhs.myFirst;
-while (a != nullptr) {
-    if (a->myItem != b->myItem) { return false; }
-    a = a->myNext;
-    b = b->myNext;
-}
-return true;
+```
+  Teams
+   1  Alpine F1 Team
+   2  Aston Martin
+   ...
+  10  Williams
+
+  Team number (0 to quit): 3
+
+  Ferrari, 3 drivers
+    Carlos Sainz
+    Charles Leclerc
+    Oliver Bearman
 ```
 
-Two `curr` pointers, advanced together. Once you know the sizes match, you know
-they run out at the same moment, so one test in the `while` is enough.
+Three strings are checked exactly as written. They are all in the TODO comment
+in `main.cpp`; copy them from there.
 
-Two empty lists are equal.
+| | |
+|---|---|
+| the prompt | `  Team number (0 to quit): `, no `endl` after it |
+| a bad number | `  There is no team number 99.` |
+| a team's heading | `  Ferrari, 3 drivers` |
 
 ::: {.callout-warning}
-**You are writing `==`, not `!=`.** So a test that two lists *differ* has to be
-written with the operator you have:
+**Read the whole line, then parse it.** Not `cin >> choice`.
 
 ```cpp
-REQUIRE( !(list1 == list2) );
+string line;
+if (!getline(cin, line)) { break; }        // input ran out
+
+int choice = 0;
+istringstream parse(line);
+if (!(parse >> choice)) { /* not a number */ }
 ```
 
-And do not only test lists that are equal. Half the point of an equality
-operator is that it says no when it should, a version that always returns
-`true` passes every test that only checks for equality.
+Mixing `>>` and `getline` on the same stream is a classic C++ trap: `>>` stops
+at the newline and leaves it in the buffer, so the next `getline` reads an empty
+line instead of waiting for the person to type. Reading lines and parsing them
+separately sidesteps it entirely, and it is how you handle "they typed banana"
+without the stream going into a failed state you then have to clear.
 :::
 
-Test case name: **`"equality"`**.
+Two more things:
+
+- **The person types from 1; the vector is indexed from 0.** `teams[choice - 1]`.
+- **Check the range before you index.** `teams[98]` on a vector of ten does not
+  throw, it reads memory that is not yours and carries on as if nothing
+  happened. Check `choice` is between 1 and `teams.size()` first.
 
 ---
 
-## 8. Step 5, Templatize
+## 10. TODO 5, Ask Your Own Question
 
-Last one, and it should be the quickest.
+```cpp
+void myQuery(const vector<Result>& results, ostream& out);
+```
 
-`typedef int Item;` at the top of `List.h` is the same trick `a04` used and
-`a05` replaced. Replace it the same way: delete it, and put `template <class
-Item>` in front of the class.
+This one is open. Ask the season something you actually want to know, work it
+out, and print the answer.
 
-You have done this before. Nothing about it should surprise you.
+Some starting points, if nothing comes to mind:
 
-1. Delete the `typedef`. Put `template <class Item>` in front of **both**
-   classes, `Node` holds an `Item` too.
-2. Move every definition out of `List.cpp` and into `List.h`, between the
-   declarations and the `#endif`.
-3. Give each definition its own `template <class Item>` line, and qualify it
-   `Node<Item>::` or `List<Item>::`. `operator<<` is a free function and needs
-   its own template line too.
-4. Delete `List.cpp`, and take `List.o` out of the makefile, it is in three
-   places there.
+- how many podium finishes each driver had
+- total points per team, ranked
+- which circuits a particular driver won at
+- the biggest gain from grid position to finishing position, and where
+- how many results were not classified as `Finished`, by team
+- which team used the most drivers
 
-::: {.callout-warning}
-**One thing here is new.** Inside `class Node`, a bare `Node*` still means
-`Node<Item>*`, a class template can refer to itself by its own short name.
+**What is graded is not what it computes.** Five things:
 
-Inside `class List` it does **not**. `Node` is a different class there, so every
-`Node*` member and every `Node*` local becomes `Node<Item>*`. The compiler's
-error message for this one is unhelpful; if `List` suddenly will not compile and
-`Node` will, this is why.
-:::
-
-Then update `tests.cpp`, `List` on its own has stopped being a type, so every
-one becomes `List<int>`, or whatever you are testing. Testing more than one type
-is a good idea for the same reason it was last week.
+1. It is a real function with a real body.
+2. It prints at least two lines, to `out`, not to `cout`. (They are the same
+   stream when `main` calls it, but the checks hand it an `ostringstream` so
+   they can read what you wrote.)
+3. It actually reads the vector it was given. One check runs your query twice,
+   once on the 2024 season, once on a four-row made-up one, and expects the
+   answers to differ. A fixed string will not pass.
+4. It does not crash on 479 results.
+5. The `// MY QUESTION:` line above it says what you are asking, in a sentence.
+   Replace the placeholder text that is there.
 
 ::: {.callout-tip}
-Convert one method, compile, fix, move on. Do not convert all nine and then
-compile, you will get a screen of errors that all reference each other and none
-of which is the real one.
-:::
-
-::: {.callout-note}
-The course checks work **before and after** this step, so steps 1–4 are graded
-whether or not you have templatised yet. The makefile works out which state you
-are in on its own; you do not have to tell it anything.
+Write the question down first, in that comment, before you write any code. It is
+much easier to write a query when you have committed to what it answers, and if
+you cannot state it in a sentence, that is usually a sign the query is two
+questions rather than one.
 :::
 
 ---
 
-## 9. Testing Your Work
+## 11. Const References, and What They Cost
+
+Every function you have written today takes its vector like this:
+
+```cpp
+vector<string> collectAllTeams(const vector<Result>& results);
+                               ↑                   ↑
+                               |                   pass the address, not a copy
+                               promise not to change it
+```
+
+Neither word is decoration.
+
+**The `&`.** Without it, C++ copies the argument into the function. `results`
+holds 479 `Result` objects, and each one holds six `string`s. Passing it by
+value means allocating and copying nearly three thousand strings, on every
+call, to do a job that only ever reads them. With the `&`, the function works on
+the caller's vector and nothing is copied at all.
+
+**The `const`.** It says the function will not change what it was given, and the
+compiler holds you to it. That is worth having for its own sake, you can call
+`collectAllTeams` and know your `results` came back untouched, but it also
+means a caller with a `const vector<Result>` can use your function at all.
+
+::: {.callout-note}
+Two of the checks look for these signatures, and one of them fails if a
+`vector<Result>` is passed by value anywhere in `Season.cpp`. This is one of the
+habits the course cares most about: by the time containers are large enough for
+it to matter, the habit has to already be there.
+:::
+
+---
+
+## 12. Testing Your Work
 
 ```bash
 make test
 ```
 
-Thirty-one checks, in eight groups:
+Forty checks, in eight groups:
 
 | Group | What it looks at |
 |---|---|
-| **Step 1, append** (5) | including one that reads your code to see whether you walked the list |
-| **Step 2, getIndexOf** (4) | found at the front, middle and end; absent; empty |
-| **Step 3, the copy constructor** (4) | 0, 1 and n items, and that the copy is independent |
-| **Step 4, operator==** (5) | equal, different sizes, one different item, two empties |
-| **Step 5, templatize** (5) | `List<int>` and `List<string>`, and that `List.cpp` is really gone |
-| **Your own tests** (4) | `"lookfor"`, `"copy"` and `"equality"` exist, assert, and pass |
-| **Memory** (2) | no crashes, no leaks |
-| **More cases** (2) | a longer list built while you are being graded |
+| **The given code** (1) | `splitOnCommas` is still intact |
+| **readResults** (7) | TODO 1 |
+| **collectAllTeams** (4) | TODO 2 |
+| **getDriversForTeam** (6) | TODO 3 |
+| **The real season** (6) | TODOs 1–3 together, on `season2024.csv` |
+| **The menu** (6) | TODO 4, driven by piped input |
+| **Your own query** (5) | TODO 5 |
+| **The STL, used as asked** (5) | `find`, `sort`, `push_back`, and const references |
 
-Every failure comes with a hint. Work the groups in order; they follow the steps.
+Every failure comes with a hint. Work the groups in order; they follow the TODOs.
 
 ::: {.callout-note}
-**About the memory checks.** They build, copy and destroy several hundred lists
-under a memory sanitizer. That catches two things ordinary tests miss: freeing
-the same Node twice, and never freeing it at all.
-
-A leak does not make anything else fail, the program produces the right answers
-right up until it runs out of memory. That is precisely why the destructor and
-the copy constructor have to be reasoned about rather than guessed at.
+Most of the function checks build a small `vector<Result>` by hand rather than
+reading the file, so a broken `readResults` does not take everything else down
+with it. The six in **The real season** are the ones that use the actual CSV.
 :::
 
 ::: {.callout-tip}
@@ -491,44 +538,35 @@ Focus on one check while you are fixing it:
 
 ```bash
 make checks
-./checks "Append: onto an empty list"
-./checks "Copy: the copy is independent of the original"
+./checks "Teams: collectAllTeams finds every team once and in order"
 ```
 
 A test name needs the full name, or a prefix with a `*` on the end. `./checks
-"Append:"` matches nothing, prints almost nothing, and exits successfully,
-which looks a lot like passing.
+"Teams: collectAllTeams"` matches nothing, prints almost nothing, and exits
+successfully, which looks a lot like passing.
 :::
 
 ::: {.callout-note}
 **There are no hidden tests.** What you run with `make test` is exactly what the
-grader runs, all 31 checks. If it passes here, it passes there.
+grader runs, all 40 checks. If it passes here, it passes there.
 
-Grading always runs the official copies of `test.py` and `checks.cpp`, not the
-ones in your repository. Editing them will not change your score. Your `List.h`,
-`List.cpp`, `makefile` and `tests.cpp` are *not* restored, those are yours, and
-they are what is being graded.
+Grading always runs the official test suite, not the copy in your repository.
+Editing `test.py` or `checks.cpp` will not change your score.
 :::
 
 ---
 
-## 10. Submit
+## 13. Submit
 
 ::: {.callout-important}
-Before pushing, open `README.md` and add your name. And check that `List.cpp` is
-really gone from the repository, not just from your folder:
-
-```bash
-git status
-git add -A
-```
+Before pushing, open `README.md` and add your name.
 :::
 
 In VS Code, click the **Source Control** icon in the left sidebar, type a commit
 message, click the checkmark to commit, then sync. From the terminal:
 
 ```bash
-git add -A
+git add .
 git commit -m "Complete a07"
 git push
 ```
@@ -537,6 +575,3 @@ git push
 tab of your repository shows a run named **Autograde**. Open it: the job summary
 says how many checks passed, and names any that failed. Push as many times as
 you like; the most recent submission is the one that counts.
-
-Then enjoy the break. Window 1 is the Monday you get back, the grading page
-explains how to book.

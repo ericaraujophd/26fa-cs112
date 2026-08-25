@@ -1,88 +1,97 @@
 ---
-title: "Assignment 12: Snake"
-subtitle: "The snake is a queue. Not like a queue, a queue."
+title: "Assignment 11: Three Ways Through a Maze"
+subtitle: "One algorithm, two containers, and then no container at all"
 ---
 
 ::: {.callout-note}
 Your own private GitHub repository is waiting for you (see
 [Getting the code](#getting-the-code) below), clone it and open it in VS Code.
 
-**Plan to set aside about 2 to 2.5 hours.** There is no new data structure
-here and no new C++, this is the week's second assignment and it is meant to
-be the lighter one. TODO 3 is the heart of it and is four lines long.
+**Plan to set aside about 2.5 to 3 hours.** TODO 3 is the big one; TODO 4 is
+about ten minutes once TODO 3 works, and that is the whole point of it. TODO 5
+needs Wednesday's lecture.
 :::
 
 ## Objectives
 
 By the end of this assignment, you will be able to:
 
-- Recognise a queue in the wild, in a place where nobody labelled it one
-- Implement moving, growing and dying in terms of one enqueue and one dequeue
-  per frame
-- Explain why "growing" needs no code of its own, only a dequeue that does not
-  happen
-- Use modular arithmetic to wrap a coordinate round the edge of a grid
-- Say why a game with random elements can still be graded, and what makes that
-  possible
+- Identify the base case and the recursive case of a problem, and write both
+- Trace what the run-time stack is doing while a recursive function runs
+- Implement depth-first search with an explicit Stack
+- Implement breadth-first search with an explicit Queue, and explain why it
+  finds the shortest route when depth-first search does not
+- Explain why a cell must be marked visited when it goes into the container
+  rather than when it comes out
+- Implement the same search recursively, with no container of your own, and say
+  what is doing the remembering instead
 
 ---
 
-This assignment applies course skill **C6** (implement a queue with O(1)
-enqueue and dequeue) rather than teaching a new one. It is week 10's second
-assignment, and it is the shorter of the two on purpose, a11 is the one with
-the weight in it.
+This assignment covers course skills **E1** (identify base case and recursive
+case), **E2** (trace the call stack, winding and unwinding) and **E3**
+(implement a recursive solution to a moderate problem), from cluster **E**,
+assessed at **Window 2** on Nov 20. It also puts both of week 9's containers to
+work, against each other, in the same program.
 
 ::: {.callout-note}
-**This one is homework.** Tuesday's lab belongs to a11. Nothing here needs a
-lecture you have not had: it is week 9's Queue, applied.
+**Lab and homework.** You start this in lab on **Tuesday Nov 10**, with Monday's
+lecture on what recursion is behind you.
+
+**§4 and §5 are the lab**, the two warm-ups and depth-first search with a
+Stack. Both only need Monday.
+
+**§7 onwards is homework.** TODO 4 needs nothing new and takes minutes. TODO 5
+is the recursive solver, and it lands after **Wednesday's** lecture on the
+run-time stack, which is the lecture it is an exercise in.
 :::
 
 ---
 
 ## 1. Introduction
 
-Watch a snake move.
+Here is a maze:
 
 ```
-frame 1     ####@.......
-frame 2     .####@......
-frame 3     ..####@.....
-frame 4     ...####@....
+#####################
+#S............#.....#
+#.#######.###.###.#.#
+#.......#...#.....#.#
+#.#.#.#.###.#.#.###.#
+#...#.#...#...#.....#
+#.#.#.###.#.#.#.###.#
+#.#.....#...#.#...#.#
+#.#.#########.###.#.#
+#.#.........#.....#.#
+#.#.###.###.#####.#.#
+#.........#........E#
+#####################
 ```
 
-Look at what is actually happening. A square appears at the front. A square
-disappears at the back. **Nothing in the middle moves at all.**
+You are going to write three programs that get from `S` to `E`. Two of them
+will be **the same program**, differing by one word. The third will have no
+container in it at all.
 
-New in at one end, old out at the other, everything in between untouched.
-That is a queue. Not a queue-like thing, not a useful analogy for a queue, the
-snake's body *is* a `Queue<Segment>`, and the entire animation is:
+That is the assignment. Not "can you solve a maze", you can, and so can a
+five-year-old with a pencil. The question is what happens to an algorithm when
+you change the thing that remembers where you have not been yet.
 
-```cpp
-myBody.enqueue(newHead);      // grow a head
-myBody.dequeue();             // lose a tail
-```
+| | remembers with | finds |
+|---|---|---|
+| **depth first** | a `Stack` | *a* route, usually a long, wandering one |
+| **breadth first** | a `Queue` | the **shortest** route |
+| **depth first, recursively** | the run-time stack | *a* route, again |
 
-once per frame.
-
-And then eating, which is the part worth sitting with:
-
-> **To grow, skip the dequeue.**
-
-That is all of it. The head keeps advancing, nothing leaves at the back, and
-the snake is one segment longer for every frame you skip. There is no "grow"
-function in this assignment, and there is nothing anywhere that shuffles
-segments along. You will write four lines in TODO 3, and one of them is a
-`return`.
+The first two differ by three identifiers. The third is a different-looking
+program that turns out to be doing exactly what the first one did, with the
+computer keeping the stack for you instead of you keeping it yourself.
 
 ::: {.callout-note}
-**There is no better fit between a data structure and a problem in this
-course**, and it is worth noticing how little code a good fit costs you. The
-same game written over a `vector` needs to decide what to do about the tail on
-every frame, shift everything down, or track an offset, or reverse the order
-and pay somewhere else. Over a queue, the question does not come up.
-
-That is the thing to take away from this assignment. Choosing the right
-structure does not make the code faster. It makes the code *disappear*.
+**This is a search problem, and searching is most of what these containers are
+for.** Route-finding, solving a puzzle, working out which packages a package
+depends on, finding the shortest chain of friends between two people, a
+compiler deciding what to rebuild, all of them are this program with the maze
+swapped out. Learn it once here.
 :::
 
 ---
@@ -94,12 +103,11 @@ the course organization, with the starter code already in it. There is nothing
 to accept and nothing to set up, if you are on the roster, it is there.
 
 
+Clone it, replacing `YOURUSERNAME` with your GitHub username. If `gh` asks you to sign in, see [step 9 of Getting Started](gettingStarted.html#get-your-repository):
+
 ```bash
 gh repo clone 26fa-cs112/cs112-a12-YOURUSERNAME
 cd cs112-a12-YOURUSERNAME
-make
-./a12 moves/circle.txt 20
-make test
 ```
 
 ::: {.callout-note}
@@ -131,211 +139,402 @@ so anything written outside it has to be moved by hand later, and that is a
 worse afternoon than a short wait.
 :::
 
-`make` succeeds, `./a12` draws an empty board, and `make test` reports
-**5 / 30**.
+Open the folder in VS Code, then build it and run it before you change anything:
+
+```bash
+make
+./a12
+make test
+```
+
+`make` succeeds, `./a12` draws a maze with no route through it, and `make test`
+reports **6 / 32**.
 
 ---
 
 ## 3. What You Were Given
 
-**You edit one file: `Snake.cpp`.** Six TODOs.
+**You edit one file: `Solver.cpp`.** Five TODOs.
 
 | File | Yours? | What it is |
 |---|---|---|
-| `Snake.cpp` | **yes** | TODOs 1–6 |
-| `Snake.h` | no | the specification. Read this first. |
-| `given.cpp` | no | the constructor, `step()`, and the random source |
-| `render.cpp` | no | colour |
-| `main.cpp` | no | plays a scripted game |
-| `Queue.h` | **replaceable** | a working Queue, drop in your own a09 one if you like |
-| `moves/` | no | scripts of moves |
+| `Solver.cpp` | **yes** | TODOs 1–5 |
+| `Solver.h` | no | the specification. Read this first. |
+| `Maze.h`, `Maze.cpp` | no | the maze, and two helpers you should use |
+| `Stack.h`, `Queue.h` | **replaceable** | working containers, see below |
+| `main.cpp` | no | solves a maze three ways and draws the results |
+| `mazes/` | no | seven mazes |
+| `checks.cpp` | no | the course's checks |
 
-### Read `step()` in `given.cpp`
+### Two helpers worth knowing about
 
-It is the whole game loop, it decides the order your six functions are called
-in, and it settles a question you would otherwise have to guess at:
+`Maze.h` ends with two functions that are given to you because they are fiddly
+and are not what this assignment is about:
 
-```
-1. work out where the head is going        (your nextHead)
-2. if that square is the snake, it is over (your detectDeath)
-3. notice whether we are about to eat      (your detectTarget)
-4. move                                    (your updateSnake)
-5. if we ate, put a new target down        (your plantTarget)
-```
+- **`openNeighbours(maze, cell)`**, the open cells next to `cell`, in a fixed
+  order: up, down, left, right. Walls and cells off the edge of the maze are
+  left out, so your solvers never check the boundaries themselves. The order is
+  fixed on purpose: it is what makes depth-first search produce the same answer
+  on every machine.
+- **`retrace(maze, parent)`**, turns a grid of parents into a `Path`. §5
+  explains what that means.
 
-Step 2 happens **before** step 4, so the tail still counts as part of the snake
-at the moment you decide whether you crashed. Turning into the square your tail
-is about to leave kills you. Some versions of Snake are kinder; this one is not,
-and the rule is at least simple.
+### `Stack.h` and `Queue.h`
 
-### You never write an escape code
+The ones in the repository work, and they are **not the a10 answer key**. They
+are thin shells around `std::vector` and `std::deque`, no array, no `mySize`,
+nothing circular. They give nothing away about a10.
 
-`render.cpp` is given complete. It uses the same trick a02 did: the half-block
-character `▀` fills the top half of a terminal cell with the foreground colour
-and leaves the bottom half showing the background, so one printed character
-draws two grid rows and the pixels come out square.
-
-Everything you write works on a plain `char` grid. Colour is a mapping applied
-at the very end, and nowhere else.
-
----
-
-## 4. The six TODOs
-
-**TODO 1, `drawSnake`.** Paint `BODY` on every occupied square, then `HEAD` on
-top, then `TARGET`. Walk `myOccupied`, the 2D array of bools the class keeps;
-do not take segments out of the queue to look at them, because a queue only
-lets you see its front and you would be dismantling the snake to read it.
-
-Do this one first even though it is not the interesting one. Once it works you
-can *see* everything else you write.
-
-**TODO 2, `nextHead`.** One square in the given direction, and the field
-wraps.
-
-::: {.callout-warning}
-`%` alone will not wrap a coordinate. In C++ `-1 % 24` is `-1`, not `23`. Add
-the size back first:
-
-```cpp
-(row - 1 + ROWS) % ROWS
-```
-
-You met this exact trap in a09, in the circular queue's `getSize`, and it is
-here for the same reason: the remainder operator does not do what you want on
-the way down. It is worth noticing that a wrapping grid and a circular array
-are the same idea wearing different clothes.
-:::
-
-**TODO 3, `updateSnake`.** The queue. Four lines:
-
-```
-the new head joins the back of the queue, and becomes myHead
-its square is now occupied
-if myGrowth is above zero:  spend one of it and STOP
-otherwise:                  the tail leaves the front, freeing its square
-```
-
-That third line is eating. `step()` adds `GROW_BY` to `myGrowth` when the snake
-eats; each frame after that skips the dequeue once. The frame that eats is
-itself the first frame of growing, so a snake of 1 becomes a snake of
-`1 + GROW_BY` over `GROW_BY` frames.
-
-**TODO 4, `detectDeath`.** One line: is that square already occupied?
-
-**TODO 5, `detectTarget`.** One line: is that square the target?
-
-**TODO 6, `plantTarget`.** A new target on a square the snake is not on, by
-**exactly** this procedure:
-
-```
-repeat:
-    row = nextRandom() % ROWS          ← the row FIRST
-    col = nextRandom() % COLS          ← then the column
-until (row, col) is free
-```
-
-Two numbers per attempt, row before column, a fresh pair every attempt. §5
-explains why the order is not a matter of taste.
-
----
-
-## 5. Why a random game can be graded at all {#determinism}
-
-A game with random elements sounds ungradeable. Play it twice and you get two
-different games; there is nothing to compare against.
-
-Except that the randomness is not random.
-
-`nextRandom()` in `given.cpp` is a **linear congruential generator**: multiply
-the last number by something, add something, keep the middle bits. Give it the
-same starting number and it produces the same sequence, in the same order, on
-every machine that has ever existed.
-
-```cpp
-myRandom = myRandom * 1103515245u + 12345u;
-return (myRandom >> 16) & 0x7FFFu;
-```
-
-`main.cpp` starts every game from the same seed, 2026. So the first target is
-always at row 16, column 38, on your laptop, on the grading machine, in
-February.
+If your own a10 containers work, copy your `Stack.h` and `Queue.h` over these
+and everything will keep compiling: same class, same methods, same exceptions.
+It is a good feeling to watch `Stack<Cell>` just work on a type you had never
+heard of when you wrote it. That is the ADT argument from week 9, cashed in.
 
 ::: {.callout-note}
-**Every game you have ever played does this.** A game's world is a seed and a
-formula, which is why two players given the same seed get the same map, and why
-a speedrunner can memorise where an item will be. "Random" in a game almost
-never means unpredictable; it means *you* cannot predict it.
+**Grading always uses the shipped containers, whatever you leave in those
+files.** So dropping in your own cannot help your a12 score and a bug in them
+cannot hurt it. a12 grades your search; a10 already graded your containers, and
+one rough week should not cost you two.
 :::
-
-That is what makes TODO 6's procedure non-negotiable. The grader replays whole
-games and compares the board at the end. If you draw the column before the row,
-your first target lands somewhere else, your snake eats at a different moment,
-and every single frame after that differs. There is a check that compares your
-first ten targets against the right ones, precisely so that this failure shows
-up as "your targets are in the wrong places" rather than as an unexplained
-mismatch two hundred frames later.
-
-### The other half: the game is scripted
-
-Reading arrow keys as they are pressed needs a library that takes over the
-terminal, and a grader has no terminal to take over. So the game is played from
-a **script**: a file of `U`, `D`, `L` and `R`, one per frame.
-
-```bash
-./a12 moves/greedy.txt 309 --watch
-```
-
-`greedy.txt` was written by steering toward the target on every frame. It eats
-seventeen times, reaches sixty-nine segments, and survives. Watch it once, it
-is the payoff for TODO 3, and it makes the "skip the dequeue" idea concrete in
-a way that no amount of prose will.
-
-Then watch `moves/suicide.txt`, which grows a little and then drives into
-itself.
 
 ---
 
-## 6. Testing Your Work
+## 4. TODOs 1 and 2, two recursive warm-ups {#warm-ups}
+
+Before any maze, two small functions. Both must be **recursive**, and neither
+may contain a `for` or a `while`. There are checks that read your source, so a
+loop will not slip past, but the real reason is that Wednesday's lecture is
+about what the run-time stack does while these run, and a loop does not do it.
+
+Every recursive function is the same two questions:
+
+> **the base case**, what is so small that the answer is obvious?
+>
+> **the recursive case**, how do I make the problem one step smaller, and what
+> do I do with the answer to the smaller problem?
+
+**TODO 1, `sumArray(values, n)`**, the sum of the first `n` elements.
+
+The base case is `n == 0`: the sum of no numbers is 0. That is a real answer,
+not a special case to apologise for.
+
+Trace it for `{5, 3, 8}` before you write it:
+
+```
+  sumArray(v, 3)  needs  sumArray(v, 2)  +  v[2]
+    sumArray(v, 2)  needs  sumArray(v, 1)  +  v[1]      ← winding
+      sumArray(v, 1)  needs  sumArray(v, 0)  +  v[0]
+        sumArray(v, 0)  =  0                            ← the base case
+      sumArray(v, 1)  =  0 + 5   =  5
+    sumArray(v, 2)  =  5 + 3   =  8                     ← unwinding
+  sumArray(v, 3)  =  8 + 8   =  16
+```
+
+Going down is the **winding** phase; coming back up is **unwinding**. Both of
+those are on Wednesday's slides, and it is much easier to see them on a
+three-element array than on a maze.
+
+**TODO 2, `reverseArray(values, n)`**, in place.
+
+Swap the two ends, then the middle is a smaller version of the same problem.
+`values + 1` is the array starting one element later, which is how you hand the
+middle to the next call.
+
+::: {.callout-warning}
+Count carefully. If you swap the two ends of an `n`-element array, the middle
+has **n − 2** elements left in it, not n − 1. Getting that wrong gives you an
+array that is reversed almost everywhere.
+:::
+
+---
+
+## 5. The search, before either container {#the-search}
+
+All three solvers do the same three things. It is worth reading this once
+before writing any of them, because after this section TODO 3 is mostly typing.
+
+### Two grids beside the maze
+
+```cpp
+vector<vector<bool>> visited(maze.getRows(), vector<bool>(maze.getCols(), false));
+vector<vector<Cell>> parent(maze.getRows(),  vector<Cell>(maze.getCols()));
+```
+
+`visited[r][c]`, have I already discovered this cell?
+`parent[r][c]`, which cell was I standing on when I discovered it?
+
+::: {.callout-note}
+**No hash table here, and that is a deliberate choice.** A cell *is* a pair of
+indices, and the grid is bounded, so an array indexed by `[r][c]` goes straight
+to the right slot with no hashing at all. a11's hash function existed to
+manufacture a number out of a word, because a word is not a number. A cell
+already is one. Adding a hash table would be work that buys nothing.
+:::
+
+### The parents grid is how you get a path out
+
+The search visits cells in some order that has nothing to do with the route.
+What turns that into a route is the `parent` grid: each cell remembers who
+discovered it, so from the end you can walk backwards to the start.
+
+```
+   discovered from        so the parents point back this way
+   ─────────────────      ──────────────────────────────────
+     S → a → b → c            S ← a ← b ← c
+         ↘ d → E                  ↖ d ← E
+```
+
+Start at `E`, follow the arrows to `S`, and turn the list around. That is
+exactly what `retrace(maze, parent)` does, you record the parents, and it does
+the walk. It needs one thing from you: **the start's parent must be the start
+itself**, because that is how it knows where to stop.
+
+### The one mistake everybody makes {#mark-on-the-way-in}
+
+> **Mark a cell visited when you PUT IT IN the container, not when you take it
+> out.**
+
+Here is the difference, on one cell with three unvisited neighbours:
+
+```
+mark on the way IN                    mark on the way OUT
+
+  pop A                                 pop A, mark A
+  look at b, c, d                       look at b, c, d
+    b unmarked → mark it, push it         b unmarked → push it
+    c unmarked → mark it, push it         c unmarked → push it
+    d unmarked → mark it, push it         d unmarked → push it
+                                        ...later, pop b, mark b
+  container: b c d                        look at b's neighbours, which
+  each cell enters exactly once            include c and d, still unmarked,
+                                           so push both AGAIN
+                                        container: c d c d ...
+```
+
+Each cell going in exactly once is what makes a capacity of rows × cols the
+right size, and it is what makes the parent you record **the first way anybody
+found that cell**, which for breadth-first search is the whole ball game.
+
+::: {.callout-important}
+**With the Stack, marking on the way out is merely wasteful.** Cells go in
+several times, get expanded several times, and you still get a valid path out
+of the other end. Slower, but not wrong.
+
+**With the Queue it is fatal.** Breadth-first search expands an entire ring of
+cells before it takes any of them back out, so the duplicates pile up instead
+of being consumed: the queue overruns the capacity you gave it, and a cell's
+parent can be overwritten by a *longer* route before it is ever dequeued. There
+goes the shortest path, which was the only reason to use a Queue.
+:::
+
+---
+
+## 6. TODO 3, depth first, with a Stack
+
+```
+make visited and parent, both the size of the maze
+make a Stack<Cell> with room for rows * cols cells
+mark the start visited, make it its own parent, push it
+
+while the stack is not empty:
+    pop a cell
+    if it is the end:  return retrace(maze, parent)
+    for each cell in openNeighbours(maze, that cell):
+        if it has not been visited:
+            mark it visited
+            record the cell you came from as its parent
+            push it
+
+return an empty Path        // the stack ran dry without reaching the end
+```
+
+An empty `Path` is an answer, not a failure. `mazes/nopath.txt` has no route
+through it and all three of your solvers have to say so cleanly.
+
+This is the longest of the three. Get it working on `mazes/tiny.txt`, three
+cells in a row, before you point it at anything larger.
+
+---
+
+## 7. TODO 4, breadth first, with a Queue {#breadth-first}
+
+Copy TODO 3. Change three things:
+
+```
+Stack<Cell>  →  Queue<Cell>
+push         →  enqueue
+pop          →  dequeue
+```
+
+That is the entire difference. Same visited grid, same parents, same loop.
+
+And the answer changes completely:
 
 ```bash
-make test         # all 30 checks
+./a12 mazes/room.txt
+```
+
+```
+  depth first (Stack)      breadth first (Queue)
+  ###############          ###############
+  #S************#          #S............#
+  #............*#          #*............#
+  #*************#          #*............#
+  #*............#          #*............#
+  #*************#          #*............#
+  #............E#          #************E#
+  ###############          ###############
+
+  42 cells                 18 cells
+```
+
+### Why one word does that
+
+A container decides **what you look at next**, and that is the only decision a
+search makes.
+
+A **Stack** hands back the most recent thing you put in. So you always continue
+from the cell you just discovered: you commit to one direction and follow it as
+far as it goes, only backing up when you hit a dead end. Deep first. When it
+finally stumbles into the end, the route it took is whatever wandering got it
+there.
+
+A **Queue** hands back the oldest thing you put in. So you finish every cell one
+step from the start before you look at anything two steps away, and every cell
+two steps away before anything three steps away. The search spreads out in
+rings:
+
+```
+        3 3 3 3 3
+        3 2 2 2 3          the ring of cells at distance 2 is
+        3 2 1 2 3          entirely finished before any cell at
+        3 2 1 S 3          distance 3 is looked at
+        3 3 3 3 3
+```
+
+The first time the end is discovered, it is discovered from the smallest ring
+that touches it. There is no shorter way in, because a shorter way would have
+been in an earlier ring, and the earlier rings are already done.
+
+**That is the guarantee, and it comes entirely from the order the container
+gives things back.** Neither search knows anything the other does not.
+
+::: {.callout-warning}
+Breadth-first search cannot be *longer* than depth-first search. If `./a12`
+tells you it is, something in TODO 4 is still behaving like TODO 3, most
+likely the container.
+:::
+
+---
+
+## 8. TODO 5, depth first, with no container {#recursively}
+
+Same search. No `Stack`.
+
+You will want a helper that calls itself:
+
+```cpp
+static bool explore(const Maze& maze, Cell here,
+                    vector<vector<bool>>& visited, Path& path);
+```
+
+which returns `true` if the end can be reached from `here`, and leaves the route
+from `here` onwards on the back of `path`.
+
+```
+mark here visited
+add here to the path
+if here is the end:  return true
+for each unvisited cell in openNeighbours(maze, here):
+    if explore(maze, that cell, visited, path):  return true
+take here back off the end of the path        ← do not forget this
+return false
+```
+
+::: {.callout-important}
+**That second-to-last line is the whole difference between a path and a
+wandering.** When a branch turns out to be a dead end, the cells you walked down
+it are not part of the answer and have to come back off. Leave them on and you
+get a "path" that teleports, and the checks will tell you so, because two cells
+in a row on it stop being next to each other.
+:::
+
+Note what you do **not** undo: `visited`. A cell that led nowhere still leads
+nowhere the second time. Un-marking it turns a fast search into one that
+explores every route in the maze separately.
+
+### What is doing the remembering
+
+There is no `Stack<Cell>` in this version, and yet the search still backs up out
+of dead ends and carries on where it left off. Something is keeping track.
+
+It is the **run-time stack**, Wednesday's lecture. Every call to `explore` gets
+its own frame holding its own `here` and its own position in the neighbour loop,
+stacked on top of the caller's. When a call returns, its frame is thrown away
+and the one underneath picks up exactly where it stopped.
+
+That is the same discipline you implemented by hand in TODO 3: last in, first
+out. In TODO 3 you allocated the storage and pushed and popped it yourself. Here
+the compiler does it, in the same shape, for free.
+
+::: {.callout-note}
+**And that is also this version's limitation.** Its depth is bounded by how much
+run-time stack the program has, which is not something you control. On these
+mazes it is nowhere near a problem. On a maze of a million cells it would be,
+and TODO 3 would still work, because a `Stack<Cell>` lives in the heap, where
+there is room.
+
+Knowing which of those two you are spending is part of knowing what recursion
+costs.
+:::
+
+---
+
+## 9. Testing Your Work
+
+```bash
+make test         # all 32 checks
 ```
 
 ::: {.callout-important}
 **There are no hidden tests.** What you run with `make test` is exactly what the
-grader runs, all 30 checks, every one of them in a file in your repository.
+grader runs, all 32 checks, every one of them in a file in your repository.
 :::
 
 | | |
 |---|---|
-| 4 | `nextHead`, moving, and wrapping at the edges |
-| 6 | the queue, length, the tail, and growing after eating |
-| 4 | death |
-| 4 | the target |
-| 4 | drawing |
-| 8 | whole games, replayed and compared |
+| 7 | the two warm-ups |
+| 7 | depth first, with a Stack |
+| 4 | breadth first, with a Queue |
+| 6 | the recursive solver, and where all three must agree |
+| 5 | your source: which container each one uses, and what is recursive |
+| 3 | twelve mazes generated while you are being graded |
 
-The last eight run `./a12` on a script and compare the board the game ends on
-against a **fingerprint**, a SHA-256 of the right answer. A fingerprint tells
-you whether you got it right and nothing whatsoever about what the answer is,
-which is how every check can be visible without the answers being visible too.
-Two of those scripts are generated inside `test.py` rather than shipped in
-`moves/`, so a solution tuned to the files you can read still has to be right.
+::: {.callout-note}
+**Nothing compares your path against a stored answer.** Most of these mazes have
+more than one route, and depth-first search may find any of them, so a path is
+checked against the definition instead: starts at `S`, ends at `E`, every cell
+open, consecutive cells adjacent, no repeats.
 
-If the twenty-two single-function checks pass and the replays do not, look at
-TODO 6 first. One target in the wrong place changes everything after it.
+Breadth-first search gets one extra requirement, its **length**, and even that
+is measured against a shortest distance the checks compute for themselves, so
+any shortest route will do.
+:::
+
+Each check runs in its own process. A recursive function with no reachable base
+case will be killed when it runs out of stack; this way that costs you one check
+rather than the whole run.
 
 Run one on its own while you are debugging:
 
 ```bash
 make checks
-./checks "Snake: eating makes it longer by exactly GROW_BY"
+./checks "Stack: it finds a valid path through room"
 ```
 
 ---
 
-## 7. Submit
+## 10. Submit
 
 ```bash
 git add .
@@ -353,21 +552,20 @@ submission counts, and there is no deadline beyond the last day of classes.
 ---
 
 ::: {.callout-note}
-## If you want to keep playing
+## Try this before you close the laptop
 
-None of this is graded and none of it is required. But the pieces are all here:
+```bash
+./a12 mazes/twisty.txt
+```
 
-- **Play it yourself.** Read a direction from `cin` each frame instead of from
-  a script. It is not a real game, you have to press enter, but it is yours.
-- **Walls.** Make the edges lethal instead of wrapping: one condition in
-  `nextHead` and one in `detectDeath`.
-- **Two targets at once.** `plantTarget` twice, and check both.
-- **A faster snake as it grows.** `usleep` in `render.cpp` takes a number.
-- **Write your own script** that beats seventeen targets. `greedy.txt` steers
-  toward the target and nothing else, which is why it eventually traps itself.
-  A script that also avoided its own body would do better.
+`twisty.txt` is a **perfect maze**: exactly one route between any two cells.
+All three of your solvers return the same 157 cells, because there is nothing
+for them to disagree about.
 
-The last one is not a small exercise, and it is worth knowing why: deciding
-where to go next, given what you know about the board, is a search problem,
-and you wrote three of those last week.
+Then run `mazes/room.txt` again, where there are thousands of routes and the
+three answers share almost no cells at all.
+
+The difference between those two runs is the whole assignment. When there is
+only one answer, the container you use does not matter. When there are many,
+the container **is** the algorithm.
 :::

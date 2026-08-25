@@ -74,7 +74,7 @@ The percentage of quizzes you complete decides where you land within a grade ran
 
 ### 3 · Assignment Completion
 
-Assignments **a01 through a14** are programming tasks you work on during class and finish on your own time. (Getting Started, `a00`, is setup, it is not one of the fourteen and does not affect your percentage.)
+Assignments **a01 through a15** are programming tasks you work on during class and finish on your own time. (Getting Started, `a00`, is setup, it is not one of the fourteen and does not affect your percentage.)
 
 Your repository is checked automatically when you push, and the tests tell you how you are doing. **That score does not set your grade.** Assignments are not graded for points: submitting reasonable work counts as complete, whether or not every test is green.
 

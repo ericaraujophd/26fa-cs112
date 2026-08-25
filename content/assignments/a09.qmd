@@ -1,99 +1,86 @@
 ---
-title: "Assignment 09: Stack and Queue"
-subtitle: "Two containers, nine TODOs, and one array bent into a circle"
+title: "Assignment 08: Stopwatch"
+subtitle: "Measure it, and let the program tell you the shape"
 ---
 
 ::: {.callout-note}
 Your own private GitHub repository is waiting for you (see
 [Getting the code](#getting-the-code) below), clone it and open it in VS Code.
 
-**Plan to set aside about 2.5 hours.** The Stack (§4) is short and you should
-finish it in lab. The Queue (§6–§8) is the substance, and §7, the circular
-array, is where the time goes. Read §7 before you write any of it.
+**Plan to set aside about 2.5 to 3 hours.** `classifyGrowth` (§5) and
+`findings.txt` (§8) are the substance; the five timing functions in §6 are short
+and repetitive once you have read the two worked examples.
 :::
 
 ## Objectives
 
 By the end of this assignment, you will be able to:
 
-- Say what an Abstract Data Type is, and why the operations are the definition
-  and the storage is not
-- Implement a Stack whose `push` and `pop` are both O(1)
-- Implement a Queue whose `enqueue` and `dequeue` are both O(1)
-- Explain why the obvious array queue is O(n), and what a circular array changes
-- Use the remainder operator to move an index around a ring
-- Explain why "front equals back" is ambiguous, and defend one of the two
-  standard fixes for it
-- Define your own exception type, throw it, and catch it
-- Write a class template whose definitions live in its header
+- Time an operation that is far too fast to time directly, by repeating it
+- Explain why the *minimum* of several measurements is closer to the truth than
+  the average
+- Read a growth class off a series of measurements, and write down the rule you
+  used as code
+- Explain why the geometric mean of a set of ratios is the right average and the
+  ordinary one is not
+- Say what `vector` and `list` are each good and bad at, and why
+- Explain amortized constant time, and point at a measurement of it
+- Say what a straight line on a log-log chart means, and what its slope is
+- Defend a complexity claim from evidence rather than from memory
 
----
-
-This assignment covers course skills **C5** (implement a stack with O(1) push
-and pop) and **C6** (implement a queue with O(1) enqueue and dequeue), from
-cluster **C**, assessed at **Window 2** on Nov 20.
+This assignment covers course skills **D1** (classify the Big-O of a code
+snippet), **D2** (draw and compare growth curves) and **D3** (best, worst and
+amortized), from cluster **D**, assessed at **Window 2** on Nov 20. It is also
+where the linked-list-versus-dynamic-array comparison from week 6 gets settled,
+with numbers.
 
 ::: {.callout-note}
-**Lab and homework.** You start this in lab on **Tuesday Nov 3**. By then you
-will have had Monday's lecture on ADTs and the Stack, which is everything §1
-through §5 needs.
+**Lab and homework.** You start this in lab on Tuesday Oct 27. By then you will
+have had Friday's POGIL and Monday's lecture on Big-Oh, which is everything this
+assignment needs, there is no new syntax here, only measurement and reasoning.
 
-**§4 and §5 are the lab.** TODOs 1–4 and the exception types. A typical student
-finishes them in the session.
+§5 needs nothing but the Big-Oh lecture, and you can finish and fully test it
+before you have timed anything at all. That is a good place to start.
 
-**§6 onwards is homework, after Wednesday's lecture.** The circular array is
-Wednesday's material, and TODO 5 asks you to make a decision that lecture is
-about. You *can* read §7 ahead and get going, it is written to stand on its
-own, but do not be alarmed if you would rather wait for the pictures on the
-board first.
+**Prof. Norman is teaching all four sessions this week**, including both lab
+sections. This page is written to be self-contained: everything you need to
+decide is decided here, and every rule the grader applies is written down below.
+If something genuinely does not make sense, say so in lab, but you should not
+need to wait for an answer to keep going.
 :::
 
 ---
 
 ## 1. Introduction
 
-You have built two containers this semester. In week 4 you built `Vec`, which is
-an array that grows. In week 6 you built `List`, which is a chain of nodes. Both
-of them let you put things anywhere and take things from anywhere.
+You have spent seven weeks being told what things cost.
 
-This week you build two containers that are deliberately *less* capable than
-that, and the restriction is the whole point.
+`vector` subscript is O(1). Prepending to a vector is O(n). A linked list
+prepends in constant time and pays for it on every traversal. Appending to a
+dynamic array is amortized O(1) because doubling makes the expensive case rare.
 
-A **Stack** only lets you touch the item that arrived most recently. A **Queue**
-only lets you touch the item that arrived first. Neither will let you reach into
-the middle. That sounds like a downgrade until you notice what it buys: because
-there is only one place anything can happen, everything can happen in constant
-time, no matter how much is in there.
+Every one of those is a claim about the physical world, and you have taken all
+of them on trust.
 
-You already use both of these every day:
+This week you check.
 
-| | |
-|---|---|
-| Ctrl-Z | a stack of the things you did |
-| the Back button | a stack of the pages you visited |
-| a function call | a stack, which is why it is called *the* call stack |
-| `{ [ ( ) ] }` matching | a stack, in every compiler ever written |
-| a print queue | a queue |
-| customer service | a queue, and everyone notices immediately when it is not |
-| breadth-first search | a queue, you will write one in a11 |
+The instrument is a stopwatch, the one in `Timer.h`, which does nothing more
+than write down the time before and after. Point it at eight operations, at five
+container sizes each, and the shapes fall out of the numbers.
 
 ::: {.callout-note}
-**The idea Monday's lecture opens on: an Abstract Data Type.**
+**What is different about this assignment.** Everywhere else this semester there
+has been a right answer sitting in a file somewhere, and the checks compare
+against it. Here the numbers are different on every machine, at every moment,
+and on a laptop with a browser open they will be different from one minute to
+the next.
 
-An ADT is a set of operations and a promise about what they do, and *nothing
-else*. "A Stack is something you can push onto, peek at, and pop from, where pop
-gives you back the most recent push." That is the entire definition. It says
-nothing about arrays, nothing about nodes, nothing about memory.
+So the numbers are not what is graded. What is graded is the **reasoning that
+turns numbers into a class**, and that is the same everywhere. §5 is the code
+version of it. §8 is the sentence version.
 
-That silence is deliberate. You could build this week's Stack on top of your
-`Vec`, or on top of your `List`, or on a raw array, and every one of them would
-be a Stack, because a Stack is defined by what it promises and not by what it is
-made of. You have now built both possible underneaths, so this is a real choice
-rather than a hypothetical one.
-
-We use a raw array here, for two reasons: it is the version where the O(1)
-requirement is visible in the code you write, and it is the version that forces
-you to meet the circular array, which is the idea this week is really about.
+That gap, between the measurement, which is local and noisy, and the
+conclusion, which is not, is most of what empirical computer science is.
 :::
 
 ---
@@ -145,624 +132,441 @@ Open the folder in VS Code, then build it and run it before you change anything:
 
 ```bash
 make
-./a09
+./stopwatch
 make test
 ```
 
-`make` succeeds, `./a09` prints a demonstration in which nothing works, and
-`make test` reports **5 / 36**. All three are correct. Two of those five are the
-constructor checks, which are given to you; the other three are the
-constant-time checks, which an empty function passes for free.
+`make` succeeds, `./stopwatch` prints a table with three rows filled in and five
+rows of zeroes, and `make test` reports **9 / 36**. All three are correct: the
+harness works, three experiments are written for you, and nothing else is.
 
 
 ---
 
 ## 3. What You Were Given
 
-**You edit two files: `Stack.h` and `Queue.h`.** Nine TODOs between them.
+**You edit two files: `Stopwatch.cpp` and `findings.txt`.** Eight TODOs between
+them.
 
 | File | Yours? | What it is |
 |---|---|---|
-| `Stack.h` | **yes** | the Stack class, and TODOs 1–4 |
-| `Queue.h` | **yes** | the Queue class, and TODOs 5–9 |
-| `Exceptions.h` | no | `StackException` and `QueueException` |
-| `main.cpp` | no | a demonstration program, read it, it is short |
+| `Stopwatch.cpp` | **yes** | TODOs 1–7 |
+| `findings.txt` | **yes** | TODO 8, what you conclude |
+| `Stopwatch.h` | no | the specification. Read this first. |
+| `Timer.h` | no | the stopwatch |
+| `given.cpp` | no | sizes, repetition policy, `measure`, and the HTML page |
+| `main.cpp` | no | runs everything and prints the table |
 | `checks.cpp` | no | the course's checks |
+| `sample-results.html` | no | what the chart looks like, on made-up data |
 | `catch.hpp`, `catchmain.cpp`, `makefile`, `test.py` | no | framework, build, grader |
 
-::: {.callout-note}
-**There is no `Stack.cpp` and no `Queue.cpp`, and that is not an oversight.**
-
-Both classes are templates. A template is not code, it is a recipe for making
-code, and the compiler cannot bake it until some file says `Stack<int>` and
-tells it what an `Item` is. That happens in whatever `.cpp` uses the class, and
-the compiler has to be able to see the recipe *from there*. So the definitions
-go in the header, underneath the class, where every `#include` carries them
-along.
-
-You have met this twice: `Trace` in a05 and `List` in a07. Same rule, and this
-time it is set up for you from the start.
-:::
-
-The methods that manage memory, the constructor, the copy constructor, the
-destructor and `operator=`, are **given to you complete** in both files, except
-for one line of `Queue`'s constructor. You wrote all four of these by hand in
-a04 and again in a07; this week the interesting part is elsewhere, so they are
-done. Read them anyway. `Stack`'s copy constructor copies the whole array rather
-than just the live part, and the comment says why.
-
----
-
-## 4. The Stack {#the-stack}
-
-Four TODOs, all in `Stack.h`. This is the lab.
-
-### Where the top is {#where-the-top-is}
-
-Everything in this section comes out of one picture. Here is a `Stack<char>`
-with capacity 6, holding three items:
-
-```
-index:      0     1     2     3     4     5
-          ┌─────┬─────┬─────┬─────┬─────┬─────┐
-myArray:  │  A  │  B  │  C  │  ?  │  ?  │  ?  │
-          └─────┴─────┴─────┴─────┴─────┴─────┘
-                              ▲
-                              │
-                          mySize = 3
-```
-
-`mySize` is 3, and there are three items. But look at where 3 lands when you use
-it as an *index*: it points at the first slot that is free.
-
-**`mySize` means two things at once, and they are both true.** It is how many
-items you are holding, and it is the index where the next item goes. That is not
-a coincidence, it is what counting from zero does for you, and it is the whole
-reason a stack's push and pop are one line each.
-
-Read the picture again with that in mind:
-
-| Question | Answer | Why |
-|---|---|---|
-| Where does the next item go? | `myArray[mySize]` | that is the first free slot |
-| Where is the top item now? | `myArray[mySize - 1]` | one below the first free slot |
-| Is it empty? | `mySize == 0` | no items |
-| Is it full? | `mySize == myCapacity` | the first free slot is off the end |
-
-Those four rows are TODOs 1 through 3. The `- 1` in the second row is the single
-most common mistake in this assignment; it is there because `mySize` is a
-*count* in one meaning and an *index* in the other, and a count of three items
-ends at index two.
-
-::: {.callout-warning}
-**Never write to `myArray[myCapacity]`.** When `mySize == myCapacity`, the "first
-free slot" is one past the end of the array, and there is nothing there. C++ will
-not stop you, it will write over whatever memory happens to be next and carry
-on cheerfully, and you will find out about it half an hour later somewhere
-completely unrelated. That is what the `isFull()` check at the top of `push` is
-for, and it is why it goes *first*.
-:::
-
-### TODO 1, `isEmpty` and `isFull`
-
-One line each, from the table above. Do these first: `push`, `pop` and
-`peekTop` all call them, so a mistake here becomes a mysterious failure three
-TODOs later.
-
-### TODO 2, `push`
-
-Three steps, in order: refuse if full, store the item, update `mySize`.
-
-```
-          ┌─────┬─────┬─────┬─────┬─────┬─────┐
-before    │  A  │  B  │  C  │  ?  │  ?  │  ?  │   mySize = 3
-          └─────┴─────┴─────┴─────┴─────┴─────┘
-                              ▲ store D here
-          ┌─────┬─────┬─────┬─────┬─────┬─────┐
-after     │  A  │  B  │  C  │  D  │  ?  │  ?  │   mySize = 4
-          └─────┴─────┴─────┴─────┴─────┴─────┘
-```
-
-The refusal is `throw StackException("push()", "stack is full");`. `throw` leaves
-the function on the spot, exactly the way `return` does, so you do not need an
-`else` after it.
-
-### TODO 3, `peekTop`
-
-Refuse if empty, otherwise hand back the top item and change nothing. Watch the
-index: `peekTop` reads from a *different* slot than the one `push` writes to,
-and the difference is the `- 1`.
-
-### TODO 4, `pop`
-
-Refuse if empty, otherwise shrink by one and return what was on top.
-
-```
-          ┌─────┬─────┬─────┬─────┬─────┬─────┐
-before    │  A  │  B  │  C  │  D  │  ?  │  ?  │   mySize = 4
-          └─────┴─────┴─────┴─────┴─────┴─────┘
-          ┌─────┬─────┬─────┬─────┬─────┬─────┐
-after     │  A  │  B  │  C  │  D  │  ?  │  ?  │   mySize = 3
-          └─────┴─────┴─────┴─────┴─────┴─────┘
-                              ▲ D is still sitting there
-```
-
-Notice what the picture does **not** show: nothing was erased. `pop` does not
-have to clear the slot, zero it, or move anything. "Removing" an item from an
-array-backed stack means nothing more than agreeing to stop counting it. The
-bytes are still there, but nothing will ever read them again, because the next
-`push` writes over that slot.
-
-That is exactly why `pop` is O(1), it moves no data at all, and it is the same
-insight that the Queue will need in a much less obvious form.
-
-::: {.callout-tip}
-If you decrement `mySize` first, the item you want is at `myArray[mySize]`. If
-you read the item first, it is at `myArray[mySize - 1]`. Both are correct. Pick
-one and be consistent; mixing them is how you end up returning the wrong item.
-:::
-
----
-
-## 5. Exceptions {#exceptions}
-
-There is no honest value for `pop()` to return when the stack is empty. Any
-`Item` it handed back would be a lie, and the caller would believe it.
-
-So it refuses, out loud. `Exceptions.h` is given to you complete and defines two
-types:
-
-```cpp
-throw StackException("pop()", "stack is empty");
-throw QueueException("enqueue()", "queue is full");
-```
-
-Two fields, not one sentence: *where* the trouble happened is something the
-class knows, and *what* the trouble was is something the situation knows.
-
-A caller who wants to survive this writes:
-
-```cpp
-try {
-    Item x = s.pop();
-} catch (StackException& e) {
-    cerr << e << endl;      // StackException in pop(): stack is empty
-}
-```
-
-`main.cpp` does exactly that, at the bottom, so you can watch it happen.
+Three of the eight experiments are written for you, as models:
+`timeVectorSubscript`, `timeVectorAppend` and `timeRepeatedVectorAppend`. Read
+all three before you write anything.
 
 ::: {.callout-note}
-**Why a class of your own rather than throwing a string?** Because `catch`
-selects on type. A `catch (StackException&)` catches the failures a Stack
-produces and nothing else. If everybody threw strings, that same `catch` would
-swallow unrelated failures from three layers down and pretend it had handled
-them.
+**This is the one assignment that builds with `-O2`.** Every other week used
+`-g` and no optimisation, which is right when you are debugging and wrong when
+you are measuring, an unoptimised build spends most of its time on bookkeeping
+that a real build would not do, and that bookkeeping is the same size at every
+n, so it flattens exactly the differences you are looking for. Nobody benchmarks
+a debug build.
 
-The checks only require that the right *type* comes out. The two message
-strings are for whoever reads the output, so make them useful.
+The price is that the optimiser will delete a loop whose result nobody uses.
+That is what the `volatile` variables in the worked examples are for.
 :::
 
 ---
 
-## 6. The Queue, the obvious way, and why it does not work {#the-obvious-queue}
+## 4. Why You Cannot Just Time One Operation
 
-A Queue is first in, first out. Items leave in the order they arrived.
-
-Try the obvious design. Keep the front of the line at index 0. Enqueue at the
-end, like a stack. Dequeue from the front:
-
-```
-          ┌─────┬─────┬─────┬─────┬─────┬─────┐
-          │ Ada │Grace│Alan │  ?  │  ?  │  ?  │
-          └─────┴─────┴─────┴─────┴─────┴─────┘
-             ▲ dequeue takes this one
-```
-
-Ada leaves. Now index 0 is empty and Grace is at index 1, but we said the front
-of the line lives at index 0. So we shuffle everyone down:
-
-```
-          ┌─────┬─────┬─────┬─────┬─────┬─────┐
-          │Grace│Alan │  ?  │  ?  │  ?  │  ?  │
-          └─────┴─────┴─────┴─────┴─────┴─────┘
-```
-
-It works. It is also **O(n)**, and you have met this exact cost before: it is
-`Vec::prepend` from week 4, wearing a different hat. Every dequeue touches every
-remaining item. A queue of ten thousand jobs does ten thousand moves to serve
-one of them, and the second one does 9,999 more.
-
-::: {.callout-important}
-**Both of a Queue's operations have to be O(1). That is the requirement, and
-this design fails it.** A queue that shifts is not a slightly-worse queue; it is
-a different data structure with the same interface.
-
-Four of the thirty-six checks read `Stack.h` and `Queue.h` as text and fail you
-if there is a loop inside `push`, `pop`, `enqueue`, `dequeue`, `peekTop`,
-`peekFront`, `getSize`, `isEmpty` or `isFull`. A shifting queue gives every
-right answer, so no behavioural check could ever catch it, and timing it on a
-shared grading machine would not be trustworthy. Reading the source is the only
-honest way to hold you to the thing this assignment is actually about.
-:::
-
-So: **do not move the data. Move the ends.**
-
-Keep an index that says where the front currently is, and stop insisting it is
-zero. Dequeue becomes "add one to `myFront`", which is O(1) and obviously right:
-
-```
-          ┌─────┬─────┬─────┬─────┬─────┬─────┐
-          │ Ada │Grace│Alan │  ?  │  ?  │  ?  │   myFront = 0
-          └─────┴─────┴─────┴─────┴─────┴─────┘
-             ▲ front
-                                                  ...serve Ada...
-          ┌─────┬─────┬─────┬─────┬─────┬─────┐
-          │ --- │Grace│Alan │  ?  │  ?  │  ?  │   myFront = 1
-          └─────┴─────┴─────┴─────┴─────┴─────┘
-                   ▲ front
-```
-
-Which fixes the speed and creates a new problem. Keep serving and keep adding,
-and the whole line **walks off the right-hand end of the array** while a growing
-run of perfectly good slots sits abandoned on the left:
-
-```
-          ┌─────┬─────┬─────┬─────┬─────┬─────┐
-          │ --- │ --- │ --- │ --- │Kath │Doro │   myFront = 4
-          └─────┴─────┴─────┴─────┴─────┴─────┘
-           ── four wasted slots ──            ▲ and nowhere left to add
-```
-
-Four free slots and the queue says it is full. That is the problem §7 solves.
-
----
-
-## 7. Going in a circle {#going-in-a-circle}
-
-This is the idea of the week. Take your time with it.
-
-### The trick, in one operator
-
-Pretend the array has no ends. When an index walks off the right-hand side, it
-comes back on the left:
-
-```
-                    ┌─────┐
-              ┌─────┤  0  ├─────┐
-              │     └─────┘     │
-           ┌──┴──┐           ┌──┴──┐
-           │  5  │           │  1  │
-           └──┬──┘           └──┬──┘
-              │                 │
-           ┌──┴──┐           ┌──┴──┐
-           │  4  │           │  2  │
-           └──┬──┘           └──┬──┘
-              │     ┌─────┐     │
-              └─────┤  3  ├─────┘
-                    └─────┘
-```
-
-It is still a perfectly ordinary array in memory, nothing is bent, nothing is
-linked. The circle exists entirely in how you do the arithmetic. One operator
-makes it happen:
+A `vector` subscript takes somewhere around one nanosecond. Asking the clock
+what time it is takes rather more than that. So this:
 
 ```cpp
-i = (i + 1) % mySlots;
+t.start();
+sink += v[i];              // the thing we want to measure
+double us = t.elapsed();   // almost entirely the cost of asking
 ```
 
-For an array of 6, that takes 0→1→2→3→4→5→**0**→1→… and never leaves the array.
-`5 + 1` is 6, and `6 % 6` is 0. That is all a circular array is.
+measures the stopwatch, not the subscript.
 
-::: {.callout-tip}
-**Every index you move in `Queue.h` moves with `% mySlots`.** If you have
-written `+ 1` without a `%` anywhere in that file, that is a bug waiting for the
-right test to find it. There are exactly two places an index moves: the end of
-`enqueue` and the middle of `dequeue`.
+Two techniques fix it, and both are already in the code you were given.
+
+**Repeat, then divide.** Do the operation a few thousand times between one
+`start()` and one `elapsed()`, and divide by the count. The clock is consulted
+twice in total rather than twice per operation, and its cost disappears into the
+average. `repsFor(n)` in `given.cpp` decides how many times, more at small n,
+fewer at large n, so the total work stays level instead of exploding at a
+million.
+
+**Take the minimum, not the mean.** `measure()` runs each timing function five
+times and keeps the *smallest* answer. That looks like cheating and is not, and
+the reason is worth understanding:
+
+::: {.callout-note}
+Noise on a shared machine is **one-sided**. The operating system scheduling
+something else, another student's compile starting up, a cache line being
+evicted, every one of those makes a measurement take **longer**. Nothing in the
+universe makes your code run faster than it actually does.
+
+So the average of several runs is the true cost *plus* however much interference
+there happened to be. The minimum is the true cost plus however much
+interference there was in the quietest run, and with enough runs, one of them
+lands in a quiet moment. The minimum converges on the truth from above; the mean
+does not converge on it at all.
+
+This is standard practice in real benchmarking, for exactly this reason.
 :::
 
-### Watch it go round
+There is a third trick, in `buildVector` in `given.cpp`, and it is worth reading
+the comment there. A four-megabyte vector is not really *yours* until you write
+to it, the operating system hands over the pages lazily. Without a warm-up, the
+first appends after building a million-element vector get charged for that, and
+an O(1) operation measures as something else entirely. That one cost about an
+hour to find.
 
-A queue of capacity 3, storing in an array, let us say 4 slots long, for
-reasons that become clear in a moment. `F` marks the front, `B` marks the next
-free slot.
+---
 
-```
-start            ┌─────┬─────┬─────┬─────┐
-                 │  ?  │  ?  │  ?  │  ?  │      F=0  B=0   size 0
-                 └─────┴─────┴─────┴─────┘
-                   FB
+## 5. TODO 1, `classifyGrowth`
 
-enqueue A        ┌─────┬─────┬─────┬─────┐
-                 │  A  │  ?  │  ?  │  ?  │      F=0  B=1   size 1
-                 └─────┴─────┴─────┴─────┘
-                    F     B
+This is the heart of the assignment, and you can write and fully test it before
+timing anything.
 
-enqueue B        ┌─────┬─────┬─────┬─────┐
-                 │  A  │  B  │  ?  │  ?  │      F=0  B=2   size 2
-                 └─────┴─────┴─────┴─────┘
-                    F           B
+You are given the times at five sizes, where **each size is ten times the one
+before**. The question is what shape they imply.
 
-enqueue C        ┌─────┬─────┬─────┬─────┐
-                 │  A  │  B  │  C  │  ?  │      F=0  B=3   size 3 : FULL
-                 └─────┴─────┴─────┴─────┘
-                    F                 B
+Think about what you would do by eye. You would look at whether the time went up
+when n went up, and by how much. If n grows tenfold and the time does not
+change, that is constant. If the time also grows tenfold, that is linear. If it
+grows a hundredfold, the cost is going up much faster than n is, quadratic.
 
-dequeue → A      ┌─────┬─────┬─────┬─────┐
-                 │ --- │  B  │  C  │  ?  │      F=1  B=3   size 2
-                 └─────┴─────┴─────┴─────┘
-                          F           B
+Written down:
 
-dequeue → B      ┌─────┬─────┬─────┬─────┐
-                 │ --- │ --- │  C  │  ?  │      F=2  B=3   size 1
-                 └─────┴─────┴─────┴─────┘
-                                F     B
-
-enqueue D        ┌─────┬─────┬─────┬─────┐
-                 │ --- │ --- │  C  │  D  │      F=2  B=0   size 2
-                 └─────┴─────┴─────┴─────┘
-                   B            F
-                   ▲ B wrapped: (3 + 1) % 4 = 0
-
-enqueue E        ┌─────┬─────┬─────┬─────┐
-                 │  E  │ --- │  C  │  D  │      F=2  B=1   size 3 : FULL
-                 └─────┴─────┴─────┴─────┘
-                          B     F
-```
-
-E landed at index 0, a slot that was used and given back, and the queue is
-holding C, D, E in that order even though they sit in the array as E, _, C, D.
-The array order stopped being the queue order the moment the front moved, and
-that is fine, because `myFront` is the only thing that decides who is next.
-
-::: {.callout-tip}
-**Do this one on paper before you write TODO 7 and TODO 9.** Capacity 3 again,
-but a 4-slot array: enqueue A, B, C, dequeue, dequeue, enqueue D, enqueue E,
-dequeue, dequeue, dequeue. Write down `F` and `B` after every single step. If
-your paper trace and your code ever disagree, the paper is right and you have
-found your bug in about ninety seconds.
-:::
-
-### The problem nobody expects {#full-and-empty}
-
-Look at the very first picture and the very last one.
-
-```
-empty            ┌─────┬─────┬─────┬─────┐
-                 │  ?  │  ?  │  ?  │  ?  │      F=0  B=0
-                 └─────┴─────┴─────┴─────┘
-
-full             ┌─────┬─────┬─────┬─────┐
-                 │  W  │  X  │  Y  │  Z  │      F=0  B=0
-                 └─────┴─────┴─────┴─────┘
-```
-
-**`F == B` in both.** An empty queue and a completely full one are, as far as
-the two indices are concerned, identical. Every enqueue moves `B` forward one;
-after four of them in a 4-slot array, `B` has gone all the way round and landed
-back where it started.
-
-This is not an edge case you can code around. The two indices simply do not
-carry enough information to distinguish those two states: two numbers in the
-range 0..3 can describe 16 situations, and there are 17 things a 4-slot queue
-can be doing (empty, 1 item, 2, 3, 4, at each of 4 rotations, minus the ones
-that coincide). You need one more bit of information from *somewhere*.
-
-There are exactly two standard places to get it, and this is the decision
-**TODO 5** asks you to make.
-
-### Fix one: waste a slot
-
-Never let the queue fill the array. If a 4-slot array is only ever allowed to
-hold 3 items, then `B` can never catch up to `F` from behind, and `F == B`
-means empty and nothing else.
-
-The cost is one `Item` of memory that is never used. The benefit is that you
-keep no count at all.
-
-```
-capacity 3, array of 4, the fullest this is ever allowed to get:
-
-                 ┌─────┬─────┬─────┬─────┐
-                 │  W  │  X  │  Y  │  ?  │     F=0  B=3
-                 └─────┴─────┴─────┴─────┘
-                    F                 B
-                                        ▲ index 3 stays empty on purpose
-```
-
-| | |
+| the time grows by, per tenfold step | the class |
 |---|---|
-| array length | `mySlots = myCapacity + 1` |
-| empty | `myFront == myBack` |
-| full | `(myBack + 1) % mySlots == myFront` |
-| size | `(myBack + mySlots - myFront) % mySlots` |
-| enqueue | store at `myBack`, then `myBack = (myBack + 1) % mySlots` |
-| dequeue | read at `myFront`, then `myFront = (myFront + 1) % mySlots` |
-| unused member | `myCount` |
+| about 1×, it barely moves | `O(1)` |
+| clearly more than 1 but far less than 10 | `O(log n)` |
+| about 10× | `O(n)` |
+| about 100× | `O(n²)` |
 
-Read the "full" row out loud: *the queue is full when adding one more would make
-back equal front.* Which is exactly the collision we are refusing to allow.
+### The rule, exactly
+
+1. **Refuse to guess.** Return `UNKNOWN` if `count < 2`, or any time is zero or
+   negative, or any size is not exactly ten times the one before it.
+
+2. Compute the ratio between each pair of neighbouring times:
+
+   ```cpp
+   ratio[i] = times[i] / times[i-1];       // for i = 1 .. count-1
+   ```
+
+3. Take the **geometric mean** of those ratios, multiply them together and take
+   the `(count-1)`-th root:
+
+   ```cpp
+   double growth = pow(product, 1.0 / (count - 1));
+   ```
+
+4. Read the class off that number:
+
+   ```
+   growth <  1.3   ->  CONSTANT
+   growth <  4.5   ->  LOGARITHMIC
+   growth < 40.0   ->  LINEAR
+   otherwise       ->  QUADRATIC
+   ```
 
 ::: {.callout-warning}
-**The size formula has a `+ mySlots` in it, and it is not decoration.**
-
-`myBack` is often at a *lower* index than `myFront`, that is what wrapping
-means. So `myBack - myFront` goes negative. These members are `unsigned`, and
-unsigned arithmetic does not have negative numbers: `1u - 2u` is not `-1`, it is
-4,294,967,295. Taking `% mySlots` of that gives you an answer that is confidently
-wrong rather than obviously wrong, which is worse.
-
-Adding `mySlots` first pushes the whole thing back above zero without changing
-the remainder. `(myBack + mySlots - myFront) % mySlots` is always right.
+**`count` measurements have `count - 1` ratios**, so the root is the
+`(count-1)`-th. Five measurements are four steps apart. Taking the fifth root
+instead of the fourth is the single most common way to get this wrong, and it
+does not fail loudly, it just quietly reclassifies your quadratic series as
+linear.
 :::
 
-### Fix two: keep a count
+### Why the geometric mean
 
-Store the number of items. Then `F == B` never has to mean anything, because you
-ask `myCount` instead. The array can be exactly as long as the capacity, and
-every slot gets used.
+Suppose a measurement is unlucky and comes out three times too slow, and the
+next one is normal. The ratios are 3 and 1/3.
 
-The cost is that `myCount` is a third thing that has to stay correct: every
-`enqueue` has to remember `++myCount` and every `dequeue` has to remember
-`--myCount`, forever, in every path through the function.
+The ordinary average of 3 and 1/3 is **1.67**, which says the time is growing.
+It is not; it went up and came straight back down. The geometric mean of 3 and
+1/3 is `sqrt(3 × 1/3)` = **exactly 1**, which is the truth.
 
-```
-capacity 3, array of 3, holding all three:
+That is what ratios are like. Doubling and halving should cancel, and only the
+geometric mean makes them. One of the checks is a series that jumps up and back
+down four times, and it is there precisely to catch an implementation that adds
+the ratios up and divides.
 
-                 ┌─────┬─────┬─────┐
-                 │  W  │  X  │  Y  │            F=0  myCount=3
-                 └─────┴─────┴─────┘
-                    F
-```
-
-| | |
-|---|---|
-| array length | `mySlots = myCapacity` |
-| empty | `myCount == 0` |
-| full | `myCount == myCapacity` |
-| size | `myCount` |
-| enqueue | store at `(myFront + myCount) % mySlots`, then `++myCount` |
-| dequeue | read at `myFront`, then `myFront = (myFront + 1) % mySlots` and `--myCount` |
-| unused member | `myBack` |
-
-### Which one should you pick?
-
-Either. They are both standard, both correct, and both O(1), and real libraries
-ship both. The trade is small and real:
-
-| | wasted slot | separate count |
-|---|---|---|
-| memory | one `Item` more than it needs | exactly what it needs |
-| members to keep in step | two | three |
-| `getSize` | arithmetic | just read it |
-| `isFull` | the fiddly line | trivial |
-| easiest to get wrong | the `+ mySlots` in `getSize` | forgetting `--myCount` on one path |
-
-Pick the one whose failure mode you would rather debug. Then **write down which
-one you picked and why**, in the `MY CHOICE` line in the constructor. That line
-is graded, not the prose, but its presence and its having a reason of at least
-six words in it.
+The same property is what makes the rule survive real noise. A single
+measurement that comes out 30% high moves the geometric mean of four ratios by
+about 7%, nowhere near enough to cross a boundary.
 
 ::: {.callout-note}
-**Why a comment is worth a mark.** Every genuinely confusing bug students hit in
-this file comes from writing half of one technique and half of the other, a
-`myCount` that gets incremented next to an `isFull` that compares indices. That
-does not happen to people who wrote down which one they were doing before they
-started. The comment is not busywork; it is the fix.
+**Why the boundaries are 1.3, 4.5 and 40 rather than 1, 10 and 100.** A perfect
+O(n) series would give exactly 10.0. Real machines have caches, an operating
+system, and other people on them. The bands are set wide enough to absorb that
+and still separate classes that are a factor of ten apart. You will see measured
+values around 10.4 and 1.05 and they will land in the right places with room to
+spare.
 :::
+
+**Test it now**, before you write any timing code:
+
+```bash
+make checks
+./checks
+```
+
+Sixteen of the thirty-six checks are `classifyGrowth` against series that were
+typed in by hand. They do not need `./stopwatch` to work at all.
 
 ---
 
-## 8. TODOs 5 through 9 {#the-queue-todos}
+## 6. TODOs 2–6, The Five Timing Functions
 
-All in `Queue.h`. The class carries six data members, and **you will use five of
-them.** Which one you leave alone is precisely the choice you just made.
+Read `timeVectorSubscript` and `timeVectorAppend` in `Stopwatch.cpp` first. Both
+follow the same five steps:
 
-```cpp
-Item*    myArray;      // the circular array
-unsigned myCapacity;   // how many ITEMS the queue can hold
-unsigned mySlots;      // how many slots myArray really has
-unsigned myFront;      // index of the front item, BOTH techniques
-unsigned myCount;      // number of items, COUNT technique
-unsigned myBack;       // index of the next free slot, WASTED-SLOT technique
-```
+1. build a container of `n` items, **outside** the timer
+2. ask `repsFor(n)` how many repetitions to do
+3. start the timer
+4. do the operation that many times
+5. stop, and divide by the repetition count
 
-Note that `myCapacity` and `mySlots` are different numbers, and the difference is
-the entire wasted-slot technique. `getCapacity()` reports `myCapacity`, what the
-caller asked for. Every `%` uses `mySlots`, how long the array really is.
+The five you write are the same shape with a different operation in the middle.
 
-**TODO 5**, write the `MY CHOICE` line, then make `mySlots` agree with it. It
-ships set to `capacity`; one of the two techniques needs it to be `capacity + 1`.
-Leave the `new Item[mySlots]` line alone, it allocates whatever length you
-decided on.
+| TODO | Function | The operation |
+|---|---|---|
+| 2 | `timeListAppend` | `l.push_back(1)` |
+| 3 | `timeVectorPrepend` | `v.insert(v.begin(), 1)` |
+| 4 | `timeListPrepend` | `l.push_front(1)` |
+| 5 | `timeVectorTraverse` | walk `begin()` to `end()` with an iterator |
+| 6 | `timeListTraverse` | the same, on a list |
 
-**TODO 6**, `isEmpty`, `isFull`, `getSize`, from your technique's table above.
-One line each. Do not write a loop in `getSize`; there is a check for that.
-
-**TODO 7**, `enqueue`. Refuse if full, store at the back, move the back index
-(with `%`). Refusing must leave every index exactly as it was.
-
-**TODO 8**, `peekFront`. Refuse if empty, otherwise return `myArray[myFront]`.
-Unlike the Stack, `myFront` is the index of a real item, not of a free slot, so
-there is no `- 1` here.
-
-**TODO 9**, `dequeue`. Refuse if empty, read the front, move `myFront` (with
-`%`), adjust `myCount` if that is your technique, return the item. Nothing is
-erased and nothing is moved, same as `Stack::pop`, for the same reason.
+Three things to watch:
 
 ::: {.callout-warning}
-**A capacity of 1 is legal and it is where mistakes show up.** With the
-wasted-slot technique that is an array of 2. Try it on paper: enqueue, dequeue,
-enqueue, dequeue. There is a check for it.
+**TODO 3 uses 50 repetitions, not `repsFor(n)`.** Two thousand prepends into a
+vector of a million would move a hundred billion elements and you would still be
+sitting there. Fifty is plenty to measure, and it grows the vector by so little
+that n is still effectively n. The TODO comment says this too.
 :::
+
+::: {.callout-warning}
+**TODOs 5 and 6 do not divide by n.** A traversal is already n operations; you
+want to watch the cost of *one whole walk* grow. Divide by the repetition count
+only. Dividing by n as well turns an O(n) measurement into a flat line, which is
+a real answer to a different question.
+:::
+
+::: {.callout-tip}
+**`vector` has no `push_front`.** That is not an oversight, it is the API
+telling you something. Putting an element at the front of a vector means moving
+every other element up one place, and the library declines to give that a
+convenient name. `insert(v.begin(), value)` will do it, and the measurement will
+show you why nobody wanted to make it easy.
+:::
+
+Now run it:
+
+```bash
+make
+./stopwatch
+```
+
+Eight rows, five columns, and a class in the last column worked out by your own
+`classifyGrowth`. Look at the table for a minute before moving on, three of the
+eight rows should surprise you slightly, and §8 is where you say why.
+
+---
+
+## 7. TODO 7, The Chart
+
+`writeChart` writes `results.html`: `CHART_HEAD`, then a data block you produce,
+then `CHART_TAIL`. The two constants are in `given.cpp` and hold the whole page
+and the JavaScript that draws it, so all you write is the numbers.
+
+### The data format, exactly
+
+```
+2 5
+100 1000 10000 100000 1000000
+vector-subscript|0.0016 0.0016 0.0016 0.0018 0.0019
+vector-prepend|0.0132 0.0511 0.6774 6.3801 156.8236
+```
+
+- **Line 1**, how many series, then how many sizes.
+- **Line 2**, the sizes from `SIZES`, space separated.
+- **Then** one line per series: the name, a `|`, then that series' times.
+
+No blank lines, no spaces around the `|`, nothing else in between. The
+JavaScript counts lines.
+
+### Opening an HTML file that lives on Coder {#opening-html}
+
+Your VS Code runs on your laptop, but your files live on the Coder server. So
+double-clicking `results.html` in the Explorer just shows you the HTML source,
+there is no browser on the far end to render it.
+
+The fix is to serve the folder over HTTP and let VS Code bring the port back to
+your laptop. In the VS Code terminal, from your repository folder:
+
+```bash
+python3 -m http.server 8000
+```
+
+VS Code notices the new listening port within a second or two and forwards it
+automatically, you will see a notification, and a **PORTS** tab appears next to
+the terminal. Now open this in your own browser:
+
+```
+http://localhost:8000/results.html
+```
+
+Press **Ctrl-C** in the terminal to stop the server when you are done.
+
+::: {.callout-tip}
+`http://localhost:8000/sample-results.html` works right now, before you have
+written anything. It is four textbook curves rather than your results, so you
+can see what the page looks like when it works, and what each of the four
+shapes looks like.
+
+You can also right-click a file in the Explorer and choose **Download…** to copy
+it to your laptop and open it normally.
+:::
+
+### Reading a log-log chart
+
+Both axes are logarithmic, which is the trick that makes shapes readable.
+
+On ordinary axes, an O(n) curve and an O(n²) curve both look like "a line that
+goes up steeply" and you cannot tell them apart. On log-log axes, **every power
+law is a straight line, and the slope is the exponent**:
+
+- `O(1)` is **flat**
+- `O(n)` climbs at **45 degrees**, one decade up for one decade across
+- `O(n²)` climbs at **twice** that
+- `O(log n)` climbs, but **bends over**, it is the one line that is not straight
+
+That is the same fact `classifyGrowth` computes. The number it returns is ten
+raised to the slope.
+
+---
+
+## 8. TODO 8, `findings.txt`
+
+Eight lines, one per experiment: the name, the complexity class, and one
+sentence saying why.
+
+```
+vector-subscript   O(1)   the index is arithmetic, size never enters in
+```
+
+The accepted spellings are `O(1)`, `O(logn)`, `O(n)`, `O(n^2)` and `O(1)*`,
+none of them with a space inside. Lines starting with `#` are ignored, so the
+instructions in the file can stay where they are.
+
+**Exactly one of the eight deserves the asterisk.** `O(1)*` means *amortized*
+constant: most operations are cheap, one in a while is expensive, and the
+average over many is constant.
+
+::: {.callout-warning}
+**Do not just copy the last column of the table across.** Your `classifyGrowth`
+reports what it measured, and for six of the eight rows that is the whole story.
+For the other two it is not:
+
+- **One row measures the same operation as another row, in a different way, and
+  deserves a different kind of answer.** Both come out constant. Only one of
+  them is constant *because the expensive case is rare*, and that is the one
+  with the asterisk. Read `timeRepeatedVectorAppend` again and look at what its
+  numbers do as n grows.
+
+- **Two rows are the same class as each other**, and at a million one of them is
+  visibly two or three times slower than the other. Both are `O(n)`. Big-Oh does
+  not describe constant factors, and the reason for the difference, where the
+  elements physically are in memory, is worth your sentence.
+:::
+
+### What is graded here
+
+1. All eight lines present, names spelled as the skeleton has them.
+2. **The class on each line is right.** These are facts about the algorithms,
+   not about your laptop, a fixed answer key, unaffected by hardware.
+3. A reason of at least six words on each line. Nobody marks the prose; the
+   reasoning is the point.
+
+If a class you measured disagrees with the class you can argue for from first
+principles, write down the one you can argue for, and then work out why the
+measurement disagreed. That investigation is the assignment.
 
 ---
 
 ## 9. Testing Your Work
 
 ```bash
-make test         # all 36 checks
+make test
 ```
 
+Thirty-six checks, in five groups:
+
+| Group | What it looks at |
+|---|---|
+| **classifyGrowth** (16) | TODO 1, against series typed in by hand |
+| **The harness** (6) | TODOs 2–6: it runs, finishes, and every time is positive |
+| **results.html** (5) | TODO 7 |
+| **findings.txt** (5) | TODO 8, against a fixed answer key |
+| **More cases** (4) | classifyGrowth on series generated while you are graded |
+
 ::: {.callout-important}
-**There are no hidden tests.** What you run with `make test` is exactly what the
-grader runs, all 36 checks, every one of them in a file in your repository.
-Read `checks.cpp`: it is the specification, written out.
+**None of these checks grade your milliseconds.** Not one of them compares a
+timing against a target number, because the grading machine is shared and your
+laptop is not it.
+
+The harness group only asks whether the experiment *ran*: eight rows, five
+sizes, every time greater than zero, the linear ones visibly growing and the
+constant ones visibly not. Everything else is checked against things that are
+the same on every computer.
 :::
 
-The 36 break down like this:
+Every failure comes with a hint. §5 is worth finishing first, sixteen of the
+thirty-six pass without any timing code at all.
 
-| | |
-|---|---|
-| 14 | the Stack |
-| 16 | the Queue |
-| 2 | long generated sequences, compared against `std::vector` and `std::deque` |
-| 3 | constant time, read out of your source |
-| 1 | your `MY CHOICE` line |
-
-**Not one of the 32 behavioural checks can tell which technique you chose.**
-They call the public methods and look at what comes back, which is the only
-thing an ADT promises. Both techniques score 36 out of 36; this was verified
-against complete implementations of each.
-
-Each check runs in its own process. An index that goes off the end of the array
-can crash your program, and if all 36 shared one process a crash in the second
-one would take the other 34 with it. This way it costs you exactly the check it
-happened in.
-
-Run a single check while you are debugging:
+::: {.callout-tip}
+Focus on one check while you are fixing it:
 
 ```bash
 make checks
-./checks "Queue: the array wraps around"
+./checks "Classify: a flat series is constant"
+./checks "Classify: a series that jumps up and back down has no trend"
 ```
 
-::: {.callout-tip}
-**A suggested order, with the score you should see.** Start at 5. TODO 1 takes
-you to **6**; TODOs 2–4 finish the Stack and take you to **19**. Then read §7
-properly. TODOs 5 and 6 only get you to **21**, most of the Queue checks need
-`enqueue` before they can test anything at all, and 7, 8 and 9 together take
-you the rest of the way to **36**.
-
-So the Queue looks unrewarding right up until it suddenly is not. Do not read
-21 as a sign that §7 went badly.
-
-If you are stuck below 19 on the Stack, the problem is almost certainly the
-index in `peekTop` or `pop`, and §4 has the picture.
+A test name needs the full name, or a prefix with a `*` on the end. `./checks
+"Classify:"` matches nothing, prints almost nothing, and exits successfully,
+which looks a lot like passing.
 :::
 
 ::: {.callout-note}
-**The two long checks** run five thousand pushes and pops, and five thousand
-enqueues and dequeues, in an order generated by a formula, and compare every
-single operation against what the Standard Library's containers do with the same
-sequence. They are the ones most likely to catch a wrap-around mistake that only
-shows up on a particular pattern. They are also completely deterministic, so if
-one fails it will fail the same way every time you run it.
+**There are no hidden tests.** What you run with `make test` is exactly what the
+grader runs, all 36 checks. If it passes here, it passes there.
+
+Grading always runs the official copies of `test.py` and `checks.cpp`, not the
+ones in your repository. Editing them will not change your score. Your
+`Stopwatch.cpp` and `findings.txt` are *not* restored, those are yours, and
+they are what is being graded.
 :::
 
 ---
 
 ## 10. Submit
+
+::: {.callout-important}
+Before pushing, open `README.md` and add your name.
+:::
+
+In VS Code, click the **Source Control** icon in the left sidebar, type a commit
+message, click the checkmark to commit, then sync. From the terminal:
 
 ```bash
 git add .
@@ -770,31 +574,26 @@ git commit -m "Complete a09"
 git push
 ```
 
-::: {.callout-important}
-Put your name at the top of `README.md` before your final push.
-:::
+`results.html` is not committed and does not need to be, the grader runs
+`./stopwatch` itself and regenerates it. `findings.txt` very much does need to
+be committed.
 
 **Every push is checked automatically.** Within a minute or two the **Actions**
 tab of your repository shows a run named **Autograde**. Open it: the job summary
-says how many checks passed, and names any that failed. Push as often as you
-like, the most recent submission is the one that counts, and there is no
-deadline on this assignment beyond the last day of classes.
+says how many checks passed, and names any that failed. Push as many times as
+you like; the most recent submission is the one that counts.
 
 ---
 
 ::: {.callout-note}
-## You are going to use these again
+## One last thing, for Friday
 
-Not as an exercise, as tools.
+Friday's session closes the week on what all this is for. A sorting routine that
+is O(n²) instead of O(n log n) does not just make somebody wait, at scale it
+burns more electricity, needs more machines, and puts more carbon in the air to
+compute the same answer.
 
-In **a11** you will solve a maze twice with the same code, once using a Stack and
-once using a Queue, and watch the two containers produce depth-first and
-breadth-first search from an otherwise identical algorithm. In **a12** a Queue
-*is* the snake: enqueue the new head, dequeue the tail, and the animation falls
-out of it.
-
-Both of those assignments ship a working `Stack` and `Queue` in case yours is
-not finished, so a rough week here does not cost you two more. But they are
-written expecting you to drop your own in, and it is a good feeling when
-`Stack<Cell>` just works.
+You now have a stopwatch and a method. When you next reach for the convenient
+container instead of the right one, you will know what it costs, and you will be
+able to measure it.
 :::

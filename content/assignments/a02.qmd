@@ -1,101 +1,116 @@
 ---
-title: "Assignment 02: Sandbox"
-subtitle: "A falling-sand simulator, file I/O, exceptions, and 2D arrays"
+title: "Assignment 02: Keystrokes"
+subtitle: "Repairing the firmware of a programmable calculator"
 ---
 
 ::: {.callout-note}
 Your own private GitHub repository is waiting for you (see
 [Getting the code](#getting-the-code) below), clone it and open it in VS Code.
 
-**Plan to set aside about 3 to 3.5 hours.** Reading the file
-(`loadWorld`) and writing the simulation rules (`step`) are the two long
-sections, between them they are most of the assignment. The experiment in
-§9 takes about fifteen minutes and will save you more than that.
+**Plan to set aside about 3 to 3.5 hours.** Writing the header and finding the
+first fault are the slow parts; once the machine runs at all, the rest moves
+quickly. The three new instructions are the take-home half.
 :::
 
 ## Objectives
 
 By the end of this assignment, you will be able to:
 
-- Open a file with `ifstream` and check that it actually opened
-- Read numbers with `>>` and whole lines with `getline`, and explain why mixing
-  the two needs care
-- Detect the end of a file, and detect a file that ends sooner than it promised
-- `throw` a `runtime_error` when a function cannot do its job, and `catch` it by
-  reference somewhere useful
-- Write formatted output to a file with `ofstream`
-- Declare, iterate over, and modify a two-dimensional array
-- Pass a 2D array to a function, and explain why the column size is part of the
-  parameter type
-- Use a debugger to find a bug that is invisible in the source
+- Write a header file from scratch, with an include guard and a set of prototypes
+- Explain why a function that must change its caller's variable takes a reference
+- Find a fault in working code by comparing what it does against what it should do
+- Use `switch` with `break` to dispatch on a value, and say what happens without the `break`
+- Write a loop whose counter moves backwards through an array
+- Recognise unsigned underflow as a cause rather than as a curiosity
+- Pass an array to a function, and explain why its length has to travel separately
+- Describe how a stored program, a stack and a program counter make a computer
 
-These objectives map to course skills **A1**, **A5**, and **A6**. They also
-introduce **B5** (unit testing), which you finish next week when you write tests
-of your own, here you only have to read and run the ones you are given.
+### The skills this trains
+
+These objectives map to course skills **A2**, **A3**, and **A4**, all in
+cluster **A, C++ Foundations**, which you demonstrate at check-in window
+**W1**. This is the assignment where A4 is genuinely tested rather than
+introduced.
+
+| Skill | | Where it shows up here |
+|---|---|---|
+| **A2** | basic data types, variables, `const`, operators | `unsigned` for the stack depth, `const` on the parameters that only read, and the underflow that happens when an `unsigned` goes below zero |
+| **A3** | pointers | not `new` and `delete`, which arrive in week 4, but the reason `run` has to be told how long the program is: an array becomes a pointer the moment it is passed to a function |
+| **A4** | control structures and functions with correct parameter passing | the whole assignment. The `switch` that dispatches on an instruction, the loop that fetches them, and six functions whose parameter modes decide whether the machine works |
 
 ::: {.callout-note}
-**Lab and homework.** You start this in lab on Tuesday, and by then you will have
-had Monday's lecture on file I/O, enough for §4 and most of §5. Exceptions come
-on Wednesday and 2D arrays on Friday, so the rest of §5 and all of §6–§10 are
-homework. The sections below are in the order you can actually do them.
+**A4 is the one to watch.** It is marked *persistent* in the course plan, which
+means it keeps being assessed after this week rather than being ticked off and
+forgotten. Everything from a03 onward assumes you can decide, without being
+told, whether a parameter should be passed by value, by reference, or by
+`const` reference. Fault 4 in this assignment is what that decision looks like
+when it goes wrong.
 :::
 
 ---
 
-## 1. Introduction
+## 1. The CS112 Model 112
 
-Falling-sand games are a small genre of their own. You get a blank screen, a few
-kinds of material, and a set of rules about how each one behaves, sand piles up,
-water finds its way around things, walls stay put, and out of those three or
-four rules comes something that is oddly hard to stop watching.
+Before phones, before laptops, engineers carried a calculator that could be
+*programmed*. You entered a sequence of keystrokes once, the calculator
+remembered them, and from then on you could replay the whole calculation with a
+single button. The HP-12C, launched in 1981, is still sold today.
 
-None of it is complicated. There is no physics engine. There is a **grid of
-characters**, and once per tick you look at every cell and decide whether the
-thing in it should move. That is the entire program:
+What makes that possible is a small idea with large consequences. The
+calculator does not store a formula. It stores **the keystrokes themselves**, as
+a list of numbers, and then presses them for you.
 
-| Character | Element | What it does |
-|:---:|---|---|
-| `.` | empty | nothing |
-| `#` | wall | never moves |
-| `o` | sand | falls, piles up, sinks through water |
-| `~` | water | falls, and spreads sideways |
+You are repairing the firmware of one of these: the **CS112 Model 112**. The
+hardware is already manufactured, so the only thing anybody can change now is
+the code, and the only place to test a change is the bench simulator, which is
+what `make test` is.
 
-The whole simulation is a 2D array and a nested loop. What makes it interesting
-is that a grid of characters is exactly the data structure this week is about,
-and a simulation that runs for four hundred steps is a wonderfully unforgiving
-way to find out whether you got your loop right. A subtle mistake in a nested
-loop is invisible on paper. It is extremely visible when your sand falls through
-the floor.
+### How it thinks
 
-You will write four functions:
+The Model 112 has no variables. It has one pile of numbers, called the
+**stack**. Every instruction either puts a number on top of the pile, or takes
+one or two off the top and puts a result back.
 
-- `loadWorld()`, read a world from a file, and complain properly when the file
-  is broken
-- `saveWorld()`, write the finished world back out
-- `step()`, advance the simulation by one tick
-- `saveReplay()`, write every frame into an HTML file you can play back
+Here is a program that computes `(7 + 5) * 3`:
 
-Everything else, the colour drawing, the animation, the emitter loop, the
-argument parsing, the HTML and JavaScript for the replay player, is written for
-you. None of it is what this week is about.
+```
+PUSH 7
+PUSH 5
+ADD
+PUSH 3
+MUL
+PRINT
+HALT
+```
+
+And here is the pile after each line:
+
+| Instruction | The stack afterwards | What happened |
+|---|---|---|
+| `PUSH 7` | `7` | put 7 on top |
+| `PUSH 5` | `7 5` | put 5 on top |
+| `ADD` | `12` | took 5 and 7 off, put 12 back |
+| `PUSH 3` | `12 3` | |
+| `MUL` | `36` | took 3 and 12 off, put 36 back |
+| `PRINT` | *(empty)* | took 36 off and printed it |
+| `HALT` | | stop |
+
+That is not an analogy for how a calculator works. It is how one works. Every
+row of this table is a real key:
+
+| On the keypad | In the machine |
+|---|---|
+| press `7`, then `ENTER` | `PUSH 7` |
+| press `+` | `ADD` |
+| the display | what `PRINT` writes |
+| a saved keystroke sequence | a program, stored as an array of `int` |
+| the `x≠0?` conditional skip | `JNZ` |
 
 ::: {.callout-tip}
-**See where this is going first.** Your repository contains `demo.html`, a
-recording of a finished simulator running `worlds/showcase.txt`. Open it (§3.1
-below explains how) and press Play. That is what yours will do by Friday.
-
-`demo.html` is a run of the *same program you are about to write*, so it is also
-the reference for what your own `replay.html` should look like when TODO 4 works.
-:::
-
-::: {.callout-tip}
-**Where this came from.** This is a descendant of a project CS112 ran last
-spring, which used a graphics library called Bridges that needed a web account,
-an API key, and a round trip to a server every time you wanted to see anything.
-It also moved water randomly, which meant no two runs agreed and nothing could
-be checked automatically. This version draws in your terminal, in colour, using
-nothing but text, and every rule has a defined tie-break, so the same world run
-twice gives the same answer.
+**This is called reverse Polish notation**, or RPN, and it is worth ten minutes
+of your curiosity. You write `7 5 +` instead of `7 + 5`, and in exchange you
+never need a bracket. Whole languages are built this way: Forth, PostScript,
+and the bytecode inside the Java and Python you have already run.
 :::
 
 ---
@@ -106,8 +121,7 @@ Your private GitHub repository for this assignment is created for you inside
 the course organization, with the starter code already in it. There is nothing
 to accept and nothing to set up, if you are on the roster, it is there.
 
-
-Clone it, replacing `YOURUSERNAME` with your GitHub username. If `gh` asks you to sign in, see [step 9 of Getting Started](gettingStarted.html#get-your-repository):
+Clone it, replacing `YOURUSERNAME` with your GitHub username:
 
 ```bash
 gh repo clone 26fa-cs112/cs112-a02-YOURUSERNAME
@@ -117,678 +131,431 @@ cd cs112-a02-YOURUSERNAME
 ::: {.callout-note}
 **Cannot find it? Ask GitHub what you have.**
 
-If `gh repo clone` answers
-`Could not resolve to a Repository`, this lists every repository you can
-actually see, spelled exactly right:
+If `gh repo clone` answers `Could not resolve to a Repository`, this lists
+every repository you can actually see, spelled exactly right:
 
 ```bash
 gh repo list 26fa-cs112
 ```
 
 If yours is in that list, you mistyped the name, copy it from the output and
-try again. Watch for usernames that already contain a hyphen or a number; the
-pattern is `cs112-<assignment>-<your username>`, so the two halves run together
-and it often looks wrong when it is right.
+try again.
 
 **If the list is empty, or the command errors, that is mine to fix rather than
-yours to work around.** The usual causes are an organization invitation you have not accepted yet
-(check your email, including spam and the Promotions tab), or a username I
-mistyped when I built the roster. Either way, email me at
+yours to work around.** Email me at
 [eric.araujo@calvin.edu](mailto:eric.araujo@calvin.edu) and I will sort it out
-the same day.
-
-While you wait, **do not create a repository yourself and do not start the work
-somewhere else.** Only the repository I create for you is connected to grading,
-so anything written outside it has to be moved by hand later, and that is a
-worse afternoon than a short wait.
+the same day. While you wait, do not create a repository yourself: only the one
+I create for you is connected to grading.
 :::
 
-Open the folder in VS Code, then build it before you change anything:
+### What is in it
 
-```bash
-make
-```
-
-That produces two programs: `sandbox` (the simulator) and `tester` (the unit
-tests). If `make` works now, you know that any error you see later is yours.
-
-
----
-
-## 3. What You Are Given, and What You Write
-
-**All the C++ you write goes in one file: `sandbox.cpp`.** (Two other files
-change too, you add your name to `README.md`, and you create `worlds/mine.txt`
-in §12, but no other code is yours to touch.)
-
-| File | What it is |
+| File | |
 |---|---|
-| **`sandbox.cpp`** | **Yours.** Four functions, four TODOs. |
-| `sandbox.h` | Constants and prototypes. **Read this first.** |
-| `main.cpp` | The driver: arguments, the emitter loop, the step loop |
-| `render.cpp` | Colour drawing, and the HTML replay scaffold |
-| `tests.cpp` | catch unit tests for the rules. Read these too. |
-| `worlds/` | Worlds to run, including three deliberately broken ones |
-| `makefile`, `test.py` | Build and check |
-
-Running it:
-
-```bash
-./sandbox worlds/hourglass.txt 300            # watch it, in colour
-./sandbox worlds/hourglass.txt 300 --quiet    # no animation, no escape codes
-```
-
-The two arguments are the world file and the number of steps to run. Every run
-writes `out.txt` (the final grid) and `replay.html` (every frame, with a play
-button). `--quiet` suppresses the animation, which is what the tests use so they
-never have to sit through four hundred frames.
-
-### 3.1 Opening an HTML file that lives on Coder {#opening-html}
-
-Your VS Code runs on your laptop, but your files live on the Coder server. So
-double-clicking `demo.html` in the Explorer just shows you the HTML source,
-there is no browser on the far end to render it.
-
-The fix is to serve the folder over HTTP and let VS Code bring the port back to
-your laptop. In the VS Code terminal, from your repository folder:
-
-```bash
-python3 -m http.server 8000
-```
-
-VS Code notices the new listening port within a second or two and forwards it
-automatically, you will see a notification, and a **PORTS** tab appears next to
-the terminal. Now open this in your own browser:
-
-```
-http://localhost:8000/demo.html
-```
-
-Press **Ctrl-C** in the terminal to stop the server when you are done. The same
-address with `replay.html` on the end shows your own runs later on.
-
-::: {.callout-tip}
-You can also right-click a file in the Explorer and choose **Download…** to copy
-it to your laptop and open it normally. That is handy for sending a replay to
-somebody; the server is better while you are iterating, because a refresh is
-enough to see your latest run.
-:::
-
-::: {.callout-tip}
-**How the colour works,** since people always ask. `render()` prints the
-character `▀`, which fills the *top* half of a character cell with the
-foreground colour and leaves the *bottom* half showing the background colour. So
-one printed row draws two grid rows, and the cells come out square instead of
-stretched. Nothing you write ever touches a colour, your code moves `char`
-values around a 2D array, and the mapping from character to colour happens once,
-at the very end, in `render.cpp`.
-:::
-
----
-
-## 4. The World File Format
-
-A world file looks like this:
-
-```
-20 40
-2
-5 10 sand
-8 30 water
-....................####################
-..........#...............#.............
-........................................
-```
-
-Line by line:
-
-1. **`rows cols`**, the size of the grid.
-2. **A count**, how many emitter lines follow.
-3. **That many emitter lines**, each `row col element`, where `element` is the
-   word `sand` or the word `water`. An emitter drops one grain of its element
-   every step, if its cell is free.
-4. **Exactly `rows` lines of exactly `cols` characters**, the grid itself.
-
-One small file, and it needs every reading technique from Monday: `>>` for the
-numbers and the element words, `getline` for the grid rows (which contain `.`
-and `#` and must be read whole), and an honest end-of-file condition when the
-grid runs out.
+| `machine.cpp` | the firmware. **This is what you repair.** |
+| `machine.h` | **it is not there. You write it.** |
+| `calc.h` | the instruction set and the status codes. Do not edit. |
+| `main.cpp` | the bench rig and the ten stored programs. Do not edit. |
+| `makefile`, `test.py` | build and checks. Do not edit. |
 
 ::: {.callout-warning}
-**The `>>` / `getline` trap.** After your last `>>`, the newline that ends that
-line is *still in the stream*. Your very first `getline` would return an empty
-string, and every grid row would be off by one. Call `getline` once before the
-grid loop and throw the result away.
+**The starter does not compile, and that is not a mistake.**
 
-```cpp
-fin >> emitCount;
-string line;
-getline(fin, line);      // eat the rest of the line the numbers were on
+Run `make` right now and you will get:
 
-for (int r = 0; r < rows; r++) {
-    getline(fin, line);  // now this is grid row 0
-    ...
-}
+```{.terminal}
+make: *** No rule to make target 'machine.h', needed by 'main.o'.  Stop.
 ```
+
+There is no `machine.h` in your repository because writing it is the first
+task. Nothing else in this assignment can be done until it exists, so start
+there.
 :::
 
 ---
 
-## 5. TODO 1, `loadWorld`
+## 3. Reading a stored program
 
-Open `sandbox.cpp`. The first TODO is the largest one in the assignment.
+Open `main.cpp` and look at `prog1`:
 
 ```cpp
-void loadWorld(const string& filename,
-               char grid[][MAX_COLS], int& rows, int& cols,
-               int emitRow[], int emitCol[], char emitElem[], int& emitCount);
+const int prog1[] = {
+    PUSH, 7,      // 0
+    PUSH, 5,      // 2
+    ADD,          // 4
+    PRINT,        // 5
+    HALT          // 6
+};
 ```
 
-Everything after `filename` is an **out parameter**, `loadWorld` fills it in for
-whoever called it. The `int&` parameters are references, the same out parameters
-you used in week 1. Arrays are already passed by reference in C++, so `grid` and
-the three emitter arrays need no `&`.
+That is one array of `int`. `PUSH`, `ADD` and the rest are just names for
+numbers, given in `calc.h`, so that a program can be written as words instead
+of as `{1, 7, 1, 5, 3, 6, 7}`.
+
+Two things about it are worth slowing down for, because both come back later.
+
+**The comment on each line is a step number, and they are not consecutive.**
+`PUSH` occupies two steps: the instruction, and then the value to push. Every
+other instruction occupies one. So after running the `PUSH` at step 0, the
+machine has to move on by **two**, not one, or it will try to execute the 7.
+
+**The stack grows and shrinks as the program runs.** Nothing in the program
+says how deep it is. That is tracked separately, by a variable the machine
+keeps as it goes.
+
+### How the machine is built in C++
+
+```cpp
+int stack[STACK_MAX];   // the pile of numbers
+unsigned top = 0;       // how many of them there are
+```
+
+`top` is **not** the index of the top value. If `top` is 3, the values are at
+`stack[0]`, `stack[1]` and `stack[2]`, and the top one is `stack[2]`. So `top`
+is one past the last value in use, and it is also the index of the next free
+slot.
+
+Read that twice. It is the sort of thing an off-by-one hides in.
+
+---
+
+## 4. Task 1: write `machine.h`
+
+Create a new file called `machine.h` in the same folder, and declare the six
+functions that `machine.cpp` defines.
+
+You have seen a header before, in a01, and there is a complete one sitting in
+your repository right now: open `calc.h` and copy its shape. It has an include
+guard, it has a comment saying what it is for, and it ends with `#endif`.
 
 ::: {.callout-note}
-**Why does `grid` have a size in it?** Look at the type: `char grid[][MAX_COLS]`.
-The row count is missing but the column count is not, and it has to be that way.
-A 2D array is one contiguous block of memory, laid out row after row, and to find
-`grid[r][c]` the compiler computes `r * MAX_COLS + c`. Without knowing how wide a
-row is, it cannot do that arithmetic. This is the same pointer arithmetic you did
-in week 0, with one more dimension on top.
+**What goes in a header, and why.**
 
-Eight parameters is a lot to carry around, and you are about to feel it. Next
-week you will meet **classes**, which exist in large part to solve exactly this
-problem.
+`machine.cpp` defines the functions. `main.cpp` calls them. But `main.cpp` is
+compiled on its own, before the linker ever sees `machine.cpp`, so at that
+moment the compiler has no idea whether `pop` exists or what it takes.
+
+A header is how you tell it. `#include "machine.h"` pastes the declarations
+into `main.cpp`, and the compiler can then check every call. The linker matches
+them up with the real definitions afterwards.
+
+Get a declaration wrong and you do not get a wrong answer. You get an error at
+link time, saying a function was called that nobody defined, because a
+declaration that does not match a definition describes a different function.
 :::
 
-### Throwing when the file is wrong
-
-A file on disk is written by someone else, and people get things wrong. When
-`loadWorld` cannot do its job, it should say so and stop, not return a
-half-filled grid and let the rest of the program work with garbage. That is what
-`throw` is for.
+These are the six, exactly:
 
 ```cpp
-#include <stdexcept>
-
-throw runtime_error("cannot open file: " + filename);
+void push(int stack[], unsigned& top, int value);
+int  pop(int stack[], unsigned& top);
+bool isEmpty(unsigned top);
+void dump(const int stack[], unsigned top);
+int  run(const int program[], unsigned length, int stack[], unsigned& top);
+unsigned mine(int program[]);
 ```
 
-Throw in these four cases. The autograder looks for the quoted words somewhere in
-your message; the rest of the message is yours to write, and a helpful one is
-worth writing.
+Do not copy them without reading them. Every parameter-passing idea from this
+week is in those six lines:
 
-| When | Your message must contain |
+| | |
 |---|---|
-| The file will not open | `cannot open file` |
-| `rows` or `cols` is outside `1 … MAX_ROWS` / `1 … MAX_COLS` | `bad dimensions` |
-| The file runs out of rows, or a row is too short | `grid ended early` |
-| A grid character is not `.` `#` `o` `~`, or an emitter's element is not `sand` or `water` | `unknown character` |
+| `unsigned& top` | `push` and `pop` must **change** how deep the stack is. A reference is how a function reaches back out and changes the caller's variable. Without the `&` they would change a copy and the caller would never know. |
+| `const int stack[]` | `dump` only **reads** the stack. `const` says so, and the compiler will stop you if you forget and write to it. |
+| `unsigned top` | `isEmpty` only needs the number. Nothing to change, nothing to protect. |
+| `unsigned length` | `run` cannot work out how long the program is. An array becomes a pointer the moment it is passed to a function, and a pointer does not know how many things it points at, so the length has to travel alongside it. |
+| `int program[]` | `mine` **fills in** an array the caller already owns. That is an out parameter. |
 
-You do **not** need to check that emitters sit inside the grid, `main()` already
-does that.
-
-`main()` catches these for you, at the bottom of the file:
-
-```cpp
-catch (const runtime_error& e) {
-    cerr << "Error: " << e.what() << endl;
-    return 1;
-}
-```
-
-Note `const runtime_error&`, **caught by reference**. Catching by value would
-copy the exception object, and with a hierarchy of exception types it would slice
-off everything the derived type added. Catch exceptions by reference. Always.
-
-::: {.callout-tip}
-Notice what the `try` block in `main()` wraps: the load, the whole simulation,
-*and* the saves. A throw anywhere in there unwinds the stack straight down to that
-one `catch`. You do not have to check a return value at every level, and there is
-no way to accidentally continue with a broken world. That is the argument for
-exceptions in one paragraph.
-:::
-
-Try it against the three broken worlds you were given, plus one that is not
-there at all, which needs no file:
-
-```bash
-./sandbox worlds/badDims.txt 10       # bad dimensions
-./sandbox worlds/short.txt 10         # grid ended early
-./sandbox worlds/badChar.txt 10       # unknown character
-./sandbox worlds/doesNotExist.txt 10  # cannot open file
-```
-
-Each should print one clear line and exit. If any of them crashes, or prints
-nothing, or carries on regardless, that case is not handled yet.
-
----
-
-## 6. TODO 2, `saveWorld`
-
-Much shorter. Write the grid out in the same format `loadWorld` reads:
-
-```
-line 1     rows and cols, separated by a space
-line 2     the single character 0   (finished worlds have no emitters)
-then       rows lines of cols characters
-```
-
-An `ofstream` behaves exactly like `cout`, same `<<`, same everything:
-
-```cpp
-#include <fstream>
-
-ofstream fout(filename);
-fout << rows << " " << cols << "\n";
-```
-
-::: {.callout-tip}
-**Check your first two functions against each other.** Run zero steps: nothing
-moves, so what comes out must be exactly what went in.
-
-```bash
-./sandbox worlds/hourglass.txt 0 --quiet
-diff <(tail -n +3 worlds/hourglass.txt) <(tail -n +3 out.txt)
-```
-
-If `diff` prints nothing, `loadWorld` and `saveWorld` are both right. If it
-prints something, you have found a bug before writing a single rule.
-:::
-
----
-
-## 7. The Rules
-
-Once per step, every grain gets **at most one move**. Walls never move. Empty
-cells are not grains and do nothing.
-
-**Sand**, try these in order and stop at the first one that works:
-
-1. The cell **below** is empty → move down.
-2. The cell **below** holds water → **swap places with it**. (Sand is heavier;
-   it sinks through, and the water ends up above it.)
-3. The cell **below-left** is empty → move down-left.
-4. The cell **below-right** is empty → move down-right.
-5. Otherwise → stay put.
-
-**Water**, the same idea, with two more options:
-
-1. The cell **below** is empty → move down.
-2. The cell **below-left** is empty → move down-left.
-3. The cell **below-right** is empty → move down-right.
-4. The cell to the **left** is empty → move left.
-5. The cell to the **right** is empty → move right.
-6. Otherwise → stay put.
-
-Sand gets lower or stays. Water gets lower if it can, and if it cannot, it
-spreads out, which is the entire difference between a pile and a puddle.
+Once `machine.h` exists, `make` should succeed and `./a02 prog1` should run.
+It will print the wrong answer. That is the next task.
 
 ::: {.callout-important}
-**Left is always tried before right.** Every one of these lists is in strict
-priority order, and ties never go to chance. That matters more than it looks: the
-version of this project that ran last spring picked left or right *at random*,
-which meant no two runs of the same world ever agreed, and nothing about it could
-be checked automatically. A fixed tie-break costs you a little realism, water
-leans left rather than levelling perfectly, and buys you a simulation you can
-test.
-:::
+**Commit `machine.h` as soon as it works.** It is a file you created rather than
+one that arrived with the repository, so git is not tracking it until you add
+it. In VS Code's **Source Control** panel it appears under **Changes** with a
+**U** beside it, for untracked. Stage it with the **+**, commit, and sync.
 
-Before you look at any neighbour, check that it exists: `r + 1 < rows`,
-`c - 1 >= 0`, `c + 1 < cols`. The bottom row has nothing below it, and reading
-`grid[rows][c]` is exactly the kind of out-of-bounds access C++ will happily let
-you do and then behave strangely about.
+In the terminal that is `git add machine.h`, then commit and push as usual. A
+header that only exists on your own machine is a repository that does not
+build, and grading only ever sees what you pushed.
+:::
 
 ---
 
-## 8. TODO 3, `step`
+## 5. Task 2: the five faults
 
-```cpp
-void step(char grid[][MAX_COLS], int rows, int cols);
-```
-
-Visit every cell. Apply the rules. That is the whole function.
-
-Write it now, with two nested loops, and **pick whichever loop direction seems
-natural to you**. Do not think about it too hard. Then go straight to §9, which
-is about what happens next.
-
-### Meet catch
-
-`tests.cpp` contains **unit tests** for each rule, on grids small enough to check
-by hand. Open it. Each test builds a tiny world, calls `step()` once, and states
-what the grid must look like afterwards:
-
-```cpp
-TEST_CASE("sand falls into empty space below", "[sand]") {
-    build(grid, {"...",
-                 ".o.",
-                 "..."}, rows, cols);
-
-    step(grid, rows, cols);
-
-    REQUIRE(picture(grid, rows, cols) == vector<string>{"...",
-                                                        "...",
-                                                        ".o."});
-}
-```
-
-These are written with **catch**, a testing framework that is nothing but the
-single header `catch.hpp` sitting in your repository. `REQUIRE` is a close
-relative of the `assert()` you used in a01, with one useful difference: when a
-`REQUIRE` fails, it prints what it *got* next to what it *wanted*, and then moves
-on to the next test instead of killing the program. So a run tells you about all
-your failures at once.
-
-```bash
-make tester
-./tester                              # all of them
-./tester -s                           # all of them, showing every REQUIRE
-./tester "sand sinks through water"   # one of them, by name
-```
-
-Read them before you write anything. They are the specification for §7, written
-in a form the compiler can check, and the ability to state what code must do
-*before* writing it is most of what next week's assignment is about.
-
----
-
-## 9. The Experiment {#the-experiment}
-
-You have a `step()`. Before you run a big world, run the smallest one there is.
-
-`worlds/oneGrain.txt` is a tall empty column with a single grain of sand near the
-top and a floor at the bottom. Open it and look at it.
-
-**Write down your answer to this before you run anything:**
-
-> After **one** call to `step()`, which row is the grain in?
-
-Now run exactly one step:
-
-```bash
-./sandbox worlds/oneGrain.txt 1 --quiet
-cat out.txt
-```
-
-::: {.callout-warning}
-If the grain is where you predicted, run `./sandbox worlds/oneGrain.txt 1` again
-without `--quiet`, and also try `./tester "a grain moves at most one cell per
-step"`. If both agree with you, you happened to pick the right loop direction the
-first time, read the rest of this section anyway, because it explains *why* you
-were right, and you will need that in week 5.
-:::
-
-For most of you, the grain is sitting on the floor. One step, and it fell the
-entire height of the column.
-
-**Nothing in your rules says that.** Rule 1 moves a grain down by one cell. Read
-your `step()` again, it is not wrong. Reading it more carefully will not help,
-which is exactly why this is the right moment to stop reading and start
-debugging.
-
-### Find it with the debugger
-
-So far, when you wanted to know what your program was doing, you added a `cout`.
-That works, but it makes you guess in advance what is worth printing. A
-**debugger** does something better: it stops your program mid-run and lets you
-look at everything.
-
-This is the moment it earns its keep. Take fifteen minutes to learn it here and
-you will use it for the rest of the course.
+The Model 112 went into testing with **exactly five faults** in `machine.cpp`.
+You are told there are five. You are not told where they are.
 
 ::: {.callout-note}
-Everything below is already set up in your repository. `.vscode/launch.json`
-holds three ready-made debug configurations, and the `-g` flag in the `makefile`
-puts the debug information into the executable that makes any of it possible.
-(Without `-g`, the debugger cannot tell which machine instruction belongs to
-which line of your source, and breakpoints do nothing.)
+**None of the five is a compiler error.** The compiler finds those for you and
+tells you the line number. All five of these compile cleanly and behave
+wrongly, which is the kind you have to find by reading, thinking, and running
+the machine to see what it actually did.
+
+The comments in `machine.cpp` describe what each piece is **supposed** to do,
+and they are accurate. The code is what is not. Comparing the two is most of
+the work.
 :::
 
-**1. Set a breakpoint.** Open `sandbox.cpp` and find the line inside `step()`
-where sand moves down. Click in the margin just to the *left* of its line number.
-A red dot appears. That is a **breakpoint**: a line where you want the program to
-stop.
+Run the stored programs and compare what you get against what each one says it
+expects:
 
-**2. Start debugging.** Press **F5**. At the top of the window a dropdown appears
-choose **Debug one unit test**. That builds the project and runs
-`./tester "a grain moves at most one cell per step"` under the debugger: one
-grain, one step, nothing else happening anywhere.
+```bash
+./a02            # lists all ten
+./a02 prog1      # 7 + 5
+./a02 prog3      # (7 + 5) * 3
+./a02 prog10     # pushes three values and prints none
+```
 
-**3. Read the screen.** Your program stops on the red dot, and a yellow arrow
-marks it. Three things are now worth looking at:
+Every run prints the program's own output, then the stack that was left, then a
+status number:
 
-| Where | What it shows |
-|---|---|
-| **Variables**, upper left | every variable in scope, right now, including `r` and `c` |
-| **Call Stack**, lower left | who called the function you are stopped in |
-| The toolbar at the top | Continue (**F5**), Step Over (**F10**), Step Into (**F11**), Stop |
+```{.terminal}
+12
+stack after: (empty)
+status: 0
+```
 
-Look at **`r`** and **`c`** in the Variables panel and write them down.
-
-**4. Continue.** Press **F5** again. The program runs until it hits the same
-breakpoint the next time. Look at `r` and `c` again.
-
-Here is the question the debugger answers, and the `cout` would not have:
-**within a single call to `step()`, how many times does that line run for the
-same grain?**
-
-It should be exactly once. Keep pressing F5 and watching `r`. You will see it run
-again. And again. And again, once per row, all the way to the floor.
+The status is not the answer. It is a report on how the machine stopped, in the
+same way that the number `main` returns is a report to the shell. Zero means
+nothing went wrong. The others are listed at the bottom of `calc.h`.
 
 ::: {.callout-tip}
-Click the top frame's caller in the **Call Stack** panel to jump to the line in
-`tests.cpp` that called `step()`. That is how you answer "how did I get here?",
-and it becomes essential in week 9 when you start writing recursive functions and
-the call stack is twelve frames deep.
+**Faults can hide each other.** One of the five stops the stack from ever
+shrinking, and while that is true almost nothing behaves normally, including
+the parts that are correct. Expect the picture to change sharply when you fix
+it, and do not conclude that a fault you already fixed has come back.
+
+Work one program at a time, smallest first. `prog1` is four instructions long
+and there is nowhere for a fault to hide in it.
 :::
-
-### What is actually happening
-
-Suppose your outer loop runs **top to bottom**. You are at row `r`, you find a
-grain, and you move it down into row `r + 1`.
-
-Then your loop moves on to row `r + 1`, and finds the same grain there, sitting
-in a cell you have not visited yet this pass. Nothing marks it as having already
-moved. So it moves again. And again, once per row, all the way down, in a single
-step. The grain does not fall fast; it gets **carried** by your own loop.
-
-The fix is to visit rows in the order that makes a moved grain land somewhere you
-have already been:
 
 ::: {.callout-important}
-**Scan from the bottom row upward.** Start at `rows - 1` and count down to `0`. A
-grain that moves down lands in a row this pass has already finished with, so it
-cannot be picked up a second time. One grain, one move, one step.
+**There is no debugger in this assignment, and that is deliberate.**
+
+You will meet one in a03, and it is a fine tool. But a debugger shows you what
+the machine did, and what you need first is the habit of working out what the
+code *says* it will do. That habit is the thing that makes you fast later, and
+the only way to build it is to sit with code you did not write until you
+understand it.
+
+So: read. The whole of `machine.cpp` is about a hundred and sixty lines, and
+you should end this assignment able to explain every one of them.
 :::
 
-Change the outer loop, rebuild, and run the experiment again. The grain moves one
-row.
+### How to find a fault by reading
 
-Two things worth taking away from this:
+**Trace a program by hand, on paper.** Take `prog1`, four instructions long,
+and draw the stack after each one, the way the table in §1 does. Then run
+`./a02 prog1` and compare. The first row where your table and the machine
+disagree is the instruction that contains the fault.
 
-- **This bug is invisible in the source.** Every individual line was right. Only
-  the *order in which the loop visits cells* was wrong, and the only way to see
-  it was to watch the program run. That is what a debugger is for, and it is why
-  "read your code again" is not always the answer.
-- **There is a second way to fix it:** keep two grids, read from one and write to
-  the other, and swap them at the end of the step. Then nothing you write during
-  a pass can affect what you read during that pass. You do not need it here, but
-  hold on to the idea, it comes back.
+**Read the comment, then read the code under it.** The comments in
+`machine.cpp` say what each piece is supposed to do, and they are accurate.
+The code is what is not. Several of the five are visible the moment you hold
+one against the other and ask "does it, though?"
 
-### One more of the same, smaller
+**Start with the smallest program that goes wrong.** `prog1` has nowhere for a
+fault to hide. `prog7` runs a loop and touches almost everything, so it is the
+worst possible place to begin and a good place to finish.
 
-There is one move that scanning bottom-to-top does *not* protect you from. Sand
-only ever moves **down** into an already-finished row. Water rule 5 moves it
-**sideways into the next column**, which your inner loop has not reached yet. A
-moment later it arrives there, finds the same grain, and gives it a second turn
-in the same step.
+**Fix one thing, rebuild, run again.** Changing three things at once and
+getting a different wrong answer teaches you nothing about which change did
+what.
 
-The fix is the same idea in one line: after moving water right, step the column
-counter past it.
+**Say what you expect out loud before you press Enter.** If you cannot predict
+what the machine is about to print, you are guessing rather than debugging, and
+guessing on a five-fault program takes a very long time.
 
-```cpp
-grid[r][c]     = EMPTY;
-grid[r][c + 1] = WATER;
-c++;              // this grain already moved; do not visit it again
-```
-
-Now run something worth watching:
-
-```bash
-./sandbox worlds/hourglass.txt 300
-./sandbox worlds/cistern.txt 250
-./sandbox worlds/quarry.txt 200
-```
+::: {.callout-tip}
+**Two of the five are about `top`, the number that says how deep the stack
+is.** Everything the machine does depends on it being right. When a program
+prints something bizarre, ask what `top` was at that moment, and which function
+last had a chance to change it.
+:::
 
 ---
 
-## 10. TODO 4, `saveReplay`
+## 6. Task 3: three more instructions
 
-The last function, and the shortest interesting one. It writes every frame of the
-run into a single HTML file with a play button and a scrubber.
+Three instructions are missing entirely. Their TODOs are inside the `switch` in
+`run`, and each says what the instruction has to do. If you run a program that
+uses one now, the machine meets a number it does not recognise and stops with
+status 3.
 
-The page and the JavaScript player are handed to you as two string constants,
-`REPLAY_HEAD` and `REPLAY_TAIL`. You write what goes between them:
+### TODO 1, `DUP`
 
-```cpp
-fout << REPLAY_HEAD;
+Push a second copy of the top value, so a stack of `6` becomes `6 6`.
 
-// one line:  rows, cols and frameCount, separated by spaces
-// then:      for each frame, `rows` lines of `cols` characters
+It needs something to copy, and it needs room for the copy. Look at how the
+cases above it check for both and report `ERR_UNDERFLOW` and `ERR_OVERFLOW`,
+and do the same.
 
-fout << REPLAY_TAIL;
-```
+`prog5` uses it to square a number without pushing the number twice.
 
-`frames` is a **3D array**, one more dimension than the grid, with the frame
-number on the front:
+### TODO 2, `SWAP`
 
-```cpp
-void saveReplay(const string& filename,
-                char frames[][MAX_ROWS][MAX_COLS],
-                int frameCount, int rows, int cols);
-```
+Exchange the top two values, so a stack of `10 3` becomes `3 10`.
 
-`frames[f][r][c]` is the character at row `r`, column `c` of frame `f`. Notice
-that the *two* rightmost sizes are in the parameter type now, for the same reason
-`MAX_COLS` was there before: the compiler needs both to do the arithmetic.
+The neatest way is two pops and two pushes. Work out on paper which order the
+two pushes go in before you write them: getting it backwards leaves the stack
+exactly as it was, and the check will tell you nothing more useful than "wrong
+answer".
 
-So this is the nested loop from `saveWorld` with one more loop wrapped around it.
-That is genuinely all it is, and the payoff is a colour animation you can send
-to somebody.
+`prog6` swaps and then subtracts, and expects `-7`.
+
+### TODO 3, `JNZ`
+
+`JNZ n` pops the top value. If it was **not** zero, jump to step `n`. If it
+**was** zero, carry on with the step after this instruction.
+
+This is the one that turns a list of keystrokes into a program. Every
+instruction above moves the program counter forward by a fixed amount. This one
+can move it **backwards**, which is how a program repeats itself.
+
+Two things to get right:
+
+- the value is popped whether or not the jump happens
+- "carry on" means `pc += 2`, not `pc += 1`, because `JNZ` carries an operand in
+  the step after it, exactly like `PUSH`. Landing on your own operand and
+  running it as an instruction is how you get a status of 3.
+
+The step to jump to is `program[pc + 1]`. That is an `int` and `pc` is an
+`unsigned`, so you will need a cast: `(unsigned)program[pc + 1]`.
+
+`prog7` counts down from 3 and should print three lines. If it prints an
+endless stream instead, the value is not being popped, or the jump is
+happening when it should not.
 
 ::: {.callout-warning}
-Nothing else goes in the file. No separators between frames, no blank lines, no
-trailing message. The JavaScript counts lines, so one extra line shifts every
-frame after it.
+**If a program never stops**, press <kbd>Ctrl</kbd>+<kbd>C</kbd> in the
+terminal. `make test` gives every program five seconds and then gives up, so an
+infinite loop shows as a failed check rather than a hung machine.
 :::
-
-When it works, open `replay.html` the same way you opened `demo.html` back in
-[§3.1](#opening-html):
-
-```bash
-python3 -m http.server 8000       # then http://localhost:8000/replay.html
-```
-
-Put the two side by side, `demo.html` is a recording of a correct simulator, so
-if yours looks different, that difference is a bug you can see.
-
-The file is completely self-contained: no images, no libraries, no network. You
-can download it and email it to someone and it will just work.
 
 ---
 
-## 11. Testing Your Work
+## 7. Task 4: store a program of your own
+
+At the bottom of `machine.cpp` there is an array called `myKeystrokes` holding a
+single `HALT`. Replace it with a program that computes `(7 + 5) * 3`, prints the
+result, and halts. `./a02 mine` must print `36` and nothing else.
+
+Write it the way `prog1` to `prog10` are written in `main.cpp`.
+
+Two rules, both checked:
+
+- **Use the names, not the numbers.** `PUSH, 7` and not `1, 7`. A program
+  written as bare numbers is unreadable, which is the entire reason `calc.h`
+  gives them names.
+- **The machine has to do the arithmetic.** Storing `PUSH, 36, PRINT, HALT`
+  prints the right answer and proves nothing, so the checks require an `ADD`
+  and a `MUL`, and refuse any `PUSH` of a value larger than 9.
+
+---
+
+## 8. Testing Your Work
 
 ```bash
 make test
 ```
 
-Twenty-nine checks, in eight groups:
-
-| Group | What it looks at |
-|---|---|
-| **Bad world files** (4) | your program survives each broken file and says why |
-| **The rules** (6) | the catch tests in `tests.cpp`, one per rule plus scan order |
-| **Whole scenarios** (4) | a full run compared against the reference |
-| **The replay** (2) | `replay.html` is shaped the way the player expects |
-| **Your own world** (1) | see §12 |
-| **More bad world files** (4) | the same requirements on files built in a scratch folder |
-| **More scenarios** (6) | six more worlds, each leaning on one rule |
-| **Round trip** (2) | your `out.txt` reloads as a world file, plus one more replay |
-
-Groups 6 to 8 build their world files on the fly rather than reading `worlds/`,
-so they check the same requirements on inputs you have not seen. Nothing in them
-is new: if your code genuinely works, they pass.
-
-The scenario checks compare a **fingerprint** of your `out.txt` rather than the
-file itself, so a failure can tell you that something is wrong without telling you
-what the right answer looks like. When one fails, that is the moment to run the
-same world *without* `--quiet` and watch where it goes wrong. That is what the
-colour is for.
-
-Every failure comes with a hint. Work through them one at a time, the four
-functions are independent enough that you can get partial credit for each as you
-go.
+Twenty checks, in three groups: the faults, the instructions you added, and
+your own program. Each failure names a stored program and tells you which of
+the machine's jobs is not being done. It does not tell you which line is wrong,
+because finding that is the assignment.
 
 ::: {.callout-note}
 **There are no hidden tests.** What you run with `make test` is exactly what the
-grader runs, all 29 checks. If it passes here, it passes there.
+grader runs, all 20 checks. If it passes here, it passes there.
 
-Grading always runs the official test suite and the official `worlds/` files, not
-the copies in your repository. Editing them will not change your score.
+Grading always runs the official copies of `test.py`, `makefile`, `main.cpp`
+and `calc.h`, not the copies in your repository, so editing any of those cannot
+change your score.
+:::
+
+::: {.callout-important}
+**If it does not build, you score zero.** There is no partial credit for a
+repository that will not compile, because there is nothing to run. Almost
+always the cause is `machine.h`: a missing `&`, a `const` in the wrong place, or
+a name spelled differently from the definition in `machine.cpp`.
+
+The good news is that this can never surprise you. `make test` builds exactly
+the way grading builds, so if it compiles for you it compiles for the grader.
+Run it before every push.
 :::
 
 ---
 
-## 12. Design Your Own World
-
-Make a world of your own and save it as **`worlds/mine.txt`**.
-
-An hourglass, a waterfall, a maze that sand has to find its way through, your
-initials in walls with sand pouring over them. Ten minutes, a text editor, and
-the format from §4.
-
-It is graded on whether it **loads and runs**, plus two sanity conditions so an
-empty grid does not count: at least **8 wall characters** (`#`), and either at
-least **4 grains** of sand or water in the grid or at least one emitter. That is
-the whole rubric. No points for artistry, points for artistry are awarded
-verbally, in class, on Friday, when we run the good ones on the projector.
-
-```bash
-./sandbox worlds/mine.txt 300
-```
-
-::: {.callout-tip}
-Two things worth knowing while you build one. `rows` and `cols` must be within
-`MAX_ROWS` (64) and `MAX_COLS` (128), and no grid line may be **shorter** than
-`cols`, a short line is the `grid ended early` error you spent §5 implementing,
-and it is by far the most common mistake here. And an emitter is much more
-interesting than a grid full of sand: one emitter running for three hundred steps gives you a
-stream, not a lump.
-:::
-
----
-
-## 13. Submit
+## 9. Submit
 
 ::: {.callout-important}
 Before pushing, open `README.md` and add your name.
 :::
 
-In VS Code, click the **Source Control** icon in the left sidebar, type a commit
-message, click the checkmark to commit, then sync. From the terminal:
+In VS Code, click the **Source Control** icon in the left sidebar. You will see
+your changed files, including `machine.h` if you have not committed it yet. Type
+a commit message such as `Model 112 repaired`, click the checkmark to commit,
+then **Sync Changes** to push. From the terminal, that is:
 
 ```bash
 git add .
-git commit -m "Complete a02"
+git commit -m "Model 112 repaired"
 git push
 ```
 
-Make sure `worlds/mine.txt` is included, `git status` will tell you.
-
 **Every push is checked automatically.** Within a minute or two the **Actions**
 tab of your repository shows a run named **Autograde**. Open it: the job summary
-says how many checks passed, and names any that failed. Push as many times as
-you like; the most recent submission is the one that counts.
+says how many checks passed, and names any that failed.
+
+Do not wait until everything works to push. Push when the header compiles, push
+again when the first fault is fixed. It costs ten seconds and it means a lost
+workspace costs you nothing.
+
+---
+
+## 10. When I Push a Fix Into Your Repository
+
+Assignments occasionally need correcting after they have gone out. A check
+turns out to be testing the wrong thing, or a comment in `main.cpp` says
+something misleading. When that happens I do not ask twenty-five people to
+re-clone. I push the corrected file straight into each of your repositories,
+and I tell the class that I have done it.
+
+Only files you do not own move that way, and each says so at the top:
+
+> `NOTE TO STUDENTS: You do NOT need to edit this file.`
+
+For this assignment that is `main.cpp`, `calc.h`, `makefile` and `test.py`.
+**`machine.cpp` and `machine.h` are yours, and nothing I run will touch them.**
+
+### What that means for you
+
+Your repository now has a commit on GitHub that your Coder copy does not, so
+**pull before you start working**, every session.
+
+In VS Code, the **Sync Changes** button in the Source Control panel carries a
+small ↓ count when GitHub has commits you do not. Clicking it brings them down
+and sends yours up in one go.
+
+::: {.callout-tip}
+**The same thing in the terminal.**
+
+```bash
+git pull
+```
+:::
+
+::: {.callout-important}
+**Commit your own work before you pull.** Git will refuse to pull on top of
+uncommitted edits to a file it needs to replace, and the refusal is the polite
+outcome. Commit first and your work is recorded and impossible to lose in the
+process.
+:::
+
+a01 explains what a merge is and what to do if one reports a conflict. The
+short version: your `main` and GitHub's `origin/main` both grew from the same
+point, `git pull` joins them with a single new commit that has two parents, and
+that is normal rather than a sign of trouble. If it does report a conflict, the
+file will be one you were told not to edit, and my version is the one to keep.

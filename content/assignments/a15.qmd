@@ -1,0 +1,48 @@
+---
+title: "Assignment 14: Matrix Operations and OpenMP"
+subtitle: "Weeks 13–14 · Nov 30 – Dec 9"
+---
+
+::: {.callout-note}
+**Not published yet.** This page fills in before week 13 begins. The outline
+below is what the assignment is being built to cover, a preview, not a
+specification. Nothing here is final.
+
+This is the only assignment that spans **two weeks**: it starts in week 13 and
+concludes in week 14, so budget accordingly.
+:::
+
+## What it will cover
+
+This assignment closes out the course by taking a data structure you already
+know and making it faster on hardware you already have, the last of the five
+course outcomes, *use parallel computing techniques to improve algorithm
+performance and measure the improvement*.
+
+By the end of it, you will be able to:
+
+- Describe Moore's law, and why manufacturers stopped raising clock speed
+- Describe the fork-join paradigm, and where it fits a loop over a matrix
+- Use `#pragma omp parallel for` to parallelise a loop
+- Reason about how memory access patterns affect parallel speed-up
+- Compare timings across scheduling strategies and justify the difference
+- Explain the speed-up you measured, including the cases where parallelism
+  did not help
+
+## Shape of the work
+
+Matrix operations are the vehicle. They are easy to state, expensive enough to
+time honestly, and they reward thinking about how memory is walked rather than
+just how many cores are thrown at the problem.
+
+As with every assignment this term, the measuring and the write-up carry real
+weight. A correct parallel loop that you cannot explain is not the goal.
+
+## Before it opens
+
+Nothing to do yet. When the page fills in, it will follow the same structure as
+the rest: objectives, getting the code, the parts in order, and what to submit.
+
+In the meantime, [the schedule](../schedule.html) lists the readings and slides
+for weeks 13 and 14, and [Skills & Check-Ins](../checkins.html) shows which
+skills this assignment gives you evidence for.
