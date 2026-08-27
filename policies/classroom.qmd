@@ -24,6 +24,27 @@ The instructor does not keep fixed office hours. Appointments are booked directl
 
 ---
 
+## Study Sessions
+
+Calvin runs free, drop-in peer **Study Sessions**. The one for this course is
+**Computer Science & Data 102**, and it is the same room and time as the Tutoring
+Assistants:
+
+| | |
+|---|---|
+| **When** | Mondays and Thursdays, 7:00–9:00 PM |
+| **Where** | SB 337 |
+
+No appointment, no sign-up. Bring whatever you are stuck on.
+
+Other sessions run for Biology, Calculus, Chemistry, and Statistics on various
+evenings, all 7–9 PM. The full schedule is on Calvin's
+[Peer Support](https://calvin.edu/student-success/academic-and-advising-support/peer-support)
+page, and questions go to
+[studentsuccess@calvin.edu](mailto:studentsuccess@calvin.edu).
+
+---
+
 ## Library and Research Help
 
 Most of what you need for this course is on this website or in the C++ documentation. But when you do need to find something — a reference, a paper, background for a reflection question — the library is there, and asking a librarian is faster than searching alone.
