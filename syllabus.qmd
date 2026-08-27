@@ -72,7 +72,9 @@ Each week follows the same rhythm:
 There is no separate lab and project split. Each week has **one assignment**,
 which you begin during the Tuesday lab and finish on your own time.
 
-Tutoring Assistants are available in SB 337 on Mondays and Thursdays, 7–9 PM.
+Free drop-in **Study Sessions** for Computer Science & Data 102 run in SB 337 on
+Mondays and Thursdays, 7:00–9:00 PM. Details on the
+[Classroom](policies/classroom.qmd) page.
 
 ---
 
