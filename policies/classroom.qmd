@@ -20,7 +20,13 @@ You will need access to a laptop (any operating system) that can run a modern we
 
 ## Office Hours
 
-The instructor does not keep fixed office hours. Appointments are booked directly through the link on the [course home page](../index.html). Book a slot whenever you need help, there is no minimum or maximum number of visits.
+The instructor does not keep fixed office hours. Book a slot whenever you need
+help, there is no minimum or maximum number of visits.
+
+[Book office hours](https://outlook.office.com/book/AdvisingDays12@calvincollege.onmicrosoft.com/s/NI9r43tRjUKJ5UjiSmktgg2){.btn .btn-primary target="_blank" rel="noopener"}
+
+The same link is on the [course home page](../index.html). If no time on offer
+works for you, email me and we will find one.
 
 ---
 
