@@ -3,6 +3,15 @@ title: "Assignment 02: Sandbox"
 subtitle: "A falling-sand simulator, file I/O, exceptions, and 2D arrays"
 ---
 
+```{=html}
+<a class="lab-open-btn" href="../../slides/lab-opening-w02.html?fs=1"
+   target="_blank" rel="noopener">
+  <span class="lab-open-ico">&#9654;</span>
+  Lab opening &middot; Week 02
+  <span class="lab-open-sub">full screen</span>
+</a>
+```
+
 ::: {.callout-note}
 Your own private GitHub repository is waiting for you (see
 [Getting the code](#getting-the-code) below), clone it and open it in VS Code.

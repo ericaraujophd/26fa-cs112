@@ -3,6 +3,15 @@ title: "Assignment 11: Three Ways Through a Maze"
 subtitle: "One algorithm, two containers, and then no container at all"
 ---
 
+```{=html}
+<a class="lab-open-btn" href="../../slides/lab-opening-w10.html?fs=1"
+   target="_blank" rel="noopener">
+  <span class="lab-open-ico">&#9654;</span>
+  Lab opening &middot; Week 10
+  <span class="lab-open-sub">full screen</span>
+</a>
+```
+
 ::: {.callout-note}
 Your own private GitHub repository is waiting for you (see
 [Getting the code](#getting-the-code) below), clone it and open it in VS Code.

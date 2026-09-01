@@ -997,3 +997,19 @@
     .growth-svg .c3 { stroke: var(--gold); } .growth-svg .c3-t { fill: #9a7d2e; }
     .growth-svg .c4 { stroke: #b5652a; } .growth-svg .c4-t { fill: #b5652a; }
     .growth-svg .c5 { stroke: var(--maroon); } .growth-svg .c5-t { fill: var(--maroon); }
+
+    /* ── Full-screen hint (see slides/fullscreen.js) ──
+       Shown only on decks opened with ?fs=1, until the first gesture. ── */
+    .fs-hint {
+      position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%);
+      z-index: 60; pointer-events: none;
+      background: rgba(20,18,16,0.62); color: rgba(255,255,255,0.92);
+      font-family: 'Segoe UI', system-ui, sans-serif; font-size: 12px;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 7px 15px; border-radius: 999px;
+      animation: fsHintIn 0.5s ease-out both;
+      transition: opacity 1.2s ease;
+    }
+    .fs-hint-dim { opacity: 0.25; }
+    @keyframes fsHintIn { from { opacity: 0; transform: translate(-50%, 8px); }
+                          to   { opacity: 1; transform: translate(-50%, 0); } }

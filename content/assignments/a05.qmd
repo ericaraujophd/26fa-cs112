@@ -3,6 +3,15 @@ title: "Assignment 04: Telemetry"
 subtitle: "A container that owns its memory, and what that costs"
 ---
 
+```{=html}
+<a class="lab-open-btn" href="../../slides/lab-opening-w04.html?fs=1"
+   target="_blank" rel="noopener">
+  <span class="lab-open-ico">&#9654;</span>
+  Lab opening &middot; Week 04
+  <span class="lab-open-sub">full screen</span>
+</a>
+```
+
 ::: {.callout-note}
 Your own private GitHub repository is waiting for you (see
 [Getting the code](#getting-the-code) below), clone it and open it in VS Code.

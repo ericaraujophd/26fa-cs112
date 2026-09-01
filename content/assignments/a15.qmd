@@ -3,6 +3,15 @@ title: "Assignment 14: Matrix Operations and OpenMP"
 subtitle: "Weeks 13–14 · Nov 30 – Dec 9"
 ---
 
+```{=html}
+<a class="lab-open-btn" href="../../slides/lab-opening-w13.html?fs=1"
+   target="_blank" rel="noopener">
+  <span class="lab-open-ico">&#9654;</span>
+  Lab opening &middot; Week 13
+  <span class="lab-open-sub">full screen</span>
+</a>
+```
+
 ::: {.callout-note}
 **Not published yet.** This page fills in before week 13 begins. The outline
 below is what the assignment is being built to cover, a preview, not a

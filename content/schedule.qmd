@@ -166,7 +166,7 @@ learning objectives are there too, folded away until you want them.
         <div class="res-val"><a href="https://runestone.academy/runestone/books/published/cpp4python/index.html" target="_blank" rel="noopener">C++ for Python Programmers</a> <span class="res-sub">Ch. 1&ndash;2, Sec. 5.1&ndash;5.2</span></div>
 
         <div class="res-label">🖥️ Slides</div>
-        <div class="res-val"><a href="../slides/week00.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week00.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week00-bw.pdf">print version</a></div>
+        <div class="res-val"><a href="../slides/week00.html?fs=1" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week00.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week00-bw.pdf">print version</a></div>
 
         <div class="res-label">🔗 Explore</div>
         <div class="res-val"><a href="https://integer.exposed/#0x0008" target="_blank" rel="noopener">Binary Exposed</a></div>
@@ -224,7 +224,7 @@ learning objectives are there too, folded away until you want them.
         <div class="res-val"><a href="https://runestone.academy/runestone/books/published/cpp4python/index.html" target="_blank" rel="noopener">C++ for Python Programmers</a> <span class="res-sub">Ch. 3&ndash;4</span><br><a href="https://makefiletutorial.com/" target="_blank" rel="noopener">Makefile Tutorial</a></div>
 
         <div class="res-label">🖥️ Slides</div>
-        <div class="res-val"><a href="../slides/week01.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week01.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week01-bw.pdf">print version</a></div>
+        <div class="res-val"><a href="../slides/week01.html?fs=1" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week01.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week01-bw.pdf">print version</a></div>
       </div>
       <details class="slo-details">
         <summary class="slo-summary">Learning objectives <span class="slo-count">7</span></summary>
@@ -277,7 +277,7 @@ learning objectives are there too, folded away until you want them.
         <div class="res-val"><a href="https://runestone.academy/runestone/books/published/cpp4python/index.html" target="_blank" rel="noopener">C++ for Python Programmers</a> <span class="res-sub">Ch. 6&ndash;7</span></div>
 
         <div class="res-label">🖥️ Slides</div>
-        <div class="res-val"><a href="../slides/week02.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week02.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week02-bw.pdf">print version</a></div>
+        <div class="res-val"><a href="../slides/week02.html?fs=1" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week02.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week02-bw.pdf">print version</a></div>
       </div>
       <details class="slo-details">
         <summary class="slo-summary">Learning objectives <span class="slo-count">5</span></summary>
@@ -328,7 +328,7 @@ learning objectives are there too, folded away until you want them.
         <div class="res-val"><span class="res-tbd">to be announced</span></div>
 
         <div class="res-label">🖥️ Slides</div>
-        <div class="res-val"><a href="../slides/week03.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week03.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week03-bw.pdf">print version</a></div>
+        <div class="res-val"><a href="../slides/week03.html?fs=1" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week03.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week03-bw.pdf">print version</a></div>
       </div>
       <details class="slo-details">
         <summary class="slo-summary">Learning objectives <span class="slo-count">7</span></summary>
@@ -381,7 +381,7 @@ learning objectives are there too, folded away until you want them.
         <div class="res-val"><span class="res-tbd">to be announced</span></div>
 
         <div class="res-label">🖥️ Slides</div>
-        <div class="res-val"><a href="../slides/week04.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week04.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week04-bw.pdf">print version</a></div>
+        <div class="res-val"><a href="../slides/week04.html?fs=1" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week04.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week04-bw.pdf">print version</a></div>
       </div>
       <details class="slo-details">
         <summary class="slo-summary">Learning objectives <span class="slo-count">7</span></summary>
@@ -434,7 +434,7 @@ learning objectives are there too, folded away until you want them.
         <div class="res-val"><span class="res-tbd">to be announced</span></div>
 
         <div class="res-label">🖥️ Slides</div>
-        <div class="res-val"><a href="../slides/week05.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week05.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week05-bw.pdf">print version</a></div>
+        <div class="res-val"><a href="../slides/week05.html?fs=1" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week05.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week05-bw.pdf">print version</a></div>
       </div>
       <details class="slo-details">
         <summary class="slo-summary">Learning objectives <span class="slo-count">6</span></summary>
@@ -486,7 +486,7 @@ learning objectives are there too, folded away until you want them.
         <div class="res-val"><span class="res-tbd">to be announced</span></div>
 
         <div class="res-label">🖥️ Slides</div>
-        <div class="res-val"><a href="../slides/week06.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week06.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week06-bw.pdf">print version</a></div>
+        <div class="res-val"><a href="../slides/week06.html?fs=1" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week06.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week06-bw.pdf">print version</a></div>
       </div>
       <details class="slo-details">
         <summary class="slo-summary">Learning objectives <span class="slo-count">6</span></summary>
@@ -552,7 +552,7 @@ learning objectives are there too, folded away until you want them.
         <div class="res-val"><span class="res-tbd">to be announced</span></div>
 
         <div class="res-label">🖥️ Slides</div>
-        <div class="res-val"><a href="../slides/week08.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week08.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week08-bw.pdf">print version</a></div>
+        <div class="res-val"><a href="../slides/week08.html?fs=1" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week08.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week08-bw.pdf">print version</a></div>
       </div>
       <details class="slo-details">
         <summary class="slo-summary">Learning objectives <span class="slo-count">6</span></summary>
@@ -605,7 +605,7 @@ learning objectives are there too, folded away until you want them.
         <div class="res-val"><span class="res-tbd">to be announced</span></div>
 
         <div class="res-label">🖥️ Slides</div>
-        <div class="res-val"><a href="../slides/week09.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week09.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week09-bw.pdf">print version</a></div>
+        <div class="res-val"><a href="../slides/week09.html?fs=1" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week09.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week09-bw.pdf">print version</a></div>
       </div>
       <details class="slo-details">
         <summary class="slo-summary">Learning objectives <span class="slo-count">7</span></summary>
@@ -658,7 +658,7 @@ learning objectives are there too, folded away until you want them.
         <div class="res-val"><span class="res-tbd">to be announced</span></div>
 
         <div class="res-label">🖥️ Slides</div>
-        <div class="res-val"><a href="../slides/week10.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week10.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week10-bw.pdf">print version</a></div>
+        <div class="res-val"><a href="../slides/week10.html?fs=1" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week10.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week10-bw.pdf">print version</a></div>
       </div>
       <details class="slo-details">
         <summary class="slo-summary">Learning objectives <span class="slo-count">7</span></summary>
@@ -711,7 +711,7 @@ learning objectives are there too, folded away until you want them.
         <div class="res-val"><span class="res-tbd">to be announced</span></div>
 
         <div class="res-label">🖥️ Slides</div>
-        <div class="res-val"><a href="../slides/week11.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week11.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week11-bw.pdf">print version</a></div>
+        <div class="res-val"><a href="../slides/week11.html?fs=1" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week11.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week11-bw.pdf">print version</a></div>
       </div>
       <details class="slo-details">
         <summary class="slo-summary">Learning objectives <span class="slo-count">5</span></summary>
@@ -764,7 +764,7 @@ learning objectives are there too, folded away until you want them.
         <div class="res-val"><span class="res-tbd">to be announced</span></div>
 
         <div class="res-label">🖥️ Slides</div>
-        <div class="res-val"><a href="../slides/week12.html" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week12.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week12-bw.pdf">print version</a></div>
+        <div class="res-val"><a href="../slides/week12.html?fs=1" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week12.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week12-bw.pdf">print version</a></div>
       </div>
       <div class="alert alert-warning py-1 px-2 mb-3" style="font-size:0.85rem;">
         ⚠️ Nov 25–27 Thanksgiving break. Nov 23 class covered by substitute.
