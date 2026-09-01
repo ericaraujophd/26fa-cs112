@@ -486,3 +486,29 @@ pre.terminal code {
   border-color: #333844;
   color: #E4E7EC;
 }
+
+/* ══════════════════════════════════════════════════════════════
+   Lab-opening button, top of a week's first assignment page.
+   Opens that week's quiet/prayer deck; ?fs=1 makes the deck go
+   full screen on the first keypress (see slides/fullscreen.js).
+   ══════════════════════════════════════════════════════════════ */
+.lab-open-btn {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  background: #6E1C2E; color: #fff !important;
+  text-decoration: none !important;
+  padding: 0.6rem 1.1rem; border-radius: 8px;
+  font-weight: 600; font-size: 0.95rem; line-height: 1.2;
+  border: 1px solid #5b1626;
+  box-shadow: 0 2px 8px rgba(110, 28, 46, 0.22);
+  transition: background 0.15s ease, transform 0.15s ease;
+  margin: 0 0 1.2rem;
+}
+.lab-open-btn:hover { background: #86223a; transform: translateY(-1px); }
+.lab-open-btn .lab-open-ico {
+  color: #C49A2C; font-size: 0.85em; line-height: 1;
+}
+.lab-open-btn .lab-open-sub {
+  color: rgba(255,255,255,0.62); font-weight: 400; font-size: 0.82em;
+  border-left: 1px solid rgba(255,255,255,0.28); padding-left: 0.6rem;
+}
+.quarto-dark .lab-open-btn { border-color: #7d2338; }
