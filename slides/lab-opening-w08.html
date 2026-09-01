@@ -44,6 +44,14 @@
   }
   .qt-mark { color: var(--gold); margin-right: 0.5em; }
 
+  /* the devices-off sign: the one thing on the deck that is meant to be
+     read from the back of the room in half a second */
+  .qt-sign { display: block; margin: 0 auto 0.5em; }
+  .qt-sign-ring { fill: none; stroke: var(--gold); stroke-width: 9; }
+  .qt-sign-ink  { fill: none; stroke: var(--gold); stroke-width: 5;
+                  stroke-linejoin: round; opacity: 0.85; }
+  .qt-sign-bar  { stroke: var(--gold); stroke-width: 9; stroke-linecap: round; }
+
   /* who she was */
   .reveal .qt-name {
     font-family: Georgia, 'Iowan Old Style', serif; color: #fff;
@@ -147,6 +155,13 @@
 <div class="slides">
 
 <section data-background-color="#6E1C2E">
+  <svg class="qt-sign" viewBox="0 0 200 200" width="132" height="132"
+       xmlns="http://www.w3.org/2000/svg" aria-label="devices off">
+    <circle class="qt-sign-ring" cx="100" cy="100" r="76"/>
+    <rect class="qt-sign-ink" x="64" y="72" width="72" height="46" rx="5"/>
+    <path class="qt-sign-ink" d="M54,126 L146,126 L154,140 L46,140 Z"/>
+    <line class="qt-sign-bar" x1="46" y1="154" x2="154" y2="46"/>
+  </svg>
   <h2 class="qt-h">Before we begin</h2>
   <div class="qt-rule"></div>
   <ul class="qt-list">
@@ -154,7 +169,7 @@
     <li><span class="qt-mark">&middot;</span>Phones away, screens dark, headphones out</li>
     <li><span class="qt-mark">&middot;</span>Let the room be quiet for the next few minutes</li>
   </ul>
-  <p class="qt-lead" style="margin-top:1.1em">The work will still be here. Let us start somewhere else.</p>
+  <p class="qt-lead" style="margin-top:1em">The work will still be here. Let us start somewhere else.</p>
 </section>
 
 <section data-background-color="#6E1C2E">
