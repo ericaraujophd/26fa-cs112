@@ -524,28 +524,29 @@ int x = 7;
     <marker id="vmah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
       <path d="M0,0 L10,5 L0,10 z" fill="#2b6ea8"/></marker>
   </defs>
-  <text class="vm-col" x="112" y="16" font-size="13" text-anchor="middle">Frames</text>
-  <text class="vm-col vm-faint" x="322" y="16" font-size="13" text-anchor="middle">Objects</text>
+  <text class="vm-col" x="112" y="16" font-size="13" text-anchor="middle">The stack</text>
+  <text class="vm-col vm-faint" x="322" y="16" font-size="13" text-anchor="middle">The heap</text>
   <rect class="vm-frame" x="14" y="30" width="212" height="96" rx="5"/>
   <rect class="vm-bar" x="14" y="30" width="212" height="26" rx="5"/>
   <rect class="vm-bar" x="14" y="46" width="212" height="10"/>
-  <text class="vm-title" x="120" y="48" font-size="14" text-anchor="middle">main</text>
+  <text class="vm-title" x="120" y="48" font-size="14" text-anchor="middle">main()</text>
   <text class="vm-var" x="46" y="96" font-size="16" text-anchor="end">x</text>
   <rect class="vm-box" x="56" y="64" width="156" height="54" rx="3"/>
   <text class="vm-addr" x="66" y="79" font-size="10.5">0xFFF000BDC</text>
   <text class="vm-type" x="66" y="93" font-size="12.5">int</text>
   <text class="vm-val" x="66" y="114" font-size="22">7</text>
   <rect class="vm-empty" x="248" y="46" width="150" height="72" rx="5"/>
-  <text class="vm-faint" x="323" y="78" font-size="12" text-anchor="middle">nothing here:</text>
-  <text class="vm-faint" x="323" y="94" font-size="12" text-anchor="middle">the value is in the box</text>
-  <text class="vm-note" x="14" y="150" font-size="12.5">the name is the box; the box has a fixed type and address</text>
+  <text class="vm-faint" x="323" y="72" font-size="12" text-anchor="middle">nothing here:</text>
+  <text class="vm-faint" x="323" y="90" font-size="12" text-anchor="middle">the value is</text>
+  <text class="vm-faint" x="323" y="106" font-size="12" text-anchor="middle">on the stack</text>
+  <text class="vm-note" x="14" y="150" font-size="12.5">the box is on the stack, with a fixed type and address</text>
   </svg>
     </div>
   </div>
 
   <div class="callout" style="margin-top:0.3em">
     Both look like "a variable called x holding 7".<br>
-    Watch what happens when we assign <code>x = 3.14</code>.
+    In C++ that box lives on the <strong>stack</strong>, inside the <em>stack frame</em> belonging to this call of <code>main()</code>. Watch what happens when we assign <code>x = 3.14</code>.
   </div>
 </section>
 
@@ -591,12 +592,12 @@ x = 3.14;
     <marker id="vmah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
       <path d="M0,0 L10,5 L0,10 z" fill="#2b6ea8"/></marker>
   </defs>
-  <text class="vm-col" x="112" y="16" font-size="13" text-anchor="middle">Frames</text>
-  <text class="vm-col vm-faint" x="322" y="16" font-size="13" text-anchor="middle">Objects</text>
+  <text class="vm-col" x="112" y="16" font-size="13" text-anchor="middle">The stack</text>
+  <text class="vm-col vm-faint" x="322" y="16" font-size="13" text-anchor="middle">The heap</text>
   <rect class="vm-frame" x="14" y="30" width="212" height="96" rx="5"/>
   <rect class="vm-bar" x="14" y="30" width="212" height="26" rx="5"/>
   <rect class="vm-bar" x="14" y="46" width="212" height="10"/>
-  <text class="vm-title" x="120" y="48" font-size="14" text-anchor="middle">main</text>
+  <text class="vm-title" x="120" y="48" font-size="14" text-anchor="middle">main()</text>
   <text class="vm-var" x="46" y="96" font-size="16" text-anchor="end">x</text>
   <rect class="vm-box vm-changed" x="56" y="64" width="156" height="54" rx="3"/>
   <text class="vm-addr" x="66" y="79" font-size="10.5">0xFFF000BDC</text>
@@ -606,7 +607,7 @@ x = 3.14;
   <rect class="vm-warn" x="248" y="52" width="164" height="60" rx="6"/>
   <text class="vm-warn-t" x="330" y="76" font-size="12.5" text-anchor="middle">3.14 does not fit</text>
   <text class="vm-warn-t" x="330" y="94" font-size="12.5" text-anchor="middle">in an int: it becomes 3</text>
-  <text class="vm-note" x="14" y="152" font-size="12.5">same box, same address, same type</text>
+  <text class="vm-note" x="14" y="152" font-size="12.5">same box on the stack: same address, same type</text>
   </svg>
     </div>
   </div>
