@@ -651,19 +651,27 @@
     .an-desc code { font-size: 0.92em; }
 
     /* stacked variant */
-    .anatomy-wide { font-size: 0.62em !important; margin: 0.1em auto 0.55em !important; }
+    /* four stacked rows need more height than 2x2 did, so the listing gives some back */
+    .anatomy-wide { font-size: 0.5em !important; margin: 0.1em auto 0.4em !important; }
+    /* Four full-width rows rather than 2x2 quadrants: the eye runs down the
+       list in the same order as the line numbers in the code above it. */
     .anatomy-cards {
-      display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr);
-      gap: 0.5em 1.1em; text-align: left;
+      display: grid; grid-template-columns: minmax(0,1fr);
+      gap: 0.3em; text-align: left;
     }
     .an-card {
-      display: grid; grid-template-columns: auto 1fr; gap: 0.55em;
+      display: grid; grid-template-columns: auto 1fr; gap: 0.6em;
       background: var(--cream); border-left: 3px solid var(--gold);
-      border-radius: 0 6px 6px 0; padding: 0.5em 0.8em; align-items: start;
+      border-radius: 0 6px 6px 0; padding: 0.3em 0.8em; align-items: center;
     }
-    .an-card .an-badge { width: 1.45em; height: 1.45em; font-size: 0.55em; margin-top: 0.2em; }
-    .an-card .an-key  { font-size: 0.58em; margin-bottom: 0.15em; }
-    .an-card .an-desc { font-size: 0.52em; line-height: 1.4; }
+    /* inside a row, the key sits beside its description instead of above it */
+    .an-card > div {
+      display: grid; grid-template-columns: minmax(0,auto) minmax(0,1fr);
+      gap: 0 1em; align-items: baseline;
+    }
+    .an-card .an-badge { width: 1.45em; height: 1.45em; font-size: 0.55em; margin-top: 0; }
+    .an-card .an-key  { font-size: 0.58em; margin-bottom: 0; white-space: nowrap; }
+    .an-card .an-desc { font-size: 0.5em; line-height: 1.38; }
 
 
     /* ── Pipeline diagram ── */
