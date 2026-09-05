@@ -1,0 +1,120 @@
+---
+title: "Resources"
+subtitle: "Tools and references worth keeping open all semester"
+---
+
+<!--
+Maintenance notes (not rendered):
+
+- LeetCode is deliberately NOT here yet. It assumes data structures the class
+  has not met, every problem has a posted solution one tab away, and its culture
+  rewards finding the optimal answer rather than building one. Revisit in
+  week 8, once arrays, lists, stacks and Big-O are in place, and frame it as
+  practice rather than study.
+- Python Tutor ships an AI chat panel inside the visualizer. That is why the
+  callout below exists. If they ever remove it, the callout can go.
+- learncpp chapter numbers occasionally shift when the author reorganises.
+  Worth re-checking the deep links once a semester.
+-->
+
+Everything you strictly need for this course is on this site. What follows is
+the short list of outside tools that are actually worth your time, with a note
+on when each one helps.
+
+::: {.callout-important}
+## Several of these sites now have AI assistants built in
+
+The course policy is unchanged and applies here too: **no AI use whatsoever**,
+including chat panels and "explain this code" buttons embedded in otherwise
+useful tools. Use the visualizer, the tutorial, and the reference. Do not use
+the AI attached to them. See [Academic Honesty](../policies/honesty.qmd).
+
+If a tool's non-AI parts stop being usable without the AI, tell me and I will
+find a replacement.
+:::
+
+---
+
+## See your code run: Python Tutor
+
+[**pythontutor.com/cpp.html**](https://pythontutor.com/cpp.html)
+
+Despite the name, it visualizes C++. You paste in a short program and step
+through it one line at a time, watching variables appear, values change, and
+**pointers drawn as actual arrows into actual memory cells**.
+
+This is the single most useful tool on this page for the first half of the
+semester. If a pointer, an array, or a linked list is not making sense, put
+fifteen lines of it in here and step through. It is the same picture we build in
+class, except you can run it at midnight.
+
+Best used on **small** programs. Twenty lines with one confusing idea, not your
+whole assignment.
+
+---
+
+## Learn it properly: LearnCpp
+
+[**learncpp.com**](https://www.learncpp.com/)
+
+A free, complete, genuinely well-written C++ tutorial. When a lecture moved too
+fast, this is where to go for a slower, longer treatment with more examples. The
+chapters below line up with what we have covered so far:
+
+| If you want more on | Read |
+|---|---|
+| Uninitialized variables and undefined behaviour | [1.6](https://www.learncpp.com/cpp-tutorial/uninitialized-variables-and-undefined-behavior/) |
+| `cout`, `cin`, `endl` | [1.5](https://www.learncpp.com/cpp-tutorial/introduction-to-iostream-cout-cin-and-endl/) |
+| Data types and `sizeof` | [4.1](https://www.learncpp.com/cpp-tutorial/introduction-to-fundamental-data-types/), [4.3](https://www.learncpp.com/cpp-tutorial/object-sizes-and-the-sizeof-operator/) |
+| Decimal, binary, hex, octal | [5.3](https://www.learncpp.com/cpp-tutorial/numeral-systems-decimal-binary-hexadecimal-and-octal/) |
+| `const` | [5.1](https://www.learncpp.com/cpp-tutorial/constant-variables-named-constants/) |
+| **Pointers, from the beginning** | [12.7](https://www.learncpp.com/cpp-tutorial/introduction-to-pointers/) |
+| Arrays, and why `a[i]` is `*(a + i)` | [17.7](https://www.learncpp.com/cpp-tutorial/introduction-to-c-style-arrays/), [17.9](https://www.learncpp.com/cpp-tutorial/pointer-arithmetic-and-subscripting/) |
+| The compiler, linker, and what `make` did | [0.5](https://www.learncpp.com/cpp-tutorial/introduction-to-the-compiler-linker-and-libraries/) |
+| Debugging strategy | [3.3](https://www.learncpp.com/cpp-tutorial/a-strategy-for-debugging/) |
+
+Each chapter ends with a quiz. Doing those quizzes is exactly the kind of
+practice that makes a check-in go well.
+
+---
+
+## Look it up: cppreference
+
+[**en.cppreference.com**](https://en.cppreference.com/w/cpp)
+
+The authoritative C++ reference. It is precise, complete, and **written for
+people who already know C++**, so it can feel cold at first. That is fine: use
+it to answer narrow questions, not to learn from.
+
+Good question for cppreference: *what exactly does `std::vector::resize` do when
+the new size is smaller?*
+
+Bad question for cppreference: *what is a vector?* Use LearnCpp for that.
+
+Learning to read a language reference is itself a skill this course expects you
+to pick up. Start now, in small doses.
+
+---
+
+## Bridge from Python: C++ for Python Programmers
+
+[**Runestone: C++ for Python Programmers**](https://runestone.academy/runestone/books/published/cpp4python/index.html)
+
+The reading already listed against the first weeks on the
+[Schedule](schedule.qmd). Worth naming again here, because if you are fluent in
+Python and keep tripping over C++ syntax, this is written for exactly that
+situation.
+
+---
+
+::: {.callout-note}
+## Nothing here replaces doing the work
+
+These tools help you understand something you are stuck on. They do not
+substitute for writing code yourself, which is the only thing that makes a
+check-in go well. When in doubt, close the tab and try to write it from a blank
+file, then come back.
+:::
+
+Found something genuinely useful that is not here? Send it to me and I will add
+it.

@@ -36,6 +36,7 @@ website:
       - content/schedule.qmd
       - content/checkins.qmd
       - content/assignments/index.qmd
+      - content/resources.qmd
       - section: "Course Information"
         contents:
           - syllabus.qmd
