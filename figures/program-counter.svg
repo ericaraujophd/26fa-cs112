@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 670 340" width="670" height="340" role="img" aria-labelledby="pc-ttl pc-dsc">
+  <title id="pc-ttl">How the program counter moves through a stored program</title>
+  <desc id="pc-dsc">prog1 laid out in memory as seven cells in a row, each carrying its step number in the corner, numbered 0 to 6 and reading PUSH, 7, PUSH, 5, ADD, PRINT, HALT. Instruction cells are tinted maroon and the two operand cells gold. A bracket over the first two cells groups the PUSH with the number that follows it and is labelled one instruction, two ints. Curved arrows below the row show the program counter moving from step 0 to step 2 by adding two, from step 2 to step 4 by adding two, from step 4 to step 5 by adding one, and from step 5 to step 6 by adding one. A note explains that PUSH and JNZ carry an operand so the counter moves by two, every other instruction moves by one, and landing on an operand makes the machine run the 7 as an instruction and stop with status 3.</desc>
+
+  <style>
+    .cell-op   { fill: #FBF4F5; stroke: #DCC7CC; stroke-width: 1.2; }
+    .cell-arg  { fill: #FDF8EC; stroke: #E6D3A6; stroke-width: 1.2; }
+    .val       { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+                 font-size: 17px; fill: #241B1E; }
+    .code      { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+                 font-size: 15px; fill: #241B1E; }
+    .idx       { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+                 font-size: 12px; fill: #9C8C90; }
+    .stage     { font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+                 font-size: 16px; font-weight: 700; fill: #6E1C2E; letter-spacing: .02em; }
+    .stagesub  { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+                 font-size: 14px; fill: #8B7B7F; }
+    .note      { font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+                 font-size: 15px; fill: #6B5A5E; }
+    .flow      { stroke: #B9A6AA; stroke-width: 1.6; fill: none; }
+    .bracket   { stroke: #C49A2C; stroke-width: 1.4; fill: none; }
+    .brlbl     { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+                 font-size: 14px; fill: #A6822A; }
+    .arrowhead { fill: #B9A6AA; }
+
+    @media (prefers-color-scheme: dark) {
+      .cell-op   { fill: #2A1D21; stroke: #4A343A; }
+      .cell-arg  { fill: #2A241A; stroke: #4E4430; }
+      .val, .code { fill: #F1E8EA; }
+      .idx, .stagesub { fill: #9E8B90; }
+      .stage     { fill: #E38DA0; }
+      .note      { fill: #B4A1A6; }
+      .flow      { stroke: #5A4649; }
+      .arrowhead { fill: #5A4649; }
+      .bracket   { stroke: #DFB85C; }
+      .brlbl     { fill: #DFB85C; }
+    }
+  </style>
+
+  <defs>
+    <marker id="pcah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" class="arrowhead"/>
+    </marker>
+  </defs>
+
+  <text x="14" y="26" class="stage">prog1, as it sits in memory</text>
+  <text x="14" y="48" class="stagesub">const int prog1[] = { PUSH, 7, PUSH, 5, ADD, PRINT, HALT };</text>
+
+  <path d="M 16 100 L 16 88 L 196 88 L 196 100" class="bracket"/>
+  <text x="110" y="80" class="brlbl" text-anchor="middle">one instruction, two ints</text>
+
+  <rect x="14"  y="110" width="91" height="58" rx="6" class="cell-op"/>
+  <rect x="107" y="110" width="91" height="58" rx="6" class="cell-arg"/>
+  <rect x="200" y="110" width="91" height="58" rx="6" class="cell-op"/>
+  <rect x="293" y="110" width="91" height="58" rx="6" class="cell-arg"/>
+  <rect x="386" y="110" width="91" height="58" rx="6" class="cell-op"/>
+  <rect x="479" y="110" width="91" height="58" rx="6" class="cell-op"/>
+  <rect x="572" y="110" width="91" height="58" rx="6" class="cell-op"/>
+
+  <text x="22"  y="127" class="idx">0</text>
+  <text x="115" y="127" class="idx">1</text>
+  <text x="208" y="127" class="idx">2</text>
+  <text x="301" y="127" class="idx">3</text>
+  <text x="394" y="127" class="idx">4</text>
+  <text x="487" y="127" class="idx">5</text>
+  <text x="580" y="127" class="idx">6</text>
+
+  <text x="59.5"  y="155" class="val" text-anchor="middle">PUSH</text>
+  <text x="152.5" y="155" class="val" text-anchor="middle">7</text>
+  <text x="245.5" y="155" class="val" text-anchor="middle">PUSH</text>
+  <text x="338.5" y="155" class="val" text-anchor="middle">5</text>
+  <text x="431.5" y="155" class="val" text-anchor="middle">ADD</text>
+  <text x="524.5" y="155" class="val" text-anchor="middle">PRINT</text>
+  <text x="617.5" y="155" class="val" text-anchor="middle">HALT</text>
+
+  <path d="M 59.5 182 Q 152.5 226 245.5 182" class="flow" marker-end="url(#pcah)"/>
+  <text x="152.5" y="242" class="code" text-anchor="middle">pc += 2</text>
+  <path d="M 245.5 182 Q 338.5 226 431.5 182" class="flow" marker-end="url(#pcah)"/>
+  <text x="338.5" y="242" class="code" text-anchor="middle">pc += 2</text>
+  <path d="M 431.5 182 Q 478 226 524.5 182" class="flow" marker-end="url(#pcah)"/>
+  <text x="478" y="242" class="code" text-anchor="middle">pc += 1</text>
+  <path d="M 524.5 182 Q 571 226 617.5 182" class="flow" marker-end="url(#pcah)"/>
+  <text x="571" y="242" class="code" text-anchor="middle">pc += 1</text>
+
+  <text x="14" y="282" class="note"><tspan class="code">PUSH</tspan> and <tspan class="code">JNZ</tspan> carry an operand, so the counter moves by two.</text>
+  <text x="14" y="304" class="note">Every other instruction moves by one. Land on an operand instead</text>
+  <text x="14" y="326" class="note">and the machine runs the 7 as an instruction: status 3.</text>
+</svg>

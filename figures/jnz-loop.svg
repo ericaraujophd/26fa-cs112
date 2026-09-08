@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 670 520" width="670" height="520" role="img" aria-labelledby="jz-ttl jz-dsc">
+  <title id="jz-ttl">How JNZ makes a stored program repeat</title>
+  <desc id="jz-dsc">prog7 listed as eight rows with their step numbers beside them: step 0 PUSH 3, step 2 DUP, step 3 PRINT, step 4 PUSH 1, step 6 SUB, step 7 DUP, step 8 JNZ 2, step 10 HALT. The step numbers skip, because PUSH and JNZ each take two ints. The JNZ row is highlighted. A curved arrow leaves the JNZ row on the right, loops out and back up to the DUP at step 2, labelled: not zero, jump back to step 2. The HALT row is annotated: zero, pc += 2 comes here. A card underneath states that JNZ n pops the top value first and then chooses: not zero means pc becomes the unsigned value of program[pc + 1]; zero means pc += 2, stepping over the operand.</desc>
+
+  <style>
+    .row       { fill: #FBF4F5; stroke: #DCC7CC; stroke-width: 1.2; }
+    .row-jnz   { fill: #F3DDE2; stroke: #B98D99; stroke-width: 1.8; }
+    .card      { fill: #FFFFFF; stroke: #DED2D5; stroke-width: 1.2; }
+    .val       { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+                 font-size: 17px; fill: #241B1E; }
+    .arg       { fill: #A6822A; }
+    .code      { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+                 font-size: 15px; fill: #241B1E; }
+    .idx       { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+                 font-size: 14px; fill: #8B7B7F; }
+    .kind      { font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+                 font-size: 12px; letter-spacing: .09em; text-transform: uppercase; fill: #8B7B7F; }
+    .stage     { font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+                 font-size: 16px; font-weight: 700; fill: #6E1C2E; letter-spacing: .02em; }
+    .stagesub  { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+                 font-size: 14px; fill: #8B7B7F; }
+    .back      { stroke: #6E1C2E; stroke-width: 2; fill: none; }
+    .backlbl   { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+                 font-size: 15px; fill: #6E1C2E; }
+    .fwdlbl    { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+                 font-size: 14px; fill: #8B7B7F; }
+    .ahb       { fill: #6E1C2E; }
+
+    @media (prefers-color-scheme: dark) {
+      .row       { fill: #2A1D21; stroke: #4A343A; }
+      .row-jnz   { fill: #4A2530; stroke: #8E5F6C; }
+      .card      { fill: #1E1719; stroke: #3B2D31; }
+      .val, .code { fill: #F1E8EA; }
+      .arg       { fill: #DFB85C; }
+      .idx, .kind, .stagesub, .fwdlbl { fill: #9E8B90; }
+      .stage     { fill: #E38DA0; }
+      .back      { stroke: #E38DA0; }
+      .backlbl   { fill: #E38DA0; }
+      .ahb       { fill: #E38DA0; }
+    }
+  </style>
+
+  <defs>
+    <marker id="jzb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" class="ahb"/>
+    </marker>
+  </defs>
+
+  <text x="150" y="28" class="stage">prog7, counting down from 3</text>
+  <text x="150" y="50" class="stagesub">the step numbers skip, because PUSH and JNZ take two</text>
+
+  <text x="140" y="68" class="kind" text-anchor="end">step</text>
+
+  <rect x="150" y="80"  width="200" height="32" rx="6" class="row"/>
+  <rect x="150" y="118" width="200" height="32" rx="6" class="row"/>
+  <rect x="150" y="156" width="200" height="32" rx="6" class="row"/>
+  <rect x="150" y="194" width="200" height="32" rx="6" class="row"/>
+  <rect x="150" y="232" width="200" height="32" rx="6" class="row"/>
+  <rect x="150" y="270" width="200" height="32" rx="6" class="row"/>
+  <rect x="150" y="308" width="200" height="32" rx="6" class="row-jnz"/>
+  <rect x="150" y="346" width="200" height="32" rx="6" class="row"/>
+
+  <text x="140" y="102" class="idx" text-anchor="end">0</text>
+  <text x="140" y="140" class="idx" text-anchor="end">2</text>
+  <text x="140" y="178" class="idx" text-anchor="end">3</text>
+  <text x="140" y="216" class="idx" text-anchor="end">4</text>
+  <text x="140" y="254" class="idx" text-anchor="end">6</text>
+  <text x="140" y="292" class="idx" text-anchor="end">7</text>
+  <text x="140" y="330" class="idx" text-anchor="end">8</text>
+  <text x="140" y="368" class="idx" text-anchor="end">10</text>
+
+  <text x="170" y="102" class="val">PUSH <tspan class="arg">3</tspan></text>
+  <text x="170" y="140" class="val">DUP</text>
+  <text x="170" y="178" class="val">PRINT</text>
+  <text x="170" y="216" class="val">PUSH <tspan class="arg">1</tspan></text>
+  <text x="170" y="254" class="val">SUB</text>
+  <text x="170" y="292" class="val">DUP</text>
+  <text x="170" y="330" class="val">JNZ <tspan class="arg">2</tspan></text>
+  <text x="170" y="368" class="val">HALT</text>
+
+  <path d="M 350 324 C 424 324, 424 134, 350 134" class="back" marker-end="url(#jzb)"/>
+  <text x="436" y="218" class="backlbl">not zero:</text>
+  <text x="436" y="240" class="backlbl">jump back to step 2</text>
+
+  <text x="364" y="368" class="fwdlbl">zero: pc += 2 comes here</text>
+
+  <rect x="12" y="400" width="646" height="104" rx="8" class="card"/>
+  <text x="32" y="428" class="stage">JNZ n pops the top value first, then chooses where to go</text>
+  <text x="32" y="458" class="code">not zero  ->  pc = (unsigned)program[pc + 1];</text>
+  <text x="32" y="482" class="code">zero      ->  pc += 2;  stepping over the operand</text>
+</svg>

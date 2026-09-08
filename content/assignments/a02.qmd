@@ -13,8 +13,11 @@ subtitle: "Repairing the firmware of a programmable calculator"
 ```
 
 ::: {.callout-note}
-Your own private GitHub repository is waiting for you (see
-[Getting the code](#getting-the-code) below), clone it and open it in VS Code.
+Your own private GitHub repository is waiting for you, but get the order
+right: **start your Coder workspace first**, connect VS Code to it, and only
+then clone the repository onto the Calvin machine (see
+[Getting the code](#getting-the-code) below). Cloning onto your own laptop
+instead gives you code you cannot compile.
 
 **Plan to set aside about 3 to 3.5 hours.** Writing the header and finding the
 first fault are the slow parts; once the machine runs at all, the rest moves
@@ -65,6 +68,8 @@ Before phones, before laptops, engineers carried a calculator that could be
 remembered them, and from then on you could replay the whole calculation with a
 single button. The HP-12C, launched in 1981, is still sold today.
 
+![Hewlett-Packard announcing the HP-12C to its user community, in *HP Key Notes*, September--December 1981. "You have been asking for this type of product, and now it is here---*just in time for Christmas*."](../../figures/hp-key-notes-1981.jpg){#fig-hp12c fig-alt="The front page of the Hewlett-Packard newsletter HP Key Notes, volume 5 number 3, September to December 1981. The lead article, New Slim-Line Calculators Introduced, announces that on September 16, 1981 Hewlett-Packard released the HP-11C Programmable Scientific Calculator and the HP-12C Programmable Financial Calculator. A photograph at the bottom shows the two flat calculators lying beside a pen, one display reading 177-42.21.11 and the other 12,345,678.12." width="70%"}
+
 What makes that possible is a small idea with large consequences. The
 calculator does not store a formula. It stores **the keystrokes themselves**, as
 a list of numbers, and then presses them for you.
@@ -104,6 +109,8 @@ And here is the pile after each line:
 | `PRINT` | *(empty)* | took 36 off and printed it |
 | `HALT` | | stop |
 
+![The same program again, with the whole stack drawn at each step. `ADD` and `MUL` are where the pile gets *shorter*: each takes two numbers off and puts one back.](../../figures/stack-filmstrip.svg){#fig-filmstrip fig-alt="Seven frames left to right, one per instruction of prog3, each showing the whole stack at that moment. After PUSH 7 the stack holds 7 and top is 1. After PUSH 5 it holds 7 and 5 and top is 2. After ADD it holds 12 and top is 1. After PUSH 3 it holds 12 and 3 and top is 2. After MUL it holds 36 and top is 1. After PRINT the stack is empty, top is 0, and 36 has been printed. After HALT the stack is still empty."}
+
 That is not an analogy for how a calculator works. It is how one works. Every
 row of this table is a real key:
 
@@ -114,6 +121,14 @@ row of this table is a real key:
 | the display | what `PRINT` writes |
 | a saved keystroke sequence | a program, stored as an array of `int` |
 | the `x≠0?` conditional skip | `JNZ` |
+
+The last row is doing more work than the others. Every key above it does one
+fixed job and moves on to the next keystroke. `x≠0?` instead **looks at a
+number and decides what to run next**, which is how a saved sequence can go
+back and repeat a step rather than only running down the list to the end.
+That is the whole difference between a calculator that replays keystrokes and
+one that computes, and in the Model 112 it is the instruction called `JNZ`.
+You will write it yourself in Task 3.
 
 ::: {.callout-tip}
 **This is called reverse Polish notation**, or RPN, and it is worth ten minutes
@@ -208,6 +223,8 @@ Two things about it are worth slowing down for, because both come back later.
 other instruction occupies one. So after running the `PUSH` at step 0, the
 machine has to move on by **two**, not one, or it will try to execute the 7.
 
+![The same seven numbers, laid out the way the machine sees them. Each `PUSH` and the number after it are one instruction spread over two slots, which is why the program counter does not always move by the same amount.](../../figures/program-counter.svg){#fig-pc fig-alt="prog1 drawn as seven cells in a row, numbered 0 to 6, reading PUSH, 7, PUSH, 5, ADD, PRINT, HALT. Instruction cells are tinted maroon and operand cells gold. Brackets group each PUSH with the number after it, labelled one instruction, two ints. Curved arrows below show the program counter moving 0 to 2 and 2 to 4 by adding two, then 4 to 5 and 5 to 6 by adding one."}
+
 **The stack grows and shrinks as the program runs.** Nothing in the program
 says how deep it is. That is tracked separately, by a variable the machine
 keeps as it goes.
@@ -224,7 +241,10 @@ unsigned top = 0;       // how many of them there are
 is one past the last value in use, and it is also the index of the next free
 slot.
 
-Read that twice. It is the sort of thing an off-by-one hides in.
+Read that twice. It is the sort of thing an off-by-one hides in. Here is the
+same sentence as a picture:
+
+![`top` counts the values; it does not point at the last one. Everything the machine does depends on that staying true.](../../figures/stack-top.svg){#fig-top fig-alt="A column of five stack slots labelled stack[0] at the bottom through stack[4] at the top. The bottom three hold 7, 5 and 3; the top two are empty and drawn dashed. A maroon tag reading top = 3 points at the first empty slot, stack[3], captioned the next free slot, while stack[2] is labelled stack[top minus 1], the top value. Cards to the right state that the top value is stack[top - 1] and stack[top] is where the next push goes; that push writes at stack[top] then increments top, while pop decrements top then reads stack[top]; and that because top is unsigned, popping an empty stack makes top - 1 wrap to 4294967295 rather than becoming -1."}
 
 ---
 
@@ -422,6 +442,8 @@ answer".
 This is the one that turns a list of keystrokes into a program. Every
 instruction above moves the program counter forward by a fixed amount. This one
 can move it **backwards**, which is how a program repeats itself.
+
+![`prog7` counting down from 3. The `JNZ` at step 8 pops a value and picks one of two arrows: back to step 2 while the count is not zero, forward past its own operand to `HALT` when it is.](../../figures/jnz-loop.svg){#fig-jnz fig-alt="prog7 drawn as eleven cells numbered 0 to 10, reading PUSH, 3, DUP, PRINT, PUSH, 1, SUB, DUP, JNZ, 2, HALT. An arrow above the row runs forward from the JNZ at step 8 to the HALT at step 10, labelled zero: pc += 2. A longer maroon arrow below the row runs backward from step 8 to the DUP at step 2, labelled not zero: jump back to step 2. A card underneath states that JNZ n pops the top value first, then chooses: not zero means pc becomes the unsigned value of program[pc + 1], and zero means pc += 2, stepping over the operand."}
 
 Two things to get right:
 
