@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 670 692" width="670" height="692" role="img" aria-labelledby="st-ttl st-dsc">
+  <title id="st-ttl">What the variable top means</title>
+  <desc id="st-dsc">A column of five stack slots labelled stack[0] at the bottom through stack[4] at the top. The bottom three hold the values 7, 5 and 3; the top two are empty and drawn with dashed outlines. A maroon tag reading top = 3 points at the first empty slot, stack[3], captioned as the next free slot, while stack[2] is labelled stack[top minus 1], the top value. Three cards below. The first says top is one past the last value: if top is 3 the values sit at 0, 1 and 2, the top value is stack[top minus 1], and stack[top] is the next free slot. The second gives push as stack[top] = value then top plus plus, and pop as top minus minus then return stack[top], noting that swapping either pair of steps stops the promise being true. The third warns that top is unsigned, so popping an empty stack makes top minus 1 wrap to 4294967295 instead of becoming negative one.</desc>
+
+  <style>
+    .card      { fill: #FFFFFF; stroke: #DED2D5; stroke-width: 1.2; }
+    .slot      { fill: #FBF4F5; stroke: #C9B4B9; stroke-width: 1.2; }
+    .slotempty { fill: none; stroke: #DED2D5; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .val       { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+                 font-size: 17px; fill: #241B1E; }
+    .idx       { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+                 font-size: 14px; fill: #8B7B7F; }
+    .code      { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+                 font-size: 15px; fill: #241B1E; }
+    .stage     { font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+                 font-size: 16px; font-weight: 700; fill: #6E1C2E; letter-spacing: .02em; }
+    .stagesub  { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+                 font-size: 14px; fill: #8B7B7F; }
+    .note      { font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+                 font-size: 15px; fill: #6B5A5E; }
+    .flow      { stroke: #B9A6AA; stroke-width: 1.4; fill: none; }
+    .tag       { fill: #6E1C2E; }
+    .tagtext   { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+                 font-size: 16px; fill: #FFFFFF; }
+    .warnbox   { fill: #FDF8EC; stroke: #E6D3A6; stroke-width: 1.2; }
+
+    @media (prefers-color-scheme: dark) {
+      .card      { fill: #1E1719; stroke: #3B2D31; }
+      .slot      { fill: #2A1D21; stroke: #4A343A; }
+      .slotempty { stroke: #3B2D31; }
+      .val, .code { fill: #F1E8EA; }
+      .idx, .stagesub { fill: #9E8B90; }
+      .stage     { fill: #E38DA0; }
+      .note      { fill: #B4A1A6; }
+      .flow      { stroke: #5A4649; }
+      .tag       { fill: #8E2A40; }
+      .warnbox   { fill: #2A241A; stroke: #4E4430; }
+    }
+  </style>
+
+  <text x="245" y="26" class="stage" text-anchor="middle">The stack, one moment in time</text>
+  <text x="245" y="48" class="stagesub" text-anchor="middle">int stack[16];  unsigned top;</text>
+
+  <rect x="190" y="76"  width="110" height="38" rx="6" class="slotempty"/>
+  <rect x="190" y="119" width="110" height="38" rx="6" class="slotempty"/>
+  <rect x="190" y="162" width="110" height="38" rx="6" class="slot"/>
+  <rect x="190" y="205" width="110" height="38" rx="6" class="slot"/>
+  <rect x="190" y="248" width="110" height="38" rx="6" class="slot"/>
+
+  <text x="245" y="187" class="val" text-anchor="middle">3</text>
+  <text x="245" y="230" class="val" text-anchor="middle">5</text>
+  <text x="245" y="273" class="val" text-anchor="middle">7</text>
+
+  <text x="182" y="100" class="idx" text-anchor="end">stack[4]</text>
+  <text x="182" y="143" class="idx" text-anchor="end">stack[3]</text>
+  <text x="182" y="186" class="idx" text-anchor="end">stack[2]</text>
+  <text x="182" y="229" class="idx" text-anchor="end">stack[1]</text>
+  <text x="182" y="272" class="idx" text-anchor="end">stack[0]</text>
+
+  <text x="245" y="306" class="stagesub" text-anchor="middle">16 slots in all; five drawn</text>
+  <text x="245" y="330" class="note" text-anchor="middle">The pile grows upward.</text>
+  <text x="245" y="350" class="note" text-anchor="middle">A push lands in the lowest free slot.</text>
+
+  <path d="M 318 130 L 304 138 L 318 146 Z" class="tag"/>
+  <rect x="318" y="119" width="92" height="38" rx="19" class="tag"/>
+  <text x="364" y="144" class="tagtext" text-anchor="middle">top = 3</text>
+  <text x="422" y="132" class="stagesub">points at the</text>
+  <text x="422" y="150" class="stagesub">next free slot</text>
+
+  <line x1="302" y1="181" x2="316" y2="181" class="flow"/>
+  <text x="322" y="176" class="code">stack[top - 1]</text>
+  <text x="322" y="196" class="stagesub">is the top value</text>
+
+  <rect x="12" y="376" width="646" height="92" rx="8" class="card"/>
+  <text x="32" y="404" class="stage">top is one past the last value</text>
+  <text x="32" y="430" class="note">If <tspan class="code">top</tspan> is 3, the values sit at 0, 1, 2. The top value is <tspan class="code">stack[top - 1]</tspan>.</text>
+  <text x="32" y="454" class="note"><tspan class="code">stack[top]</tspan> is the next free slot, where the next push goes.</text>
+
+  <rect x="12" y="482" width="646" height="120" rx="8" class="card"/>
+  <text x="32" y="510" class="stage">So push and pop look like this</text>
+  <text x="32" y="538" class="code">push:  stack[top] = value;  top++;</text>
+  <text x="32" y="562" class="code">pop:   top--;  return stack[top];</text>
+  <text x="32" y="588" class="note">Swap either pair of steps and it stops being true.</text>
+
+  <rect x="12" y="616" width="646" height="62" rx="8" class="warnbox"/>
+  <text x="32" y="642" class="note"><tspan class="code">top</tspan> is unsigned. Pop an empty stack and <tspan class="code">top - 1</tspan> wraps</text>
+  <text x="32" y="664" class="note">round to 4294967295, not -1.</text>
+</svg>

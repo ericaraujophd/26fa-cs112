@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 670 290" width="670" height="290" role="img" aria-labelledby="fs-ttl fs-dsc">
+  <title id="fs-ttl">The stack after every instruction of (7 + 5) * 3</title>
+  <desc id="fs-dsc">Seven frames left to right, one per instruction of prog3, each showing the whole stack at that moment. After PUSH 7 the stack holds 7 and top is 1. After PUSH 5 it holds 7 and 5 and top is 2. After ADD it holds 12 and top is 1, because ADD took two values off and put one back. After PUSH 3 it holds 12 and 3 and top is 2. After MUL it holds 36 and top is 1. After PRINT the stack is empty, top is 0, and 36 has been printed. After HALT the stack is still empty and the machine stops.</desc>
+
+  <style>
+    .slot      { fill: #FBF4F5; stroke: #C9B4B9; stroke-width: 1.2; }
+    .slotempty { fill: none; stroke: #DED2D5; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .val       { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+                 font-size: 17px; fill: #241B1E; }
+    .instr     { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+                 font-size: 14px; fill: #6E1C2E; }
+    .idx       { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+                 font-size: 13px; fill: #8B7B7F; }
+    .out       { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+                 font-size: 13px; fill: #A6822A; }
+    .stage     { font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+                 font-size: 16px; font-weight: 700; fill: #6E1C2E; letter-spacing: .02em; }
+    .stagesub  { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+                 font-size: 13px; fill: #8B7B7F; }
+    .note      { font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+                 font-size: 15px; fill: #6B5A5E; }
+    .flow      { stroke: #B9A6AA; stroke-width: 1.4; fill: none; }
+    .arrowhead { fill: #B9A6AA; }
+
+    @media (prefers-color-scheme: dark) {
+      .slot      { fill: #2A1D21; stroke: #4A343A; }
+      .slotempty { stroke: #3B2D31; }
+      .val       { fill: #F1E8EA; }
+      .instr     { fill: #E38DA0; }
+      .idx, .stagesub { fill: #9E8B90; }
+      .out       { fill: #DFB85C; }
+      .stage     { fill: #E38DA0; }
+      .note      { fill: #B4A1A6; }
+      .flow      { stroke: #5A4649; }
+      .arrowhead { fill: #5A4649; }
+    }
+  </style>
+
+  <defs>
+    <marker id="fsah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" class="arrowhead"/>
+    </marker>
+  </defs>
+
+  <text x="12" y="26" class="stage">prog3, one frame per instruction</text>
+  <text x="12" y="48" class="stagesub">const int prog3[] = { PUSH, 7, PUSH, 5, ADD, PUSH, 3, MUL, PRINT, HALT };</text>
+
+  <!-- frame 0: PUSH 7 -->
+  <text x="60" y="84" class="instr" text-anchor="middle">PUSH 7</text>
+  <rect x="25" y="98" width="70" height="30" rx="5" class="slotempty"/>
+  <rect x="25" y="132" width="70" height="30" rx="5" class="slot"/>
+  <text x="60" y="153" class="val" text-anchor="middle">7</text>
+  <text x="60" y="184" class="idx" text-anchor="middle">top = 1</text>
+
+  <!-- frame 1: PUSH 5 -->
+  <text x="155" y="84" class="instr" text-anchor="middle">PUSH 5</text>
+  <rect x="120" y="98" width="70" height="30" rx="5" class="slot"/>
+  <text x="155" y="119" class="val" text-anchor="middle">5</text>
+  <rect x="120" y="132" width="70" height="30" rx="5" class="slot"/>
+  <text x="155" y="153" class="val" text-anchor="middle">7</text>
+  <text x="155" y="184" class="idx" text-anchor="middle">top = 2</text>
+
+  <!-- frame 2: ADD -->
+  <text x="250" y="84" class="instr" text-anchor="middle">ADD</text>
+  <rect x="215" y="98" width="70" height="30" rx="5" class="slotempty"/>
+  <rect x="215" y="132" width="70" height="30" rx="5" class="slot"/>
+  <text x="250" y="153" class="val" text-anchor="middle">12</text>
+  <text x="250" y="184" class="idx" text-anchor="middle">top = 1</text>
+
+  <!-- frame 3: PUSH 3 -->
+  <text x="345" y="84" class="instr" text-anchor="middle">PUSH 3</text>
+  <rect x="310" y="98" width="70" height="30" rx="5" class="slot"/>
+  <text x="345" y="119" class="val" text-anchor="middle">3</text>
+  <rect x="310" y="132" width="70" height="30" rx="5" class="slot"/>
+  <text x="345" y="153" class="val" text-anchor="middle">12</text>
+  <text x="345" y="184" class="idx" text-anchor="middle">top = 2</text>
+
+  <!-- frame 4: MUL -->
+  <text x="440" y="84" class="instr" text-anchor="middle">MUL</text>
+  <rect x="405" y="98" width="70" height="30" rx="5" class="slotempty"/>
+  <rect x="405" y="132" width="70" height="30" rx="5" class="slot"/>
+  <text x="440" y="153" class="val" text-anchor="middle">36</text>
+  <text x="440" y="184" class="idx" text-anchor="middle">top = 1</text>
+
+  <!-- frame 5: PRINT -->
+  <text x="535" y="84" class="instr" text-anchor="middle">PRINT</text>
+  <rect x="500" y="98" width="70" height="30" rx="5" class="slotempty"/>
+  <rect x="500" y="132" width="70" height="30" rx="5" class="slotempty"/>
+  <text x="535" y="184" class="idx" text-anchor="middle">top = 0</text>
+  <text x="535" y="204" class="out" text-anchor="middle">prints 36</text>
+
+  <!-- frame 6: HALT -->
+  <text x="630" y="84" class="instr" text-anchor="middle">HALT</text>
+  <rect x="595" y="98" width="70" height="30" rx="5" class="slotempty"/>
+  <rect x="595" y="132" width="70" height="30" rx="5" class="slotempty"/>
+  <text x="630" y="184" class="idx" text-anchor="middle">top = 0</text>
+
+  <line x1="99"  y1="147" x2="116" y2="147" class="flow" marker-end="url(#fsah)"/>
+  <line x1="194" y1="147" x2="211" y2="147" class="flow" marker-end="url(#fsah)"/>
+  <line x1="289" y1="147" x2="306" y2="147" class="flow" marker-end="url(#fsah)"/>
+  <line x1="384" y1="147" x2="401" y2="147" class="flow" marker-end="url(#fsah)"/>
+  <line x1="479" y1="147" x2="496" y2="147" class="flow" marker-end="url(#fsah)"/>
+  <line x1="574" y1="147" x2="591" y2="147" class="flow" marker-end="url(#fsah)"/>
+
+  <text x="12" y="244" class="note">Every instruction either puts one number on the pile, or takes one or two</text>
+  <text x="12" y="266" class="note">off and puts a result back. <tspan class="instr">ADD</tspan> and <tspan class="instr">MUL</tspan> are where the pile gets shorter.</text>
+</svg>

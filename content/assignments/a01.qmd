@@ -13,8 +13,11 @@ subtitle: "Variables, memory, control structures, and functions, in C++"
 ```
 
 ::: {.callout-note}
-Your own private GitHub repository is waiting for you (see
-[Getting the code](#getting-the-code) below), clone it and open it in VS Code.
+Your own private GitHub repository is waiting for you, but get the order
+right: **start your Coder workspace first**, connect VS Code to it, and only
+then clone the repository onto the Calvin machine (see
+[Getting the code](#getting-the-code) below). Cloning onto your own laptop
+instead gives you code you cannot compile.
 
 **Plan to set aside about 2 to 2.5 hours.** The first part (character sheet) is
 designed to be started in lab with your class; the adventure system and function
