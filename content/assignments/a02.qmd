@@ -216,6 +216,22 @@ That is one array of `int`. `PUSH`, `ADD` and the rest are just names for
 numbers, given in `calc.h`, so that a program can be written as words instead
 of as `{1, 7, 1, 5, 3, 6, 7}`.
 
+::: {.callout-note}
+**They really are just numbers.** `calc.h` writes each one down as a plain `int`:
+
+```cpp
+const int PUSH  = 1;
+const int ADD   = 3;
+const int PRINT = 6;
+const int HALT  = 7;
+```
+
+The compiler swaps the names for the numbers before anything runs, so `prog1`
+and `{1, 7, 1, 5, 3, 6, 7}` are the same seven `int`s. `run` only ever sees
+numbers, which is why its `switch` dispatches on an `int`, and why one it does
+not recognise can only be reported as `ERR_OPCODE`.
+:::
+
 Two things about it are worth slowing down for, because both come back later.
 
 **The comment on each line is a step number, and they are not consecutive.**
@@ -284,16 +300,22 @@ int  run(const int program[], unsigned length, int stack[], unsigned& top);
 unsigned mine(int program[]);
 ```
 
-Do not copy them without reading them. Every parameter-passing idea from this
-week is in those six lines:
+Do not copy them without reading them. Three ways of passing a parameter appear
+in those six lines, and what separates them is what the function is allowed to
+do to the caller's variable. Each row below is a single **parameter**, written
+exactly as it appears inside the brackets above.
 
-| | |
-|---|---|
-| `unsigned& top` | `push` and `pop` must **change** how deep the stack is. A reference is how a function reaches back out and changes the caller's variable. Without the `&` they would change a copy and the caller would never know. |
-| `const int stack[]` | `dump` only **reads** the stack. `const` says so, and the compiler will stop you if you forget and write to it. |
-| `unsigned top` | `isEmpty` only needs the number. Nothing to change, nothing to protect. |
-| `unsigned length` | `run` cannot work out how long the program is. An array becomes a pointer the moment it is passed to a function, and a pointer does not know how many things it points at, so the length has to travel alongside it. |
-| `int program[]` | `mine` **fills in** an array the caller already owns. That is an out parameter. |
+| Parameter, as you write it | What the function gets | Use it when |
+|---|---|---|
+| `unsigned top` | a copy | it only needs to read the value (`isEmpty`) |
+| `unsigned& top` | the caller's variable itself | it must change it (`push`, `pop`) |
+| `const int stack[]` | the caller's array, read-only | it reads an array (`dump`, `run`) |
+| `int stack[]` | the caller's array, writable | it writes into an array (`push`, `mine`) |
+
+Arrays are the odd ones out: they are never copied, so a function always has the
+caller's real array and `const` is the only way to promise you will not write to
+it. An array also arrives as a bare address that does not know its own size,
+which is why `run` takes `unsigned length` beside `program`.
 
 Once `machine.h` exists, `make` should succeed and `./a02 prog1` should run.
 It will print the wrong answer. That is the next task.
@@ -314,7 +336,7 @@ build, and grading only ever sees what you pushed.
 ## 5. Task 2: the five faults
 
 The Model 112 went into testing with **exactly five faults** in `machine.cpp`.
-You are told there are five. You are not told where they are.
+You know how many there are. You do not know where.
 
 ::: {.callout-note}
 **None of the five is a compiler error.** The compiler finds those for you and
@@ -413,13 +435,20 @@ Three instructions are missing entirely. Their TODOs are inside the `switch` in
 uses one now, the machine meets a number it does not recognise and stops with
 status 3.
 
+::: {.callout-note}
+**All three have to check the stack before they touch it.** An instruction that
+pops must make sure there is enough on the stack to pop, and one that pushes
+must make sure there is room, or it returns `ERR_UNDERFLOW` or `ERR_OVERFLOW`
+and stops. The cases already written above your TODOs do this on their first
+line. Copy the habit.
+:::
+
 ### TODO 1, `DUP`
 
 Push a second copy of the top value, so a stack of `6` becomes `6 6`.
 
-It needs something to copy, and it needs room for the copy. Look at how the
-cases above it check for both and report `ERR_UNDERFLOW` and `ERR_OVERFLOW`,
-and do the same.
+It is the only one of the three that leaves the stack deeper than it found it,
+so it is the only one that can overflow.
 
 `prog5` uses it to square a number without pushing the number twice.
 
@@ -436,8 +465,31 @@ answer".
 
 ### TODO 3, `JNZ`
 
-`JNZ n` pops the top value. If it was **not** zero, jump to step `n`. If it
-**was** zero, carry on with the step after this instruction.
+`JNZ` carries an operand, the same way `PUSH` does: the number written in the
+step after it. Call it `n`. It is the step to jump **to**, and it is fixed in
+the program.
+
+What `JNZ` *tests* is something else entirely: the value on top of the stack,
+which it pops. If that value is not zero, jump to step `n`. If it is zero, carry
+on with the step after the operand.
+
+In pseudocode:
+
+```{.pseudocode}
+if the stack is empty:
+    report ERR_UNDERFLOW and stop
+
+v = pop the top value
+
+if v is not 0:
+    pc = program[pc + 1]     jump there
+else:
+    pc = pc + 2              step past the operand
+```
+
+Note where the two numbers live. `v` comes off the **stack** and decides
+*whether* to jump. `program[pc + 1]` is read from the **program** and decides
+*where* to. Nothing ever compares them.
 
 This is the one that turns a list of keystrokes into a program. Every
 instruction above moves the program counter forward by a fixed amount. This one
@@ -452,12 +504,14 @@ Two things to get right:
   the step after it, exactly like `PUSH`. Landing on your own operand and
   running it as an instruction is how you get a status of 3.
 
-The step to jump to is `program[pc + 1]`. That is an `int` and `pc` is an
-`unsigned`, so you will need a cast: `(unsigned)program[pc + 1]`.
+`n` is `program[pc + 1]`. That is an `int` and `pc` is an `unsigned`, so you
+will need a cast: `(unsigned)program[pc + 1]`.
 
-`prog7` counts down from 3 and should print three lines. If it prints an
-endless stream instead, the value is not being popped, or the jump is
-happening when it should not.
+`prog7` counts down from 3 and should print three lines. Watch the first pass
+when you trace it: the counter has just become 2, and `n` is also 2, so the two
+numbers look like one. They are not, and the next pass pops a 1 while `n` is
+still 2. If it prints an endless stream instead, the value is not being popped,
+or the jump is happening when it should not.
 
 ::: {.callout-warning}
 **If a program never stops**, press <kbd>Ctrl</kbd>+<kbd>C</kbd> in the
@@ -583,6 +637,31 @@ git pull
 uncommitted edits to a file it needs to replace, and the refusal is the polite
 outcome. Commit first and your work is recorded and impossible to lose in the
 process.
+
+**Then pull, and let it merge.** Once I have pushed, there is no way to send
+your work up until you have brought mine down. `git push` on its own will be
+rejected with *"the remote contains work that you do not have locally"*, and
+that is not an error you fix by trying harder: it is Git telling you to pull
+first. Pull, which merges the two lines of history, and then push.
+:::
+
+::: {.callout-tip}
+**If `git pull` answers this:**
+
+```{.terminal}
+fatal: Need to specify how to reconcile divergent branches.
+```
+
+it is asking how you want the two lines joined, and refusing to guess. This
+course always merges. Set that once and the message never comes back:
+
+```bash
+git config --global pull.rebase false
+```
+
+Then `git pull` as usual. You did this in
+[Getting Started](gettingStarted.html#tell-git-how-to-combine-my-work-with-yours-once);
+this is the same setting, for a new machine or a session where you skipped it.
 :::
 
 a01 explains what a merge is and what to do if one reports a conflict. The

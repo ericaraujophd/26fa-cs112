@@ -487,6 +487,60 @@ pre.terminal code {
   color: #E4E7EC;
 }
 
+/* ------------------------------------------------------------------------
+   PSEUDOCODE
+   Blocks marked ```{.pseudocode} are the SHAPE of an answer, written in
+   words rather than in C++. There are three kinds of block on a page and a
+   student must be able to tell them apart without reading them: grey is code
+   you can compile, dark is what the machine said back, and this one is
+   neither. So it takes the course maroon, a rule down its side, and a label
+   saying what it is, because a student who pastes pseudocode into a compiler
+   has been failed by the page rather than by themselves.
+   ------------------------------------------------------------------------ */
+pre.pseudocode {
+  background: #FBF4F5;
+  border: 1px solid #E5D5D9;
+  border-left: 4px solid #6E1C2E;
+  border-radius: 6px;
+  padding: 2.1rem 1rem 0.9rem;
+  margin: 1rem 0;
+  position: relative;
+  max-width: 100%;
+  overflow-x: auto;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+pre.pseudocode::before {
+  content: "Pseudocode, not C++";
+  position: absolute;
+  top: 0.55rem;
+  left: 1.05rem;
+  font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: #6E1C2E;
+}
+
+pre.pseudocode code {
+  background: none;
+  color: #241B1E;
+  padding: 0;
+  border: none;
+  font-size: inherit;
+  white-space: pre;      /* the aligned right-hand notes must stay aligned */
+}
+
+.quarto-dark pre.pseudocode {
+  background: #241A1D;
+  border-color: #3B2D31;
+  border-left-color: #E38DA0;
+}
+.quarto-dark pre.pseudocode::before { color: #E38DA0; }
+.quarto-dark pre.pseudocode code    { color: #F1E8EA; }
+
 /* ══════════════════════════════════════════════════════════════
    Lab-opening button, top of a week's first assignment page.
    Opens that week's quiet/prayer deck; ?fs=1 makes the deck go
