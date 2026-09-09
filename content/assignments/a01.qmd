@@ -939,6 +939,31 @@ what you have.
 uncommitted edits to a file it needs to replace, and the refusal is the polite
 outcome. Commit first and your work is recorded, recoverable, and impossible to
 lose in the process.
+
+**Then pull, and let it merge.** Once I have pushed, there is no way to send
+your work up until you have brought mine down. `git push` on its own will be
+rejected with *"the remote contains work that you do not have locally"*, and
+that is not an error you fix by trying harder: it is Git telling you to pull
+first. Pull, which merges the two lines of history, and then push.
+:::
+
+::: {.callout-tip}
+**If `git pull` answers this:**
+
+```{.terminal}
+fatal: Need to specify how to reconcile divergent branches.
+```
+
+it is asking how you want the two lines joined, and refusing to guess. This
+course always merges. Set that once and the message never comes back:
+
+```bash
+git config --global pull.rebase false
+```
+
+Then `git pull` as usual. You did this in
+[Getting Started](gettingStarted.html#tell-git-how-to-combine-my-work-with-yours-once);
+this is the same setting, for a new machine or a session where you skipped it.
 :::
 
 ### Why this is called merging

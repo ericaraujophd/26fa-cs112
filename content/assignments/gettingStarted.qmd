@@ -692,6 +692,33 @@ The `✓ Configured git protocol` line is the one doing the quiet work: signing 
 also teaches Git itself to use this login. That is why pushing your code later
 just works, and why you will never need an SSH key in this course.
 
+### Tell Git how to combine my work with yours, once
+
+One more one-time setting, in the same terminal:
+
+```bash
+git config --global pull.rebase false
+```
+
+Later in the semester I will occasionally push a correction into your
+repository, to a file you do not own. When that happens your copy and GitHub's
+copy have both moved on from the same point, and Git has to join the two lines
+back together. This setting tells it to join them by **merging**, which is what
+every assignment in this course assumes.
+
+::: {.callout-note}
+**Why set it now rather than when it first matters?** Without it, Git will not
+choose for you. It stops with
+
+```{.terminal}
+fatal: Need to specify how to reconcile divergent branches.
+```
+
+and pulls nothing, which is a confusing thing to meet for the first time on an
+evening when you are trying to get work done. One line now, and you never see
+it.
+:::
+
 ### Clone your repository
 
 Make sure you are in your `cs112` folder:
