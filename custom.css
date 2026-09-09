@@ -566,3 +566,18 @@ pre.pseudocode code {
   border-left: 1px solid rgba(255,255,255,0.28); padding-left: 0.6rem;
 }
 .quarto-dark .lab-open-btn { border-color: #7d2338; }
+
+/* ------------------------------------------------------------------------
+   TABLE COLUMN WIDTHS
+   Pandoc gives every column an equal share -- <col style="width: 33%"> --
+   because the dashes in a |---|---|---| separator are equal. On these pages
+   the columns are rarely equal: a skill code sits beside a sentence, a
+   filename beside a description. Equal shares squeeze the prose into a
+   narrow ribbon and leave the short column mostly blank.
+
+   Letting the browser size columns to their content fixes every table on
+   the site at once. The widths are inline, so the override has to be
+   !important. Where one table wants a specific split, vary the dash counts
+   in its separator row and Pandoc emits those proportions instead.
+   ------------------------------------------------------------------------ */
+table colgroup col { width: auto !important; }
