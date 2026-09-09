@@ -245,7 +245,7 @@ switch (grade) {
 <section>
   <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
   <div class="pi-question">
-    <strong>Does this compile?</strong>
+    <strong>What is printed?</strong>
     <pre style="font-size:0.54em"><code class="language-cpp" data-trim>
 string charClass = "mage";
 
@@ -256,14 +256,14 @@ switch (charClass) {
     </code></pre>
   </div>
   <ul class="pi-choices">
-    <li><span class="letter">A.</span> Yes: it prints Fireball!</li>
-    <li><span class="letter">B.</span> Yes, but it prints nothing</li>
-    <li class="fragment correct" data-fragment-index="1"><span class="letter">C.</span> No: <code>switch</code> needs a whole-number type</li>
-    <li><span class="letter">D.</span> No: every <code>case</code> needs a <code>break</code></li>
+    <li><span class="letter">A.</span> Fireball!</li>
+    <li><span class="letter">B.</span> Heal!</li>
+    <li><span class="letter">C.</span> Fireball! Heal!</li>
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">D.</span> Nothing: it does not compile</li>
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>C.</strong> A C++ <code>switch</code> only works on whole-number types: <code>int</code>, <code>char</code>, <code>bool</code>, <code>enum</code>. Python's <code>match</code> happily switches on strings; C++ needs <code>if</code> / <code>else if</code> for that.<br>
+    <strong>D. Nothing is printed, because it never compiles.</strong> A C++ <code>switch</code> only works on whole-number types: <code>int</code>, <code>char</code>, <code>bool</code>, <code>enum</code>. Python's <code>match</code> happily switches on strings; C++ needs <code>if</code> / <code>else if</code> for that.<br>
     That is also why <code>case 'A'</code> works: a <code>char</code> <em>is</em> a small integer.
   </div>
 </section>
@@ -417,35 +417,6 @@ cout &lt;&lt; total;
     <div class="bug-line"><code>for (int i = 1; i &lt;= 3; ++i)<span class="hl-bad">;</span></code></div>
     The braces are a separate block, so they run once.
   </div>
-</section>
-
-<section>
-  <h2><code>break</code> and <code>continue</code></h2>
-  <div class="two-col">
-    <div>
-      <h3>break: leave the loop</h3>
-      <pre style="font-size:0.5em"><code class="language-cpp" data-trim>
-for (int i = 0; i &lt; n; ++i) {
-  if (party[i] == target) {
-    found = i;
-    break;       // stop looking
-  }
-}
-      </code></pre>
-    </div>
-    <div>
-      <h3>continue: skip this pass</h3>
-      <pre style="font-size:0.5em"><code class="language-cpp" data-trim>
-for (int i = 0; i &lt; n; ++i) {
-  if (hp[i] &lt;= 0) {
-    continue;    // skip the fallen
-  }
-  total += hp[i];
-}
-      </code></pre>
-    </div>
-  </div>
-  <div class="callout">Both are shortcuts, not magic: anything they do can be written with a richer condition. Use them when they make the intent <em>clearer</em>.</div>
 </section>
 
 <section>
