@@ -225,7 +225,7 @@ Every recursive function is the same two questions:
 **TODO 1, `sumArray(values, n)`**, the sum of the first `n` elements.
 
 The base case is `n == 0`: the sum of no numbers is 0. That is a real answer,
-not a special case to apologise for.
+not a special case to apologize for.
 
 Trace it for `{5, 3, 8}` before you write it:
 
@@ -303,7 +303,7 @@ itself**, because that is how it knows where to stop.
 > **Mark a cell visited when you PUT IT IN the container, not when you take it
 > out.**
 
-Here is the difference, on one cell with three unvisited neighbours:
+Here is the difference, on one cell with three unvisited neighbors:
 
 ```
 mark on the way IN                    mark on the way OUT
@@ -314,7 +314,7 @@ mark on the way IN                    mark on the way OUT
     c unmarked → mark it, push it         c unmarked → push it
     d unmarked → mark it, push it         d unmarked → push it
                                         ...later, pop b, mark b
-  container: b c d                        look at b's neighbours, which
+  container: b c d                        look at b's neighbors, which
   each cell enters exactly once            include c and d, still unmarked,
                                            so push both AGAIN
                                         container: c d c d ...
@@ -478,7 +478,7 @@ There is no `Stack<Cell>` in this version, and yet the search still backs up out
 of dead ends and carries on where it left off. Something is keeping track.
 
 It is the **run-time stack**, Wednesday's lecture. Every call to `explore` gets
-its own frame holding its own `here` and its own position in the neighbour loop,
+its own frame holding its own `here` and its own position in the neighbor loop,
 stacked on top of the caller's. When a call returns, its frame is thrown away
 and the one underneath picks up exactly where it stopped.
 

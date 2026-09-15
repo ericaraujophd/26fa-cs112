@@ -40,7 +40,7 @@ By the end of this assignment, you will be able to:
   wrong without it
 - Overload `operator[]` to return a reference, and say why a `const` version is
   also needed
-- Recognise a double free and a use-after-free from the symptoms, and find one
+- Recognize a double free and a use-after-free from the symptoms, and find one
   in a debugger
 
 These objectives map to course skills **A3** and **B4**, both of which are
@@ -395,7 +395,7 @@ Trace::~Trace() {
 
 ::: {.callout-warning}
 **`delete[]`, with the brackets**, for anything that came from `new[]`. Plain
-`delete` on an array is undefined behaviour. On an array of `double` it usually
+`delete` on an array is undefined behavior. On an array of `double` it usually
 appears to work; AddressSanitizer catches it as an `alloc-dealloc-mismatch`, and
 for an array of objects it would run only the first element's destructor.
 Undefined means you do not get to reason about what it does.
@@ -570,10 +570,10 @@ one number.
 line to the copy:
 
 ```cpp
-Trace other = a + b;        // initialisation, not assignment
+Trace other = a + b;        // initialization, not assignment
 ```
 
-That one does *not* crash. When you initialise a new object from a function's
+That one does *not* crash. When you initialize a new object from a function's
 return value, the compiler builds the result directly in the destination and
 skips the copy entirely, since C++17 it is required to, not merely allowed, so
 there is no second object, no second destructor, and no bug. It is called copy
@@ -680,7 +680,7 @@ runs when an object is:
 
 | | Looks like | You saw it in |
 |---|---|---|
-| **initialised from another** | `Trace b(a);` or `Trace b = a;` | Part 4's first check |
+| **initialized from another** | `Trace b(a);` or `Trace b = a;` | Part 4's first check |
 | **passed to a by-value parameter** | `f(a)` where `f` takes `Trace` | Part 4's fourth check |
 | **returned by value** | `return result;` | §9, or rather, §9's tip, where you saw the compiler skip it |
 

@@ -217,7 +217,7 @@ We will edit code on your laptop using VS Code, but compile and run it on the Li
 
 3. Return to the Coder browser tab. Your workspace row has four small buttons on the right. Click the **first** one, **VS Code Desktop**.
 
-![The buttons on your workspace row in Coder. Click the first one. The third is a remote desktop, which is not what you want.](../../figures/coder-vscode-button.png){#fig-vscode-button fig-alt="The Coder workspaces list showing one workspace running the Calvin CS Linux template. Four small buttons sit at the right-hand end of the row. The first is outlined and labelled VS Code Desktop, click this one. The second is VS Code in the browser, the third is a remote desktop and not VS Code, and the fourth is a terminal in the browser."}
+![The buttons on your workspace row in Coder. Click the first one. The third is a remote desktop, which is not what you want.](../../figures/coder-vscode-button.png){#fig-vscode-button fig-alt="The Coder workspaces list showing one workspace running the Calvin CS Linux template. Four small buttons sit at the right-hand end of the row. The first is outlined and labeled VS Code Desktop, click this one. The second is VS Code in the browser, the third is a remote desktop and not VS Code, and the fourth is a terminal in the browser."}
 
 ::: {.callout-caution}
 **Do not click "Open Desktop"** (the third button). It opens a remote desktop,
@@ -485,7 +485,7 @@ A few one-time settings will make your life much easier all semester.
 
 **Install the C++ extension:**
 
-This is what gives you C++ syntax colouring, code formatting, and the squiggly underlines that flag mistakes as you type. Open the **Extensions** panel (left sidebar), search for `C/C++ Extension Pack`, and click **Install**.
+This is what gives you C++ syntax coloring, code formatting, and the squiggly underlines that flag mistakes as you type. Open the **Extensions** panel (left sidebar), search for `C/C++ Extension Pack`, and click **Install**.
 
 You have no C++ files yet, so install it directly rather than waiting for VS Code to offer it when you open one.
 
@@ -838,7 +838,7 @@ finally connects it to the real function in `fortune.o`.
 The rule of thumb for the whole semester: **`.h` says what exists, `.cpp` says
 what it does.**
 
-![How your code becomes a program. Both source files include `fortune.h`, which is why a change to the header means both have to be compiled again.](../../figures/compile-link.svg){#fig-compile fig-alt="Three columns. On the left, fortune.h, a header file, with dashed arrows labelled hash-include pointing into main.cpp and fortune.cpp. In the middle, each source file is compiled with g++ -c into its own object file, main.o and fortune.o. On the right, the linker combines both object files into one executable called a00, which you run by typing ./a00."}
+![How your code becomes a program. Both source files include `fortune.h`, which is why a change to the header means both have to be compiled again.](../../figures/compile-link.svg){#fig-compile fig-alt="Three columns. On the left, fortune.h, a header file, with dashed arrows labeled hash-include pointing into main.cpp and fortune.cpp. In the middle, each source file is compiled with g++ -c into its own object file, main.o and fortune.o. On the right, the linker combines both object files into one executable called a00, which you run by typing ./a00."}
 
 Doing this manually every time would look like:
 

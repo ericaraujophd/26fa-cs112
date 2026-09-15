@@ -11,7 +11,7 @@ Before any of this can happen, you must send your GitHub username to your instru
 
 Assignments are grouped by the week they begin. Weeks carrying **more than one** assignment are marked with a heavier rule and a bold count, plan ahead for those.
 
-Each assignment **opens on the Monday of its week**. You can see the whole term below, but a future assignment stays greyed out with its opening date until then.
+Each assignment **opens on the Monday of its week**. You can see the whole term below, but a future assignment stays grayed out with its opening date until then.
 
 ```{=html}
 <style>

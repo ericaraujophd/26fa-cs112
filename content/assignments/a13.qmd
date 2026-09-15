@@ -16,7 +16,7 @@ be the lighter one. TODO 3 is the heart of it and is four lines long.
 
 By the end of this assignment, you will be able to:
 
-- Recognise a queue in the wild, in a place where nobody labelled it one
+- Recognize a queue in the wild, in a place where nobody labeled it one
 - Implement moving, growing and dying in terms of one enqueue and one dequeue
   per frame
 - Explain why "growing" needs no code of its own, only a dequeue that does not
@@ -145,7 +145,7 @@ worse afternoon than a short wait.
 | `Snake.cpp` | **yes** | TODOs 1–6 |
 | `Snake.h` | no | the specification. Read this first. |
 | `given.cpp` | no | the constructor, `step()`, and the random source |
-| `render.cpp` | no | colour |
+| `render.cpp` | no | color |
 | `main.cpp` | no | plays a scripted game |
 | `Queue.h` | **replaceable** | a working Queue, drop in your own a10 one if you like |
 | `moves/` | no | scripts of moves |
@@ -171,11 +171,11 @@ and the rule is at least simple.
 ### You never write an escape code
 
 `render.cpp` is given complete. It uses the same trick a03 did: the half-block
-character `▀` fills the top half of a terminal cell with the foreground colour
+character `▀` fills the top half of a terminal cell with the foreground color
 and leaves the bottom half showing the background, so one printed character
 draws two grid rows and the pixels come out square.
 
-Everything you write works on a plain `char` grid. Colour is a mapping applied
+Everything you write works on a plain `char` grid. Color is a mapping applied
 at the very end, and nowhere else.
 
 ---

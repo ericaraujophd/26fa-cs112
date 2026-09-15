@@ -268,7 +268,7 @@ repetition. An in-order traversal then prints the vocabulary alphabetically.
 counts[word]++;
 ```
 
-A missing key is created with a value-initialised `int`, which is 0, and then
+A missing key is created with a value-initialized `int`, which is 0, and then
 incremented.
 
 ::: {.callout-important}

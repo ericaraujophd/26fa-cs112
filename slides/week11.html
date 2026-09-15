@@ -558,7 +558,7 @@ cout &lt;&lt; scores.size();
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>B. 2.</strong> Reading a missing key with <code>[]</code> <em>creates</em> it, value-initialised to 0. The lookup of "bob" silently inserted an entry. Use <code>.count(k)</code> or <code>.find(k)</code> to ask without inserting.
+    <strong>B. 2.</strong> Reading a missing key with <code>[]</code> <em>creates</em> it, value-initialized to 0. The lookup of "bob" silently inserted an entry. Use <code>.count(k)</code> or <code>.find(k)</code> to ask without inserting.
   </div>
 </section>
 
@@ -580,7 +580,7 @@ m.find("missing") != m.end()
     </div>
   </div>
   <div class="callout callout-maroon">
-    This bites everyone once: a loop that only <em>reads</em> a map quietly doubles its size. The behaviour is deliberate, 
+    This bites everyone once: a loop that only <em>reads</em> a map quietly doubles its size. The behavior is deliberate, 
     <code>m[k]++</code> as a word counter depends on it, but it means <code>[]</code> is not a read-only operation.
   </div>
 </section>

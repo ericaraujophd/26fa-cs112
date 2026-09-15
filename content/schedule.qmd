@@ -563,7 +563,7 @@ learning objectives are there too, folded away until you want them.
               <li><span class="bloom-dot bloom-understand" title="Understand"></span>Describe the concept of Big-Oh notation for analyzing algorithmic complexity.</li>
               <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Reason about Big-Oh as an approximation: <em>a·f(n) + b</em>.</li>
               <li><span class="bloom-dot bloom-remember" title="Remember"></span>Identify typical Big-Oh curves (O(1), O(log n), O(n), O(n log n), O(n²)).</li>
-              <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Analyse best, worst and amortized complexity.</li>
+              <li><span class="bloom-dot bloom-analyze" title="Analyze"></span>Analyze best, worst and amortized complexity.</li>
             </ul>
           </div>
           <div>
@@ -758,7 +758,7 @@ learning objectives are there too, folded away until you want them.
       <div class="res-rows">
 
         <div class="res-label">📝 Do</div>
-        <div class="res-val"><span class="res-tbd">no assignment , a15 spans weeks 13&ndash;14</span></div>
+        <div class="res-val"><span class="res-tbd">no assignment, a15 spans weeks 13&ndash;14</span></div>
 
         <div class="res-label">📖 Read</div>
         <div class="res-val"><span class="res-tbd">to be announced</span></div>
