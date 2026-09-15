@@ -16,6 +16,29 @@
      Deliberately unlike the teaching decks: no code face, no
      callouts, no slide numbers. Quiet type on a full maroon field.
      ══════════════════════════════════════════════════════════════ */
+  /* Bigger than the teaching decks, on purpose.
+     cs112-slides.css sets .reveal to 36px, which is right for a deck the
+     room reads in glances while you talk over it. These slides are the
+     opposite: nobody is talking, and everyone in the room is reading the
+     words themselves, some of them from the back. Every size below is in
+     em, so this one number scales the whole deck. Raised from 36px on
+     2026-09-15.
+
+     Reveal lays each slide out in a fixed 960x700 box and then scales
+     that box to the window, so on its own, type that is too large does
+     not shrink to fit: it runs off the bottom silently, and reveal says
+     nothing. That is what fitSlide() at the end of this file is for. It
+     measures each slide as it arrives and steps the size down until the
+     slide fits, so this number is a ceiling rather than a promise, and
+     the few dense slides quietly come in under it.
+
+     Which means you can raise this without re-measuring every deck. The
+     honest limit is the one your eyes set: push it far enough and the
+     dense slides shrink so much that the deck stops looking like one
+     deck. At 46px, eleven of the fourteen decks render at full size and
+     the other three give up a few percent on one slide each. */
+  .reveal { font-size: 46px; }
+
   .reveal .qt-h {
     font-family: Georgia, 'Iowan Old Style', 'Times New Roman', serif;
     font-weight: 400; color: #fff; font-size: 1.5em;
@@ -77,6 +100,13 @@
     font-family: Georgia, 'Iowan Old Style', serif; color: var(--gold);
     font-style: italic; font-size: 0.52em; margin: 1.1em auto 0; max-width: 76%;
   }
+
+  /* .qt-whoslide is on the "Who she was" slide, the one that carries real
+     paragraphs. It used to be held at a fixed 0.87em to stop it running
+     off the bottom. It is not any more: fitSlide() at the end of this
+     file shrinks whichever slide needs it, by however much it needs, so
+     one hand-tuned number for one slide is no longer the right tool.
+     The class stays because it names the slide. */
 
   /* artwork, when a file has been provided: framed, captioned, never
      presented as a likeness */
@@ -172,7 +202,7 @@
   <p class="qt-lead" style="margin-top:1em">The work will still be here. Let us start somewhere else.</p>
 </section>
 
-<section data-background-color="#6E1C2E">
+<section class="qt-whoslide" data-background-color="#6E1C2E">
   <span class="qt-eyebrow">Who she was</span>
   <p class="qt-name">Felicity</p>
   <p class="qt-where">Carthage &middot; died 203</p>
@@ -240,6 +270,45 @@
     transitionSpeed: 'slow',
     plugins: [ RevealNotes ]
   });
+
+  /* ── fit a slide to the box ───────────────────────────────────────
+     Reveal scales the whole 960x700 box to the window, which makes
+     everything the right size relative to everything else, and does
+     nothing at all about a slide whose content is taller than 700.
+     That slide just loses its last line or two off the bottom, with no
+     error and no scrollbar. It is the one failure mode of this deck
+     that you would not notice from the front of the room, because the
+     missing line is behind the lectern.
+
+     So: measure the slide, and if it is too tall, step its font size
+     down 2% at a time until it fits. Every size in this deck is in em,
+     so one property on the section scales all of it together and the
+     proportions hold.
+
+     Notes:
+       - Clear the previous value first, or a slide revisited after a
+         window resize keeps whatever it was shrunk to last time.
+       - The floor of 0.6 is a guard against a pathological slide
+         looping forever. Nothing here comes close to it; a slide that
+         did would be a slide worth splitting in two.
+       - 12px of bottom margin, so a descender never grazes the edge.
+       - Run it again on resize, because the box is fixed but the
+         fonts a browser substitutes are not.  */
+  function fitSlide(section) {
+    if (!section) return;
+    const box = Reveal.getConfig().height - 12;
+    section.style.fontSize = '';
+    let size = 1;
+    while (section.scrollHeight > box && size > 0.6) {
+      size -= 0.02;
+      section.style.fontSize = size.toFixed(2) + 'em';
+    }
+  }
+
+  Reveal.on('ready',        e => fitSlide(e.currentSlide));
+  Reveal.on('slidechanged', e => fitSlide(e.currentSlide));
+  window.addEventListener('resize', () => fitSlide(Reveal.getCurrentSlide()));
+  window.addEventListener('load',   () => fitSlide(Reveal.getCurrentSlide()));
 </script>
 </body>
 </html>
