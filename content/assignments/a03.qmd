@@ -129,52 +129,32 @@ thing in it should move. That is the entire program:
 | `o` | sand | falls, piles up, sinks through water |
 | `~` | water | falls, and spreads sideways |
 
-The whole simulation is a 2D array and a nested loop. What makes it interesting
-is that a grid of characters is exactly the data structure this week is about,
-and a simulation that runs for four hundred steps is a wonderfully unforgiving
-way to find out whether you got your loop right. A subtle mistake in a nested
-loop is invisible on paper. It is extremely visible when your sand falls through
-the floor.
+The whole simulation is a 2D array and **a nested loop**. You will work with a grid of characters, the data structure this week is about, and a simulation that runs for four hundred steps to find out whether you got your loop right. A subtle mistake in a nested loop is invisible on paper. It is extremely visible when your sand falls through the floor.
 
 You will write four functions:
 
-- `loadWorld()`, read a world from a file, and complain properly when the file
-  is broken
+- `loadWorld()`, read a world from a file, and complain properly when the file is broken
 - `saveWorld()`, write the finished world back out
 - `step()`, advance the simulation by one tick
 - `saveReplay()`, write every frame into an HTML file you can play back
 
-Everything else, the color drawing, the animation, the emitter loop, the
-argument parsing, the HTML and JavaScript for the replay player, is written for
-you. None of it is what this week is about.
+Everything else, the color drawing, the animation, the emitter loop, the argument parsing, the HTML and JavaScript for the replay player, is written for you. None of it is what this week is about and you shouldn't be concerned with it.
 
 ::: {.callout-tip}
 **See where this is going first, and do it now.** The repository you just cloned
 contains `demo.html`, a recording of a finished simulator running
 `worlds/showcase.txt`. Open it (§3.1 below explains how) and press Play. That is
-what yours will do by Friday.
+what yours will do by the end of the week.
 
 `demo.html` is a run of the *same program you are about to write*, so it is also
 the reference for what your own `replay.html` should look like when TODO 4 works.
-:::
-
-::: {.callout-tip}
-**Where this came from.** This is a descendant of a project CS112 ran last
-spring, which used a graphics library called Bridges that needed a web account,
-an API key, and a round trip to a server every time you wanted to see anything.
-It also moved water randomly, which meant no two runs agreed and nothing could
-be checked automatically. This version draws in your terminal, in color, using
-nothing but text, and every rule has a defined tie-break, so the same world run
-twice gives the same answer.
 :::
 
 ---
 
 ## 3. What You Are Given, and What You Write
 
-**All the C++ you write goes in one file: `sandbox.cpp`.** (Two other files
-change too, you add your name to `README.md`, and you create `worlds/mine.txt`
-in §12, but no other code is yours to touch.)
+**All the C++ you write goes in one file: `sandbox.cpp`.** You will also add your name to `README.md`, and you will create `worlds/mine.txt` in §12, but no other code is yours to touch.
 
 | File | What it is |
 |---|---|
@@ -193,10 +173,31 @@ Running it:
 ./sandbox worlds/hourglass.txt 300 --quiet    # no animation, no escape codes
 ```
 
-The two arguments are the world file and the number of steps to run. Every run
-writes `out.txt` (the final grid) and `replay.html` (every frame, with a play
-button). `--quiet` suppresses the animation, which is what the tests use so they
-never have to sit through four hundred frames.
+The two arguments are the world file and the number of steps to run. `--quiet`
+suppresses the animation, which is what the tests use so they never have to sit
+through four hundred frames.
+
+::: {.callout-important}
+**Run it now, and expect nothing to happen.** The program builds and runs
+before you have written a line, and this is what it says:
+
+```
+Simulated 300 steps of worlds/hourglass.txt (0x0), 301 frames.
+
+The world loaded as 0x0, so there was nothing to simulate.
+That is what happens before TODO 1: loadWorld is empty, so it
+never sets rows or cols. Expected right now. Start there.
+
+No out.txt was written. saveWorld, TODO 2, is still empty.
+No replay.html was written. saveReplay, TODO 4, is still empty.
+```
+
+That is correct behavior, not a broken repository. The four functions in
+`sandbox.cpp` are empty, so the world has no size and neither output file
+exists yet. Once TODO 1 works the size becomes real, and once TODO 2 and
+TODO 4 work the two files appear. Those last three lines are worth
+re-running for: they are the shortest progress report you have.
+:::
 
 ### 3.1 Opening an HTML file that lives on Coder {#opening-html}
 
