@@ -1,5 +1,5 @@
 ---
-title: "Assignment 09: Stack and Queue"
+title: "Assignment 10: Stack and Queue"
 subtitle: "Two containers, nine TODOs, and one array bent into a circle"
 ---
 

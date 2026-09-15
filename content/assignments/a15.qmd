@@ -1,5 +1,5 @@
 ---
-title: "Assignment 14: Matrix Operations and OpenMP"
+title: "Assignment 15: Matrix Operations and OpenMP"
 subtitle: "Weeks 13–14 · Nov 30 – Dec 9"
 ---
 

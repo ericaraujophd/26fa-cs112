@@ -1,5 +1,5 @@
 ---
-title: "Assignment 03: Qualifying"
+title: "Assignment 04: Qualifying"
 subtitle: "Two classes, a leaderboard, and the operator that prints it"
 ---
 

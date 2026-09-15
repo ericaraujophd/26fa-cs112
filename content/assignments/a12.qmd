@@ -1,5 +1,5 @@
 ---
-title: "Assignment 11: Three Ways Through a Maze"
+title: "Assignment 12: Three Ways Through a Maze"
 subtitle: "One algorithm, two containers, and then no container at all"
 ---
 
