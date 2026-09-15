@@ -274,7 +274,7 @@ Both live in `<algorithm>`, which the starter already includes.
 
 Open `Result.h` first. It is a `struct`, a class whose members are public by
 default, with twelve members in the same order as the file's columns. A
-`Result` has no behaviour; it is twelve values that travel together, so there is
+`Result` has no behavior; it is twelve values that travel together, so there is
 nothing to hide and nothing to enforce.
 
 You are given a helper:

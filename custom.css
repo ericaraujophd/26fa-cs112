@@ -330,7 +330,7 @@ div.flush-table > table {
 
 /* ── Dark-mode secondary surface ────────────────────────────
    The darkly theme flips --bs-secondary-color to near-white but leaves
-   --bs-secondary-bg light grey (#ebebeb). Anything pairing the two — zebra
+   --bs-secondary-bg light gray (#ebebeb). Anything pairing the two — zebra
    table rows, the break-week row, room pills, the check-in timeline — renders
    white-on-near-white (measured contrast 1.19, AA needs 4.5). Re-point the
    surface variable so every existing usage is fixed at once.              */
@@ -339,13 +339,13 @@ div.flush-table > table {
 }
 
 /* ── Active sidebar link ────────────────────────────────────
-   Every sidebar link picks up the Calvin colours above, but the *active* one
-   falls through to the theme's own link colour — darkly's teal (#1AC398),
+   Every sidebar link picks up the Calvin colors above, but the *active* one
+   falls through to the theme's own link color — darkly's teal (#1AC398),
    which reads as a stray green against the maroon/gold palette.
 
    Rather than a third hue, the current page is simply the most legible item:
    near-black on light, warm white on dark. A thin gold rule carries the brand
-   cue, so "you are here" survives for anyone who can't distinguish the colour. */
+   cue, so "you are here" survives for anyone who can't distinguish the color. */
 .sidebar-link.active,
 .sidebar-item .sidebar-link.active {
   color: #1f1d1a !important;
@@ -362,8 +362,8 @@ div.flush-table > table {
 
 /* ── Muted text ─────────────────────────────────────────────
    Bootstrap's .text-secondary is inverted under this theme pair: it renders
-   #adb5bd (light grey) on white in light mode — 2.07:1 — and #434343 (dark
-   grey) on #222 in dark mode — 1.61:1. Both fail the 4.5 AA floor, and the
+   #adb5bd (light gray) on white in light mode — 2.07:1 — and #434343 (dark
+   gray) on #222 in dark mode — 1.61:1. Both fail the 4.5 AA floor, and the
    dark case is effectively invisible. Set both explicitly.                 */
 .text-secondary {
   color: #5c5a55 !important;
@@ -421,7 +421,7 @@ div.flush-table > table {
 
    The fix is to give the uncovered containers the same treatment Quarto gives
    the covered ones, rather than to stop writing code in headings. Light mode is
-   included too: the chip there was readable but a different grey from the body
+   included too: the chip there was readable but a different gray from the body
    chips, and matching them costs nothing. */
 h1 code:not(.sourceCode), h2 code:not(.sourceCode), h3 code:not(.sourceCode),
 h4 code:not(.sourceCode), h5 code:not(.sourceCode), h6 code:not(.sourceCode),
@@ -491,7 +491,7 @@ pre.terminal code {
    PSEUDOCODE
    Blocks marked ```{.pseudocode} are the SHAPE of an answer, written in
    words rather than in C++. There are three kinds of block on a page and a
-   student must be able to tell them apart without reading them: grey is code
+   student must be able to tell them apart without reading them: gray is code
    you can compile, dark is what the machine said back, and this one is
    neither. So it takes the course maroon, a rule down its side, and a label
    saying what it is, because a student who pastes pseudocode into a compiler

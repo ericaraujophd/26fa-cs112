@@ -163,7 +163,7 @@ them.
 
 `words.txt` is a real spell-checker word list, SCOWL, filtered to 73,419
 lowercase words made only of letters. `WORDS-LICENSE.txt` records exactly where
-it came from, what was done to it, and the licence that permits it to be here.
+it came from, what was done to it, and the license that permits it to be here.
 Read it; knowing the provenance of your data is part of the job.
 
 Being a real word list, it contains proper nouns, brand names, and the odd word

@@ -264,7 +264,7 @@ Written down:
 1. **Refuse to guess.** Return `UNKNOWN` if `count < 2`, or any time is zero or
    negative, or any size is not exactly ten times the one before it.
 
-2. Compute the ratio between each pair of neighbouring times:
+2. Compute the ratio between each pair of neighboring times:
 
    ```cpp
    ratio[i] = times[i] / times[i-1];       // for i = 1 .. count-1

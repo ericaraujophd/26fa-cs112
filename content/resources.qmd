@@ -63,7 +63,7 @@ chapters below line up with what we have covered so far:
 
 | If you want more on | Read |
 |---|---|
-| Uninitialized variables and undefined behaviour | [1.6](https://www.learncpp.com/cpp-tutorial/uninitialized-variables-and-undefined-behavior/) |
+| Uninitialized variables and undefined behavior | [1.6](https://www.learncpp.com/cpp-tutorial/uninitialized-variables-and-undefined-behavior/) |
 | `cout`, `cin`, `endl` | [1.5](https://www.learncpp.com/cpp-tutorial/introduction-to-iostream-cout-cin-and-endl/) |
 | Data types and `sizeof` | [4.1](https://www.learncpp.com/cpp-tutorial/introduction-to-fundamental-data-types/), [4.3](https://www.learncpp.com/cpp-tutorial/object-sizes-and-the-sizeof-operator/) |
 | Decimal, binary, hex, octal | [5.3](https://www.learncpp.com/cpp-tutorial/numeral-systems-decimal-binary-hexadecimal-and-octal/) |

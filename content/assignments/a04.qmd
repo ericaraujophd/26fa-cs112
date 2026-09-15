@@ -215,11 +215,11 @@ can verify, which is more than any paragraph of English on this page can manage.
 It is also the best model you have for §11, where you write tests of your own.
 Notice three habits worth stealing:
 
-- **one `SECTION` per behaviour**, named so that a failure tells you what broke
+- **one `SECTION` per behavior**, named so that a failure tells you what broke
 - **the boundary cases, not just the easy one**, `setTime(0)` and `setTime(-1)`,
   not only `setTime(90.0)`
 - **`REQUIRE_THROWS_AS` for the refusals**, so "it rejected that" is a tested
-  behaviour rather than something you hope happens
+  behavior rather than something you hope happens
 
 ---
 
@@ -252,7 +252,7 @@ Those two get setters.
 ::: {.callout-note}
 **`myDeleted` is track limits.** F1 cars have to keep four wheels inside the white
 lines; run wide and the stewards strike the lap off. It is a real mutable
-`bool`, not a flag invented to give you a `bool` to practise on.
+`bool`, not a flag invented to give you a `bool` to practice on.
 
 For this assignment a deleted lap still counts on the leaderboard, it just
 prints with a marker. Resist the urge to make deletion remove the lap from the
@@ -517,7 +517,7 @@ done.
 
 Compare that with the version of this class CS112 built last spring, which stored
 plain `int` scores and had to loop over the array zeroing every slot. Objects
-that know how to initialise themselves save you that loop.
+that know how to initialize themselves save you that loop.
 
 ### TODO 10, `findPositionFor`
 
@@ -694,8 +694,8 @@ For each lap on the board, in order:
 - **the position**, the index plus one. An array starts at 0; a leaderboard
   starts at 1.
 - **the lap itself.** You already wrote a `Lap` `operator<<` in TODO 8, so this
-  is `out << session.getLap(i)`. Do not print the driver and team again by hand
- , reuse what you built. And print the *formatted* time, never the raw
+  is `out << session.getLap(i)`. Do not print the driver and team again by hand,
+  reuse what you built. And print the *formatted* time, never the raw
   `double`: a board showing `76.483` instead of `1:16.483` fails a check.
 - **the gap to the leader**, this lap's time minus the time at position 0,
   to three decimals, with a leading `+`. P1 has no gap; print `-` instead.

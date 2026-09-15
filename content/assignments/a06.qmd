@@ -35,7 +35,7 @@ By the end of this assignment, you will be able to:
   uses of the class name change and which do not
 - Update a makefile when a `.cpp` file stops existing
 - Write a function template, and call it on more than one instantiation
-- Recognise where a default element value is needed, and write `Item()` rather
+- Recognize where a default element value is needed, and write `Item()` rather
   than `0`
 - Use two channels of the same length together, indexing them in step
 - Test a template on more than one element type, and say why one is not enough
@@ -458,7 +458,7 @@ Both were perfectly reasonable when every `Item` was a `double`. Neither is
 reasonable now:
 
 - `Trace<string> names(3);` would assign `0` to a `string`. That is assigning a
-  null character pointer to it, which is undefined behaviour, usually a crash.
+  null character pointer to it, which is undefined behavior, usually a crash.
 - `setSize` is worse. `(i < mySize) ? mySamples[i] : 0` does not even *compile*
   for a `string`, because `string` and `int` have no type in common for the
   conditional operator to produce.

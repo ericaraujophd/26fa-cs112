@@ -33,7 +33,7 @@ By the end of this assignment, you will be able to:
 - Find a fault in working code by comparing what it does against what it should do
 - Use `switch` with `break` to dispatch on a value, and say what happens without the `break`
 - Write a loop whose counter moves backwards through an array
-- Recognise unsigned underflow as a cause rather than as a curiosity
+- Recognize unsigned underflow as a cause rather than as a curiosity
 - Pass an array to a function, and explain why its length has to travel separately
 - Describe how a stored program, a stack and a program counter make a computer
 
@@ -229,7 +229,7 @@ const int HALT  = 7;
 The compiler swaps the names for the numbers before anything runs, so `prog1`
 and `{1, 7, 1, 5, 3, 6, 7}` are the same seven `int`s. `run` only ever sees
 numbers, which is why its `switch` dispatches on an `int`, and why one it does
-not recognise can only be reported as `ERR_OPCODE`.
+not recognize can only be reported as `ERR_OPCODE`.
 :::
 
 Two things about it are worth slowing down for, because both come back later.
@@ -239,7 +239,7 @@ Two things about it are worth slowing down for, because both come back later.
 other instruction occupies one. So after running the `PUSH` at step 0, the
 machine has to move on by **two**, not one, or it will try to execute the 7.
 
-![The same seven numbers, laid out the way the machine sees them. Each `PUSH` and the number after it are one instruction spread over two slots, which is why the program counter does not always move by the same amount.](../../figures/program-counter.svg){#fig-pc fig-alt="prog1 drawn as seven cells in a row, numbered 0 to 6, reading PUSH, 7, PUSH, 5, ADD, PRINT, HALT. Instruction cells are tinted maroon and operand cells gold. Brackets group each PUSH with the number after it, labelled one instruction, two ints. Curved arrows below show the program counter moving 0 to 2 and 2 to 4 by adding two, then 4 to 5 and 5 to 6 by adding one."}
+![The same seven numbers, laid out the way the machine sees them. Each `PUSH` and the number after it are one instruction spread over two slots, which is why the program counter does not always move by the same amount.](../../figures/program-counter.svg){#fig-pc fig-alt="prog1 drawn as seven cells in a row, numbered 0 to 6, reading PUSH, 7, PUSH, 5, ADD, PRINT, HALT. Instruction cells are tinted maroon and operand cells gold. Brackets group each PUSH with the number after it, labeled one instruction, two ints. Curved arrows below show the program counter moving 0 to 2 and 2 to 4 by adding two, then 4 to 5 and 5 to 6 by adding one."}
 
 **The stack grows and shrinks as the program runs.** Nothing in the program
 says how deep it is. That is tracked separately, by a variable the machine
@@ -260,7 +260,7 @@ slot.
 Read that twice. It is the sort of thing an off-by-one hides in. Here is the
 same sentence as a picture:
 
-![`top` counts the values; it does not point at the last one. Everything the machine does depends on that staying true.](../../figures/stack-top.svg){#fig-top fig-alt="A column of five stack slots labelled stack[0] at the bottom through stack[4] at the top. The bottom three hold 7, 5 and 3; the top two are empty and drawn dashed. A maroon tag reading top = 3 points at the first empty slot, stack[3], captioned the next free slot, while stack[2] is labelled stack[top minus 1], the top value. Cards to the right state that the top value is stack[top - 1] and stack[top] is where the next push goes; that push writes at stack[top] then increments top, while pop decrements top then reads stack[top]; and that because top is unsigned, popping an empty stack makes top - 1 wrap to 4294967295 rather than becoming -1."}
+![`top` counts the values; it does not point at the last one. Everything the machine does depends on that staying true.](../../figures/stack-top.svg){#fig-top fig-alt="A column of five stack slots labeled stack[0] at the bottom through stack[4] at the top. The bottom three hold 7, 5 and 3; the top two are empty and drawn dashed. A maroon tag reading top = 3 points at the first empty slot, stack[3], captioned the next free slot, while stack[2] is labeled stack[top minus 1], the top value. Cards to the right state that the top value is stack[top - 1] and stack[top] is where the next push goes; that push writes at stack[top] then increments top, while pop decrements top then reads stack[top]; and that because top is unsigned, popping an empty stack makes top - 1 wrap to 4294967295 rather than becoming -1."}
 
 ---
 
@@ -432,7 +432,7 @@ last had a chance to change it.
 
 Three instructions are missing entirely. Their TODOs are inside the `switch` in
 `run`, and each says what the instruction has to do. If you run a program that
-uses one now, the machine meets a number it does not recognise and stops with
+uses one now, the machine meets a number it does not recognize and stops with
 status 3.
 
 ::: {.callout-note}
@@ -495,7 +495,7 @@ This is the one that turns a list of keystrokes into a program. Every
 instruction above moves the program counter forward by a fixed amount. This one
 can move it **backwards**, which is how a program repeats itself.
 
-![`prog7` counting down from 3. The `JNZ` at step 8 pops a value and picks one of two arrows: back to step 2 while the count is not zero, forward past its own operand to `HALT` when it is.](../../figures/jnz-loop.svg){#fig-jnz fig-alt="prog7 drawn as eleven cells numbered 0 to 10, reading PUSH, 3, DUP, PRINT, PUSH, 1, SUB, DUP, JNZ, 2, HALT. An arrow above the row runs forward from the JNZ at step 8 to the HALT at step 10, labelled zero: pc += 2. A longer maroon arrow below the row runs backward from step 8 to the DUP at step 2, labelled not zero: jump back to step 2. A card underneath states that JNZ n pops the top value first, then chooses: not zero means pc becomes the unsigned value of program[pc + 1], and zero means pc += 2, stepping over the operand."}
+![`prog7` counting down from 3. The `JNZ` at step 8 pops a value and picks one of two arrows: back to step 2 while the count is not zero, forward past its own operand to `HALT` when it is.](../../figures/jnz-loop.svg){#fig-jnz fig-alt="prog7 drawn as eleven cells numbered 0 to 10, reading PUSH, 3, DUP, PRINT, PUSH, 1, SUB, DUP, JNZ, 2, HALT. An arrow above the row runs forward from the JNZ at step 8 to the HALT at step 10, labeled zero: pc += 2. A longer maroon arrow below the row runs backward from step 8 to the DUP at step 2, labeled not zero: jump back to step 2. A card underneath states that JNZ n pops the top value first, then chooses: not zero means pc becomes the unsigned value of program[pc + 1], and zero means pc += 2, stepping over the operand."}
 
 Two things to get right:
 

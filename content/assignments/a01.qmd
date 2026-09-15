@@ -180,11 +180,11 @@ the command line, which is what makes `./a01 step1` possible at all.
 
 That is why `main.cpp` checks `argc < 2` before doing anything: if you run
 `./a01` with no step, there is no `argv[1]` to read, and reading it anyway would
-be your first taste of undefined behaviour. It prints the usage line instead.
+be your first taste of undefined behavior. It prints the usage line instead.
 
 `char*` means *pointer to a character*, and `char* argv[]` an array of them.
 Pointers are exactly what TODO 1 is about. You are not expected to be
-comfortable with that line yet; you are expected to recognise it when you meet
+comfortable with that line yet; you are expected to recognize it when you meet
 it again.
 :::
 

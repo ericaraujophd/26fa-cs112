@@ -49,7 +49,7 @@ semester is to make you someone who can.
 
 So the rule is simple: do it yourself. Struggle with it, use the debugger, come
 to office hours, ask a classmate to explain something. Those are the activities
-that build the judgement you will need later.
+that build the judgment you will need later.
 
 ### What happens if you don't
 

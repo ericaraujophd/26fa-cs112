@@ -390,7 +390,7 @@ a different data structure with the same interface.
 Four of the thirty-six checks read `Stack.h` and `Queue.h` as text and fail you
 if there is a loop inside `push`, `pop`, `enqueue`, `dequeue`, `peekTop`,
 `peekFront`, `getSize`, `isEmpty` or `isFull`. A shifting queue gives every
-right answer, so no behavioural check could ever catch it, and timing it on a
+right answer, so no behavioral check could ever catch it, and timing it on a
 shared grading machine would not be trustworthy. Reading the source is the only
 honest way to hold you to the thing this assignment is actually about.
 :::
@@ -729,7 +729,7 @@ The 36 break down like this:
 | 3 | constant time, read out of your source |
 | 1 | your `MY CHOICE` line |
 
-**Not one of the 32 behavioural checks can tell which technique you chose.**
+**Not one of the 32 behavioral checks can tell which technique you chose.**
 They call the public methods and look at what comes back, which is the only
 thing an ADT promises. Both techniques score 36 out of 36; this was verified
 against complete implementations of each.

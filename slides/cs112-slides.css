@@ -351,7 +351,7 @@
     .rk-svg, .rk-tbl { width: 100%; height: auto; display: block;
                        font-family: 'Segoe UI', system-ui, sans-serif; }
     .rk-frame { height: 250px; }
-    /* one flat silhouette: limbs are strokes in the same colour as the body */
+    /* one flat silhouette: limbs are strokes in the same color as the body */
     .rk-body  { fill: #6a5c4c; stroke: #6a5c4c;
                 stroke-linecap: round; stroke-linejoin: round; }
     .rk-chip  { fill: #9d8d78; }
@@ -772,7 +772,7 @@
     .flw-cm { color: #8f8b7f; font-style: italic; }
     .flw-nu { color: #ae81ff; }
 
-    /* ── Prototype anatomy: labelled parts of a signature ──
+    /* ── Prototype anatomy: labeled parts of a signature ──
        The labels are absolutely positioned so they never push the tokens
        apart: the code line has to read as one continuous line. ── */
     .pa-block {
@@ -800,7 +800,7 @@
       content: ''; position: absolute; left: 50%; top: -1.05em; width: 1px;
       height: 1.05em; background: #6f6b62;
     }
-    /* each label wears its part's colour, so eye jumps straight to the token */
+    /* each label wears its part's color, so eye jumps straight to the token */
     .pa-l-ret  { color: #7cb6e8; }
     .pa-l-name { color: #e8c46a; }
     .pa-l-args { color: #f0938b; }
