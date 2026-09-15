@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 670 646" width="670" height="646" role="img" aria-labelledby="wf-ttl wf-dsc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 1206" width="520" height="1206" role="img" aria-labelledby="wf-ttl wf-dsc">
   <title id="wf-ttl">How a world file becomes the grid</title>
-  <desc id="wf-dsc">On the left, a world file named worlds slash tiny dot txt containing seven lines: 4 6, then 1, then 0 2 sand, then four rows of six characters each, dot dot dot dot dot dot, dot dot hash dot dot dot, dot dot dot dot dot dot, and six hashes. Labels identify the first line as rows then cols, the second as the emitter count, the third as one emitter given as row, column and element, and the last four as rows lines of cols characters. An arrow labeled loadWorld points right to a four by six grid of cells, headed char grid MAX_ROWS MAX_COLS, with column numbers zero to five along the top and row numbers zero to three down the left side. Each cell holds the character from the matching position in the file. The cell at row one, column two holds a hash and is tinted. The cell at row zero, column two is still a dot but carries a maroon dashed ring. A legend gives dot as EMPTY, hash as WALL, o as SAND and tilde as WATER. Under the grid, a note explains that the ring is an emitter, not a cell: it drops one grain of sand there each step, and the grid itself loads as EMPTY. Below, a card headed what loadWorld fills in lists rows equals 4, cols equals 6, emitCount equals 1, emitRow zero equals 0, emitCol zero equals 2, emitElem zero equals SAND, and grid one two equals WALL, noting that everything after the filename is an out parameter. A second card headed capacity is not size shows a large dashed rectangle with a small tinted rectangle in its top left corner, labeled char grid 64 by 128 always reserved, and the tinted corner as rows by cols, the part in play, not to scale.</desc>
+  <desc id="wf-dsc">At the top, a world file named worlds slash tiny dot txt containing seven lines: 4 6, then 1, then 0 2 sand, then four rows of six characters each, dot dot dot dot dot dot, dot dot hash dot dot dot, dot dot dot dot dot dot, and six hashes. Labels identify the first line as rows then cols, the second as the emitter count, the third as one emitter given as row, column and element, and the last four as rows lines of cols characters. An arrow pointing down, labeled loadWorld, TODO 1, leads to a four by six grid of cells headed char grid MAX_ROWS MAX_COLS, with column numbers zero to five along the top and row numbers zero to three down the left side. Each cell holds the character from the matching position in the file. The cell at row one, column two holds a hash and is tinted. The cell at row zero, column two is still a dot but carries a maroon dashed ring. A legend gives dot as EMPTY, hash as WALL, o as SAND and tilde as WATER. A note explains that the ring at grid zero two is an emitter, not a cell: it drops one grain of sand there each step, and the grid itself loads with that cell EMPTY. Below, a card headed what loadWorld fills in lists rows equals 4, cols equals 6, emitCount equals 1, emitRow zero equals 0, emitCol zero equals 2, emitElem zero equals SAND, and grid one two equals WALL, noting that everything after the filename is an out parameter. A final card headed capacity is not size shows a large dashed rectangle with a small tinted rectangle in its top left corner, labeled as the whole box being char grid 64 by 128, always reserved, and the tinted corner being rows by cols, the part in play, not to scale, with the reminder that every loop stops at rows and cols rather than at the maximum.</desc>
 
   <style>
     .card      { fill: #FFFFFF; stroke: #DED2D5; stroke-width: 1.2; }
@@ -15,21 +15,21 @@
     .code      { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
                  font-size: 15px; fill: #241B1E; }
     .idx       { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-                 font-size: 13px; fill: #8B7B7F; }
+                 font-size: 14px; fill: #8B7B7F; }
     .stage     { font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
                  font-size: 16px; font-weight: 700; fill: #6E1C2E;
                  letter-spacing: .01em; }
     .note      { font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
-                 font-size: 14px; fill: #6B5A5E; }
+                 font-size: 15px; fill: #6B5A5E; }
     .anno      { font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
-                 font-size: 13px; fill: #8B7B7F; }
-    .flow      { stroke: #B9A6AA; stroke-width: 1.4; fill: none; }
+                 font-size: 14px; fill: #8B7B7F; }
+    .flow      { stroke: #B9A6AA; stroke-width: 1.6; fill: none; }
     .lead      { stroke: #DED2D5; stroke-width: 1; fill: none; }
     .ring      { fill: none; stroke: #6E1C2E; stroke-width: 2;
                  stroke-dasharray: 4 3; }
     .tag       { fill: #6E1C2E; }
     .tagtext   { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-                 font-size: 13px; fill: #FFFFFF; }
+                 font-size: 14px; fill: #FFFFFF; }
 
     @media (prefers-color-scheme: dark) {
       .card     { fill: #1E1719; stroke: #3B2D31; }
@@ -55,124 +55,123 @@
     </marker>
   </defs>
 
-  <text class="stage" x="18" y="60">worlds/tiny.txt</text>
-  <rect class="card" x="18" y="74" width="140" height="197" rx="5"/>
-  <text class="val" x="32" y="100">4 6</text>
-  <text class="val" x="32" y="125">1</text>
-  <text class="val" x="32" y="150">0 2 sand</text>
-  <text class="val" x="32" y="175">......</text>
-  <text class="val" x="32" y="200">..#...</text>
-  <text class="val" x="32" y="225">......</text>
-  <text class="val" x="32" y="250">######</text>
-  <path class="lead" d="M158 104.5 H165"/>
-  <text class="anno" x="170" y="109.5">rows, cols</text>
-  <path class="lead" d="M158 129.5 H165"/>
-  <text class="anno" x="170" y="134.5">emitter count</text>
-  <path class="lead" d="M158 154.5 H165"/>
-  <text class="anno" x="170" y="159.5">row, col, element</text>
-  <path class="lead" d="M158 217.0 H165"/>
-  <text class="anno" x="170" y="222.0">rows lines of</text>
-  <path class="lead" d="M163 173 V262"/>
-  <text class="anno" x="170" y="241">cols characters</text>
-  <path class="flow" d="M296 150 H350" marker-end="url(#wfah)"/>
-  <text class="stage" x="323.0" y="136" text-anchor="middle">loadWorld</text>
-  <text class="anno" x="323.0" y="172" text-anchor="middle">TODO 1</text>
-  <text class="stage" x="378" y="38">char grid[MAX_ROWS][MAX_COLS]</text>
-  <text class="idx" x="399.0" y="65" text-anchor="middle">0</text>
-  <text class="idx" x="433.0" y="65" text-anchor="middle">1</text>
-  <text class="idx" x="467.0" y="65" text-anchor="middle">2</text>
-  <text class="idx" x="501.0" y="65" text-anchor="middle">3</text>
-  <text class="idx" x="535.0" y="65" text-anchor="middle">4</text>
-  <text class="idx" x="569.0" y="65" text-anchor="middle">5</text>
-  <text class="idx" x="373" y="96.0" text-anchor="end">0</text>
-  <text class="idx" x="373" y="130.0" text-anchor="end">1</text>
-  <text class="idx" x="373" y="164.0" text-anchor="end">2</text>
-  <text class="idx" x="373" y="198.0" text-anchor="end">3</text>
-  <rect class="cell" x="382" y="74" width="34" height="34"/>
-  <text class="val" x="399.0" y="97.0" text-anchor="middle">.</text>
-  <rect class="cell" x="416" y="74" width="34" height="34"/>
-  <text class="val" x="433.0" y="97.0" text-anchor="middle">.</text>
-  <rect class="cell" x="450" y="74" width="34" height="34"/>
-  <text class="val" x="467.0" y="97.0" text-anchor="middle">.</text>
-  <rect class="cell" x="484" y="74" width="34" height="34"/>
-  <text class="val" x="501.0" y="97.0" text-anchor="middle">.</text>
-  <rect class="cell" x="518" y="74" width="34" height="34"/>
-  <text class="val" x="535.0" y="97.0" text-anchor="middle">.</text>
-  <rect class="cell" x="552" y="74" width="34" height="34"/>
-  <text class="val" x="569.0" y="97.0" text-anchor="middle">.</text>
-  <rect class="cell" x="382" y="108" width="34" height="34"/>
-  <text class="val" x="399.0" y="131.0" text-anchor="middle">.</text>
-  <rect class="cell" x="416" y="108" width="34" height="34"/>
-  <text class="val" x="433.0" y="131.0" text-anchor="middle">.</text>
-  <rect class="cellwall" x="450" y="108" width="34" height="34"/>
-  <text class="val" x="467.0" y="131.0" text-anchor="middle">#</text>
-  <rect class="cell" x="484" y="108" width="34" height="34"/>
-  <text class="val" x="501.0" y="131.0" text-anchor="middle">.</text>
-  <rect class="cell" x="518" y="108" width="34" height="34"/>
-  <text class="val" x="535.0" y="131.0" text-anchor="middle">.</text>
-  <rect class="cell" x="552" y="108" width="34" height="34"/>
-  <text class="val" x="569.0" y="131.0" text-anchor="middle">.</text>
-  <rect class="cell" x="382" y="142" width="34" height="34"/>
-  <text class="val" x="399.0" y="165.0" text-anchor="middle">.</text>
-  <rect class="cell" x="416" y="142" width="34" height="34"/>
-  <text class="val" x="433.0" y="165.0" text-anchor="middle">.</text>
-  <rect class="cell" x="450" y="142" width="34" height="34"/>
-  <text class="val" x="467.0" y="165.0" text-anchor="middle">.</text>
-  <rect class="cell" x="484" y="142" width="34" height="34"/>
-  <text class="val" x="501.0" y="165.0" text-anchor="middle">.</text>
-  <rect class="cell" x="518" y="142" width="34" height="34"/>
-  <text class="val" x="535.0" y="165.0" text-anchor="middle">.</text>
-  <rect class="cell" x="552" y="142" width="34" height="34"/>
-  <text class="val" x="569.0" y="165.0" text-anchor="middle">.</text>
-  <rect class="cellwall" x="382" y="176" width="34" height="34"/>
-  <text class="val" x="399.0" y="199.0" text-anchor="middle">#</text>
-  <rect class="cellwall" x="416" y="176" width="34" height="34"/>
-  <text class="val" x="433.0" y="199.0" text-anchor="middle">#</text>
-  <rect class="cellwall" x="450" y="176" width="34" height="34"/>
-  <text class="val" x="467.0" y="199.0" text-anchor="middle">#</text>
-  <rect class="cellwall" x="484" y="176" width="34" height="34"/>
-  <text class="val" x="501.0" y="199.0" text-anchor="middle">#</text>
-  <rect class="cellwall" x="518" y="176" width="34" height="34"/>
-  <text class="val" x="535.0" y="199.0" text-anchor="middle">#</text>
-  <rect class="cellwall" x="552" y="176" width="34" height="34"/>
-  <text class="val" x="569.0" y="199.0" text-anchor="middle">#</text>
-  <rect class="ring" x="453" y="77" width="28" height="28" rx="3"/>
-  <rect class="cell" x="382" y="222" width="19" height="19"/>
-  <text class="code" x="391.5" y="236" text-anchor="middle">.</text>
-  <text class="anno" x="407" y="236">EMPTY</text>
-  <rect class="cell" x="453" y="222" width="19" height="19"/>
-  <text class="code" x="462.5" y="236" text-anchor="middle">#</text>
-  <text class="anno" x="478" y="236">WALL</text>
-  <rect class="cell" x="524" y="222" width="19" height="19"/>
-  <text class="code" x="533.5" y="236" text-anchor="middle">o</text>
-  <text class="anno" x="549" y="236">SAND</text>
-  <rect class="cell" x="595" y="222" width="19" height="19"/>
-  <text class="code" x="604.5" y="236" text-anchor="middle">~</text>
-  <text class="anno" x="620" y="236">WATER</text>
-  <rect class="tag" x="362" y="266" width="248" height="24" rx="4"/>
-  <text class="tagtext" x="372" y="283">the ring at grid[0][2]</text>
-  <text class="note" x="362" y="312">is an emitter, not a cell. It drops one</text>
-  <text class="note" x="362" y="332">grain of sand there each step; the grid</text>
-  <text class="note" x="362" y="352">itself loads with that cell EMPTY.</text>
-  <text class="stage" x="18" y="374">What loadWorld fills in</text>
-  <rect class="card" x="18" y="386" width="306" height="242" rx="5"/>
-  <text class="code" xml:space="preserve" x="34" y="414">rows        = 4</text>
-  <text class="code" xml:space="preserve" x="34" y="437">cols        = 6</text>
-  <text class="code" xml:space="preserve" x="34" y="460">emitCount   = 1</text>
-  <text class="code" xml:space="preserve" x="34" y="483">emitRow[0]  = 0</text>
-  <text class="code" xml:space="preserve" x="34" y="506">emitCol[0]  = 2</text>
-  <text class="code" xml:space="preserve" x="34" y="529">emitElem[0] = SAND</text>
-  <text class="code" xml:space="preserve" x="34" y="552">grid[1][2]  = WALL</text>
-  <text class="note" x="34" y="586">Everything after the filename is</text>
-  <text class="note" x="34" y="605">an out parameter, filled in for</text>
-  <text class="note" x="34" y="624">the caller.</text>
-  <text class="stage" x="346" y="374">Capacity is not size</text>
-  <rect class="card" x="346" y="386" width="306" height="242" rx="5"/>
-  <rect class="reserved" x="364" y="406" width="270" height="92"/>
-  <rect class="inplay" x="364" y="406" width="42" height="26"/>
-  <text class="anno" x="364" y="520">the whole box: char grid[64][128],</text>
-  <text class="anno" x="364" y="539">always reserved. Not to scale.</text>
-  <text class="anno" x="364" y="558">the tinted corner: rows x cols, in play</text>
-  <text class="note" x="364" y="582">Every loop you write stops at rows</text>
-  <text class="note" x="364" y="601">and cols, not at the maximum.</text>
+  <text class="stage" x="16" y="28">worlds/tiny.txt</text>
+  <rect class="card" x="16" y="42" width="150" height="197" rx="5"/>
+  <text class="val" x="32" y="68">4 6</text>
+  <text class="val" x="32" y="93">1</text>
+  <text class="val" x="32" y="118">0 2 sand</text>
+  <text class="val" x="32" y="143">......</text>
+  <text class="val" x="32" y="168">..#...</text>
+  <text class="val" x="32" y="193">......</text>
+  <text class="val" x="32" y="218">######</text>
+  <path class="lead" d="M166 72.5 H174"/>
+  <text class="anno" x="180" y="77.5">rows, cols</text>
+  <path class="lead" d="M166 97.5 H174"/>
+  <text class="anno" x="180" y="102.5">how many emitters follow</text>
+  <path class="lead" d="M166 122.5 H174"/>
+  <text class="anno" x="180" y="127.5">one emitter: row, col, element</text>
+  <path class="lead" d="M166 185.0 H174"/>
+  <text class="anno" x="180" y="190.0">exactly rows lines of</text>
+  <path class="lead" d="M172 141 V230"/>
+  <text class="anno" x="180" y="209">exactly cols characters</text>
+  <path class="flow" d="M91 250 V294" marker-end="url(#wfah)"/>
+  <text class="stage" x="109" y="274">loadWorld</text>
+  <text class="anno" x="109" y="294">TODO 1</text>
+  <text class="stage" x="122" y="328">char grid[MAX_ROWS][MAX_COLS]</text>
+  <text class="idx" x="167.0" y="358" text-anchor="middle">0</text>
+  <text class="idx" x="205.0" y="358" text-anchor="middle">1</text>
+  <text class="idx" x="243.0" y="358" text-anchor="middle">2</text>
+  <text class="idx" x="281.0" y="358" text-anchor="middle">3</text>
+  <text class="idx" x="319.0" y="358" text-anchor="middle">4</text>
+  <text class="idx" x="357.0" y="358" text-anchor="middle">5</text>
+  <text class="idx" x="138" y="392.0" text-anchor="end">0</text>
+  <text class="idx" x="138" y="430.0" text-anchor="end">1</text>
+  <text class="idx" x="138" y="468.0" text-anchor="end">2</text>
+  <text class="idx" x="138" y="506.0" text-anchor="end">3</text>
+  <rect class="cell" x="148" y="368" width="38" height="38"/>
+  <text class="val" x="167.0" y="393.0" text-anchor="middle">.</text>
+  <rect class="cell" x="186" y="368" width="38" height="38"/>
+  <text class="val" x="205.0" y="393.0" text-anchor="middle">.</text>
+  <rect class="cell" x="224" y="368" width="38" height="38"/>
+  <text class="val" x="243.0" y="393.0" text-anchor="middle">.</text>
+  <rect class="cell" x="262" y="368" width="38" height="38"/>
+  <text class="val" x="281.0" y="393.0" text-anchor="middle">.</text>
+  <rect class="cell" x="300" y="368" width="38" height="38"/>
+  <text class="val" x="319.0" y="393.0" text-anchor="middle">.</text>
+  <rect class="cell" x="338" y="368" width="38" height="38"/>
+  <text class="val" x="357.0" y="393.0" text-anchor="middle">.</text>
+  <rect class="cell" x="148" y="406" width="38" height="38"/>
+  <text class="val" x="167.0" y="431.0" text-anchor="middle">.</text>
+  <rect class="cell" x="186" y="406" width="38" height="38"/>
+  <text class="val" x="205.0" y="431.0" text-anchor="middle">.</text>
+  <rect class="cellwall" x="224" y="406" width="38" height="38"/>
+  <text class="val" x="243.0" y="431.0" text-anchor="middle">#</text>
+  <rect class="cell" x="262" y="406" width="38" height="38"/>
+  <text class="val" x="281.0" y="431.0" text-anchor="middle">.</text>
+  <rect class="cell" x="300" y="406" width="38" height="38"/>
+  <text class="val" x="319.0" y="431.0" text-anchor="middle">.</text>
+  <rect class="cell" x="338" y="406" width="38" height="38"/>
+  <text class="val" x="357.0" y="431.0" text-anchor="middle">.</text>
+  <rect class="cell" x="148" y="444" width="38" height="38"/>
+  <text class="val" x="167.0" y="469.0" text-anchor="middle">.</text>
+  <rect class="cell" x="186" y="444" width="38" height="38"/>
+  <text class="val" x="205.0" y="469.0" text-anchor="middle">.</text>
+  <rect class="cell" x="224" y="444" width="38" height="38"/>
+  <text class="val" x="243.0" y="469.0" text-anchor="middle">.</text>
+  <rect class="cell" x="262" y="444" width="38" height="38"/>
+  <text class="val" x="281.0" y="469.0" text-anchor="middle">.</text>
+  <rect class="cell" x="300" y="444" width="38" height="38"/>
+  <text class="val" x="319.0" y="469.0" text-anchor="middle">.</text>
+  <rect class="cell" x="338" y="444" width="38" height="38"/>
+  <text class="val" x="357.0" y="469.0" text-anchor="middle">.</text>
+  <rect class="cellwall" x="148" y="482" width="38" height="38"/>
+  <text class="val" x="167.0" y="507.0" text-anchor="middle">#</text>
+  <rect class="cellwall" x="186" y="482" width="38" height="38"/>
+  <text class="val" x="205.0" y="507.0" text-anchor="middle">#</text>
+  <rect class="cellwall" x="224" y="482" width="38" height="38"/>
+  <text class="val" x="243.0" y="507.0" text-anchor="middle">#</text>
+  <rect class="cellwall" x="262" y="482" width="38" height="38"/>
+  <text class="val" x="281.0" y="507.0" text-anchor="middle">#</text>
+  <rect class="cellwall" x="300" y="482" width="38" height="38"/>
+  <text class="val" x="319.0" y="507.0" text-anchor="middle">#</text>
+  <rect class="cellwall" x="338" y="482" width="38" height="38"/>
+  <text class="val" x="357.0" y="507.0" text-anchor="middle">#</text>
+  <rect class="ring" x="227" y="371" width="32" height="32" rx="3"/>
+  <rect class="cell" x="16" y="537" width="21" height="21"/>
+  <text class="code" x="26.5" y="552" text-anchor="middle">.</text>
+  <text class="anno" x="43" y="552">EMPTY</text>
+  <rect class="cell" x="140" y="537" width="21" height="21"/>
+  <text class="code" x="150.5" y="552" text-anchor="middle">#</text>
+  <text class="anno" x="167" y="552">WALL</text>
+  <rect class="cell" x="264" y="537" width="21" height="21"/>
+  <text class="code" x="274.5" y="552" text-anchor="middle">o</text>
+  <text class="anno" x="291" y="552">SAND</text>
+  <rect class="cell" x="388" y="537" width="21" height="21"/>
+  <text class="code" x="398.5" y="552" text-anchor="middle">~</text>
+  <text class="anno" x="415" y="552">WATER</text>
+  <rect class="tag" x="16" y="576" width="202" height="26" rx="4"/>
+  <text class="tagtext" x="26" y="594">the ring at grid[0][2]</text>
+  <text class="note" x="16" y="626">is an emitter, not a cell. It drops one grain of</text>
+  <text class="note" x="16" y="647">sand there each step; the grid itself loads with</text>
+  <text class="note" x="16" y="668">that cell EMPTY.</text>
+  <text class="stage" x="16" y="704">What loadWorld fills in</text>
+  <rect class="card" x="16" y="716" width="488" height="226" rx="5"/>
+  <text class="code" xml:space="preserve" x="34" y="748">rows        = 4        emitRow[0]  = 0</text>
+  <text class="code" xml:space="preserve" x="34" y="774">cols        = 6        emitCol[0]  = 2</text>
+  <text class="code" xml:space="preserve" x="34" y="800">emitCount   = 1        emitElem[0] = SAND</text>
+  <text class="code" xml:space="preserve" x="34" y="826">grid[1][2]  = WALL</text>
+  <text class="note" x="34" y="872">Everything after the filename is an out parameter,</text>
+  <text class="note" x="34" y="893">which is why they are references and arrays: the</text>
+  <text class="note" x="34" y="914">function fills them in for the caller.</text>
+  <text class="stage" x="16" y="970">Capacity is not size</text>
+  <rect class="card" x="16" y="982" width="488" height="212" rx="5"/>
+  <rect class="reserved" x="34" y="1002" width="200" height="78"/>
+  <rect class="inplay" x="34" y="1002" width="38" height="24"/>
+  <text class="anno" x="250" y="1018">the whole box:</text>
+  <text class="anno" x="250" y="1037">char grid[64][128],</text>
+  <text class="anno" x="250" y="1056">always reserved</text>
+  <text class="anno" x="34" y="1102">the tinted corner: rows x cols,</text>
+  <text class="anno" x="34" y="1121">the part in play (not to scale)</text>
+  <text class="note" x="34" y="1150">Every loop you write stops at rows and cols,</text>
+  <text class="note" x="34" y="1171">not at the maximum.</text>
 </svg>
