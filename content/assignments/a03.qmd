@@ -166,6 +166,25 @@ the reference for what your own `replay.html` should look like when TODO 4 works
 | `worlds/` | Worlds to run, including three deliberately broken ones |
 | `makefile`, `test.py` | Build and check |
 
+::: {.callout-important}
+**Open `sandbox.h` and read the whole thing before you write a line.** It is
+short, and it is the contract for the entire program. Three things live there
+that this page does not repeat:
+
+- **The world is a two-dimensional array of characters**, `char grid[MAX_ROWS][MAX_COLS]`.
+  Two indices, `grid[row][col]`, row first. Every loop you write this week is a
+  nested loop over that array.
+- **The four elements are named constants**, `EMPTY`, `WALL`, `SAND` and
+  `WATER`, holding `.`, `#`, `o` and `~`. Use the names. A typo in `EMTPY` is a
+  compile error; a typo in `'.'` is a silent bug.
+- **Every prototype you must match, exactly.** What you write in `sandbox.cpp`
+  has to agree with the header down to the `const` and the `&`.
+
+This is a habit worth forming now, not just an instruction for this week. The
+comments in `sandbox.h`, `main.cpp` and `tests.cpp` are written for you to read,
+and where a page and the code ever disagree, **the code is the one that runs**.
+:::
+
 Running it:
 
 ```bash
@@ -273,6 +292,11 @@ Line by line:
    word `sand` or the word `water`. An emitter drops one grain of its element
    every step, if its cell is free.
 4. **Exactly `rows` lines of exactly `cols` characters**, the grid itself.
+
+What comes out the other side is a `char` array with two indices. Line `r` of
+the grid becomes `grid[r]`, and character `c` of that line becomes `grid[r][c]`.
+
+![What `loadWorld` turns a file into. The emitter is the one thing on the left that does *not* become a character in the grid: it is three numbers in three parallel arrays, and the cell it names is still `EMPTY` when loading finishes.](../../figures/world-file-to-grid.svg){#fig-world fig-alt="A small world file on the left, an arrow labeled loadWorld, and the grid it produces on the right. The file has seven lines: 4 6, then 1, then 0 2 sand, then four rows of six characters, dot dot dot dot dot dot, dot dot hash dot dot dot, dot dot dot dot dot dot, and six hashes. Labels mark the first line as rows and cols, the second as the emitter count, the third as row, col and element, and the last four as rows lines of cols characters. The grid on the right is four rows by six columns, with column numbers zero to five along the top and row numbers zero to three down the left, each cell holding the character from the matching position in the file. The cell at row one column two holds a tinted hash. The cell at row zero column two is still a dot but carries a dashed maroon ring labeled emitter, not a cell, noted as dropping one grain of sand there each step while the grid itself loads as EMPTY. A legend gives dot as EMPTY, hash as WALL, o as SAND and tilde as WATER. Below, one card lists what loadWorld fills in for this file: rows equals 4, cols equals 6, emitCount equals 1, emitRow zero equals 0, emitCol zero equals 2, emitElem zero equals the character o, and grid one two equals the character hash, with a note that everything after the filename is an out parameter. A second card, headed capacity is not size, shows a large dashed rectangle labeled char grid 64 by 128, always reserved, with a small filled rectangle in its corner labeled rows by cols, the part in play, not to scale."}
 
 One small file, and it needs every reading technique from Monday: `>>` for the
 numbers and the element words, `getline` for the grid rows (which contain `.`
