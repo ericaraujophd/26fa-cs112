@@ -1,5 +1,5 @@
 ---
-title: "Assignment 02: Sandbox"
+title: "Assignment 03: Sandbox"
 subtitle: "A falling-sand simulator, file I/O, exceptions, and 2D arrays"
 ---
 

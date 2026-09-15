@@ -502,9 +502,31 @@ cout &lt;&lt; total;
   </div>
 </section>
 
+<section class="demo-slide" data-background-color="#6E1C2E">
+  <h1>Demo</h1>
+  <div class="demo-rule"></div>
+  <svg class="demo-art" viewBox="0 -34 320 246" xmlns="http://www.w3.org/2000/svg">
+    <path d="M254,12 C250,0 260,-6 256,-20 C270,-11 267,1 261,12 Z" fill="#E8873A"/>
+    <path d="M266,12 C264,4 270,0 268,-10 C277,-3 275,5 271,12 Z" fill="#F2CD00"/>
+    <path d="M243,12 C241,5 246,2 244,-6 C251,-1 250,6 247,12 Z" fill="#E8873A" opacity=".75"/>
+    <rect x="40" y="10" width="240" height="150" rx="9" fill="#1e1f1a" stroke="#C49A2C" stroke-width="3"/>
+    <text x="58" y="46" font-family="'Fira Code',Consolas,monospace" font-size="15.0" fill="#9be36b">$ make</text>
+    <text x="58" y="76" font-family="'Fira Code',Consolas,monospace" font-size="13.0" fill="#ff7b72">undefined reference to</text>
+    <text x="58" y="96" font-family="'Fira Code',Consolas,monospace" font-size="13.0" fill="#ff7b72">`rollDamage(int, int)'</text>
+    <text x="58" y="134" font-family="'Fira Code',Consolas,monospace" font-size="15" fill="#9be36b">$</text>
+    <rect x="72" y="122" width="9" height="15" fill="#9be36b"/>
+    <path d="M22,168 L298,168 L314,196 L6,196 Z" fill="#eceae3" stroke="#8d8d86" stroke-width="2.5" stroke-linejoin="round"/>
+    <rect x="140" y="174" width="40" height="6" rx="3" fill="#cfcdc6"/>
+  </svg>
+  <p class="demo-cap">Writing a function the linker can actually find.</p>
+  <p class="demo-sub">(declared with total confidence, defined never)</p>
+</section>
+
 <section>
   <h2>Defining a Function</h2>
-  <pre><code class="language-cpp" data-trim data-line-numbers>
+  <pre style="font-size:0.5em"><code class="language-cpp" data-trim data-line-numbers>
+// parameters: a name and a type each, comma separated.
+// They are local variables of the function.
 int rollDamage(int dice, int sides) {
     int total = 0;
     for (int i = 0; i &lt; dice; ++i) {
@@ -514,19 +536,11 @@ int rollDamage(int dice, int sides) {
 }
 
 int main() {
+    // arguments: the values you pass at the call,
+    // copied into the parameters, in order
     int hit = rollDamage(2, 6);     // 2d6
 }
   </code></pre>
-  <div class="ln-row">
-    <div class="ln-card">
-      <div class="ln-head"><span class="ln-term">Parameters</span><span class="ln-chip">line 1</span></div>
-      <p class="ln-txt"><code>int dice, int sides</code> &mdash; a name and a type each, comma separated. They are local variables of the function.</p>
-    </div>
-    <div class="ln-card ln-card-b">
-      <div class="ln-head"><span class="ln-term">Arguments</span><span class="ln-chip">line 10</span></div>
-      <p class="ln-txt"><code>2, 6</code> &mdash; the values you pass at the call. Copied into the parameters, in order.</p>
-    </div>
-  </div>
 </section>
 
 <section>
@@ -550,9 +564,6 @@ int rollDamage(int dice, int sides) {
     <div class="t-row"><span class="t-out">    2 |     int hit = rollDamage(2, 6);</span></div>
     <div class="t-row"><span class="t-out">      |               ^~~~~~~~~~</span><span class="t-note">the definition is on line 6</span></div>
   </div>
-  <div class="callout callout-maroon fragment" data-fragment-index="1" style="margin-top:0.35em">
-    The function <em>is</em> in the file, four lines further down. That does not help: at line 2 the compiler has not read it yet, so it cannot check the call.
-  </div>
 </section>
 
 <section>
@@ -563,13 +574,10 @@ int rollDamage(int dice, int sides) {
     <div class="pa-sep">&darr; further down, or in another file, the definition repeats it exactly &darr;</div>
     <div class="pa-line"><span class="pa-tok pa-ret">int</span> <span class="pa-tok pa-name">rollDamage</span><span class="pa-tok pa-args">(int dice, int sides)</span> <span class="pa-tok pa-end">{</span> <span class="pa-dim">/* the body */</span> <span class="pa-tok pa-end">}</span></div>
   </div>
-  <div class="callout" style="margin-top:0.35em">
-    Return type, name and parameter <strong>types</strong> must match. Parameter <em>names</em> need not: <code>int rollDamage(int, int);</code> is a legal prototype, though naming them documents the order.
-  </div>
 </section>
 
 <section>
-  <h2>Where the Two Halves Live</h2>
+  <h2>Separate Compilation</h2>
   <div class="three-col">
     <div>
       <h3>dice.h</h3>
@@ -603,32 +611,48 @@ int main() {
     int hit = rollDamage(2, 6);
 }
       </code></pre>
-      <p class="fc-note">Sees only the promise, never the body, and that is enough to compile.</p>
+      <p class="fc-note">The preprocessor pastes in the declaration, so the compiler type-checks the call and emits an unresolved reference. The linker resolves it against <code>dice.o</code>.</p>
     </div>
-  </div>
-  <div class="callout" style="margin-top:0.3em">
-    Same idea as week 0: the header says <em>what exists</em>, the source says <em>how it works</em>, and the linker joins them at the end.
   </div>
 </section>
 
 <section>
-  <h2>Default Arguments &amp; Overloading</h2>
-  <pre style="font-size:0.6em"><code class="language-cpp" data-trim>
-// default: callers may omit sides
+  <h2>Default Arguments</h2>
+  <pre style="font-size:0.5em"><code class="language-cpp" data-trim>
+// dice.h  &mdash; the default lives on the prototype
 int rollDamage(int dice, int sides = 6);
 
-rollDamage(2);        // 2d6
-rollDamage(2, 20);    // 2d20
+// dice.cpp &mdash; the definition repeats the parameter plain
+int rollDamage(int dice, int sides) {
+    ...
+}
 
-// overloading: same name, different parameter lists
-int  attack(int strength);
-int  attack(int strength, int bonus);
-void attack(const string &amp;spell);
+rollDamage(2);        // 2d6   sides falls back to 6
+rollDamage(2, 20);    // 2d20  the argument wins
   </code></pre>
   <ul>
-    <li>Defaults go on the <strong>prototype</strong>, not the definition</li>
-    <li>Overloads must differ in <strong>parameters</strong>: return type alone is not enough</li>
-    <li>The compiler picks the match; ambiguity is a compile error</li>
+    <li>Arguments fill in left to right, so every defaulted parameter must come <strong>last</strong></li>
+    <li><code>int rollDamage(int dice = 2, int sides);</code> &nbsp;&#10060;&nbsp; a default cannot be followed by a plain parameter</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Overloading</h2>
+  <pre style="font-size:0.5em"><code class="language-cpp" data-trim>
+int  attack(int strength);                 // 1
+int  attack(int strength, int bonus);      // 2
+void attack(const string &amp;spell);          // 3
+
+attack(12);            // calls 1
+attack(12, 3);         // calls 2
+attack("fireball");    // calls 3
+
+double attack(int strength);   // &#10060; differs only in return type
+  </code></pre>
+  <ul>
+    <li>Overloads must differ in the <strong>parameter list</strong>, by how many, which types, or what order</li>
+    <li>The compiler picks from the arguments at the call, and ambiguity is a compile error</li>
+    <li>A default can collide with an overload. If both <code>rollDamage(int, int = 6)</code> and <code>rollDamage(int)</code> exist, <code>rollDamage(2)</code> matches both and will not compile</li>
   </ul>
 </section>
 
@@ -742,26 +766,6 @@ int totalHP(const int hp[], int size) {
 }
   </code></pre>
   <div class="callout">Marking a parameter <code>const</code> is a promise to the caller: <em>this function will not modify your data.</em> The compiler enforces the promise.</div>
-</section>
-
-<section class="demo-slide" data-background-color="#6E1C2E">
-  <h1>Demo</h1>
-  <div class="demo-rule"></div>
-  <svg class="demo-art" viewBox="0 -34 320 246" xmlns="http://www.w3.org/2000/svg">
-    <path d="M254,12 C250,0 260,-6 256,-20 C270,-11 267,1 261,12 Z" fill="#E8873A"/>
-    <path d="M266,12 C264,4 270,0 268,-10 C277,-3 275,5 271,12 Z" fill="#F2CD00"/>
-    <path d="M243,12 C241,5 246,2 244,-6 C251,-1 250,6 247,12 Z" fill="#E8873A" opacity=".75"/>
-    <rect x="40" y="10" width="240" height="150" rx="9" fill="#1e1f1a" stroke="#C49A2C" stroke-width="3"/>
-    <text x="58" y="46" font-family="'Fira Code',Consolas,monospace" font-size="15.0" fill="#9be36b">$ make</text>
-    <text x="58" y="76" font-family="'Fira Code',Consolas,monospace" font-size="13.0" fill="#ff7b72">undefined reference to</text>
-    <text x="58" y="96" font-family="'Fira Code',Consolas,monospace" font-size="13.0" fill="#ff7b72">`rollDamage(int, int)'</text>
-    <text x="58" y="134" font-family="'Fira Code',Consolas,monospace" font-size="15" fill="#9be36b">$</text>
-    <rect x="72" y="122" width="9" height="15" fill="#9be36b"/>
-    <path d="M22,168 L298,168 L314,196 L6,196 Z" fill="#eceae3" stroke="#8d8d86" stroke-width="2.5" stroke-linejoin="round"/>
-    <rect x="140" y="174" width="40" height="6" rx="3" fill="#cfcdc6"/>
-  </svg>
-  <p class="demo-cap">Writing a function the linker can actually find.</p>
-  <p class="demo-sub">(declared with total confidence, defined never)</p>
 </section>
 
 <section>

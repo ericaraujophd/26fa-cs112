@@ -1,5 +1,5 @@
 ---
-title: "Assignment 10: HashTable"
+title: "Assignment 11: HashTable"
 subtitle: "Stop searching for the index. Compute it."
 ---
 

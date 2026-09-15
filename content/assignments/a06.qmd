@@ -1,5 +1,5 @@
 ---
-title: "Assignment 05: Channels"
+title: "Assignment 06: Channels"
 subtitle: "One container, three types, turning last week's class into a template"
 ---
 

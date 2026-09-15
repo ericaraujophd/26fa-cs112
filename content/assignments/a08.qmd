@@ -1,5 +1,5 @@
 ---
-title: "Assignment 07: Finish the List"
+title: "Assignment 08: Finish the List"
 subtitle: "Four methods, a template, and a chain of Nodes that frees itself"
 ---
 
