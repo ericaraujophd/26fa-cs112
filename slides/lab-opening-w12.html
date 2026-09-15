@@ -44,6 +44,37 @@
     font-weight: 400; color: #fff; font-size: 1.5em;
     letter-spacing: 0.01em; border: none; margin: 0 0 0.15em;
   }
+  /* ── the arrival slide ──────────────────────────────────────────
+     Every other slide here is something to read. This one has a job to
+     do: get every laptop in the room shut. So it is weighted the other
+     way round. The heading shrinks, because nobody needs "Before we
+     begin" in 46px type, and the instructions grow, because on this
+     slide the instructions ARE the content.
+
+     The bolded words are the ones a student has to act on. Someone
+     glancing up from a screen for half a second should be able to read
+     closed, off, phones away, quiet and nothing else, and still know
+     what to do.
+
+     The door line exists because the old wording let the rule start
+     whenever the slide went up, which in practice meant students
+     walking in, sitting down and opening a laptop before the deck was
+     on screen. The rule starts when they walk into the room. */
+  .reveal section.qt-arrive .qt-h { font-size: 0.8em; opacity: 0.88; }
+  .reveal section.qt-arrive .qt-list { font-size: 0.86em; max-width: 88%;
+                                       margin-top: 0.1em; }
+  .reveal section.qt-arrive .qt-list li { margin: 0.5em 0; }
+  .reveal section.qt-arrive .qt-list strong {
+    color: #fff; font-weight: 700;
+  }
+  .reveal .qt-door {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    color: var(--gold); font-size: 0.42em; letter-spacing: 0.04em;
+    margin: 0.5em auto 0; max-width: 80%;
+  }
+  .reveal .qt-door strong { color: var(--gold); font-weight: 700;
+                            text-transform: uppercase; letter-spacing: 0.1em; }
+
   .qt-rule { width: 92px; height: 3px; background: var(--gold);
              border-radius: 2px; margin: 0.55em auto 0.9em; opacity: 0.85; }
   .qt-eyebrow {
@@ -184,7 +215,7 @@
 <div class="reveal">
 <div class="slides">
 
-<section data-background-color="#6E1C2E">
+<section class="qt-arrive" data-background-color="#6E1C2E">
   <svg class="qt-sign" viewBox="0 0 200 200" width="132" height="132"
        xmlns="http://www.w3.org/2000/svg" aria-label="devices off">
     <circle class="qt-sign-ring" cx="100" cy="100" r="76"/>
@@ -193,13 +224,14 @@
     <line class="qt-sign-bar" x1="46" y1="154" x2="154" y2="46"/>
   </svg>
   <h2 class="qt-h">Before we begin</h2>
+  <p class="qt-door">It starts at the <strong>door</strong>, not when this slide goes up</p>
   <div class="qt-rule"></div>
   <ul class="qt-list">
-    <li><span class="qt-mark">&middot;</span>Leave your laptop closed and every device off</li>
-    <li><span class="qt-mark">&middot;</span>Phones away, screens dark, headphones out</li>
-    <li><span class="qt-mark">&middot;</span>Let the room be quiet for the next few minutes</li>
+    <li><span class="qt-mark">&middot;</span>Laptop <strong>closed</strong>, every device <strong>off</strong></li>
+    <li><span class="qt-mark">&middot;</span><strong>Phones away</strong>, screens dark, headphones out</li>
+    <li><span class="qt-mark">&middot;</span>Let the room be <strong>quiet</strong> for the next few minutes</li>
   </ul>
-  <p class="qt-lead" style="margin-top:1em">The work will still be here. Let us start somewhere else.</p>
+  <p class="qt-lead" style="margin-top:0.9em">The work will still be here. Let us start somewhere else.</p>
 </section>
 
 <section class="qt-whoslide" data-background-color="#6E1C2E">
