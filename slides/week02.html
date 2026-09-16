@@ -446,7 +446,11 @@ int main() {
 
 <section>
   <h2><code>throw</code> and <code>catch</code></h2>
-  <pre><code class="language-cpp" data-trim>
+  <pre style="font-size:0.5em"><code class="language-cpp" data-trim>
+#include &lt;stdexcept&gt;      // invalid_argument lives here
+
+// ...
+
 double squareRoot(double x) {
     if (x &lt; 0) {
         throw invalid_argument("negative input");
@@ -454,13 +458,16 @@ double squareRoot(double x) {
     return sqrt(x);
 }
 
+// ...
+
 try {
     cout &lt;&lt; squareRoot(value);
-} catch (invalid_argument &amp;e) {
-    cerr &lt;&lt; "cannot do that: " &lt;&lt; e.what() &lt;&lt; endl;
+}                            // &amp; : catch by REFERENCE. Catching by
+catch (invalid_argument &amp;e) {   // value copies the exception, and
+    cerr &lt;&lt; "cannot do that: "  // slices off anything a derived
+         &lt;&lt; e.what() &lt;&lt; endl;   // type added
 }
   </code></pre>
-  <div class="callout">Needs <code>#include &lt;stdexcept&gt;</code>. Catch by <strong>reference</strong>: catching by value slices the exception object.</div>
 </section>
 
 <section>
