@@ -537,8 +537,34 @@ Much shorter than the last one. Write the grid out in the same format
 
 ```
 line 1     rows and cols, separated by a space
-line 2     the single character 0   (finished worlds have no emitters)
+line 2     the emitter count, which you always write as 0
 then       rows lines of cols characters
+```
+
+Line 2 is the same field `loadWorld` reads on line 2 of a world file, and you
+always write `0` there. Not because the world had no emitters, but because you
+are saving the **finished** grid. The sand has already fallen. An emitter is an
+instruction to keep producing more of it, and `out.txt` is a photograph, not a
+scenario. Reload it and you should get the picture back, not a world that starts
+filling up again.
+
+That is also what makes `out.txt` a valid world file in its own right: same
+header, same shape, so `./sandbox out.txt 10` works. Run
+`./sandbox worlds/oneGrain.txt 5 --quiet` and put the two side by side, the
+input on the left and what you wrote on the right. One grain, five steps, five
+rows lower:
+
+```{.terminal}
+worlds/oneGrain.txt           out.txt
+16 9                          16 9
+0                             0
+.........                     .........
+....o....                     .........
+.........                     .........
+.........                     .........
+.........                     .........
+.........                     .........
+.........                     ....o....
 ```
 
 An `ofstream` behaves exactly like `cout`, same `<<`, same everything:
