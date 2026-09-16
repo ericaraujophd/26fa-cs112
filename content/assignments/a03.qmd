@@ -529,7 +529,11 @@ same three lines. That is still the same message, buried.
 
 ## 6. TODO 2, `saveWorld`
 
-Much shorter. Write the grid out in the same format `loadWorld` reads:
+Take a deep breath. You are about to
+[save the world](https://www.youtube.com/watch?v=9AjkUyX0rVw&list=RD9AjkUyX0rVw&start_radio=1).
+
+Much shorter than the last one. Write the grid out in the same format
+`loadWorld` reads:
 
 ```
 line 1     rows and cols, separated by a space
