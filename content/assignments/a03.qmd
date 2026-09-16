@@ -482,17 +482,48 @@ exceptions in one paragraph.
 :::
 
 Try it against the three broken worlds you were given, plus one that is not
-there at all, which needs no file:
+there at all, which needs no file. **Zero steps and `--quiet`**, because you are
+testing the load, not the simulation, and neither of those has anything to do
+with four hundred frames of animation:
 
 ```bash
-./sandbox worlds/badDims.txt 10       # bad dimensions
-./sandbox worlds/short.txt 10         # grid ended early
-./sandbox worlds/badChar.txt 10       # unknown character
-./sandbox worlds/doesNotExist.txt 10  # cannot open file
+./sandbox worlds/badDims.txt 0 --quiet       # bad dimensions
+./sandbox worlds/short.txt 0 --quiet         # grid ended early
+./sandbox worlds/badChar.txt 0 --quiet       # unknown character
+./sandbox worlds/doesNotExist.txt 0 --quiet  # cannot open file
 ```
 
-Each should print one clear line and exit. If any of them crashes, or prints
-nothing, or carries on regardless, that case is not handled yet.
+A case you have handled prints one line and stops. This is the reference
+solution's wording; yours will differ, and only the quoted words from the table
+have to match:
+
+```{.terminal}
+Error: grid ended early: expected 8 rows, found 5
+```
+
+A case you have **not** handled yet looks like this instead:
+
+```{.terminal}
+Simulated 0 steps of worlds/short.txt (8x12), 1 frames.
+No out.txt was written. saveWorld, TODO 2, is still empty.
+No replay.html was written. saveReplay, TODO 4, is still empty.
+```
+
+::: {.callout-note}
+**Read that second one carefully, because two thirds of it is noise.** The two
+`No ... was written` lines are not about this test at all. They are the program
+reporting on TODO 2 and TODO 4, and they will be there after every run until you
+write those. Ignore them while you are on TODO 1.
+
+The line that matters is the first one. `Simulated 0 steps` means the program
+*accepted* a file you know is broken and carried on. That case is not handled
+yet. The whole point of the check is that this line should never appear for any
+of the four.
+
+Without `--quiet` it is worse: an unhandled broken file loads as some plausible
+size and animates, so you get forty lines of blocks scrolling past before those
+same three lines. That is still the same message, buried.
+:::
 
 ---
 
