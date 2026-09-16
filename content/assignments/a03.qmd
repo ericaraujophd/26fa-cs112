@@ -200,7 +200,7 @@ through four hundred frames.
 **Run it now, and expect nothing to happen.** The program builds and runs
 before you have written a line, and this is what it says:
 
-```
+```{.terminal}
 Simulated 300 steps of worlds/hourglass.txt (0x0), 301 frames.
 
 The world loaded as 0x0, so there was nothing to simulate.
@@ -213,9 +213,7 @@ No replay.html was written. saveReplay, TODO 4, is still empty.
 
 That is correct behavior, not a broken repository. The four functions in
 `sandbox.cpp` are empty, so the world has no size and neither output file
-exists yet. Once TODO 1 works the size becomes real, and once TODO 2 and
-TODO 4 work the two files appear. Those last three lines are worth
-re-running for: they are the shortest progress report you have.
+exists yet.
 :::
 
 ### 3.1 Opening an HTML file that lives on Coder {#opening-html}
@@ -246,7 +244,7 @@ VS Code notices the new listening port within a second or two and forwards it
 automatically, you will see a notification, and a **PORTS** tab appears next to
 the terminal. Now open this in your own browser:
 
-```
+```{.terminal}
 http://localhost:8000/demo.html
 ```
 
@@ -731,6 +729,65 @@ to somebody.
 Nothing else goes in the file. No separators between frames, no blank lines, no
 trailing message. The JavaScript counts lines, so one extra line shifts every
 frame after it.
+:::
+
+::: {.callout-note collapse="true"}
+## Why `extern`, and why only on those two {#why-extern}
+
+`sandbox.h` declares the two constants like this:
+
+```cpp
+extern const string REPLAY_HEAD;
+extern const string REPLAY_TAIL;
+```
+
+but the constants at the top of the same file have no `extern`:
+
+```cpp
+const char EMPTY = '.';
+const int  MAX_ROWS = 64;
+```
+
+Both are const, both are at file scope, and only one pair needs the keyword.
+The reason is a rule that surprises most people the first time they meet it.
+
+**A `const` at file scope is private to its own `.cpp` file.** Every source
+file that includes `sandbox.h` gets its *own* `EMPTY`, its own `MAX_ROWS`, and
+nobody minds: a one-byte constant the compiler folds into the instruction that
+uses it costs nothing to duplicate, and four private copies can never disagree.
+(Anything *not* const behaves the opposite way and is shared by default, which
+is the part that makes this feel backwards.)
+
+Now try the same thing with the replay page. `REPLAY_HEAD` is several kilobytes
+of HTML and JavaScript, and it is a `std::string`, so it is not folded into
+anything: it is a real object that has to be built at run time before `main`
+starts. Four private copies means four constructions of the same large string
+and four times the memory, for one program.
+
+`extern` opts out of that rule. It turns the line into a **declaration**: a
+promise that somewhere in this program there is a `const string` by that name,
+with the linker left to find it. The definition, the line that actually makes
+the object, sits in `render.cpp`:
+
+```cpp
+const string REPLAY_HEAD = R"HTML(<!DOCTYPE html> ... )HTML";
+```
+
+One object, built once, and every `.cpp` that includes the header refers to
+that same one.
+
+One detail that bites later, because it fails at *link* time rather than
+compile time: the definition in `render.cpp` does not repeat the word `extern`,
+and does not need to, because `render.cpp` includes `sandbox.h` on its first
+line. The `extern` declaration is already visible, so the definition inherits
+it. Remove that `#include` and the definition quietly goes back to being
+private, `render.cpp` still compiles perfectly well, and the build dies at the
+end with an undefined reference coming from a file you did not touch.
+
+If you want the rules rather than this one example,
+[learncpp on internal linkage](https://www.learncpp.com/cpp-tutorial/internal-linkage/)
+and [on external linkage](https://www.learncpp.com/cpp-tutorial/external-linkage-and-variable-forward-declarations/)
+are the clearest short treatment.
 :::
 
 When it works, open `replay.html` the same way you opened `demo.html` back in
