@@ -294,7 +294,7 @@ Line by line:
 What comes out the other side is a `char` array with two indices. Line `r` of
 the grid becomes `grid[r]`, and character `c` of that line becomes `grid[r][c]`.
 
-![What `loadWorld` turns a file into. The emitter is the one thing on the left that does *not* become a character in the grid: it is three numbers in three parallel arrays, and the cell it names is still `EMPTY` when loading finishes.](../../figures/world-file-to-grid.svg){#fig-world fig-alt="A small world file on the left, an arrow labeled loadWorld, and the grid it produces on the right. The file has seven lines: 4 6, then 1, then 0 2 sand, then four rows of six characters, dot dot dot dot dot dot, dot dot hash dot dot dot, dot dot dot dot dot dot, and six hashes. Labels mark the first line as rows and cols, the second as the emitter count, the third as row, col and element, and the last four as rows lines of cols characters. The grid on the right is four rows by six columns, with column numbers zero to five along the top and row numbers zero to three down the left, each cell holding the character from the matching position in the file. The cell at row one column two holds a tinted hash. The cell at row zero column two is still a dot but carries a dashed maroon ring labeled emitter, not a cell, noted as dropping one grain of sand there each step while the grid itself loads as EMPTY. A legend gives dot as EMPTY, hash as WALL, o as SAND and tilde as WATER. Below, one card lists what loadWorld fills in for this file: rows equals 4, cols equals 6, emitCount equals 1, emitRow zero equals 0, emitCol zero equals 2, emitElem zero equals the character o, and grid one two equals the character hash, with a note that everything after the filename is an out parameter. A second card, headed capacity is not size, shows a large dashed rectangle labeled char grid 64 by 128, always reserved, with a small filled rectangle in its corner labeled rows by cols, the part in play, not to scale."}
+![What `loadWorld` turns a file into. The two emitters are the things on the left that do *not* become characters in the grid: each is three values spread across three parallel arrays, and the cells they name are still `EMPTY` when loading finishes.](../../figures/world-file-to-grid.svg){#fig-world fig-alt="A small world file at the top, an arrow labeled loadWorld pointing down, and the grid it produces below. The file has eight lines: 4 6, then 2, then 0 2 sand, then 2 5 water, then four rows of six characters, dot dot dot dot dot dot, dot dot hash dot dot dot, dot dot dot dot dot dot, and six hashes. Labels mark the first line as rows and cols, the second as how many emitters follow, the next two as each giving a row, a column and an element, and the last four as rows lines of cols characters. The grid is four rows by six columns with column numbers zero to five along the top and row numbers zero to three down the left, each cell holding the character from the matching position in the file. The cell at row one column two holds a tinted hash. The cells at row zero column two and row two column five are still dots but each carries a dashed maroon ring; a note says the two rings are the emitters and are not cells, that each drops one grain per step, sand at grid zero two and water at grid two five, and that both cells load EMPTY. A legend gives dot as EMPTY, hash as WALL, o as SAND and tilde as WATER. Below, a card headed what loadWorld fills in gives rows equals 4, cols equals 6, emitCount equals 2 and grid one two equals WALL, then a table captioned three arrays, one column per emitter: the rows are labeled emitRow, emitCol and emitElem, the columns are headed bracket zero and bracket one, and each column is outlined, holding 0, 2, SAND in the first and 2, 5, WATER in the second. A note says an emitter is a column, not an array, that its row, column and element are held together by nothing except the index they share, and that emitCount says how many columns are in use while the rest of each array is untouched. A final card, headed capacity is not size, shows a large dashed rectangle with a small tinted rectangle in its corner, labeled as the whole box being char grid 64 by 128 always reserved and the tinted corner being rows by cols, the part in play, not to scale, with the reminder that every loop stops at rows and cols rather than at the maximum.""}
 
 You will need to use `>>` for the numbers and the element words, `getline` for the grid rows (which contain `.`
 and `#` and must be read whole), and an honest end-of-file condition when the grid runs out.
@@ -347,6 +347,33 @@ whoever called it. The `int&` parameters are references, the same out parameters
 you used in week 1. Arrays are already passed by reference in C++, so `grid` and
 the three emitter arrays need no `&`.
 
+**The three emitter arrays are one array of emitters, taken apart.** This catches
+people, so it is worth a paragraph. An emitter is three things: a row, a column,
+and which element it drops. There is no type in this program that holds all
+three, so they are stored in three separate arrays, and emitter number `i` is
+whatever sits at index `i` in each of them:
+
+```cpp
+int  emitRow[MAX_EMITTERS];    // emitter i is at row emitRow[i] ...
+int  emitCol[MAX_EMITTERS];    // ... column emitCol[i] ...
+char emitElem[MAX_EMITTERS];   // ... and drops emitElem[i]
+int  emitCount;                // how many of the slots are in use
+```
+
+That is a **parallel arrays** layout. Reading `0 2 sand` from the file means
+writing `0` into `emitRow[0]`, `2` into `emitCol[0]` and `SAND` into
+`emitElem[0]`: one line of the file, three separate assignments, held together
+by nothing but the index. Get the indices out of step and emitter 0 drops the
+wrong element in the wrong place, with no error anywhere.
+
+`emitCount` is the only thing that says how much of each array is real. The rest
+of all three is uninitialized, exactly like the part of `grid` past `rows` and
+`cols`.
+
+Look at @fig-world again with this in mind: the emitter table in the lower card
+is three arrays drawn as three rows, and each emitter is one *column* through
+all three.
+
 ::: {.callout-note}
 **Why does `grid` have a size in it?** Look at the type: `char grid[][MAX_COLS]`.
 The row count is missing but the column count is not.
@@ -355,9 +382,13 @@ A 2D array is one contiguous block of memory, laid out row after row, and to fin
 row is, it cannot do that arithmetic. This is the same pointer arithmetic you did
 in week 0, with one more dimension on top.
 
-Eight parameters is a lot to carry around, and you are about to feel it. Next
-week you will meet **classes**, which exist in large part to solve exactly this
-problem.
+Eight parameters is a lot to carry around, and you are about to feel it. So is
+splitting one emitter across three arrays. If both of those feel clumsy, that is
+the correct reaction, and they are the same complaint: there is no type here
+that holds several values together as one thing. Next week you will meet
+**classes**, which exist in large part to solve exactly that. An emitter becomes
+one value you can pass, copy and keep in a single array, and the signature above
+gets shorter.
 :::
 
 ### Throwing when the file is wrong
