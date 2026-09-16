@@ -471,6 +471,56 @@ catch (invalid_argument &amp;e) {   // value copies the exception, and
 </section>
 
 <section>
+  <h2>Stack Unwinding</h2>
+  <div class="two-col" style="gap:1.1em">
+    <div>
+      <pre style="font-size:0.4em"><code class="language-cpp" data-trim>
+void c() {
+    cout &lt;&lt; "in c" &lt;&lt; endl;
+    throw runtime_error("boom");
+    cout &lt;&lt; "after throw";   // never runs
+}
+
+void b() {
+    cout &lt;&lt; "in b" &lt;&lt; endl;
+    c();
+    cout &lt;&lt; "back in b";     // never runs
+}
+
+int main() {
+    try {
+        b();
+        cout &lt;&lt; "after b";   // never runs
+    } catch (runtime_error &amp;e) {
+        cout &lt;&lt; "caught: " &lt;&lt; e.what();
+    }
+    cout &lt;&lt; " done" &lt;&lt; endl;
+}
+      </code></pre>
+    </div>
+    <div>
+      <table style="font-size:0.4em">
+        <thead><tr><th>Stack</th><th>What happens</th></tr></thead>
+        <tbody>
+          <tr><td><code>main</code></td><td>enters the <code>try</code>, calls <code>b</code></td></tr>
+          <tr><td><code>main &#8594; b</code></td><td>prints <code>in b</code>, calls <code>c</code></td></tr>
+          <tr><td><code>main &#8594; b &#8594; c</code></td><td>prints <code>in c</code>, then <strong>throws</strong></td></tr>
+          <tr><td><code>main &#8594; b</code></td><td><code>c</code> abandoned. No handler in <code>b</code>, so <code>b</code> is abandoned too</td></tr>
+          <tr class="ttyn-right"><td><code>main</code></td><td>the <code>try</code> has a handler: <code>catch</code> runs</td></tr>
+        </tbody>
+      </table>
+      <p class="eof-note" style="margin-top:0.5em">Output:
+        <code>in b</code> &#183; <code>in c</code> &#183;
+        <code>caught: boom done</code></p>
+      <p class="eof-note">Three lines marked <em>never runs</em>. The throw
+         does not return anywhere; it leaves every frame between itself and
+         the handler, and each abandoned frame destroys its locals on the way
+         out.</p>
+    </div>
+  </div>
+</section>
+
+<section>
   <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
   <div class="pi-question">
     <strong>What does this program print?</strong>
@@ -493,17 +543,6 @@ int main() { cout &lt;&lt; "d"; g(); f(); cout &lt;&lt; "e"; }
     <div class="ans-label">&#10003; Answer</div>
     <strong>E.</strong> It prints <code>db</code> and then crashes. Nothing catches the exception, so it propagates out of <code>g()</code>, out of <code>main()</code>, and the runtime calls <code>terminate()</code>. Neither <code>c</code> nor <code>e</code> is ever reached.
   </div>
-</section>
-
-<section>
-  <h2>Stack Unwinding</h2>
-  <p style="font-size:0.7em">A <code>throw</code> behaves like a <code>return</code> that keeps going until someone catches it.</p>
-  <div class="mem-diagram" style="max-width:640px">
-    <div class="mem-row"><span class="mem-lbl">main()</span><span class="mem-val">has try/catch → handles it ✓</span></div>
-    <div class="mem-row"><span class="mem-lbl">g()</span><span class="mem-val">no handler → frame destroyed, keep going ↑</span></div>
-    <div class="mem-row"><span class="mem-lbl">f()</span><span class="mem-val">throw starts here ↑</span></div>
-  </div>
-  <div class="callout callout-maroon">Every local object in each abandoned frame gets its <strong>destructor called</strong> on the way out. If nobody catches it, the program terminates.</div>
 </section>
 
 <section>
