@@ -1021,3 +1021,65 @@
     .fs-hint-dim { opacity: 0.25; }
     @keyframes fsHintIn { from { opacity: 0; transform: translate(-50%, 8px); }
                           to   { opacity: 1; transform: translate(-50%, 0); } }
+
+/* ── The read-position walk (week 02, "Watch the Read Position") ──────────
+   Four snapshots of the same file with the read position marked, ending on
+   the read that fails. It exists because "the read fails" is the whole idea
+   behind `while (getline(fin, line))` and a sentence cannot show it
+   happening: a student has to see the position move, and then see the
+   fourth attempt come back with nothing.
+   ------------------------------------------------------------------------ */
+.eof-walk {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.6em;
+  margin: 0.5em 0 0.6em;
+  align-items: start;
+}
+.eof-step {
+  border: 1px solid var(--bs-border-color, #d8ccd0);
+  border-radius: 6px;
+  padding: 0.45em 0.5em 0.55em;
+  background: rgba(110, 28, 46, 0.03);
+}
+.eof-cap {
+  font-size: 0.34em;
+  color: var(--maroon, #6E1C2E);
+  font-weight: 700;
+  margin-bottom: 0.35em;
+  min-height: 2.2em;
+}
+.eof-file {
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 0.34em !important;
+  line-height: 1.5;
+  margin: 0 0 0.4em;
+  padding: 0.4em 0.3em;
+  background: #14161C;
+  color: #E4E7EC;
+  border-radius: 4px;
+  white-space: pre;
+  text-align: left;
+  box-shadow: none;
+}
+.eof-cur  { color: var(--gold, #C49A2C); font-weight: 700; }
+.eof-mark { color: #8B7B7F; }
+.eof-res  { font-size: 0.32em; color: var(--bs-secondary-color, #6B5A5E); }
+
+/* the read that fails: the one frame worth marking */
+.eof-fail { border-color: var(--maroon, #6E1C2E); border-width: 2px; }
+.eof-fail .eof-res { color: var(--maroon, #6E1C2E); font-weight: 700; }
+
+.eof-note { font-size: 0.38em; line-height: 1.45; margin: 0.2em 0 0; }
+
+/* a one-line setup sentence above a figure */
+.reveal .lede { font-size: 0.4em; line-height: 1.45; margin: 0 0 0.5em; }
+
+/* The row that answers the TTYN before it, in the same green the answer box
+   uses, so "this is the right one" reads the same way in both places. */
+.reveal table tr.ttyn-right td {
+  background: rgba(47, 111, 67, 0.09);
+  border-top: 1px solid #2f6f43;
+  border-bottom: 1px solid #2f6f43;
+}
+.reveal table tr.ttyn-right td:first-child { color: #2f6f43; }

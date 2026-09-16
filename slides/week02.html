@@ -125,24 +125,28 @@ fout &lt;&lt; n;      // out
       </code></pre>
     </div>
   </div>
-  <div class="callout">Same operators, different source. Learn one, you've learned both, a file stream just reads bytes from disk instead of the keyboard.</div>
 </section>
 
 <section>
   <h2>Opening a File</h2>
-  <pre><code class="language-cpp" data-trim>
+  <pre style="font-size:0.5em"><code class="language-cpp" data-trim>
 #include &lt;fstream&gt;
-#include &lt;cassert&gt;
 
-ifstream fin("numbers.txt");    // open on construction
-assert(fin.is_open());          // ALWAYS check
+// A file that isn't there does NOT crash your program.
+// The stream quietly fails, so you have to ask.
 
-ifstream fin2;                  // or open later
+ifstream fin("numbers.txt");   // open on construction
+if (!fin) {                    // ALWAYS check
+    cerr &lt;&lt; "cannot open it" &lt;&lt; endl;
+    return 1;
+}
+
+ifstream fin2;                 // or open later
 fin2.open("numbers.txt");
+if (!fin2.is_open()) { ... }   // the same check, spelled out
 
-fin.close();                    // done with it
+fin.close();                   // done with it
   </code></pre>
-  <div class="callout callout-maroon">A file that isn't there does <strong>not</strong> crash your program, the stream just quietly fails. Check <code>is_open()</code> or you'll debug a "wrong answer" that's really a missing file.</div>
 </section>
 
 <section>
@@ -170,7 +174,7 @@ fin.close();                    // done with it
   <ul class="pi-choices">
     <li><span class="letter">A.</span> <code>ifstream fin.open("file");</code></li>
     <li><span class="letter">B.</span> <code>ifstream open("file") as fin;</code></li>
-    <li class="fragment correct" data-fragment-index="1"><span class="letter">C.</span> <code>ifstream fin;</code> then <code>fin.open("file");</code></li>
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">C.</span> <code>ifstream fin;</code><br><code>fin.open("file");</code></li>
     <li><span class="letter">D.</span> <code>ifstream fin().open("file");</code></li>
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
@@ -199,21 +203,63 @@ getline(fin, line);
       </code></pre>
     </div>
   </div>
-  <div class="callout">Both <em>report failure the same way</em>: the stream goes into a fail state, and testing the stream in a condition gives <code>false</code>.</div>
 </section>
 
 <section>
   <h2>Detecting End of File</h2>
   <pre><code class="language-cpp" data-trim>
+// How do you know when a file is finished?
+// You try to read, and the read fails. There is no
+// "am I at the end?" to ask first. So: read, THEN test.
+
 string line;
-while (getline(fin, line)) {     // read, THEN test
+while (getline(fin, line)) {
     cout &lt;&lt; line &lt;&lt; endl;
 }
   </code></pre>
-  <div class="callout callout-maroon">
-    The read has to happen <strong>before</strong> the test. A stream only knows it hit the end
-    <em>after</em> a read fails; there is no "am I at the end?" you can trust beforehand.
+</section>
+
+<section>
+  <h2>Watch the Read Position</h2>
+  <p class="lede">numbers.txt holds three lines. <code>getline</code> starts at
+     the top and moves the position past each line it takes.</p>
+  <div class="eof-walk">
+    <div class="eof-step">
+      <div class="eof-cap">before the loop</div>
+      <pre class="eof-file"><span class="eof-cur">&#9654;</span>12
+  7
+  30
+<span class="eof-mark">EOF</span></pre>
+      <div class="eof-res">position: line 1</div>
+    </div>
+    <div class="eof-step">
+      <div class="eof-cap">getline &#8594; "12"</div>
+      <pre class="eof-file">  12
+<span class="eof-cur">&#9654;</span>7
+  30
+<span class="eof-mark">EOF</span></pre>
+      <div class="eof-res">true, body runs</div>
+    </div>
+    <div class="eof-step">
+      <div class="eof-cap">getline &#8594; "7", then "30"</div>
+      <pre class="eof-file">  12
+  7
+  30
+<span class="eof-cur">&#9654;</span><span class="eof-mark">EOF</span></pre>
+      <div class="eof-res">true, true</div>
+    </div>
+    <div class="eof-step eof-fail">
+      <div class="eof-cap">getline &#8594; nothing</div>
+      <pre class="eof-file">  12
+  7
+  30
+<span class="eof-cur">&#9654;</span><span class="eof-mark">EOF</span></pre>
+      <div class="eof-res">false, loop ends</div>
+    </div>
   </div>
+  <p class="eof-note">The fourth read is the one that tells you the file is
+     over. It has to be attempted, and it has to fail. That is why the read
+     goes inside the <code>while</code> and not before it.</p>
 </section>
 
 <section>
@@ -246,23 +292,51 @@ while (true) {
   <h2>Writing to a File</h2>
   <pre><code class="language-cpp" data-trim>
 ofstream fout("results.txt");
-assert(fout.is_open());
+assert(fout.is_open());   // or: if (!fout) { ... } as on the open slide
 
 for (int i = 0; i &lt; n; ++i) {
     fout &lt;&lt; names[i] &lt;&lt; "," &lt;&lt; scores[i] &lt;&lt; "\n";
 }
-fout.close();       // flushes buffered output to disk
+
+// Forget close() and the last writes may still be sitting in the
+// buffer. They are not on disk yet, and you can lose them.
+fout.close();
   </code></pre>
   <ul>
-    <li>Opening for writing <strong>erases</strong> the file: use <code>ios::app</code> to append instead</li>
-    <li><code>endl</code> also flushes; <code>"\n"</code> is cheaper in a loop</li>
-    <li>Forgetting <code>close()</code> can leave the last writes in the buffer</li>
+    <li>Opening for writing <strong>erases</strong> the file. To add to it instead, see the next slide</li>
   </ul>
 </section>
 
 <section>
+  <h2>Appending Instead of Erasing</h2>
+  <pre><code class="language-cpp" data-trim>
+// Default: opening for writing TRUNCATES. The file is empty
+// again the moment you open it, whatever was in it before.
+ofstream fout("log.txt");            // log.txt is now empty
+
+// ios::app says: keep what is there, write after it.
+ofstream fout("log.txt", ios::app);  // log.txt is untouched,
+                                     // new writes go on the end
+  </code></pre>
+  <div class="two-col">
+    <div>
+      <h3>run it twice, no flag</h3>
+      <pre class="eof-file">started
+</pre>
+    </div>
+    <div>
+      <h3>run it twice, ios::app</h3>
+      <pre class="eof-file">started
+started
+</pre>
+    </div>
+  </div>
+  <p class="eof-note">Same program, same line written. The flag is the only
+     difference, and it decides whether yesterday's run still exists.</p>
+</section>
+
+<section>
   <h2><code>\n</code>, <code>endl</code>, <code>flush</code></h2>
-  <p style="font-size:0.66em">Output is <strong>buffered</strong>: characters wait in memory until something pushes them out.</p>
   <table style="font-size:0.54em">
     <thead><tr><th>You write</th><th>Newline?</th><th>Flushes?</th><th>Use it when</th></tr></thead>
     <tbody>
@@ -271,12 +345,25 @@ fout.close();       // flushes buffered output to disk
       <tr><td><code>&lt;&lt; flush</code></td><td><strong>no</strong></td><td>yes</td><td>mid-line prompts, progress dots</td></tr>
     </tbody>
   </table>
-  <div class="callout"><code>endl</code> is exactly <code>"\n"</code> followed by <code>flush</code>. That is the whole difference.</div>
 </section>
 
 <section>
   <h2>Proof, in Bytes</h2>
-  <p style="font-size:0.64em">Print one word, then sleep 3 seconds. Check the file <em>while the program is still running</em>:</p>
+  <p class="lede">Type this, run it, and in a second terminal watch
+     <code>buf.txt</code> <em>while it sleeps</em>. Then swap
+     <code>"\n"</code> for <code>endl</code> and run it again.</p>
+  <pre style="font-size:0.42em"><code class="language-cpp" data-trim>
+#include &lt;fstream&gt;
+#include &lt;unistd.h&gt;        // sleep()
+using namespace std;
+
+int main() {
+    ofstream fout("buf.txt");
+    fout &lt;&lt; "hello" &lt;&lt; "\n";   // then try: &lt;&lt; endl
+    sleep(10);               // ls -l buf.txt   in another terminal
+    fout.close();
+}
+  </code></pre>
   <table style="font-size:0.54em">
     <thead><tr><th>Program prints</th><th>File after 1 second</th><th>After the program exits</th></tr></thead>
     <tbody>
@@ -285,23 +372,76 @@ fout.close();       // flushes buffered output to disk
       <tr><td><code>"hello" &lt;&lt; flush</code></td><td><strong>5 bytes</strong>, <code>hello</code> (no newline)</td><td>5 bytes</td></tr>
     </tbody>
   </table>
-  <div class="callout callout-maroon">
-    On a <strong>terminal</strong> you would see no difference: consoles are line-buffered, so <code>"\n"</code> flushes anyway.
-    Redirect to a <strong>file</strong> and the buffer holds everything until it fills, you flush, or the program ends.
-    That is why a crashed program often loses its last output.
+</section>
+
+<section class="demo-slide" data-background-color="#6E1C2E">
+  <h1>Demo</h1>
+  <div class="demo-rule"></div>
+  <svg class="demo-art" viewBox="0 -34 320 246" xmlns="http://www.w3.org/2000/svg">
+    <path d="M254,12 C250,0 260,-6 256,-20 C270,-11 267,1 261,12 Z" fill="#E8873A"/>
+    <path d="M266,12 C264,4 270,0 268,-10 C277,-3 275,5 271,12 Z" fill="#F2CD00"/>
+    <path d="M243,12 C241,5 246,2 244,-6 C251,-1 250,6 247,12 Z" fill="#E8873A" opacity=".75"/>
+    <rect x="40" y="10" width="240" height="150" rx="9" fill="#1e1f1a" stroke="#C49A2C" stroke-width="3"/>
+    <text x="58" y="46" font-family="'Fira Code',Consolas,monospace" font-size="15.0" fill="#9be36b">$ ./stats</text>
+    <text x="58" y="76" font-family="'Fira Code',Consolas,monospace" font-size="13.0" fill="#ff7b72">terminate called after</text>
+    <text x="58" y="96" font-family="'Fira Code',Consolas,monospace" font-size="13.0" fill="#ff7b72">throwing invalid_argument</text>
+    <text x="58" y="134" font-family="'Fira Code',Consolas,monospace" font-size="15" fill="#9be36b">$</text>
+    <rect x="72" y="122" width="9" height="15" fill="#9be36b"/>
+    <path d="M22,168 L298,168 L314,196 L6,196 Z" fill="#eceae3" stroke="#8d8d86" stroke-width="2.5" stroke-linejoin="round"/>
+    <rect x="140" y="174" width="40" height="6" rx="3" fill="#cfcdc6"/>
+  </svg>
+  <p class="demo-cap">Reading a file that isn't there.</p>
+  <p class="demo-sub">(the file was right there. in the other folder.)</p>
+</section>
+
+<section>
+  <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
+  <div class="pi-question">
+    <strong>Your function <code>average(int a[], int n)</code> is called with <code>n = 0</code>. There is no average of nothing. <strong>What can your function do?</strong></strong>
+  </div>
+  <ul class="pi-choices pi-compact">
+    <li><span class="letter">A.</span> Print an error message</li>
+    <li><span class="letter">B.</span> Return some value anyway, say <code>-1</code> or <code>0</code></li>
+    <li><span class="letter">C.</span> Carry on and divide by zero</li>
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">D.</span> Refuse to finish, and say why</li>
+  </ul>
+  <div class="answer-box fragment" data-fragment-index="1">
+    <div class="ans-label">&#10003; Answer</div>
+    <strong>Every one of these is used in real code.</strong> Three of them cause trouble, and the next slide says which and why. Argue for yours first.
   </div>
 </section>
 
 <section>
   <h2>When a Function Can't Do Its Job</h2>
-  <p style="font-size:0.7em">A function that hits bad input has three bad options and one good one.</p>
-  <ul>
-    <li><s>Print an error</s>: libraries shouldn't decide how to talk to the user</li>
-    <li><s>Return a magic value</s>: <code>-1</code> is a real answer sometimes</li>
-    <li><s>Carry on regardless</s>: the caller never learns anything went wrong</li>
-    <li><strong>Throw an exception</strong>: the caller decides what to do</li>
-  </ul>
-  <div class="callout">An exception is a function's way of saying: <em>I can't finish, and this is why.</em></div>
+  <table style="font-size:0.5em">
+    <thead><tr><th></th><th>What it does</th><th>Why it hurts</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>A</strong></td>
+        <td>print an error</td>
+        <td>a function that computes averages should not decide how this
+            program talks to its user. In a GUI there is no console to print to</td>
+      </tr>
+      <tr>
+        <td><strong>B</strong></td>
+        <td>return <code>-1</code></td>
+        <td><code>-1</code> is a perfectly good average. The caller cannot tell
+            your failure from a real answer</td>
+      </tr>
+      <tr>
+        <td><strong>C</strong></td>
+        <td>carry on</td>
+        <td>the caller never learns anything went wrong, and the bad value
+            spreads into everything computed from it</td>
+      </tr>
+      <tr class="ttyn-right">
+        <td><strong>D</strong></td>
+        <td><code>throw</code></td>
+        <td>the function reports what it cannot do; the <em>caller</em> decides
+            what that means. Nobody can ignore it by accident</td>
+      </tr>
+    </tbody>
+  </table>
 </section>
 
 <section>
@@ -357,26 +497,6 @@ int main() { cout &lt;&lt; "d"; g(); f(); cout &lt;&lt; "e"; }
     <div class="mem-row"><span class="mem-lbl">f()</span><span class="mem-val">throw starts here ↑</span></div>
   </div>
   <div class="callout callout-maroon">Every local object in each abandoned frame gets its <strong>destructor called</strong> on the way out. If nobody catches it, the program terminates.</div>
-</section>
-
-<section class="demo-slide" data-background-color="#6E1C2E">
-  <h1>Demo</h1>
-  <div class="demo-rule"></div>
-  <svg class="demo-art" viewBox="0 -34 320 246" xmlns="http://www.w3.org/2000/svg">
-    <path d="M254,12 C250,0 260,-6 256,-20 C270,-11 267,1 261,12 Z" fill="#E8873A"/>
-    <path d="M266,12 C264,4 270,0 268,-10 C277,-3 275,5 271,12 Z" fill="#F2CD00"/>
-    <path d="M243,12 C241,5 246,2 244,-6 C251,-1 250,6 247,12 Z" fill="#E8873A" opacity=".75"/>
-    <rect x="40" y="10" width="240" height="150" rx="9" fill="#1e1f1a" stroke="#C49A2C" stroke-width="3"/>
-    <text x="58" y="46" font-family="'Fira Code',Consolas,monospace" font-size="15.0" fill="#9be36b">$ ./stats</text>
-    <text x="58" y="76" font-family="'Fira Code',Consolas,monospace" font-size="13.0" fill="#ff7b72">terminate called after</text>
-    <text x="58" y="96" font-family="'Fira Code',Consolas,monospace" font-size="13.0" fill="#ff7b72">throwing invalid_argument</text>
-    <text x="58" y="134" font-family="'Fira Code',Consolas,monospace" font-size="15" fill="#9be36b">$</text>
-    <rect x="72" y="122" width="9" height="15" fill="#9be36b"/>
-    <path d="M22,168 L298,168 L314,196 L6,196 Z" fill="#eceae3" stroke="#8d8d86" stroke-width="2.5" stroke-linejoin="round"/>
-    <rect x="140" y="174" width="40" height="6" rx="3" fill="#cfcdc6"/>
-  </svg>
-  <p class="demo-cap">Reading a file that isn't there.</p>
-  <p class="demo-sub">(the file was right there. in the other folder.)</p>
 </section>
 
 <section>
@@ -454,7 +574,6 @@ void printBoard(char b[][COLS], unsigned rows) {
 </div><!-- .slides -->
 </div><!-- .reveal -->
 
-<script src="fullscreen.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/plugin/highlight/highlight.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/plugin/notes/notes.js"></script>
