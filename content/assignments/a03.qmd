@@ -296,10 +296,8 @@ the grid becomes `grid[r]`, and character `c` of that line becomes `grid[r][c]`.
 
 ![What `loadWorld` turns a file into. The emitter is the one thing on the left that does *not* become a character in the grid: it is three numbers in three parallel arrays, and the cell it names is still `EMPTY` when loading finishes.](../../figures/world-file-to-grid.svg){#fig-world fig-alt="A small world file on the left, an arrow labeled loadWorld, and the grid it produces on the right. The file has seven lines: 4 6, then 1, then 0 2 sand, then four rows of six characters, dot dot dot dot dot dot, dot dot hash dot dot dot, dot dot dot dot dot dot, and six hashes. Labels mark the first line as rows and cols, the second as the emitter count, the third as row, col and element, and the last four as rows lines of cols characters. The grid on the right is four rows by six columns, with column numbers zero to five along the top and row numbers zero to three down the left, each cell holding the character from the matching position in the file. The cell at row one column two holds a tinted hash. The cell at row zero column two is still a dot but carries a dashed maroon ring labeled emitter, not a cell, noted as dropping one grain of sand there each step while the grid itself loads as EMPTY. A legend gives dot as EMPTY, hash as WALL, o as SAND and tilde as WATER. Below, one card lists what loadWorld fills in for this file: rows equals 4, cols equals 6, emitCount equals 1, emitRow zero equals 0, emitCol zero equals 2, emitElem zero equals the character o, and grid one two equals the character hash, with a note that everything after the filename is an out parameter. A second card, headed capacity is not size, shows a large dashed rectangle labeled char grid 64 by 128, always reserved, with a small filled rectangle in its corner labeled rows by cols, the part in play, not to scale."}
 
-One small file, and it needs every reading technique from Monday: `>>` for the
-numbers and the element words, `getline` for the grid rows (which contain `.`
-and `#` and must be read whole), and an honest end-of-file condition when the
-grid runs out.
+You will need to use `>>` for the numbers and the element words, `getline` for the grid rows (which contain `.`
+and `#` and must be read whole), and an honest end-of-file condition when the grid runs out.
 
 ::: {.callout-warning}
 **The `>>` / `getline` trap.** After your last `>>`, the newline that ends that
@@ -338,7 +336,7 @@ the three emitter arrays need no `&`.
 
 ::: {.callout-note}
 **Why does `grid` have a size in it?** Look at the type: `char grid[][MAX_COLS]`.
-The row count is missing but the column count is not, and it has to be that way.
+The row count is missing but the column count is not.
 A 2D array is one contiguous block of memory, laid out row after row, and to find
 `grid[r][c]` the compiler computes `r * MAX_COLS + c`. Without knowing how wide a
 row is, it cannot do that arithmetic. This is the same pointer arithmetic you did
@@ -351,16 +349,49 @@ problem.
 
 ### Throwing when the file is wrong
 
-A file on disk is written by someone else, and people get things wrong. When
-`loadWorld` cannot do its job, it should say so and stop, not return a
-half-filled grid and let the rest of the program work with garbage. That is what
-`throw` is for.
+Look at the signature again: `loadWorld` returns `void`. It has **no way to tell
+you it failed**. If the file is missing, or the grid runs out halfway, the
+function reaches its closing brace with `rows`, `cols` and `grid` half filled
+in, and `main()` carries on simulating garbage.
+
+You could change it to return a `bool` and check it at the call site. That
+works, and it is what C does, and it fails the moment somebody forgets to check.
+C++ gives you something that cannot be forgotten.
+
+**What `throw` does.** It abandons the function on the spot. Nothing after it in
+`loadWorld` runs, no half-filled grid gets handed back, and control jumps
+straight to the `catch` block in `main()`, however many function calls deep you
+were. This is Wednesday's lecture; what follows is the part you need to write
+TODO 1.
+
+**Where it goes.** Inside `loadWorld`, at the moment you notice the problem.
+The first check is the file itself:
 
 ```cpp
-#include <stdexcept>
-
-throw runtime_error("cannot open file: " + filename);
+ifstream fin(filename);
+if (!fin) {
+    throw runtime_error("cannot open file: " + filename);
+}
 ```
+
+`runtime_error` is a type from `<stdexcept>`, already included at the top of
+`sandbox.cpp`, and the string you hand it is carried along with the exception.
+That is the string `main()` prints. Everything below that `if` is now safe to
+write as though the file opened, because if it did not, execution never gets
+there.
+
+The second check has the same shape, and so do the other two:
+
+```cpp
+fin >> rows >> cols;
+if (rows < 1 || rows > MAX_ROWS || cols < 1 || cols > MAX_COLS) {
+    throw runtime_error("bad dimensions: " + to_string(rows)
+                        + " by " + to_string(cols));
+}
+```
+
+Read something, test it, throw if it is wrong, and carry on assuming it is
+right. Four times, in the order the file is read.
 
 Throw in these four cases. The autograder looks for the quoted words somewhere in
 your message; the rest of the message is yours to write, and a helpful one is
