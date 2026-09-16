@@ -323,6 +323,19 @@ for (int r = 0; r < rows; r++) {
 
 Open `sandbox.cpp`. The first TODO is the largest one in the assignment.
 
+::: {.callout-important}
+**The step-by-step instructions are in `sandbox.cpp`, not here.** The comment
+block above `loadWorld` is the most detailed thing you have: it gives the file
+format again, the shape of the function line by line, the reading trap that
+catches everybody, and the exact words each error message must contain. Read it
+first, and keep it open beside you while you write.
+
+This section is the *why*. It explains what the parameters are doing, what
+`throw` is and where it goes, and how to test the result. The two are meant to
+be read together, and the same is true of TODO 2, 3 and 4: the page explains,
+the code instructs.
+:::
+
 ```cpp
 void loadWorld(const string& filename,
                char grid[][MAX_COLS], int& rows, int& cols,
