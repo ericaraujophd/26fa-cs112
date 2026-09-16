@@ -390,12 +390,21 @@ if (rows < 1 || rows > MAX_ROWS || cols < 1 || cols > MAX_COLS) {
 }
 ```
 
-Read something, test it, throw if it is wrong, and carry on assuming it is
-right. Four times, in the order the file is read.
+Read a value, test it, throw if it is wrong. Then the rest of the function can
+be written as though it is right, because if it were not, execution would never
+have got there.
 
-Throw in these four cases. The autograder looks for the quoted words somewhere in
-your message; the rest of the message is yours to write, and a helpful one is
-worth writing.
+Do not expect exactly four `throw` lines, though. `bad dimensions` covers both
+the grid size and the emitter count. `unknown character` covers both an
+emitter's element name and a character in the grid. And the checks that guard
+the grid belong *inside* the loop that reads it, so they run on every row and
+every character rather than once. Put each check where the value it tests has
+just been read, and the count takes care of itself.
+
+These are the four things that must be caught, and the words your message must
+carry when you catch them. The autograder looks for the quoted words somewhere
+in the message; the rest of it is yours to write, and a helpful one is worth
+writing, because it is what a student reads when their own world file is wrong.
 
 | When | Your message must contain |
 |---|---|
