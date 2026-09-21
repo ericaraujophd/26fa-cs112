@@ -368,19 +368,23 @@ cout &lt;&lt; p.getFirst() &lt;&lt; ", "
 <section data-auto-animate>
   <h2>Overloading <code>&lt;&lt;</code></h2>
   <pre data-id="op-code"><code class="language-cpp" data-trim>
+// A free function, not a method. The left operand is
+// the ostream, not your object.
 void operator&lt;&lt;(ostream &amp;out, const Pair &amp;p) {
     out &lt;&lt; "(" &lt;&lt; p.getFirst() &lt;&lt; ", "
         &lt;&lt; p.getSecond() &lt;&lt; ")";
 }
 
 cout &lt;&lt; p;              // ✓ works
+cout &lt;&lt; p &lt;&lt; endl;      // ✗ does not compile
   </code></pre>
-  <div class="callout">Not a method, a free function. The left operand is the <code>ostream</code>, not your object.</div>
 </section>
 
 <section data-auto-animate>
   <h2>Overloading <code>&lt;&lt;</code></h2>
   <pre data-id="op-code"><code class="language-cpp" data-trim>
+// A free function, not a method. The left operand is
+// the ostream, not your object.
 ostream&amp; operator&lt;&lt;(ostream &amp;out, const Pair &amp;p) {
     out &lt;&lt; "(" &lt;&lt; p.getFirst() &lt;&lt; ", "
         &lt;&lt; p.getSecond() &lt;&lt; ")";
@@ -389,6 +393,17 @@ ostream&amp; operator&lt;&lt;(ostream &amp;out, const Pair &amp;p) {
 
 cout &lt;&lt; p &lt;&lt; endl;       // ✓ now this works
   </code></pre>
+</section>
+
+<section>
+  <h2>How the Stream Flows</h2>
+  <div style="text-align:center;font-size:0.8em;line-height:1.35;margin-top:0.4em">
+    <div style="font-family:'Fira Code','Consolas',monospace"><span style="background:#f0e8d8;color:#6E1C2E;border-radius:4px;padding:0.05em 0.25em">cout &lt;&lt; p</span> &lt;&lt; endl</div>
+    <div style="color:#C49A2C;font-size:1.1em;line-height:1.1">&#8595;</div><div style="font-size:0.5em;color:#6b6257;margin-bottom:0.15em">writes <code>(7, 11)</code>, hands the stream back</div>
+    <div style="font-family:'Fira Code','Consolas',monospace"><span style="background:#f0e8d8;color:#6E1C2E;border-radius:4px;padding:0.05em 0.25em">cout</span> &lt;&lt; endl</div>
+    <div style="color:#C49A2C;font-size:1.1em;line-height:1.1">&#8595;</div><div style="font-size:0.5em;color:#6b6257;margin-bottom:0.15em">writes a newline, hands the stream back</div>
+    <div style="font-family:'Fira Code','Consolas',monospace"><span style="background:#f0e8d8;color:#6E1C2E;border-radius:4px;padding:0.05em 0.25em">cout</span></div>
+  </div>
   <div class="callout callout-maroon">
     <code>cout &lt;&lt; p &lt;&lt; endl</code> is really <code>(cout &lt;&lt; p) &lt;&lt; endl</code>. If the first call returns
     <code>void</code>, there's no stream left for <code>endl</code>. Returning <code>ostream&amp;</code> is what makes chaining work.
