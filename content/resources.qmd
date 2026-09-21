@@ -17,9 +17,36 @@ Maintenance notes (not rendered):
   Worth re-checking the deep links once a semester.
 -->
 
-Everything you strictly need for this course is on this site. What follows is
-the short list of outside tools that are actually worth your time, with a note
-on when each one helps.
+Everything you strictly need for this course is on this site, starting with the
+code we write together in class. After that comes the short list of outside
+tools that are actually worth your time, with a note on when each one helps.
+
+---
+
+## Code from class: the in-class repository
+
+[**github.com/ericaraujophd/26FA-CS112-inclass**](https://github.com/ericaraujophd/26FA-CS112-inclass)
+
+Every program we build together in lecture ends up here, one folder per topic:
+[`w03-classes`](https://github.com/ericaraujophd/26FA-CS112-inclass/tree/main/w03-classes)
+holds the `Pair` class, [`parameter-passing`](https://github.com/ericaraujophd/26FA-CS112-inclass/tree/main/parameter-passing)
+holds the by-value and by-reference examples, and a new folder appears as each
+topic does. Each one comes with the `makefile` and the tests we ran, so it
+compiles as it stands.
+
+Clone it once, then pull before each lecture:
+
+```bash
+git clone https://github.com/ericaraujophd/26FA-CS112-inclass.git
+cd 26FA-CS112-inclass
+git pull          # run this again before each class
+```
+
+This is the one repository in the course you never hand anything in to. Read it,
+run it, break it, and when a slide went past too quickly, the version that
+actually compiled is in here.
+
+---
 
 ::: {.callout-important}
 ## Several of these sites now have AI assistants built in
