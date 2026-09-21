@@ -350,7 +350,7 @@ cout &lt;&lt; p &lt;&lt; endl;
       <div class="err-card">
         <div class="err-when">and the compiler says</div>
         <p class="err-msg">error: no match for 'operator&lt;&lt;' (operand types are 'std::ostream' and 'Pair')</p>
-        <p class="err-why"><code>cout</code> was written years before your class existed. Nobody ever told it what a <code>Pair</code> looks like.</p>
+        <p class="err-why">Nobody ever told <code>cout</code> what a <code>Pair</code> is.</p>
       </div>
     </div>
     <div>
@@ -359,10 +359,10 @@ cout &lt;&lt; p &lt;&lt; endl;
 cout &lt;&lt; p.getFirst() &lt;&lt; ", "
      &lt;&lt; p.getSecond() &lt;&lt; endl;
       </code></pre>
-      <p style="font-size:0.55em">Every time. In every program. In every loop that prints a hundred of them.</p>
+      <p style="font-size:0.55em">Every time. In every program.</p>
     </div>
   </div>
-  <div class="callout">Teach <code>cout</code> <strong>once</strong> what a <code>Pair</code> looks like, and <code>cout &lt;&lt; p</code> works everywhere after that. That is the whole of operator overloading.</div>
+  <div class="callout">Teach <code>cout</code> <strong>once</strong>. Then <code>cout &lt;&lt; p</code> works everywhere.</div>
 </section>
 
 <section data-auto-animate>
