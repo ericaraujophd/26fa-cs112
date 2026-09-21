@@ -66,7 +66,13 @@
     }
 
     /* ── Inline code ── */
+    /* .pi-question and .answer-box are divs, so they matched none of the
+       element selectors below and their inline code rendered in the body font
+       while the code in the choices right underneath rendered as code. On a
+       TTYN asking about operator<< and ostream& that is exactly the words the
+       question turns on, set in the wrong face. */
     .reveal p code, .reveal li code, .reveal td code, .reveal th code,
+    .reveal .pi-question code, .reveal .answer-box code,
     .reveal .callout code, .reveal .def-txt code, .reveal .err-why code {
       background: #f0e8d8;
       color: var(--maroon);
