@@ -414,6 +414,12 @@ void setFirst(Item v) {
 </div><!-- .slides -->
 </div><!-- .reveal -->
 
+<!-- Our own fullscreen helper. It has to load BEFORE reveal.js, which is how
+     every hand-written deck in website/slides/ has it. It was missing from
+     this template until 2026-09-21, so any deck rebuilt with --force silently
+     lost it. Do not remove it: a deck without it cannot go fullscreen from
+     the keyboard, and the loss is invisible until you are standing in front
+     of the class. -->
 <script src="fullscreen.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/plugin/highlight/highlight.js"></script>
@@ -429,6 +435,151 @@ void setFirst(Item v) {
     autoAnimateUnmatched: true,
     pdfSeparateFragments: false,
     plugins: [ RevealHighlight, RevealNotes ]
+  });
+
+  /* ──────────────────────────────────────────────────────────────────────
+     AUTOFIT: let every slide use the whole slide.
+
+     Reveal renders a deck into one fixed 960x700 box, so a slide with four
+     lines on it draws those four lines at exactly the same size as a slide
+     with twenty. Half of a deck ends up small for no reason at all. That is
+     what "the text is too small" usually means: it was too small on the
+     empty slides, and nobody could say why.
+
+     So measure each slide once and step its size up until something stops
+     fitting, or down if it was already too tall. TWO things count as not
+     fitting and both must be checked:
+
+       height   the slide grows past the box. Obvious.
+       width    something inside it, nearly always a <pre> of code, grows
+                wider than itself and silently clips the ends of its lines.
+                This does NOT change the slide's height, so a height-only
+                check sails right past it. That is exactly how two code
+                comments once shipped with their last word cut off.
+
+     Slides that are not on screen are display:none, where everything
+     measures as zero and "fits" at any size. Each one is therefore forced
+     visible, invisibly, for the length of its own measurement. Fragments
+     are measured as though already revealed, so a slide cannot fit at first
+     and overflow three clicks later.
+
+     Runs on ready and on resize, never on slide change, so type never
+     changes size while a slide is on screen. Opt a slide out with
+     data-nofit if it is ever laid out to the pixel.
+     ────────────────────────────────────────────────────────────────────── */
+  var FIT_MAX = 1.35;   // a four-word slide should not become a poster
+  var FIT_MIN = 0.60;
+  var FIT_STEP = 0.02;
+
+  // Only things that CLIP are worth asking about. Prose in a <div> or <p>
+  // wraps when it runs out of room; a <pre> does not, it just hides the end of
+  // the line. Asking every element also produced false alarms: a rounded,
+  // shadowed box reports a scrollWidth a few pixels over its clientWidth and
+  // is not clipping anything at all.
+  function fitClipped(el) {
+    var all = el.querySelectorAll('pre, code, table');
+    for (var i = 0; i < all.length; i++) {
+      if (all[i].clientWidth > 0 && all[i].scrollWidth > all[i].clientWidth + 4) return true;
+    }
+    return false;
+  }
+
+  function fitOne(section, box) {
+    if (section.hasAttribute('data-nofit')) return;
+    section.style.fontSize = '';
+    var tall = function () { return section.scrollHeight > box; };
+    // Growing has to clear both bars. SHRINKING only answers to height: a line
+    // of code too wide for the slide at normal size is a line that wants
+    // editing, and shrinking the whole slide around it is not a fix. One week
+    // 02 slide was driven down to 0.6em by that, which made every word on it
+    // unreadable in order to save the tail of one comment.
+    var fits = function () { return !tall() && !fitClipped(section); };
+    var size = 1;
+    if (fits()) {
+      while (size < FIT_MAX) {
+        var up = Math.round((size + FIT_STEP) * 100) / 100;
+        section.style.fontSize = up + 'em';
+        if (!fits()) { break; }
+        size = up;
+      }
+      // Step back off the exact edge. The largest size that fit when measured
+      // is not the largest that fits everywhere: reveal.js adds a class to the
+      // last fragment a viewer clicks, a projector renders a font a hair
+      // wider, a browser rounds differently. One TTYN measured 670px and
+      // rendered 711px for want of this line. One step of margin costs 2% of
+      // the type and buys back the whole class of off-by-a-little overflow.
+      if (size > 1) size = Math.round((size - FIT_STEP) * 100) / 100;
+      section.style.fontSize = size === 1 ? '' : size + 'em';
+    } else {
+      // Shrink, but only while shrinking actually helps. A slide whose height
+      // is set by its layout rather than by its type (the title slide, with
+      // its full-height watermark) never gets shorter however small the words
+      // go, and would otherwise walk all the way down to FIT_MIN for nothing.
+      if (!tall()) { section.style.fontSize = ''; return; }   // only clipped: leave it
+      var last = section.scrollHeight;
+      while (size > FIT_MIN) {
+        size = Math.round((size - FIT_STEP) * 100) / 100;
+        section.style.fontSize = size + 'em';
+        var now = section.scrollHeight;
+        if (!tall()) break;
+        if (now >= last) { section.style.fontSize = ''; break; }   // not helping
+        last = now;
+      }
+    }
+  }
+
+  /* Measure each slide AS THE LIVE SLIDE, by walking the deck once behind a
+     hidden curtain before anyone sees it.
+
+     The obvious cheaper trick, measuring the slides where they sit by forcing
+     display:block on them, gives the WRONG ANSWER: an off-screen slide lays
+     its text out differently from the same slide on screen. On one TTYN the
+     answer box measured 198px parked and 260px live, so every measurement
+     taken that way was optimistic and the dense slides grew until they ran
+     off the bottom. Walking the deck costs a couple of hundred milliseconds
+     once, and it is measuring the thing itself rather than a stand-in.
+
+     Fragments are revealed before measuring, so a slide cannot fit on arrival
+     and overflow three clicks later, and are put back afterwards. */
+  function fitAll() {
+    var reveal = document.querySelector('.reveal');
+    var box = Reveal.getConfig().height - 2;
+    var back = Reveal.getIndices();
+    var transition = Reveal.getConfig().transition;
+
+    reveal.style.visibility = 'hidden';
+    Reveal.configure({ transition: 'none' });
+
+    var tops = document.querySelectorAll('.reveal .slides > section');
+    for (var h = 0; h < tops.length; h++) {
+      var stack = tops[h].querySelectorAll(':scope > section');
+      var depth = stack.length || 1;
+      for (var v = 0; v < depth; v++) {
+        Reveal.slide(h, stack.length ? v : 0, -1);
+        var guard = 0;
+        while (Reveal.nextFragment() && guard++ < 60) { /* reveal them all */ }
+        fitOne(Reveal.getCurrentSlide(), box);
+        Reveal.slide(h, stack.length ? v : 0, -1);
+      }
+    }
+
+    Reveal.slide(back.h, back.v, -1);
+    Reveal.configure({ transition: transition });
+    reveal.style.visibility = '';
+  }
+
+  // Measure only once the web fonts are in. Measuring before they load is
+  // measuring the fallback font, which is narrower: every slide then gets a
+  // size that was right for a font it is not using.
+  function fitWhenReady() {
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitAll);
+    else setTimeout(fitAll, 300);
+  }
+  Reveal.on('ready', fitWhenReady);
+  var fitTimer;
+  window.addEventListener('resize', function () {
+    clearTimeout(fitTimer);
+    fitTimer = setTimeout(fitAll, 250);
   });
 </script>
 </body>
