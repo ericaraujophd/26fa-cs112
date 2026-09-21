@@ -13,14 +13,27 @@ subtitle: "Two classes, a leaderboard, and the operator that prints it"
 ```
 
 ::: {.callout-note}
-Your own private GitHub repository is waiting for you (see
+**Accessing your code.** Your may access your own private GitHub repository (see
 [Getting the code](#getting-the-code) below), clone it and open it in VS Code.
 
 **Plan to set aside about 3.75 to 4.25 hours.** This is the longest assignment
 so far, and it is deliberately spread across the whole week, §5 is designed to
-be reachable in Tuesday's lab, and the rest unlocks as the lectures happen.
-`findPositionFor` (§9) and `addLap` (§10) are where most people slow down.
+be reachable in Tuesday's lab, and §11 is now reachable too.
+`findPositionFor` (§9) and `addLap` (§10) are where most people may slow down.
 :::
+
+---
+
+![Ayrton Senna in the McLaren-Honda MP4/4, 1988, the season he won the first of his three world championships. Photograph by the [Instituto Ayrton Senna](https://www.flickr.com/photos/institutoayrtonsenna/), [via Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Ayrton_Senna_in_1988.jpg), [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/).](../../figures/senna-1988.jpg){#fig-senna fig-alt="Ayrton Senna driving a red and white McLaren MP4/4 through standing water, seen from the front and slightly to the side. Spray plumes off the rear tyres and hangs in the air, blurring a Foster's advertising hoarding in the background. The car carries the number 12 and Marlboro, Honda and Shell markings, and Senna's yellow, green and blue helmet is visible in the open cockpit. A credit printed down the right-hand edge of the photograph reads Foto: Norio Koike - AGE." width="80%"}
+
+Ayrton Senna (1960--1994) was a Brazilian driver, three times Formula 1 World
+Champion, and the reason this assignment is about *qualifying* rather than about
+races. He took 65 pole positions in 161 starts, a record that stood until 2006,
+and his qualifying lap at Monaco in 1988 --- one and a half seconds faster than
+his own teammate, in the same car --- is still the one people reach for when they
+argue about the fastest single lap ever driven. He was killed in a crash at Imola
+in 1994. The leaderboard you are about to build is the screen he spent his career
+at the top of.
 
 ## Objectives
 
@@ -42,14 +55,17 @@ These objectives map to course skills **B1**, **B2**, **B3**, and **B5**, all
 four of cluster B, which is assessed at **Window 1** on Oct 23.
 
 ::: {.callout-note}
-**Lab and homework.** You start this in lab on Tuesday, and by then you will have
-had Monday's lecture on classes, enough for §3, §4, §5, §7 and §8. Constructors come on Wednesday and `operator<<` on Friday. The sections
-below are in the order you can actually do them, and each one says which lecture
-unlocks it. **Do not try to write `operator<<` in lab on Tuesday**, it has not
-been taught yet, and you are not behind.
+**Lab and homework.** Monday's lecture covered classes, constructors, a first
+look at destructors, getters and setters, and writing unit tests with Catch, and
+we built the `Pair` class together in class. That is enough for §3 through §11,
+so Tuesday's lab is not a preview: work straight through as far as you get.
+
+Two things have not been lectured yet. **`const` on a getter** you will meet in
+§4, which explains it where you need it, so do not skip that paragraph.
+**`operator<<`** is still to come, so leave §12 alone until after that lecture.
+An untouched §12 at the end of lab is exactly where you should be.
 :::
 
----
 
 ## 1. Introduction
 
@@ -74,7 +90,7 @@ You will build two classes:
 
 (F1 teams are officially called *Constructors*, and you are about to spend a week
 writing constructors. That is a coincidence and nothing in this assignment
-depends on it, the member is called `myTeam`.)
+depends on it. The member is called `myTeam`.)
 
 ::: {.callout-tip}
 **Everything you need to know about F1**, in three sentences. Drivers set timed
@@ -90,7 +106,7 @@ check anywhere depends on knowing anything else.
 
 In week 2 you wrote functions that took a grid, a row count and a column count,
 and passed all three around together everywhere. By the end, `loadWorld` had
-eight parameters and you could feel it.
+eight parameters. That is a lot!
 
 A class is the fix. `Lap` bundles a driver, a team, a time and a flag into one
 thing you can pass as one argument, copy with one `=`, and put in an array. More
@@ -113,10 +129,18 @@ touch `_driver`. C++ makes it a compile error. And `const` is a promise the
 compiler holds you to.
 
 ::: {.callout-tip}
-Open **`reference/Pair.h`** and **`reference/Pair.cpp`** in your repository. That
-is the class from Monday's lecture, complete, and `Lap` has exactly the same
-shape: a header full of promises, a `.cpp` full of `Pair::` implementations, and
-an `operator<<` at the bottom. When you are stuck on syntax, look there first.
+Open **`reference/Pair.h`** and **`reference/Pair.cpp`** in your assignment
+repository. That is Monday's lecture class, finished off, and `Lap` has exactly
+the same shape: a header full of promises, a `.cpp` full of `Pair::`
+implementations, and an `operator<<` at the bottom. When you are stuck on
+syntax, look there first.
+
+The version we actually typed together in class is in the in-class repository,
+under [`w03-classes`](https://github.com/ericaraujophd/26FA-CS112-inclass/tree/main/w03-classes),
+with the `Makefile` and tests we ran. It stops earlier than the one in your
+repository: no `toString`, no `operator<<`, and the getters are not `const` yet. We will get there by Friday.
+Read it to remember the lecture, and use `reference/Pair.*` as the model
+for `Lap`.
 :::
 
 ---
@@ -180,7 +204,7 @@ are your to-do list, and they will tick over one at a time.
 
 ## 3. The Shape of the Repository {#the-shape}
 
-*(You can read this on Tuesday, nothing here needs a lecture you have not had.)*
+If the file is marked with ✎, you are expected to edit it. If it is not, read it, but do not change it.
 
 | File | Yours? | What it is |
 |---|:--:|---|
@@ -194,16 +218,12 @@ are your to-do list, and they will tick over one at a time.
 | `checks_session.cpp` | | The course's checks on the session. Read them too. |
 | `main.cpp` | | The demo program that prints a timing screen |
 | `laps.txt` | | Fifteen laps. Ten will make the cut. |
-| `reference/Pair.*` | | Monday's lecture example |
+| `reference/Pair.*` | | Week's lecture example |
 
 ::: {.callout-important}
-**There are no hidden tests in this course.** Every check that decides your grade
+**There are no hidden tests.** Every check that decides your progress
 is in `test.py` and in the two `checks_*.cpp` files, in your repository, readable
 right now. What `make test` runs is exactly what the grader runs.
-
-Grading does re-copy the official `test.py` and `checks_*.cpp` over yours before
-running, so editing them changes nothing about your score. But there is nothing
-in them you were not meant to see.
 :::
 
 ### Read the checks before you write anything
@@ -225,8 +245,6 @@ Notice three habits worth stealing:
 
 ## 4. `Lap`, and What `private` Is For
 
-*(Tuesday, after Monday's lecture.)*
-
 A `Lap` holds four things:
 
 | Member | Type | Mutable? |
@@ -236,7 +254,7 @@ A `Lap` holds four things:
 | `myTime` | `double` (seconds) | mutable |
 | `myDeleted` | `bool` | mutable |
 
-Two of those get setters and two do not, and the difference is the point of §4.
+Two of those get setters and two do not.
 
 A lap was set by one driver, for one team. Nothing that happens later changes
 that, not a new time, not a deletion, not a pit stop. So there is no
@@ -254,9 +272,12 @@ Those two get setters.
 lines; run wide and the stewards strike the lap off. It is a real mutable
 `bool`, not a flag invented to give you a `bool` to practice on.
 
-For this assignment a deleted lap still counts on the leaderboard, it just
-prints with a marker. Resist the urge to make deletion remove the lap from the
-board; that is a bigger design than this week needs, and no check asks for it.
+In this assignment, deleting a lap changes **only how it prints**. The lap keeps
+its position on the board, ranked on its time exactly as if nothing had happened,
+and the only difference is that `operator<<` adds the word `DELETED` after it. A
+deleted lap can sit in P1. Resist the urge to make `setDeleted` drop the lap off
+the board or push it to the bottom: that is a bigger design than this week needs,
+and no check asks for it.
 :::
 
 ### TODO 1, the private section of `Lap.h`
@@ -270,9 +291,6 @@ member from a parameter at a glance, which matters more than you would think in 
 constructor whose parameter is called `driver` and whose member is `myDriver`.
 
 ### TODO 2 and 3, the two constructors
-
-*(Wednesday's lecture is about constructors, but these two are simple enough to
-attempt in lab, and the tests will tell you if you have them right.)*
 
 A constructor has the **same name as the class** and **no return type at all**,
 not even `void`. It runs automatically whenever a `Lap` is created, and its job is
@@ -309,18 +327,16 @@ string Lap::getDriver() const {
 ```
 
 `const` after the parameter list is a promise that this method does not modify
-the object. It is not decoration. Only `const` methods can be called on a `const`
-object, and the `operator<<` you write in §8 takes `const Lap&`, so if you leave
+the object. Only `const` methods can be called on a `const`
+object, and the `operator<<` you write in §12 takes `const Lap&`, so if you leave
 `const` off a getter, the printing code will not compile, with an error message
 that will not obviously be about the getter.
 
-Write it now and you never think about it again.
+Write it now so you don't need to think about it again.
 
 ---
 
 ## 5. Refusing Bad Input
-
-*(Tuesday. This is the last thing designed to fit in lab.)*
 
 ### TODO 5, the setters
 
@@ -366,57 +382,166 @@ The minutes column is always there, seconds are always two digits, and there are
 always exactly three decimals, F1 times to the millisecond.
 
 Build the string with an `ostringstream`, which behaves exactly like `cout`
-except the result lands in a string:
+except that what you write lands in a string instead of on the screen. The
+whole method, with the two hard parts left for you:
 
 ```cpp
-#include <sstream>
+// ── top of Lap.cpp, with the other includes ──────────────────
+#include <sstream>          // ostringstream lives here
+#include <iomanip>          // setw, setfill, setprecision live here
 
-ostringstream out;
-out << minutes << ":" << /* the seconds part */ ;
-return out.str();
+// ── further down, among the other Lap:: methods ──────────────
+string Lap::formatTime() const {
+    int    minutes = /* whole minutes in myTime */;
+    double seconds = /* the seconds left over */;
+
+    ostringstream out;      // an ostream that collects into a string
+    out << minutes << ":" << /* the seconds part, padded */;
+    return out.str();       // hand back what it collected
+}
 ```
 
-Three manipulators do the padding, and you met `setw` in week 2:
+Both of those `#include` lines are **already at the top of your `Lap.cpp`**, so
+you do not have to add them. They are shown here so you know where
+`ostringstream` and the manipulators come from: if you ever write this method in
+a file of your own, those two lines are what make it compile.
 
-| | |
-|---|---|
-| `setw(6)` | at least six characters wide |
-| `setfill('0')` | pad with zeros instead of spaces |
-| `fixed << setprecision(3)` | exactly three digits after the point |
+Get the minutes with integer division, then subtract them off to find the
+seconds that are left. The seconds are the hard part: `<<` on its own prints
+`5.004` when you need `05.004`, and prints `5` when you need `5.000`.
 
-Six is not a magic number: `05.004` is two digits, a point, and three more. Get
-the minutes with integer division, then subtract them off to find the seconds
-that are left.
+**Manipulators, which are new.** A manipulator is a thing you send into a
+stream with `<<`, exactly the way you send a number. The difference is that it
+prints nothing at all. Its whole job is to change how the things you send
+*after* it come out. They live in `<iomanip>`.
+
+There are three jobs to do here, and one manipulator for each. Take them one at
+a time, and run each block as you read it, in a scratch `.cpp` file of your own
+rather than in the files you are handing in.
+
+**Job one: always three decimals.**
+
+Left to itself, C++ prints a `double` the way it thinks is tidiest, which is not
+what a timing screen wants:
+
+```cpp
+out << 5.0;        // 5
+out << 5.004;      // 5.004
+out << 59.9;       // 59.9
+```
+
+Three times, three different shapes, and the first one has lost its decimals
+entirely. `fixed` says "plain decimal notation, always", and `setprecision(3)`
+then means "exactly three digits after the point":
+
+```cpp
+out << fixed << setprecision(3) << 5.0;      // 5.000
+out << fixed << setprecision(3) << 5.004;    // 5.004
+out << fixed << setprecision(3) << 59.9;     // 59.900
+```
+
+Now all three have three decimals. `5.004` came out unchanged, because it
+already had three, and that is worth noticing: a manipulator that appears to do
+nothing on one value is still doing the work on the others.
+
+**Job two: never fewer than two digits before the point.**
+
+`0:5.000` is not a lap time; you want `0:05.000`. That is `setw`, which says how
+wide the next thing printed has to be:
+
+```cpp
+out << setw(6) << fixed << setprecision(3) << 5.0;    //  5.000   ← one space
+out << setw(6) << fixed << setprecision(3) << 59.9;   // 59.900
+```
+
+`5.000` was five characters, so `setw(6)` put one space in front. `59.900` was
+already six, so nothing happened.
+
+That is the whole idea: `setw(n)` is a **minimum**, not a maximum. Ask for less
+room than the value needs and you simply get the value:
+
+```cpp
+out << setw(2) << 12345;    // 12345, all five digits of it
+```
+
+Six is not a magic number here. It is the width of `05.004`: two digits, a
+point, and three more.
+
+**Job three: pad with zeros, not spaces.**
+
+`setw` pads with spaces, and ` 5.000` is still not a lap time. `setfill` picks
+the character to pad with:
+
+```cpp
+out << setw(4) << setfill('.') << 7;    // ...7
+out << setw(4) << setfill('0') << 7;    // 0007
+```
+
+So `setfill('0')` is the last piece:
+
+```cpp
+out << setw(6) << setfill('0') << fixed << setprecision(3) << 5.0;    // 05.000
+```
+
+**All three together.** Here is `125.004` done by hand, with its minutes and
+seconds written out as literals so you can see the shape of it:
+
+```cpp
+out << 2 << ":" << setw(6) << setfill('0')
+    << fixed << setprecision(3) << 5.004;      // 2:05.004
+```
+
+That is the pattern. What TODO 6 asks you to add is the part that is not in that
+line: working out the `2` and the `5.004` from `myTime`, instead of typing them.
+
+The other three rows of the table go the same way, and they are worth checking
+against by hand:
+
+```cpp
+// 83.456   ->  minutes 1, seconds 23.456  ->  1:23.456
+// 59.9     ->  minutes 0, seconds 59.9    ->  0:59.900
+// 120.0    ->  minutes 2, seconds 0.0     ->  2:00.000
+```
+
+Look at the last two. `5.004` is the one that needed `setfill`, and `0.0` is the
+one that needed `setprecision`. No single lap time needs all three manipulators,
+which is exactly why the method needs all three.
 
 ::: {.callout-warning}
-`setprecision` behaves differently with and without `fixed`. On its own it counts
-*significant figures*; with `fixed` it counts *digits after the point*. You want
-the second. If you get `2:05` where you expected `2:05.004`, this is why.
+**Two things about manipulators that catch people out.**
+
+`setw` applies to **the next item only**. After one thing has been printed the
+width goes back to zero, so a `setw` before the minutes does nothing for the
+seconds. `setfill`, `fixed` and `setprecision` are the opposite: once set they
+stay set until something changes them.
+
+`setprecision` means different things with and without `fixed`. On its own it
+counts *significant figures*; with `fixed` it counts *digits after the point*.
+You want the second. If you get `2:05` where you expected `2:05.004`, this is
+why.
 :::
 
 Run `make test`. You should now be passing every check in Part 1 except the two
-printing ones, which are Friday's work. **That is a good place to stop on
-Tuesday.**
+printing ones, which wait on the operator overloading lecture. **That is a good
+place to stop on by the end of the Tuesday lab session.**
 
 ---
 
 ## 6. What Happens Next
 
-Wednesday's lecture is constructors, destructors, and testing them. Friday's is
-operator overloading. The rest of this page assumes them, in that order:
+Monday's lecture already covered constructors, destructors and testing, so most
+of this page is open to you now. One thing is not:
 
 | Section | Unlocked by |
 |---|---|
-| §7 the private half of the session, §8 the makefile | Monday (already had) |
-| §9, §10 the constructor and the sorting | Wednesday |
-| §11 your own tests | Wednesday |
-| §12 both `operator<<`s | Friday |
+| §7 the private half of the session, §8 the makefile | Monday |
+| §9, §10 the constructor and the sorting | Monday |
+| §11 your own tests | Monday |
+| §12 both `operator<<`s | the operator overloading lecture, still to come |
 
 ---
 
 ## 7. The Session's Private Half
-
-*(Tuesday, this is the last thing Monday's lecture unlocks.)*
 
 ### TODO 7, the private section of `QualifyingSession.h`
 
@@ -459,8 +584,6 @@ and it will, you will be debugging one loop, not three tangled together.
 ---
 
 ## 8. Teaching `make` About a New File
-
-*(Tuesday, straight after §7.)*
 
 Open the `makefile`. Near the top are two lines:
 
@@ -507,8 +630,6 @@ brain cell.
 
 ## 9. Where Does This Lap Go?
 
-*(Wednesday.)*
-
 ### TODO 9, the constructor
 
 Shorter than you expect. `Lap myLaps[MAX_LAPS];` has already default-constructed
@@ -554,8 +675,6 @@ That is a single character: compare with `<`, not `<=`. There is a check for it.
 
 ## 10. Making Room
 
-*(Wednesday.)*
-
 ### TODO 11, `shiftDown`, then `addLap`
 
 `shiftDown(from)` opens a gap at index `from` by moving everything below it down
@@ -597,8 +716,6 @@ is below `0` or at/above `getNumLaps()`.
 
 ## 11. Your Own Tests
 
-*(Wednesday, Wednesday's lecture is partly about this.)*
-
 `tests.cpp` is yours. Tag every `TEST_CASE` you write with `[mine]`, so that
 
 ```bash
@@ -639,15 +756,23 @@ argument for test-driven development, and this is the week you try it.
 
 ## 12. Printing
 
-*(Friday.)*
+<!-- *(Not yet. This waits on the operator overloading lecture.)* -->
 
 ### TODO 8, `operator<<` for a `Lap`
 
 One row: the driver, the team, the formatted time, and, only if the lap was
-deleted, the word `DELETED`. Use `setw()` to line the columns up. The exact
-widths are yours; the checks look for the pieces, not the padding.
+deleted, the word `DELETED`. Use `setw()`, from TODO 6, to line the columns up.
+Because it applies to one item only, each column needs its own, and a column of
+names reads better with `left` in front of it:
 
-Two things about the signature, both from Friday's lecture:
+```cpp
+out << left << setw(14) << lap.getDriver()
+    << left << setw(12) << lap.getTeam();
+```
+
+The exact widths are yours; the checks look for the pieces, not the padding.
+
+Two things about the signature, both from the operator overloading lecture:
 
 **It is a free function, not a method.** There is no `Lap::` in front of it. The
 left operand of `cout << lap` is the *stream*, not the lap, and a method's left
