@@ -13,13 +13,13 @@ subtitle: "Two classes, a leaderboard, and the operator that prints it"
 ```
 
 ::: {.callout-note}
-**Accessing your code.** Your may access your own private GitHub repository (see
+**Accessing your code.** You may access your own private GitHub repository (see
 [Getting the code](#getting-the-code) below), clone it and open it in VS Code.
 
 **Plan to set aside about 3.75 to 4.25 hours.** This is the longest assignment
-so far, and it is deliberately spread across the whole week, §5 is designed to
-be reachable in Tuesday's lab, and §11 is now reachable too.
-`findPositionFor` (§9) and `addLap` (§10) are where most people may slow down.
+so far, and it is meant to be spread across the week rather than done in one
+sitting. `findPositionFor` (§9) and `addLap` (§10) are where most people slow
+down.
 :::
 
 ---
@@ -55,15 +55,15 @@ These objectives map to course skills **B1**, **B2**, **B3**, and **B5**, all
 four of cluster B, which is assessed at **Window 1** on Oct 23.
 
 ::: {.callout-note}
-**Lab and homework.** Monday's lecture covered classes, constructors, a first
-look at destructors, getters and setters, and writing unit tests with Catch, and
-we built the `Pair` class together in class. That is enough for §3 through §11,
-so Tuesday's lab is not a preview: work straight through as far as you get.
+**What this assumes you have already met.** A class split across a `.h` and a
+`.cpp`, `public` and `private`, constructors, getters and setters, and writing
+a unit test with Catch. If all of that is familiar, you can work straight
+through this page from §3 to §11 in the order it is written.
 
-Two things have not been lectured yet. **`const` on a getter** you will meet in
-§4, which explains it where you need it, so do not skip that paragraph.
-**`operator<<`** is still to come, so leave §12 alone until after that lecture.
-An untouched §12 at the end of lab is exactly where you should be.
+Two things this page teaches you as you need them, so do not skip past them:
+**`const` on a getter**, in §4, and **overloading `operator<<`**, in §12. If
+operator overloading is new to you, leave §12 until last. Nothing before it
+depends on it, and everything else works without it.
 :::
 
 
@@ -124,22 +124,22 @@ Here is the Python you already know, next to the C++ you are about to write:
 | Printing | `def __str__(self):` | `ostream& operator<<(...)` |
 | Method that reads only | *(no equivalent)* | `string getDriver() const;` |
 
-The two rows worth staring at are the last three. Python asks you nicely not to
+The last three rows are the ones worth staring at. Python asks you nicely not to
 touch `_driver`. C++ makes it a compile error. And `const` is a promise the
 compiler holds you to.
 
 ::: {.callout-tip}
 Open **`reference/Pair.h`** and **`reference/Pair.cpp`** in your assignment
-repository. That is Monday's lecture class, finished off, and `Lap` has exactly
-the same shape: a header full of promises, a `.cpp` full of `Pair::`
-implementations, and an `operator<<` at the bottom. When you are stuck on
-syntax, look there first.
+repository. It is the `Pair` class we built together in class, finished off,
+and `Lap` has exactly the same shape: a header full of promises, a `.cpp` full
+of `Pair::` implementations, and an `operator<<` at the bottom. When you are
+stuck on syntax, look there first.
 
-The version we actually typed together in class is in the in-class repository,
-under [`w03-classes`](https://github.com/ericaraujophd/26FA-CS112-inclass/tree/main/w03-classes),
-with the `Makefile` and tests we ran. It stops earlier than the one in your
-repository: no `toString`, no `operator<<`, and the getters are not `const` yet. We will get there by Friday.
-Read it to remember the lecture, and use `reference/Pair.*` as the model
+The version we actually typed in class is in the in-class repository, under
+[`w03-classes`](https://github.com/ericaraujophd/26FA-CS112-inclass/tree/main/w03-classes),
+with the `Makefile` and the tests we ran. It stops earlier than the one in your
+repository: no `toString`, no `operator<<`, and the getters are not `const`
+yet. Read it to remember what we did, and use `reference/Pair.*` as the model
 for `Lap`.
 :::
 
@@ -206,6 +206,15 @@ are your to-do list, and they will tick over one at a time.
 
 If the file is marked with ✎, you are expected to edit it. If it is not, read it, but do not change it.
 
+::: {.callout-note}
+**The TODOs are numbered by where they sit in the files, not by the order you
+do them.** TODO 8 is near the top of `Lap.cpp` but it is the last thing on this
+page, because it is the one piece that uses operator overloading. Work in
+the order
+the sections run, §4, §5, §7, §8, and so on, and let the numbers fall where
+they fall.
+:::
+
 | File | Yours? | What it is |
 |---|:--:|---|
 | `Lap.h` | ✎ | The `Lap` class's promises. You add the private data. |
@@ -214,11 +223,16 @@ If the file is marked with ✎, you are expected to edit it. If it is not, read 
 | `QualifyingSession.cpp` | ✎ | TODOs 9–12. **Not compiled until you do §8.** |
 | `tests.cpp` | ✎ | **Your own tests.** Writing them is part of the assignment. |
 | `makefile` | ✎ | Two lines near the top, in §8. |
+| `README.md` | ✎ | Put your name at the top before you push (§14). |
 | `checks_lap.cpp` | | The course's checks on `Lap`. Read them. |
 | `checks_session.cpp` | | The course's checks on the session. Read them too. |
 | `main.cpp` | | The demo program that prints a timing screen |
 | `laps.txt` | | Fifteen laps. Ten will make the cut. |
-| `reference/Pair.*` | | Week's lecture example |
+| `reference/Pair.*` | | The `Pair` class from class, finished off |
+| `test.py` | | The autograder. `make test` runs it, and so does the grader. |
+| `catch.hpp` | | Catch2, the testing library, as one large header |
+| `catchmain.cpp` | | Three lines that give Catch2 a `main`. Never edit it. |
+| `.gitignore` | | Keeps compiled files out of git |
 
 ::: {.callout-important}
 **There are no hidden tests.** Every check that decides your progress
@@ -276,7 +290,7 @@ In this assignment, deleting a lap changes **only how it prints**. The lap keeps
 its position on the board, ranked on its time exactly as if nothing had happened,
 and the only difference is that `operator<<` adds the word `DELETED` after it. A
 deleted lap can sit in P1. Resist the urge to make `setDeleted` drop the lap off
-the board or push it to the bottom: that is a bigger design than this week needs,
+the board or push it to the bottom: that is a bigger design than this assignment needs,
 and no check asks for it.
 :::
 
@@ -521,23 +535,27 @@ You want the second. If you get `2:05` where you expected `2:05.004`, this is
 why.
 :::
 
-Run `make test`. You should now be passing every check in Part 1 except the two
-printing ones, which wait on the operator overloading lecture. **That is a good
-place to stop on by the end of the Tuesday lab session.**
+Run `make test`. With TODOs 1 to 6 done and nothing else, you should see
+**10 of 40**. The only `Lap` checks still red are the two printing ones, which
+belong to §12, so `Lap` itself is finished. **That is a natural place to
+pause**, and §7 onward is the second half.
 
 ---
 
 ## 6. What Happens Next
 
-Monday's lecture already covered constructors, destructors and testing, so most
-of this page is open to you now. One thing is not:
+`Lap` is done. The rest of the page builds the thing that holds ten of them,
+and it goes in this order:
 
-| Section | Unlocked by |
+| Section | What it adds |
 |---|---|
-| §7 the private half of the session, §8 the makefile | Monday |
-| §9, §10 the constructor and the sorting | Monday |
-| §11 your own tests | Monday |
-| §12 both `operator<<`s | the operator overloading lecture, still to come |
+| §7 the private half of the session, §8 the makefile | the board exists and compiles |
+| §9, §10 the constructor and the sorting | laps arrive, and land in the right place |
+| §11 your own tests | you decide what else is worth checking |
+| §12 both `operator<<`s | the board prints itself |
+
+§12 is the only one that needs operator overloading. If that is still new,
+leave it until last and do §7 to §11 first: they do not depend on it.
 
 ---
 
@@ -633,8 +651,8 @@ brain cell.
 ### TODO 9, the constructor
 
 Shorter than you expect. `Lap myLaps[MAX_LAPS];` has already default-constructed
-all ten laps by the time the constructor body starts. Set the count and you are
-done.
+all ten laps by the time the constructor body starts, so the whole body is one
+line: set `myNumLaps` to `0`, because no lap has been added yet.
 
 Compare that with the version of this class CS112 built last spring, which stored
 plain `int` scores and had to loop over the array zeroing every slot. Objects
@@ -646,11 +664,11 @@ Return the index where a lap of this time belongs, or `-1` if it belongs nowhere
 
 Walk the ten slots with a `for` loop. At slot `i` there are three cases:
 
-| Situation | Answer |
-|---|---|
-| `i` is past the laps set so far | an empty slot inside the ten, return `i` |
-| this time is faster than slot `i` | it goes above that lap, return `i` |
-| otherwise | keep looking |
+| At slot `i` | Why | Answer |
+|---|---|---|
+| `i >= myNumLaps` | slot `i` is empty, and it is inside the ten | return `i` |
+| `time < myLaps[i].getTime()` | this lap is faster, so it goes above that one | return `i` |
+| neither | that lap is faster; the board goes on | keep looking |
 
 If the loop finishes without returning, the board is full of ten faster laps and
 this one is eliminated: return `-1`.
@@ -756,8 +774,6 @@ argument for test-driven development, and this is the week you try it.
 
 ## 12. Printing
 
-<!-- *(Not yet. This waits on the operator overloading lecture.)* -->
-
 ### TODO 8, `operator<<` for a `Lap`
 
 One row: the driver, the team, the formatted time, and, only if the lap was
@@ -772,7 +788,7 @@ out << left << setw(14) << lap.getDriver()
 
 The exact widths are yours; the checks look for the pieces, not the padding.
 
-Two things about the signature, both from the operator overloading lecture:
+Two things about the signature, and they are the whole reason it looks odd:
 
 **It is a free function, not a method.** There is no `Lap::` in front of it. The
 left operand of `cout << lap` is the *stream*, not the lap, and a method's left
@@ -869,7 +885,9 @@ Forty checks, in seven groups:
 | **More cases** (6) | values that appear nowhere in the checks files |
 
 ::: {.callout-note}
-The 20 class checks do not run through the `./tester` your makefile builds.
+The 20 checks in the two `checks_*.cpp` files, the **Lap** and
+**QualifyingSession** groups above, do not run through the `./tester` your
+makefile builds.
 `make test` compiles `checks_lap.cpp` and `checks_session.cpp` itself, straight
 against your `Lap.cpp` and `QualifyingSession.cpp`. Your `./tester` is yours,
 you decide what goes in it, and you should, which is exactly why it cannot be
