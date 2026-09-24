@@ -329,6 +329,9 @@ learning objectives are there too, folded away until you want them.
 
         <div class="res-label">🖥️ Slides</div>
         <div class="res-val"><a href="../slides/week03.html?fs=1" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week03.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week03-bw.pdf">print version</a></div>
+
+        <div class="res-label">📌 Reference</div>
+        <div class="res-val"><a href="cheatsheets/operator-overloading.html">Operator overloading cheatsheet</a>, every operator, in the style we write in class</div>
       </div>
       <details class="slo-details">
         <summary class="slo-summary">Learning objectives <span class="slo-count">7</span></summary>
