@@ -1,0 +1,744 @@
+---
+title: "Operator Overloading in C++"
+subtitle: "Every operator you can teach a class, in the style we write in CS112"
+---
+
+<!--
+Maintenance notes (not rendered):
+
+- Every code block on this page comes from the files in code/, which compile
+  with `make` and run with `make test`. If you change a block here, change the
+  file too, or the two drift apart.
+- Fraction is a value type (no heap). Bag is the one that owns memory. Keep it
+  that way: Bag exists only to justify =, [] and ().
+- No C++20 here on purpose. No <=>, no defaulted comparisons.
+- Bag::operator= is the same shape as the a05 Trace::operator= students write.
+  That is deliberate: the pattern is the point, the assignment is the practice.
+-->
+
+When you write `a + b` and `a` is an `int`, the compiler knows what to do.
+When `a` is a `Fraction` you wrote this morning, it does not, and it says so:
+
+```
+error: no match for 'operator+' (operand types are 'Fraction' and 'Fraction')
+```
+
+**Operator overloading** is how you teach it. You write a function whose name
+is `operator+`, and from then on `a + b` calls it. That is the whole idea. What
+follows is every operator worth overloading, one at a time, with the exact
+signature to copy, the way it looks in a `.h` and a `.cpp`, and the mistake
+people make with each one.
+
+The two files everything on this page comes from:
+[`Fraction.h`](code/Fraction.h) / [`Fraction.cpp`](code/Fraction.cpp) (a value
+type, no heap) and [`Bag.h`](code/Bag.h) / [`Bag.cpp`](code/Bag.cpp) (a class
+that owns memory). There is a [`makefile`](code/makefile) and a
+[`tests.cpp`](code/tests.cpp) too, so you can clone the folder and break things.
+
+::: {.callout-important}
+## The one rule
+
+An overloaded operator should do what a reader who has never seen your class
+would guess it does. `a + b` adds. `a == b` says whether they are equal.
+`cout << a` prints. If you catch yourself making `+` remove something because
+it was convenient, write a method with a name instead.
+:::
+
+---
+
+## What the compiler actually does
+
+`a + b` is rewritten into a function call. The compiler tries **two** spellings
+and uses whichever one exists:
+
+```cpp
+a + b            // what you write
+
+a.operator+(b)   // spelling 1: a METHOD of a's class
+operator+(a, b)  // spelling 2: a FREE FUNCTION taking both
+```
+
+That is the entire mechanism, and it explains every rule below. A method gets
+the left operand as `*this` and the right operand as its parameter. A free
+function gets both as parameters. Nothing else is different.
+
+---
+
+## Method or free function?
+
+Most operators can be written either way. Some cannot.
+
+| Operator | Where it must live | Why |
+|---|---|---|
+| `=`, `[]`, `()`, `->` | **Method**, always | The language says so. |
+| `<<`, `>>` | **Free function**, always | The left operand is `cout` or `cin`, not your object, and you cannot add methods to `ostream`. |
+| `2 + f` (your type on the *right*) | **Free function** | Spelling 1 would need `2.operator+(f)`, and `int` has no methods. |
+| `+`, `-`, `==`, `<`, `++`, unary `-` ... | Either | In CS112, prefer the **method** when the left operand is your class. |
+| `.`, `::`, `?:`, `sizeof`, `.*` | **Cannot be overloaded** | Not a design choice you get to make. |
+
+: {tbl-colwidths="[28,24,48]"}
+
+One more thing you cannot do: invent new operators, or change the precedence
+of existing ones. `a + b * c` multiplies first whether or not you wrote them.
+
+::: {.callout-tip}
+## The CS112 default
+
+When the left operand is your class, write a `const` method. When it is not,
+write a free function that goes through the public getters. Reach for `friend`
+only when the getters genuinely cannot express what the function needs, and
+say why in a comment. (The bottom of this page has a note on `friend`.)
+:::
+
+---
+
+## The running example: `Fraction`
+
+Here is the header. Everything below refers back to it, so skim it now and
+come back as needed.
+
+```cpp
+/* Fraction.h, CS112 operator overloading cheatsheet
+ * Calvin University · Fall 2026
+ *
+ * A fraction with an integer numerator and denominator, kept in
+ * lowest terms with a positive denominator. Every operator on
+ * this page is declared here and defined in Fraction.cpp.
+ */
+
+#ifndef FRACTION_H
+#define FRACTION_H
+
+#include <iostream>
+using namespace std;
+
+class Fraction {
+public:
+    Fraction();                               // 0/1
+    Fraction(int numerator, int denominator); // throws invalid_argument
+
+    int getNumerator() const;
+    int getDenominator() const;
+
+    // arithmetic: a new Fraction, neither operand changes
+    Fraction operator+(const Fraction& rhs) const;
+    Fraction operator-(const Fraction& rhs) const;
+    Fraction operator*(const Fraction& rhs) const;
+    Fraction operator/(const Fraction& rhs) const;  // throws
+
+    // compound assignment: this object changes, then hands
+    // itself back
+    Fraction& operator+=(const Fraction& rhs);
+
+    // unary minus: -f
+    Fraction operator-() const;
+
+    // comparison
+    bool operator==(const Fraction& rhs) const;
+    bool operator!=(const Fraction& rhs) const;
+    bool operator< (const Fraction& rhs) const;
+    bool operator> (const Fraction& rhs) const;
+    bool operator<=(const Fraction& rhs) const;
+    bool operator>=(const Fraction& rhs) const;
+
+    // increment: ++f adds one and hands back this object,
+    //            f++ adds one and hands back a copy of the
+    //            OLD value
+    Fraction  operator++(int);   // postfix, the int is a dummy
+    Fraction& operator++();      // prefix
+
+    // conversion: (double)f, explicit so it never happens
+    // by accident
+    explicit operator double() const;
+
+private:
+    int myNumerator;
+    int myDenominator;
+
+    void reduce();               // lowest terms, positive denom.
+};
+
+// stream operators are free functions: the left operand is
+// the stream
+ostream& operator<<(ostream& out, const Fraction& f);
+istream& operator>>(istream& in, Fraction& f);   // reads "3/4"
+
+// mixed arithmetic where the Fraction is on the RIGHT: 2 + f
+Fraction operator+(int lhs, const Fraction& rhs);
+
+#endif
+```
+
+Two things to notice before the operators themselves. Every method that does
+not change the object is marked `const`, so it can be called on a
+`const Fraction`. And every parameter is `const Fraction&`: a reference, so
+nothing is copied, and `const`, so the function promises not to touch it.
+Those two habits are what most of the pitfalls below come down to.
+
+---
+
+## 1. Output and input: `<<` and `>>`
+
+You met this one in week 03. It is a **free function**, because the left
+operand is the stream, and it **returns the stream** so that the next `<<`
+in the chain has something to work on.
+
+```cpp
+// Fraction.cpp
+ostream& operator<<(ostream& out, const Fraction& f) {
+    out << f.getNumerator() << "/" << f.getDenominator();
+    return out;                  // hand the stream back to chain
+}
+```
+
+```cpp
+Fraction a(1, 2);
+cout << a << endl;               // 1/2
+cout << "a is " << a << ", done" << endl;
+```
+
+Input is the mirror image. The object is **not** `const` (you are filling it
+in), and you only change it if the read succeeded:
+
+```cpp
+istream& operator>>(istream& in, Fraction& f) {
+    int  numerator, denominator;
+    char slash;
+    in >> numerator >> slash >> denominator;
+    if (in) {                    // only change f if the read worked
+        f = Fraction(numerator, denominator);
+    }
+    return in;
+}
+```
+
+```cpp
+Fraction f;
+cin >> f;                        // type 3/9, get 1/3
+```
+
+::: {.callout-warning}
+## The two ways this goes wrong
+
+**Returning `void`.** Then `cout << a` works but `cout << a << endl` does not,
+because `(cout << a)` is now nothing and nothing has no `<<`.
+
+**Making it a method.** `f << cout` is what a method would give you, since
+`*this` is the left operand. Nobody writes that. If you want to keep the
+printing logic inside the class, give the class a `writeTo(ostream&)` method
+and have the free `operator<<` call it.
+:::
+
+---
+
+## 2. Arithmetic: `+`, `-`, `*`, `/`
+
+A **`const` method** that builds a **new** object and returns it **by value**.
+Neither operand changes. This is what `+` on `int` does, so it is what `+` on
+`Fraction` should do.
+
+```cpp
+Fraction Fraction::operator+(const Fraction& rhs) const {
+    int numerator   = myNumerator * rhs.myDenominator
+                    + rhs.myNumerator * myDenominator;
+    int denominator = myDenominator * rhs.myDenominator;
+    return Fraction(numerator, denominator);  // constructor reduces
+}
+
+Fraction Fraction::operator*(const Fraction& rhs) const {
+    return Fraction(myNumerator * rhs.myNumerator,
+                    myDenominator * rhs.myDenominator);
+}
+
+Fraction Fraction::operator/(const Fraction& rhs) const {
+    if (rhs.myNumerator == 0) {
+        throw invalid_argument("cannot divide by zero");
+    }
+    return Fraction(myNumerator * rhs.myDenominator,
+                    myDenominator * rhs.myNumerator);
+}
+```
+
+Inside a method of `Fraction`, `rhs.myNumerator` is allowed even though
+`myNumerator` is private. Privacy is per **class**, not per object: any
+`Fraction` code can see any `Fraction`'s insides.
+
+Once one operator works, define the others in terms of it rather than
+starting over:
+
+```cpp
+Fraction Fraction::operator-(const Fraction& rhs) const {
+    return *this + (-rhs);       // reuse + and unary -
+}
+```
+
+```cpp
+Fraction a(1, 2), b(3, 4);
+Fraction c = a + b;              // 5/4, and a and b are unchanged
+cout << a - b << " " << a * b << " " << a / b << endl;
+                                 // -1/4 3/8 2/3
+```
+
+::: {.callout-warning}
+## Forgetting `const` on the method
+
+Without the trailing `const`, this does not compile:
+
+```cpp
+const Fraction half(1, 2);
+Fraction one = half + half;      // error: passing 'const Fraction'
+                                 //  as 'this' discards qualifiers
+```
+
+A `const` object may only call `const` methods. Since `+` does not change
+the left operand, it should have been `const` from the start. (This is the
+mistake in a well-known online cheatsheet. Now you know why it is a mistake.)
+:::
+
+::: {.callout-warning}
+## Returning a reference to a local
+
+```cpp
+Fraction& Fraction::operator+(const Fraction& rhs) const {  // NO
+    Fraction result(...);
+    return result;               // result dies here
+}
+```
+
+`result` lives on the stack of this call. The reference outlives it. Return
+arithmetic results **by value**. The copy is cheap and the compiler usually
+removes it anyway.
+:::
+
+### When your type is on the right: `2 + f`
+
+`2 + f` would need `2.operator+(f)`, and `int` has no methods. So this one is
+a **free function**, and it can be one line if the constructor and the method
+already exist:
+
+```cpp
+// The Fraction is on the right, so this cannot be a method
+Fraction operator+(int lhs, const Fraction& rhs) {
+    return Fraction(lhs, 1) + rhs;
+}
+```
+
+```cpp
+Fraction a(1, 2);
+cout << 2 + a << endl;           // 5/2
+```
+
+---
+
+## 3. Compound assignment: `+=`, `-=`, `*=`, `/=`
+
+These **change the left operand** and then hand it back, so `a += b` can sit
+inside a bigger expression the way it can for `int`. The return type is a
+**reference to `*this`**, and the method is **not** `const` because it
+changes the object.
+
+```cpp
+Fraction& Fraction::operator+=(const Fraction& rhs) {
+    *this = *this + rhs;         // reuse +, then hand this object back
+    return *this;
+}
+```
+
+```cpp
+Fraction c(1, 4);
+c += Fraction(1, 2);             // c is now 3/4
+```
+
+Either `+` is written in terms of `+=`, or `+=` in terms of `+`. Pick one.
+Never write the arithmetic twice.
+
+---
+
+## 4. Unary minus: `-f`
+
+Same name as subtraction, but **no parameter**. That is how the compiler tells
+`-f` (one operand) from `a - f` (two). It is `const` and returns a new value.
+
+```cpp
+Fraction Fraction::operator-() const {
+    return Fraction(-myNumerator, myDenominator);
+}
+```
+
+```cpp
+Fraction a(1, 2);
+cout << -a << endl;              // -1/2
+```
+
+`!` and unary `+` work the same way: `bool operator!() const`, no parameter.
+
+---
+
+## 5. Comparison: `==`, `!=`, `<`, `>`, `<=`, `>=`
+
+`const` methods returning `bool`. The trick is to write **two** of them with
+real logic and derive the other four, so there is one place for a bug to
+live.
+
+```cpp
+bool Fraction::operator==(const Fraction& rhs) const {
+    // both are in lowest terms, so equal fractions have equal parts
+    return myNumerator == rhs.myNumerator
+        && myDenominator == rhs.myDenominator;
+}
+
+bool Fraction::operator<(const Fraction& rhs) const {
+    // denominators are positive, so cross-multiplying keeps
+    // the direction
+    return myNumerator * rhs.myDenominator
+         < rhs.myNumerator * myDenominator;
+}
+
+// the other four, in terms of those two
+bool Fraction::operator!=(const Fraction& rhs) const {
+    return !(*this == rhs);
+}
+bool Fraction::operator>(const Fraction& rhs) const {
+    return rhs < *this;
+}
+bool Fraction::operator<=(const Fraction& rhs) const {
+    return !(rhs < *this);
+}
+bool Fraction::operator>=(const Fraction& rhs) const {
+    return !(*this < rhs);
+}
+```
+
+```cpp
+Fraction a(1, 2), b(3, 4);
+REQUIRE(Fraction(2, 4) == a);    // 2/4 reduced to 1/2
+REQUIRE(a != b);
+REQUIRE(a < b);
+REQUIRE(b > a);
+```
+
+::: {.callout-note}
+## Why `==` matters more than it looks
+
+Catch's `REQUIRE(x == y)` needs `operator==`. So does `std::find`. Later in
+the semester `std::set` and `std::map` will need `operator<` to order your
+type. Write these two early, in the `.h`, and every tool downstream starts
+working.
+:::
+
+---
+
+## 6. Increment and decrement: `++f` and `f++`
+
+Two operators that look identical. C++ tells them apart with a **dummy `int`
+parameter** that is never used: the version with the `int` is postfix.
+
+```cpp
+Fraction& Fraction::operator++() {         // ++f, prefix
+    myNumerator += myDenominator;          // add 1 = d/d
+    return *this;                          // the changed object
+}
+
+Fraction Fraction::operator++(int) {       // f++, postfix
+    Fraction old = *this;                  // remember the old value
+    ++(*this);                             // reuse the prefix version
+    return old;                            // hand back the OLD value
+}
+```
+
+```cpp
+Fraction d(1, 3);
+cout << ++d << " ";              // 4/3   (changed, then printed)
+cout << d++ << " ";              // 4/3   (printed, then changed)
+cout << d   << endl;             // 7/3
+```
+
+Prefix returns a **reference** (the object itself, already changed). Postfix
+returns a **copy** (the value from before the change), so it cannot return a
+reference and it costs a copy. That is the same reason `++i` is preferred
+over `i++` in a `for` loop when it makes no difference to the logic.
+
+`--` is identical with `-=`.
+
+---
+
+## 7. Conversion: `(double) f`
+
+A conversion operator lets your object turn into another type. It has **no
+return type in the signature** (the name *is* the type) and no parameters.
+
+```cpp
+Fraction::operator double() const {
+    return (double) myNumerator / myDenominator;
+}
+```
+
+```cpp
+Fraction a(1, 2);
+double x = (double) a;           // 0.5
+```
+
+::: {.callout-important}
+## Make it `explicit`
+
+The header says `explicit operator double() const;`. Without `explicit`, the
+compiler is allowed to convert a `Fraction` to a `double` **silently**,
+wherever a `double` fits: `a + 1.5` would become `0.5 + 1.5` instead of a
+compile error, and `if (a)` would quietly test whether the value is nonzero.
+`explicit` means the conversion only happens when you write the cast. That is
+the version to copy.
+:::
+
+---
+
+## 8. Subscript: `bag[i]`
+
+From here on the example is `Bag`, a class that owns an array on the heap:
+
+```cpp
+class Bag {
+public:
+    Bag(unsigned size);                  // size zeros
+    Bag(const Bag& original);            // deep copy
+    ~Bag();
+    Bag& operator=(const Bag& rhs);      // deep copy, self-safe
+
+    unsigned getSize() const;
+
+    // subscript, one for reading a const Bag, one for changing
+    int&       operator[](unsigned i);          // throws
+    const int& operator[](unsigned i) const;    // throws
+
+    // call operator: bag(k) counts how many items equal k
+    unsigned operator()(int value) const;
+
+private:
+    int*     myItems;
+    unsigned mySize;
+};
+
+ostream& operator<<(ostream& out, const Bag& bag);
+```
+
+`[]` **must be a method**. You write it **twice**: once returning a plain
+reference so `bag[i] = 7` can change the item, and once as a `const` method
+returning a `const` reference so a `const Bag` can still be read.
+
+```cpp
+int& Bag::operator[](unsigned i) {
+    if (i >= mySize) {
+        throw range_error("no item at that index");
+    }
+    return myItems[i];                   // a reference: bag[i] = 7
+}
+
+const int& Bag::operator[](unsigned i) const {
+    if (i >= mySize) {
+        throw range_error("no item at that index");
+    }
+    return myItems[i];                   // read only
+}
+```
+
+```cpp
+Bag bag(3);
+bag[0] = 7;                      // the non-const one, returns int&
+const Bag copy = bag;
+cout << copy[0] << endl;         // the const one, returns const int&
+bag[5] = 1;                      // throws range_error
+```
+
+Yes, the two bodies are identical. That is normal for `[]`. The compiler picks
+the one that matches whether the object is `const`.
+
+::: {.callout-warning}
+## Two things not to do inside `[]`
+
+**Print an error and `exit`.** A container's job is to hold things, not to
+end the program. Throw `range_error` and let the caller decide. Your tests can
+then say `REQUIRE_THROWS_AS(bag[5], range_error)`, which they cannot do with
+`exit`.
+
+**Only write the non-const version.** Then `operator<<`, which takes a
+`const Bag&`, cannot use `bag[i]` and you are back to reaching inside the
+class. Write both.
+:::
+
+---
+
+## 9. Assignment: `a = b`
+
+This is the one operator the compiler writes **for you** if you do not, and
+for `Fraction` that default is fine: it copies each member, which is all a
+`Fraction` needs. Notice `Fraction.h` does not declare an `operator=` at all.
+
+For `Bag` the default is a bug. It would copy the **pointer**, so two `Bag`s
+end up sharing one array, and the second destructor to run deletes memory the
+first already freed. So `Bag` writes its own, and the shape is always the
+same four steps:
+
+```cpp
+Bag& Bag::operator=(const Bag& rhs) {
+    if (this != &rhs) {                  // 1. guard: b = b;
+        delete[] myItems;                // 2. let go of the old array
+        mySize  = rhs.mySize;
+        myItems = new int[rhs.mySize];   // 3. get a new one and fill it
+        for (unsigned i = 0; i < mySize; i++) {
+            myItems[i] = rhs.myItems[i];
+        }
+    }
+    return *this;                        // 4. so a = b = c works
+}
+```
+
+```cpp
+Bag a(3), b(1);
+a[0] = 7;
+b = a;                           // b now has its own copy of a's array
+b = b;                           // harmless, thanks to the guard
+```
+
+::: {.callout-important}
+## The rule of three
+
+If a class needs any one of a **destructor**, a **copy constructor**, or a
+**copy assignment operator**, it needs all three, and for the same reason: it
+owns something. `Bag` has all three. `Fraction` has none of them. If you find
+yourself writing just one, stop and ask what the other two would do.
+:::
+
+::: {.callout-warning}
+## Why step 1 exists
+
+Without the self-assignment guard, `b = b` runs step 2 first and deletes the
+array, then step 3 reads from `rhs.myItems`, which is the array it just
+deleted. `b = b` looks silly written out, but `bags[i] = bags[j]` with
+`i == j` is not silly at all.
+:::
+
+---
+
+## 10. Call: `bag(7)`
+
+Overloading `()` makes an object **callable like a function**. An object that
+does this is called a **functor**. It must be a method, it can take any
+parameters you like, and it is how you hand behaviour plus state to something
+that expects a function, which is exactly what the STL's sort and search
+functions will want from you later.
+
+```cpp
+unsigned Bag::operator()(int value) const {
+    unsigned count = 0;
+    for (unsigned i = 0; i < mySize; i++) {
+        if (myItems[i] == value) {
+            count++;
+        }
+    }
+    return count;
+}
+```
+
+```cpp
+Bag bag(3);
+bag[0] = 7; bag[1] = 7; bag[2] = 2;
+cout << bag(7) << endl;          // 2, the object was "called"
+```
+
+Use this one sparingly. `bag.count(7)` says the same thing and needs no
+explanation. `()` earns its place when the object is going to be handed to
+code that only knows how to call things.
+
+---
+
+## Putting it together: `operator<<` for `Bag`
+
+The stream operator for `Bag` uses two other overloads on this page, and it
+uses them from the **outside**, through the public interface:
+
+```cpp
+ostream& operator<<(ostream& out, const Bag& bag) {
+    out << "[";
+    for (unsigned i = 0; i < bag.getSize(); i++) {
+        if (i > 0) {
+            out << ", ";
+        }
+        out << bag[i];                   // the const operator[]
+    }
+    out << "]";
+    return out;
+}
+```
+
+`bag` is a `const Bag&`, so `bag[i]` picks the `const` subscript. That is the
+payoff for writing it twice.
+
+---
+
+## The signature table
+
+Copy from here. `T` is your class.
+
+| Operator | Kind | Signature | Returns | `const`? |
+|---|---|---|---|---|
+| `cout << t` | free | `ostream& operator<<(ostream& out, const T& t)` | the stream | n/a |
+| `cin >> t` | free | `istream& operator>>(istream& in, T& t)` | the stream | n/a |
+| `t + u` | method | `T operator+(const T& rhs) const` | new value | yes |
+| `2 + t` | free | `T operator+(int lhs, const T& rhs)` | new value | n/a |
+| `t += u` | method | `T& operator+=(const T& rhs)` | `*this` | no |
+| `-t` | method | `T operator-() const` | new value | yes |
+| `t == u` | method | `bool operator==(const T& rhs) const` | `bool` | yes |
+| `t < u` | method | `bool operator<(const T& rhs) const` | `bool` | yes |
+| `++t` | method | `T& operator++()` | `*this` | no |
+| `t++` | method | `T operator++(int)` | old value | no |
+| `(double) t` | method | `explicit operator double() const` | `double` | yes |
+| `t[i]` | method | `Item& operator[](unsigned i)` | reference | no |
+| `t[i]` on `const` | method | `const Item& operator[](unsigned i) const` | const ref | yes |
+| `t = u` | method | `T& operator=(const T& rhs)` | `*this` | no |
+| `t(x)` | method | `R operator()(Args) const` | whatever | usually |
+
+: {tbl-colwidths="[13,9,50,15,13]"}
+
+The pattern in the last column: **if the operator changes the object, it is
+not `const` and it returns `*this` by reference. If it does not, it is `const`
+and it returns a new value.**
+
+---
+
+## A note on `friend`
+
+Some books write `operator<<` like this:
+
+```cpp
+class Fraction {
+    friend ostream& operator<<(ostream& out, const Fraction& f);
+    ...
+};
+```
+
+`friend` lets a free function read the private members directly, so the body
+can say `f.myNumerator` instead of `f.getNumerator()`. It works, and you will
+see it in the wild. In CS112 we do not use it by default, because a class
+with getters does not need it, and every `friend` is one more piece of code
+that breaks when the private section changes. If a function genuinely cannot
+do its job through the public interface, that is usually a sign the public
+interface is missing something.
+
+---
+
+## Checklist before you hand it in
+
+- Every operator that does not change the object is a **`const` method**.
+- Every parameter of a class type is **`const T&`**, not `T`.
+- `<<` and `>>` are **free functions** that **return the stream**.
+- Arithmetic returns **by value**; compound assignment and prefix `++` return
+  **`*this` by reference**; postfix `++` has the **dummy `int`** and returns
+  the **old value**.
+- `[]` comes in **two versions**, and both **throw** on a bad index.
+- If the class has a destructor, it has a **copy constructor** and an
+  **`operator=`** with the **self-assignment guard**.
+- Conversions are **`explicit`**.
+- Every operator has a **test**. `REQUIRE(a + b == c)` is one line.
+
+Found an operator you needed that is not here, or a case where this page is
+wrong? Tell me and I will fix it. This page is generated from files that
+compile, so if it says something works, it has been run.

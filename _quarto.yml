@@ -6,6 +6,9 @@ project:
     - "!policies/policies.qmd"
   resources:
     - "slides/"
+    # The source files behind the operator-overloading cheatsheet, so the
+    # download links on that page work.
+    - "content/cheatsheets/code/"
     # Only referenced from JS at runtime, so Quarto can't discover it
     # by scanning the sources, it has to be copied explicitly.
     - "figures/calvin-logo-dark.png"
