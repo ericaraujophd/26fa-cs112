@@ -119,7 +119,7 @@ time the page offers is a time he is actually free. Pick one that does not
 collide with your own classes.
 
 <p style="margin:1.1rem 0 1.4rem">
-<a href="https://bookings.cloud.microsoft/book/AdvisingDays12@calvincollege.onmicrosoft.com/s/RxOvJhoGUEm9pJFPJN252A2?ismsaljsauthenabled"
+<a href="https://bookings.cloud.microsoft/book/AdvisingDays12@calvincollege.onmicrosoft.com/s/Tx-rOrayH0aWDoFY8HXavw2?ismsaljsauthenabled"
    class="btn btn-primary"
    style="background-color:#6E1C2E;border-color:#6E1C2E;color:#fff;font-weight:600;padding:.6rem 1.2rem">
 Book your Window 1 check-in</a>
