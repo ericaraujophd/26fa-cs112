@@ -112,6 +112,39 @@ Everything closes on **Dec 9**, the last day of classes. Waiting is the single
 most common way students end up unable to get an appointment at all.
 :::
 
+## How to Book
+
+**Window 1 is open.** Bookings go through the instructor's calendar, so every
+time the page offers is a time he is actually free. Pick one that does not
+collide with your own classes.
+
+<p style="margin:1.1rem 0 1.4rem">
+<a href="https://bookings.cloud.microsoft/book/AdvisingDays12@calvincollege.onmicrosoft.com/s/RxOvJhoGUEm9pJFPJN252A2?ismsaljsauthenabled"
+   class="btn btn-primary"
+   style="background-color:#6E1C2E;border-color:#6E1C2E;color:#fff;font-weight:600;padding:.6rem 1.2rem">
+Book your Window 1 check-in</a>
+</p>
+
+::: {.callout-tip}
+**Three things worth knowing before you pick a time.**
+
+- **The earliest slots are on Thursday 8 October.** Everything in clusters A
+  and B is taught by Friday 2 October, so by the 8th there is nothing on that
+  page you have not met in class.
+
+- **Book a slot at least two days after you finish a05.** a05 is where you
+  write the deep copy, and the copy constructor is the one question in this
+  window you will not want to meet cold. Having fought it yourself is worth
+  more than having watched it in a lecture.
+
+- **The link stays open until Dec 9**, so Window 1 is not a deadline that
+  forces you early. The calendar is a different matter: Window 2 opens in
+  November and Window 3 in December, into the same set of hours, and Fall
+  Break plus a conference take most of the second half of October out. A
+  Window 1 appointment in December means three check-ins in the last fortnight
+  of the semester, which is nobody's plan.
+:::
+
 ```{=html}
 <style>
 .ci-timeline-wrap { margin: 1.5rem 0 2rem; }

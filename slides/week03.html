@@ -96,7 +96,8 @@
     <li><div class="agenda-num">4</div> Constructors and destructors</li>
     <li><div class="agenda-num">5</div> Test-driven development</li>
     <li><div class="agenda-num">6</div> Operator overloading <span class='badge'>KEY</span></li>
-    <li><div class="agenda-num">7</div> Designing a class together</li>
+    <li><div class="agenda-num">7</div> Generalizing with <code>typedef</code></li>
+    <li><div class="agenda-num">8</div> Designing a class together</li>
   </ul>
 </section>
 
@@ -428,6 +429,34 @@ cout &lt;&lt; p &lt;&lt; endl;       // ✓ now this works
 </section>
 
 <section>
+  <h2>One Line Decides What It Holds</h2>
+  <pre><code class="language-cpp" data-trim>
+// Pair.h
+typedef int Item;        // the only place int appears
+
+class Pair {
+ public:
+  Pair(Item f, Item s);
+  Item getFirst() const;
+  void setFirst(Item v);
+ private:
+  Item myFirst, mySecond;
+};
+  </code></pre>
+  <ul>
+    <li>You have been reading <code>Item</code> all hour. <strong>This is what it is</strong></li>
+    <li><code>Item</code> is a <em>name for</em> a type, not a type of its own</li>
+    <li>Pairs of <code>double</code> instead? <code>typedef double Item;</code> and nothing else moves</li>
+  </ul>
+  <div class="callout">Without it, the same change means hunting through two files for every <code>int</code> that is an element, while leaving alone every <code>int</code> that is a counter. That hunt is where the mistakes live.</div>
+  <aside class="notes">
+    Next week this line becomes a template parameter. The typedef lets the class
+    hold ONE chosen type, decided when the header is written; a template lets
+    the person using the class choose. a05 opens with typedef double Sample.
+  </aside>
+</section>
+
+<section>
   <h2>Design One Together: <code>Enemy</code></h2>
   <div class="two-col">
     <div>
@@ -459,6 +488,7 @@ cout &lt;&lt; p &lt;&lt; endl;       // ✓ now this works
     <li>Constructors run on creation, destructors on death: both automatically</li>
     <li>Write the tests first; they are the specification</li>
     <li>Return <code style='color:var(--gold)'>ostream&amp;</code> from <code style='color:var(--gold)'>operator&lt;&lt;</code> so output can chain</li>
+    <li><code style='color:var(--gold)'>typedef</code> names the element type, so changing it is a one-line edit</li>
   </ul>
   <div class="next">Next: a04 →</div>
   <p class="credit-line">
