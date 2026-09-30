@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function () {
 @media (max-width: 640px) { .sched-cards { grid-template-columns: 1fr; } }
 
 /* Lecture is joint, so it spans the full width above the two lab sections. */
-.sched-lecture { margin-bottom: .85rem; }
+.sched-lecture { margin-bottom: 0; display: flex; flex-direction: column; justify-content: center; }
 .sched-lecture-inner {
   display: flex;
   justify-content: space-between;
@@ -104,13 +104,22 @@ document.addEventListener('DOMContentLoaded', function () {
   font-style: italic;
 }
 
-.sched-labs {
+/* Lecture on the left, the two labs stacked on the right, so the three cards
+   read as one week rather than as a lecture and then a separate thing. */
+.sched-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: .85rem;
   margin-bottom: 1.5rem;
+  align-items: stretch;
 }
-@media (max-width: 640px) { .sched-labs { grid-template-columns: 1fr; } }
+.sched-labs {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: .85rem;
+}
+/* One column on a phone: lecture, then Lab A, then Lab B. */
+@media (max-width: 640px) { .sched-row { grid-template-columns: 1fr; } }
 
 .sched-lab-head {
   display: flex;
@@ -176,16 +185,27 @@ document.addEventListener('DOMContentLoaded', function () {
   padding: 1.25rem;
 }
 .avatar {
-  width: 48px; height: 48px;
+  width: 64px; height: 64px;
   border-radius: 50%;
   background: #6E1C2E;
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 600;
   margin-bottom: .9rem;
+  overflow: hidden;
+  flex: 0 0 auto;
+}
+/* The photo fills the circle and is cropped to it, so any reasonably square
+   image works without being edited first. If figures/instructor.jpg is not
+   there, the img removes itself and the initials come back. */
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 .instructor-name { font-size: .95rem; font-weight: 600; margin-bottom: .3rem; }
 .instructor-detail {
@@ -194,6 +214,26 @@ document.addEventListener('DOMContentLoaded', function () {
   margin-bottom: .2rem;
 }
 .instructor-btns { display: flex; flex-direction: column; gap: 6px; margin-top: 1rem; }
+/* Office hours and the three window buttons are generated separately and were
+   coming out at different widths and paddings. One rule covers all of them. */
+.instructor-btns .btn,
+.instructor-btns #checkin-book .btn {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  padding: .4rem .6rem;
+  font-size: .8rem;
+  line-height: 1.3;
+  white-space: normal;
+}
+/* The generated row is one flex item, so it needs its own column and the same
+   gap to sit flush with the button above it. */
+.instructor-btns #checkin-book {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
 
 /* ── SLO card ──────────────────────────────────────────────── */
 .slo-card {
@@ -376,6 +416,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <!-- THISWEEK:END -->
 
 <!-- ── Schedule cards ──────────────────────────────────── -->
+<div class="sched-row">
 <div class="sched-lecture sched-card">
   <div class="sched-lecture-inner">
     <div>
@@ -414,11 +455,13 @@ document.addEventListener('DOMContentLoaded', function () {
     <span class="sched-room">SB 372</span>
   </div>
 </div>
+</div>
 
 <!-- ── Instructor + SLOs ────────────────────────────────── -->
 <div class="bottom-row">
   <div class="instructor-card">
-    <div class="avatar">EA</div>
+    <div class="avatar"><img src="figures/instructor.jpg" alt="Eric Araújo"
+      onerror="var p=this.parentNode; this.remove(); p.textContent='EA';"></div>
     <div class="instructor-name">Prof. Eric Araújo</div>
     <div class="instructor-detail">📧 eric.araujo@calvin.edu</div>
     <div class="instructor-detail">🏢 Office NH 293</div>
