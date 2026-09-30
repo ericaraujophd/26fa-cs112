@@ -231,7 +231,6 @@ document.addEventListener('DOMContentLoaded', function () {
 </div>
 
 <!-- THISWEEK:START -->
-```{=html}
 <style>
 /* ── This week ─────────────────────────────────────────────── */
 .tw-card {
@@ -374,7 +373,6 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 })();
 </script>
-```
 <!-- THISWEEK:END -->
 
 <!-- ── Schedule cards ──────────────────────────────────── -->
@@ -427,11 +425,11 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="instructor-btns">
       <a href="https://outlook.office.com/book/AdvisingDays12@calvincollege.onmicrosoft.com/s/NI9r43tRjUKJ5UjiSmktgg2" target="_blank" rel="noopener" class="btn btn-sm" style="background:#6E1C2E;color:#fff;border-color:#6E1C2E;">📅 Book Office Hours</a>
 <!-- CHECKIN:START -->
-```{=html}
-<span id="checkin-book"><a href="content/checkins.html" class="btn btn-sm btn-outline-secondary">Book a check-in</a></span>
+<span id="checkin-book" data-checkins-href="content/checkins.html"><a href="content/checkins.html" class="btn btn-sm btn-outline-secondary">Book a check-in</a></span>
 <script>
-// The booking button, chosen from the visitor's clock. Which window is open is
-// a fact about today, so it is decided here rather than baked in at build time.
+// One button per check-in window, each showing its own state, worked out in the
+// browser from the visitor's clock. Nothing here is decided at build time, so
+// the row stops being right only when checkin-windows.yml is wrong.
 (function () {
   var WINDOWS = [{"n":1,"opens":"2026-09-29","reference":"2026-10-23","closes":"2026-12-09","opensLabel":"29 September","referenceLabel":"23 October","closesLabel":"9 December","url":"https://bookings.cloud.microsoft/book/AdvisingDays12@calvincollege.onmicrosoft.com/s/Tx-rOrayH0aWDoFY8HXavw2?ismsaljsauthenabled"},{"n":2,"opens":"2026-10-26","reference":"2026-11-20","closes":"2026-12-09","opensLabel":"26 October","referenceLabel":"20 November","closesLabel":"9 December","url":null},{"n":3,"opens":"2026-11-16","reference":"2026-12-02","closes":"2026-12-09","opensLabel":"16 November","referenceLabel":"2 December","closesLabel":"9 December","url":null}];
 
@@ -442,47 +440,39 @@ document.addEventListener('DOMContentLoaded', function () {
            String(d.getDate()).padStart(2, '0');
   }
 
+  var LIVE = 'background:#6E1C2E;color:#fff;border-color:#6E1C2E;';
+  var MUTED = 'opacity:.55;cursor:default;';
+
+  function button(w, today, fallback) {
+    // Open, and the link exists. The only one a student can act on.
+    if (w.opens <= today && today <= w.closes && w.url) {
+      return '<a href="' + w.url + '" target="_blank" rel="noopener" ' +
+             'class="btn btn-sm" style="' + LIVE + '" ' +
+             'title="Assessed against ' + w.referenceLabel +
+             '. Closes ' + w.closesLabel + '.">' +
+             'Book Window ' + w.n + '</a>';
+    }
+
+    // Everything else is shown anyway, greyed, so a student can see the shape
+    // of the semester rather than wondering what happened to the other windows.
+    var label;
+    if (today > w.closes)        label = 'Window ' + w.n + ' closed';
+    else if (today < w.opens)    label = 'Window ' + w.n + ' opens ' + w.opensLabel;
+    else                         label = 'Window ' + w.n + ' link coming';
+
+    return '<a href="' + fallback + '" class="btn btn-sm btn-outline-secondary" ' +
+           'style="' + MUTED + '" title="Assessed against ' + w.referenceLabel +
+           '.">' + label + '</a>';
+  }
+
   function render() {
     var host = document.getElementById('checkin-book');
     if (!host) return;
     var today = todayISO();
-
-    // The window currently open. Windows overlap, since an earlier one stays
-    // bookable, so the LAST one that has opened is the one to offer.
-    var open = null;
-    for (var i = 0; i < WINDOWS.length; i++) {
-      if (WINDOWS[i].opens <= today && today <= WINDOWS[i].closes) {
-        open = WINDOWS[i];
-      }
-    }
-
-    // Nothing open: either the semester has not started or it is over.
-    if (!open) {
-      var next = null;
-      for (var j = 0; j < WINDOWS.length; j++) {
-        if (WINDOWS[j].opens > today) { next = WINDOWS[j]; break; }
-      }
-      host.innerHTML = next
-        ? '<a href="content/checkins.html" class="btn btn-sm btn-outline-secondary">' +
-          'Check-in booking opens ' + next.opensLabel + '</a>'
-        : '<a href="content/checkins.html" class="btn btn-sm btn-outline-secondary">' +
-          'Check-in bookings are closed</a>';
-      return;
-    }
-
-    if (open.url) {
-      host.innerHTML =
-        '<a href="' + open.url + '" target="_blank" rel="noopener" ' +
-        'class="btn btn-sm" style="background:#6E1C2E;color:#fff;border-color:#6E1C2E;" ' +
-        'title="Window ' + open.n + ' is assessed against ' + open.referenceLabel +
-        '. Bookings close ' + open.closesLabel + '.">' +
-        'Book your Window ' + open.n + ' check-in</a>';
-    } else {
-      host.innerHTML =
-        '<a href="content/checkins.html" class="btn btn-sm btn-outline-secondary" ' +
-        'title="The Window ' + open.n + ' link is not published yet.">' +
-        'Window ' + open.n + ' check-in, link coming</a>';
-    }
+    var fallback = host.getAttribute('data-checkins-href') || 'content/checkins.html';
+    host.innerHTML = WINDOWS.map(function (w) {
+      return button(w, today, fallback);
+    }).join(' ');
   }
 
   if (document.readyState === 'loading') {
@@ -492,7 +482,6 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 })();
 </script>
-```
 <!-- CHECKIN:END -->
     </div>
   </div>

@@ -112,18 +112,71 @@ Everything closes on **Dec 9**, the last day of classes. Waiting is the single
 most common way students end up unable to get an appointment at all.
 :::
 
-## How to Book
+## How to Book {#how-to-book}
 
 **Window 1 is open.** Bookings go through the instructor's calendar, so every
 time the page offers is a time he is actually free. Pick one that does not
 collide with your own classes.
 
-<p style="margin:1.1rem 0 1.4rem">
-<a href="https://bookings.cloud.microsoft/book/AdvisingDays12@calvincollege.onmicrosoft.com/s/Tx-rOrayH0aWDoFY8HXavw2?ismsaljsauthenabled"
-   class="btn btn-primary"
-   style="background-color:#6E1C2E;border-color:#6E1C2E;color:#fff;font-weight:600;padding:.6rem 1.2rem">
-Book your Window 1 check-in</a>
-</p>
+<!-- CHECKIN:START -->
+<span id="checkin-book" data-checkins-href="checkins.html#how-to-book"><a href="checkins.html#how-to-book" class="btn btn-sm btn-outline-secondary">Book a check-in</a></span>
+<script>
+// One button per check-in window, each showing its own state, worked out in the
+// browser from the visitor's clock. Nothing here is decided at build time, so
+// the row stops being right only when checkin-windows.yml is wrong.
+(function () {
+  var WINDOWS = [{"n":1,"opens":"2026-09-29","reference":"2026-10-23","closes":"2026-12-09","opensLabel":"29 September","referenceLabel":"23 October","closesLabel":"9 December","url":"https://bookings.cloud.microsoft/book/AdvisingDays12@calvincollege.onmicrosoft.com/s/Tx-rOrayH0aWDoFY8HXavw2?ismsaljsauthenabled"},{"n":2,"opens":"2026-10-26","reference":"2026-11-20","closes":"2026-12-09","opensLabel":"26 October","referenceLabel":"20 November","closesLabel":"9 December","url":null},{"n":3,"opens":"2026-11-16","reference":"2026-12-02","closes":"2026-12-09","opensLabel":"16 November","referenceLabel":"2 December","closesLabel":"9 December","url":null}];
+
+  function todayISO() {
+    var d = new Date();
+    return d.getFullYear() + '-' +
+           String(d.getMonth() + 1).padStart(2, '0') + '-' +
+           String(d.getDate()).padStart(2, '0');
+  }
+
+  var LIVE = 'background:#6E1C2E;color:#fff;border-color:#6E1C2E;';
+  var MUTED = 'opacity:.55;cursor:default;';
+
+  function button(w, today, fallback) {
+    // Open, and the link exists. The only one a student can act on.
+    if (w.opens <= today && today <= w.closes && w.url) {
+      return '<a href="' + w.url + '" target="_blank" rel="noopener" ' +
+             'class="btn btn-sm" style="' + LIVE + '" ' +
+             'title="Assessed against ' + w.referenceLabel +
+             '. Closes ' + w.closesLabel + '.">' +
+             'Book Window ' + w.n + '</a>';
+    }
+
+    // Everything else is shown anyway, greyed, so a student can see the shape
+    // of the semester rather than wondering what happened to the other windows.
+    var label;
+    if (today > w.closes)        label = 'Window ' + w.n + ' closed';
+    else if (today < w.opens)    label = 'Window ' + w.n + ' opens ' + w.opensLabel;
+    else                         label = 'Window ' + w.n + ' link coming';
+
+    return '<a href="' + fallback + '" class="btn btn-sm btn-outline-secondary" ' +
+           'style="' + MUTED + '" title="Assessed against ' + w.referenceLabel +
+           '.">' + label + '</a>';
+  }
+
+  function render() {
+    var host = document.getElementById('checkin-book');
+    if (!host) return;
+    var today = todayISO();
+    var fallback = host.getAttribute('data-checkins-href') || 'content/checkins.html';
+    host.innerHTML = WINDOWS.map(function (w) {
+      return button(w, today, fallback);
+    }).join(' ');
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', render);
+  } else {
+    render();
+  }
+})();
+</script>
+<!-- CHECKIN:END -->
 
 ::: {.callout-tip}
 **Three things worth knowing before you pick a time.**
