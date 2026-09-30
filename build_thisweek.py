@@ -314,16 +314,27 @@ CSS = """
   font-size: .8rem; opacity: .7; margin-bottom: .9rem; font-style: italic;
 }
 .tw-cols {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;
+  display: grid;
+  /* auto-fit with a rem minimum: three columns when there is room, two when
+     the reader's text size grows, one on a phone. Because the minimum is in
+     rem it answers to the text size as well as to the window, which a fixed
+     three-column grid did not: at the large size on a tablet it was breaking
+     "Mon 28 September / booklet" across two lines. */
+  /* min(14rem, 100%) rather than a bare 14rem: on a small phone at the large
+     text size, 14rem is wider than the card itself, and a bare minimum makes
+     the column overflow instead of shrinking. */
+  grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr));
+  gap: 1rem;
 }
-@media (max-width: 640px) { .tw-cols { grid-template-columns: 1fr; } }
+.tw-col { min-width: 0; }
 .tw-col-label {
   font-size: .7rem; text-transform: uppercase; letter-spacing: .07em;
   opacity: .55; margin-bottom: .35rem;
 }
 .tw-col a { text-decoration: none; }
 .tw-col a:hover { text-decoration: underline; }
-.tw-line { font-size: .875rem; margin-bottom: .2rem; }
+/* A date and its links are one line or nothing. */
+.tw-line { font-size: .875rem; margin-bottom: .2rem; white-space: nowrap; }
 .tw-day { display: inline-block; min-width: 2.6rem; opacity: .65; }
 .tw-sep { opacity: .35; margin: 0 .35rem; }
 .tw-none { font-size: .85rem; opacity: .45; }
