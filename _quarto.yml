@@ -6,6 +6,9 @@ project:
     - "!policies/policies.qmd"
   resources:
     - "slides/"
+    # Per-class outlines, built by course/planning/build_outline.py. Linked from
+    # the schedule, never rendered, so Quarto has to be told to copy them.
+    - "outlines/"
     # The source files behind the operator-overloading cheatsheet, so the
     # download links on that page work.
     - "content/cheatsheets/code/"
