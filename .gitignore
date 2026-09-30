@@ -4,3 +4,6 @@
 
 **/*.quarto_ipynb
 _to_delete/
+
+# build intermediate from course/slides/build_slides_pdf.py
+slides/_print_*.html
