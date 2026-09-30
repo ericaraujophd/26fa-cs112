@@ -1,0 +1,40 @@
+# Check-in booking windows, read by build_thisweek.py to render the booking
+# button on the front page.
+#
+# THE BUTTON PICKS ITS WINDOW IN THE BROWSER, from the visitor's clock, so it
+# stops being right only when this file is wrong. Keep it accurate and the page
+# looks after itself.
+#
+# Each window needs:
+#   n          the window number, as students see it
+#   opens      first day the button should offer this window
+#   reference  the date the window is assessed against, shown on the button's
+#              tooltip and used in the checkins page prose
+#   closes     last day this window can be booked
+#   url        the Microsoft Bookings link, or null if it does not exist yet
+#
+# A window with url: null still renders, as a disabled button saying the link
+# is not open yet, pointing at the check-ins page. That is deliberate: a button
+# that quietly vanishes tells a student nothing, and "#" as a link is how the
+# front page ended up with a dead button in the first place.
+#
+# All bookings, in every window, close on the last day of classes.
+
+windows:
+  - n: 1
+    opens: 2026-09-29
+    reference: 2026-10-23
+    closes: 2026-12-09
+    url: https://bookings.cloud.microsoft/book/AdvisingDays12@calvincollege.onmicrosoft.com/s/Tx-rOrayH0aWDoFY8HXavw2?ismsaljsauthenabled
+
+  - n: 2
+    opens: 2026-10-26
+    reference: 2026-11-20
+    closes: 2026-12-09
+    url: null
+
+  - n: 3
+    opens: 2026-11-16
+    reference: 2026-12-02
+    closes: 2026-12-09
+    url: null
