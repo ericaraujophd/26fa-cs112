@@ -87,14 +87,35 @@ document.addEventListener('DOMContentLoaded', function () {
    One block per day the class meets, left to right, so the strip reads the
    way the week runs. Tuesday carries both lab sections, which is why it is
    the only block with two entries rather than a column of its own. */
+/* FOUR ACROSS, TWO, OR ONE. NEVER THREE.
+   auto-fit fits as many as will go, which sounds right and gives 3 + 1 at a
+   range of widths: Friday alone on a second row, which reads as a mistake even
+   though nothing has overflowed or wrapped.
+   So the counts are chosen explicitly, and chosen from the width of the STRIP
+   rather than of the window, because the page sits inside Quarto's content
+   column and the window is not what the cards actually have. The thresholds
+   are in rem, which inside a container query follows the reader's text size,
+   so enlarging the text drops from four to two exactly as narrowing does. */
+.week-wrap { container-type: inline-size; container-name: week; }
 .week-strip {
   display: grid;
-  /* Four across when there is room, then two, then one, and the minimum is in
-     rem so a larger text size drops a column before anything wraps. */
-  grid-template-columns: repeat(auto-fit, minmax(min(11rem, 100%), 1fr));
+  grid-template-columns: 1fr;
   gap: .7rem;
   margin-bottom: 1.5rem;
   align-items: stretch;
+}
+@container week (min-width: 24rem) {
+  .week-strip { grid-template-columns: 1fr 1fr; }
+}
+@container week (min-width: 50rem) {
+  .week-strip { grid-template-columns: repeat(4, 1fr); }
+}
+/* Container queries are 2023 and later. Anything older keeps the old
+   behaviour, which is imperfect rather than broken. */
+@supports not (container-type: inline-size) {
+  .week-strip {
+    grid-template-columns: repeat(auto-fit, minmax(min(11rem, 100%), 1fr));
+  }
 }
 
 .day-card {
@@ -299,18 +320,22 @@ document.addEventListener('DOMContentLoaded', function () {
 .tw-note {
   font-size: .8rem; opacity: .7; margin-bottom: .9rem; font-style: italic;
 }
+/* THREE COLUMNS OR ONE, never two-and-a-widow. Measured from the card rather
+   than the window, and in rem, so a bigger text size collapses it the same way
+   a narrower window does. */
+.tw-card { container-type: inline-size; container-name: twcard; }
 .tw-cols {
   display: grid;
-  /* auto-fit with a rem minimum: three columns when there is room, two when
-     the reader's text size grows, one on a phone. Because the minimum is in
-     rem it answers to the text size as well as to the window, which a fixed
-     three-column grid did not: at the large size on a tablet it was breaking
-     "Mon 28 September / booklet" across two lines. */
-  /* min(14rem, 100%) rather than a bare 14rem: on a small phone at the large
-     text size, 14rem is wider than the card itself, and a bare minimum makes
-     the column overflow instead of shrinking. */
-  grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr));
+  grid-template-columns: 1fr;
   gap: 1rem;
+}
+@container twcard (min-width: 42rem) {
+  .tw-cols { grid-template-columns: repeat(3, 1fr); }
+}
+@supports not (container-type: inline-size) {
+  .tw-cols {
+    grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr));
+  }
 }
 .tw-col { min-width: 0; }
 .tw-col-label {
@@ -436,6 +461,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 <!-- ── Schedule cards ──────────────────────────────────── -->
 <!-- ── The teaching week ───────────────────────────────── -->
+<div class="week-wrap">
 <div class="week-strip">
   <div class="day-card">
     <div class="day-name">Monday</div>
@@ -485,6 +511,7 @@ document.addEventListener('DOMContentLoaded', function () {
       </div>
     </div>
   </div>
+</div>
 </div>
 
 <!-- ── Instructor + SLOs ────────────────────────────────── -->
