@@ -313,18 +313,22 @@ CSS = """
 .tw-note {
   font-size: .8rem; opacity: .7; margin-bottom: .9rem; font-style: italic;
 }
+/* THREE COLUMNS OR ONE, never two-and-a-widow. Measured from the card rather
+   than the window, and in rem, so a bigger text size collapses it the same way
+   a narrower window does. */
+.tw-card { container-type: inline-size; container-name: twcard; }
 .tw-cols {
   display: grid;
-  /* auto-fit with a rem minimum: three columns when there is room, two when
-     the reader's text size grows, one on a phone. Because the minimum is in
-     rem it answers to the text size as well as to the window, which a fixed
-     three-column grid did not: at the large size on a tablet it was breaking
-     "Mon 28 September / booklet" across two lines. */
-  /* min(14rem, 100%) rather than a bare 14rem: on a small phone at the large
-     text size, 14rem is wider than the card itself, and a bare minimum makes
-     the column overflow instead of shrinking. */
-  grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr));
+  grid-template-columns: 1fr;
   gap: 1rem;
+}
+@container twcard (min-width: 42rem) {
+  .tw-cols { grid-template-columns: repeat(3, 1fr); }
+}
+@supports not (container-type: inline-size) {
+  .tw-cols {
+    grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr));
+  }
 }
 .tw-col { min-width: 0; }
 .tw-col-label {
