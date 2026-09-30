@@ -1,0 +1,45 @@
+#!/bin/sh
+#
+# pre-push - do not let a broken page reach the site.
+#
+# Runs check_pages.py, which renders every .qmd with pandoc and checks the
+# OUTPUT: literal ``` surviving into the HTML, raw HTML escaped into visible
+# text, unbalanced fences, unpaired THISWEEK / CHECKIN markers, and local links
+# that point at nothing.
+#
+# This exists because of 30 September 2026, when a generated block opened a
+# fence inside index.qmd's raw HTML region. The source looked fine, the file
+# parsed, and the live front page rendered as literal text below the hero until
+# somebody happened to look at it.
+#
+# INSTALLED BY:  git config core.hooksPath hooks
+# That is repo-local and not versioned, so it has to be run once per clone.
+# The hook itself is versioned, which is the half that matters.
+#
+# TO PUSH ANYWAY, when something is on fire and the check is wrong:
+#     git push --no-verify
+# Prefer fixing the page. The check has been wrong zero times so far and the
+# page has been broken once.
+
+repo_root=$(git rev-parse --show-toplevel)
+cd "$repo_root" || exit 1
+
+if [ ! -f check_pages.py ]; then
+    echo "pre-push: check_pages.py is missing, so nothing was checked." >&2
+    exit 0
+fi
+
+if ! command -v pandoc >/dev/null 2>&1; then
+    echo "pre-push: pandoc is not installed, so nothing was checked." >&2
+    echo "          Quarto ships one; otherwise: brew install pandoc" >&2
+    exit 0
+fi
+
+echo "pre-push: checking the pages"
+if ! python3 check_pages.py; then
+    echo >&2
+    echo "pre-push: push stopped. Fix the pages, or 'git push --no-verify'." >&2
+    exit 1
+fi
+
+exit 0
