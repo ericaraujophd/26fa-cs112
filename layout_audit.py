@@ -32,7 +32,7 @@ OUT = HERE / "audit"
 CHROME = "/opt/pw-browsers/chromium-1194/chrome-linux/chrome"
 
 # Real devices, roughly: small phone, large phone, tablet, laptop, desktop.
-WIDTHS = [360, 414, 768, 1024, 1280, 1600]
+WIDTHS = [360, 414, 540, 768, 900, 1024, 1180, 1280, 1440, 1600]
 SIZES = ["small", "medium", "large"]
 
 # Elements that are meant to sit on one line. If one of these wraps, the page
@@ -73,8 +73,12 @@ body {
   color: #212529;
   line-height: 1.5;
 }
-/* Quarto's content column, which is what the page actually sits in. */
-main { max-width: 1400px; margin: 0 auto; }
+/* Quarto's content column, which is what the page actually sits in and is NOT
+   the width of the window. On a wide screen the sidebar takes roughly 300px,
+   and below Quarto's lg breakpoint it collapses. Measuring against the window
+   is how a 3 + 1 week strip got missed: the harness had more room than the
+   real page does. */
+main { margin: 0 auto; width: var(--content-width); }
 .btn {
   display: inline-block;
   padding: .375rem .75rem;
@@ -115,6 +119,25 @@ window.__audit = function () {
     if (over > 1.5) report.spills.push({ el: label(el), by: Math.round(over) });
   });
 
+  // How many items sit on the first row of each grid, and how the rest fall.
+  // A four-item strip that lands 3 + 1 is not broken by any measurement above,
+  // it just looks wrong, which is the whole reason this check exists.
+  report.grids = [];
+  [['.week-strip', 4], ['.tw-cols', 3]].forEach(function (pair) {
+    var g = document.querySelector(pair[0]);
+    if (!g) return;
+    var kids = Array.prototype.slice.call(g.children);
+    if (!kids.length) return;
+    var rows = {};
+    kids.forEach(function (k) {
+      var top = Math.round(k.getBoundingClientRect().top);
+      rows[top] = (rows[top] || 0) + 1;
+    });
+    var shape = Object.keys(rows).sort(function (a, b) { return a - b; })
+                      .map(function (t) { return rows[t]; });
+    report.grids.push({ sel: pair[0], shape: shape.join('+'), items: kids.length });
+  });
+
   // A one-line element that is now taller than one line of its own text.
   %ONE_LINERS%.forEach(function (sel) {
     document.querySelectorAll(sel).forEach(function (el) {
@@ -142,10 +165,18 @@ def build_page():
     return html, custom
 
 
-def harness(body, custom, size):
+def content_width(viewport):
+    """What the page actually gets, once Quarto's sidebar has taken its share."""
+    if viewport >= 992:
+        return min(viewport - 300, 1100)      # sidebar, and Quarto's own cap
+    return viewport - 32                      # sidebar collapsed, page padding
+
+
+def harness(body, custom, size, width):
     probe = PROBE.replace("%ONE_LINERS%", json.dumps(ONE_LINERS))
     return (f'<!doctype html><html data-fontsize="{size}"><head>'
             f'<meta charset="utf-8">'
+            f'<style>:root {{ --content-width: {content_width(width)}px; }}</style>'
             f'<style>{custom}</style>'
             f'{HARNESS_HEAD}{probe}</head>'
             f'<body><main>{body}</main></body></html>')
@@ -177,23 +208,34 @@ def main():
     body, custom = build_page()
     rows = []
     for size in SIZES:
-        page = OUT / f"page-{size}.html"
-        page.write_text(harness(body, custom, size), encoding="utf-8")
         for width in WIDTHS:
+            page = OUT / f"page-{size}-{width}.html"
+            page.write_text(harness(body, custom, size, width), encoding="utf-8")
             r = measure(page, width)
             rows.append((size, width, r))
 
     worst = 0
-    print(f"{'text':<8}{'width':>6}  {'scroll':>6}  {'spills':>6}  wrapped")
-    print("-" * 78)
+    print(f"{'text':<8}{'window':>7}{'page':>6}  {'scroll':>6}  {'spills':>6}  "
+          f"{'wrapped':<12}grid shape")
+    print("-" * 96)
     for size, width, r in rows:
         if "error" in r:
             print(f"{size:<8}{width:>6}  ERROR: {r['error']}")
             continue
         wrapped = r["wrapped"]
         worst = max(worst, len(wrapped) + len(r["spills"]) + (r["overflowX"] > 0))
+        shapes = " ".join(f"{g['sel'].lstrip('.')}={g['shape']}"
+                          for g in r.get("grids", []))
+        # A shape whose first row is not repeated is a widow: 3+1, 2+1, 4+2.
+        ragged = [g for g in r.get("grids", [])
+                  if len(set(g["shape"].split("+"))) > 1]
+        flag = "  RAGGED" if ragged else ""
         summary = ", ".join(sorted({w["el"].split(' "')[0] for w in wrapped})) or "-"
-        print(f"{size:<8}{width:>6}  {r['overflowX']:>6}  {len(r['spills']):>6}  {summary}")
+        print(f"{size:<8}{width:>7}{content_width(width):>6}  "
+              f"{r['overflowX']:>6}  {len(r['spills']):>6}  "
+              f"{summary:<12}{shapes}{flag}")
+        if ragged:
+            worst += 1
 
     print()
     print("DETAIL, elements sticking out of their container")
