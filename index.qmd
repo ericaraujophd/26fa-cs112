@@ -89,14 +89,13 @@ document.addEventListener('DOMContentLoaded', function () {
    the only block with two entries rather than a column of its own. */
 .week-strip {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  /* Four across when there is room, then two, then one, and the minimum is in
+     rem so a larger text size drops a column before anything wraps. */
+  grid-template-columns: repeat(auto-fit, minmax(min(11rem, 100%), 1fr));
   gap: .7rem;
   margin-bottom: 1.5rem;
   align-items: stretch;
 }
-/* Two across on a tablet, one on a phone, always in weekday order. */
-@media (max-width: 860px) { .week-strip { grid-template-columns: 1fr 1fr; } }
-@media (max-width: 520px) { .week-strip { grid-template-columns: 1fr; } }
 
 .day-card {
   background: var(--bs-body-bg);
@@ -174,10 +173,16 @@ document.addEventListener('DOMContentLoaded', function () {
 /* ── Bottom row ────────────────────────────────────────────── */
 .bottom-row {
   display: grid;
-  grid-template-columns: 220px 1fr;
+  /* max-content, not a pixel width. The card holds an email address, and at
+     the large text size a fixed 220px column made it wrap mid-address. Sizing
+     from the content means the column grows with the text instead. */
+  grid-template-columns: max-content 1fr;
   gap: .85rem;
 }
-@media (max-width: 640px) { .bottom-row { grid-template-columns: 1fr; } }
+.bottom-row > * { min-width: 0; }
+/* Stacked early enough that the widest text size still has room side by side
+   before it gets there. */
+@media (max-width: 820px) { .bottom-row { grid-template-columns: 1fr; } }
 
 /* ── Instructor card ───────────────────────────────────────── */
 .instructor-card {
@@ -214,6 +219,7 @@ document.addEventListener('DOMContentLoaded', function () {
   font-size: .82rem;
   color: var(--bs-secondary-color);
   margin-bottom: .2rem;
+  white-space: nowrap;
 }
 .instructor-btns { display: flex; flex-direction: column; gap: 6px; margin-top: 1rem; }
 /* Office hours and the three window buttons are generated separately and were
@@ -294,16 +300,27 @@ document.addEventListener('DOMContentLoaded', function () {
   font-size: .8rem; opacity: .7; margin-bottom: .9rem; font-style: italic;
 }
 .tw-cols {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;
+  display: grid;
+  /* auto-fit with a rem minimum: three columns when there is room, two when
+     the reader's text size grows, one on a phone. Because the minimum is in
+     rem it answers to the text size as well as to the window, which a fixed
+     three-column grid did not: at the large size on a tablet it was breaking
+     "Mon 28 September / booklet" across two lines. */
+  /* min(14rem, 100%) rather than a bare 14rem: on a small phone at the large
+     text size, 14rem is wider than the card itself, and a bare minimum makes
+     the column overflow instead of shrinking. */
+  grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr));
+  gap: 1rem;
 }
-@media (max-width: 640px) { .tw-cols { grid-template-columns: 1fr; } }
+.tw-col { min-width: 0; }
 .tw-col-label {
   font-size: .7rem; text-transform: uppercase; letter-spacing: .07em;
   opacity: .55; margin-bottom: .35rem;
 }
 .tw-col a { text-decoration: none; }
 .tw-col a:hover { text-decoration: underline; }
-.tw-line { font-size: .875rem; margin-bottom: .2rem; }
+/* A date and its links are one line or nothing. */
+.tw-line { font-size: .875rem; margin-bottom: .2rem; white-space: nowrap; }
 .tw-day { display: inline-block; min-width: 2.6rem; opacity: .65; }
 .tw-sep { opacity: .35; margin: 0 .35rem; }
 .tw-none { font-size: .85rem; opacity: .45; }
