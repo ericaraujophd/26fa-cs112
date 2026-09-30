@@ -42,6 +42,18 @@ rather than a 404. Everything is checked on disk at build time:
     website/content/assignments/aNN.qmd the assignment page, one or two a week
     website/outlines/CS112-outline-YYYY-MM-DD.pdf   the outline, per meeting
 
+NO CODE FENCES IN THE GENERATED BLOCKS
+--------------------------------------
+index.qmd is one long ``` ```{=html} ``` region running from near the top of the
+file to the bottom. A generated block that opens its own fence closes that
+region early and leaves a stray fence behind, and everything after it renders as
+literal text. That is exactly what happened on 2026-09-30, and the live site was
+broken until it was found.
+
+So these blocks emit raw HTML and nothing else. Inside the raw region on
+index.qmd that is already correct, and on checkins.qmd, where the markers sit in
+ordinary markdown, Quarto passes block-level HTML through untouched.
+
 MARKERS
 -------
 The block replaces whatever sits between these two lines in index.qmd, so the
@@ -72,6 +84,7 @@ START_MARKER = "<!-- THISWEEK:START -->"
 END_MARKER = "<!-- THISWEEK:END -->"
 
 CHECKIN_CONFIG = HERE / "checkin-windows.yml"
+CHECKINS_PAGE = HERE / "content" / "checkins.qmd"
 CHECKIN_START = "<!-- CHECKIN:START -->"
 CHECKIN_END = "<!-- CHECKIN:END -->"
 
@@ -202,8 +215,9 @@ def checkin_windows():
 
 CHECKIN_SCRIPT = """
 <script>
-// The booking button, chosen from the visitor's clock. Which window is open is
-// a fact about today, so it is decided here rather than baked in at build time.
+// One button per check-in window, each showing its own state, worked out in the
+// browser from the visitor's clock. Nothing here is decided at build time, so
+// the row stops being right only when checkin-windows.yml is wrong.
 (function () {
   var WINDOWS = %s;
 
@@ -214,47 +228,39 @@ CHECKIN_SCRIPT = """
            String(d.getDate()).padStart(2, '0');
   }
 
+  var LIVE = 'background:#6E1C2E;color:#fff;border-color:#6E1C2E;';
+  var MUTED = 'opacity:.55;cursor:default;';
+
+  function button(w, today, fallback) {
+    // Open, and the link exists. The only one a student can act on.
+    if (w.opens <= today && today <= w.closes && w.url) {
+      return '<a href="' + w.url + '" target="_blank" rel="noopener" ' +
+             'class="btn btn-sm" style="' + LIVE + '" ' +
+             'title="Assessed against ' + w.referenceLabel +
+             '. Closes ' + w.closesLabel + '.">' +
+             'Book Window ' + w.n + '</a>';
+    }
+
+    // Everything else is shown anyway, greyed, so a student can see the shape
+    // of the semester rather than wondering what happened to the other windows.
+    var label;
+    if (today > w.closes)        label = 'Window ' + w.n + ' closed';
+    else if (today < w.opens)    label = 'Window ' + w.n + ' opens ' + w.opensLabel;
+    else                         label = 'Window ' + w.n + ' link coming';
+
+    return '<a href="' + fallback + '" class="btn btn-sm btn-outline-secondary" ' +
+           'style="' + MUTED + '" title="Assessed against ' + w.referenceLabel +
+           '.">' + label + '</a>';
+  }
+
   function render() {
     var host = document.getElementById('checkin-book');
     if (!host) return;
     var today = todayISO();
-
-    // The window currently open. Windows overlap, since an earlier one stays
-    // bookable, so the LAST one that has opened is the one to offer.
-    var open = null;
-    for (var i = 0; i < WINDOWS.length; i++) {
-      if (WINDOWS[i].opens <= today && today <= WINDOWS[i].closes) {
-        open = WINDOWS[i];
-      }
-    }
-
-    // Nothing open: either the semester has not started or it is over.
-    if (!open) {
-      var next = null;
-      for (var j = 0; j < WINDOWS.length; j++) {
-        if (WINDOWS[j].opens > today) { next = WINDOWS[j]; break; }
-      }
-      host.innerHTML = next
-        ? '<a href="content/checkins.html" class="btn btn-sm btn-outline-secondary">' +
-          'Check-in booking opens ' + next.opensLabel + '</a>'
-        : '<a href="content/checkins.html" class="btn btn-sm btn-outline-secondary">' +
-          'Check-in bookings are closed</a>';
-      return;
-    }
-
-    if (open.url) {
-      host.innerHTML =
-        '<a href="' + open.url + '" target="_blank" rel="noopener" ' +
-        'class="btn btn-sm" style="background:#6E1C2E;color:#fff;border-color:#6E1C2E;" ' +
-        'title="Window ' + open.n + ' is assessed against ' + open.referenceLabel +
-        '. Bookings close ' + open.closesLabel + '.">' +
-        'Book your Window ' + open.n + ' check-in</a>';
-    } else {
-      host.innerHTML =
-        '<a href="content/checkins.html" class="btn btn-sm btn-outline-secondary" ' +
-        'title="The Window ' + open.n + ' link is not published yet.">' +
-        'Window ' + open.n + ' check-in, link coming</a>';
-    }
+    var fallback = host.getAttribute('data-checkins-href') || 'content/checkins.html';
+    host.innerHTML = WINDOWS.map(function (w) {
+      return button(w, today, fallback);
+    }).join(' ');
   }
 
   if (document.readyState === 'loading') {
@@ -267,18 +273,21 @@ CHECKIN_SCRIPT = """
 """
 
 
-def checkin_block(windows):
+def checkin_block(windows, checkins_href):
+    """The row of buttons, one per window.
+
+    ``checkins_href`` is where a button with nothing to link to should send a
+    student, and it differs per page, so it is written into the span rather
+    than hard-coded in the script. Never "#": that is how the front page ended
+    up with a button that silently did nothing.
+    """
     payload = json.dumps(windows, separators=(",", ":"))
     return "\n".join([
         CHECKIN_START,
-        "```{=html}",
-        # The fallback is a real link, not "#". Without JavaScript a student
-        # still reaches the page that explains booking.
-        '<span id="checkin-book">'
-        '<a href="content/checkins.html" class="btn btn-sm btn-outline-secondary">'
-        'Book a check-in</a></span>',
+        f'<span id="checkin-book" data-checkins-href="{checkins_href}">'
+        f'<a href="{checkins_href}" class="btn btn-sm btn-outline-secondary">'
+        f'Book a check-in</a></span>',
         (CHECKIN_SCRIPT % payload).strip(),
-        "```",
         CHECKIN_END,
     ])
 
@@ -433,7 +442,6 @@ def block(weeks):
     payload = json.dumps(weeks, separators=(",", ":"))
     return "\n".join([
         START_MARKER,
-        "```{=html}",
         CSS.strip(),
         # The container carries a plain-text fallback, so a visitor with no
         # JavaScript is pointed at the schedule rather than shown an empty box.
@@ -442,7 +450,6 @@ def block(weeks):
         '<a href="content/schedule.html">schedule</a>.</div>',
         '</div>',
         (SCRIPT % payload).strip(),
-        "```",
         END_MARKER,
     ])
 
@@ -469,16 +476,33 @@ def main():
         text, flags=re.S)
 
     windows = checkin_windows()
-    if windows and CHECKIN_START in new and CHECKIN_END in new:
-        new = re.sub(
-            re.escape(CHECKIN_START) + r".*?" + re.escape(CHECKIN_END),
-            lambda _: checkin_block(windows),
-            new, flags=re.S)
-    elif windows:
-        print(f"  note: no {CHECKIN_START} / {CHECKIN_END} pair, "
-              f"the booking button was not written")
 
-    INDEX.write_text(new, encoding="utf-8")
+    # The same row of buttons goes on both pages, so there is one place to edit
+    # when a window's link is created. Each page needs its own fallback link,
+    # because "the check-ins page" is a different path from each of them.
+    targets = [
+        (INDEX, new, "content/checkins.html"),
+        (CHECKINS_PAGE, None, "checkins.html#how-to-book"),
+    ]
+    for path, pending, href in targets:
+        if path is INDEX:
+            body = pending
+        elif path.exists():
+            body = path.read_text(encoding="utf-8")
+        else:
+            continue
+
+        if windows and CHECKIN_START in body and CHECKIN_END in body:
+            body = re.sub(
+                re.escape(CHECKIN_START) + r".*?" + re.escape(CHECKIN_END),
+                lambda _: checkin_block(windows, href),
+                body, flags=re.S)
+            print(f"  booking buttons written into {path.name}")
+        elif windows and path is not INDEX:
+            print(f"  note: {path.name} has no {CHECKIN_START} / "
+                  f"{CHECKIN_END} pair, so it was left alone")
+
+        path.write_text(body, encoding="utf-8")
 
     today = date.today().isoformat()
     print(f"wrote the this-week block into {INDEX.name}")
