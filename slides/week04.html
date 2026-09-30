@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Week 04: Vectors: Dynamic Arrays · CS112</title>
+  <title>Week 04: PyList: Dynamic Arrays · CS112</title>
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reset.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.css">
@@ -80,7 +80,7 @@
       <p class="title-course">Introduction to Data Structures</p>
       <div class="title-rule"></div>
       <p class="title-week">Week 04</p>
-      <p class="title-topic">Vectors: Dynamic Arrays</p>
+      <p class="title-topic">PyList: Dynamic Arrays</p>
       <p class="title-author">Eric Ara&uacute;jo</p>
       <p class="title-meta">Calvin University &middot; Fall 2026</p>
     </div>
@@ -164,7 +164,7 @@ arr = nullptr;                 // don't keep the address
     </div>
   </div>
   <div class="mem-diagram" style="max-width:620px">
-    <div class="mem-row"><span class="mem-lbl">stack</span><span class="mem-val">Vec v</span><span class="mem-addr">myArray = 0x5f2a10</span></div>
+    <div class="mem-row"><span class="mem-lbl">stack</span><span class="mem-val">PyList v</span><span class="mem-addr">myArray = 0x5f2a10</span></div>
     <div class="mem-row"><span class="mem-lbl">heap</span><span class="mem-addr">0x5f2a10</span><span class="mem-val">[ 3 | 7 | 11 | _ | _ ]</span></div>
   </div>
   <div class="callout">The object lives on the stack; the elements live on the heap. That split is the whole design.</div>
@@ -173,11 +173,11 @@ arr = nullptr;                 // don't keep the address
 <section>
   <h2>A Dynamic Array</h2>
   <pre style="font-size:0.6em"><code class="language-cpp" data-trim>
-class Vec {
+class PyList {
  public:
-  Vec();
-  Vec(const Vec &amp;original);      // copy constructor
-  ~Vec();                        // destructor
+  PyList();
+  PyList(const PyList &amp;original);      // copy constructor
+  ~PyList();                        // destructor
   unsigned getSize() const;
   void     append(const Item &amp;it);
   Item&amp;    operator[](unsigned i);
@@ -193,7 +193,7 @@ class Vec {
 <section data-auto-animate>
   <h2>Appending When There's Room</h2>
   <pre data-id="grow"><code class="language-cpp" data-trim>
-void Vec::append(const Item &amp;it) {
+void PyList::append(const Item &amp;it) {
     myArray[mySize] = it;
     ++mySize;
 }
@@ -208,7 +208,7 @@ void Vec::append(const Item &amp;it) {
 <section data-auto-animate>
   <h2>Appending When It's Full</h2>
   <pre data-id="grow"><code class="language-cpp" data-trim>
-void Vec::append(const Item &amp;it) {
+void PyList::append(const Item &amp;it) {
   if (mySize == myCapacity) {
     unsigned cap = (myCapacity == 0) ? 1 : myCapacity*2;
     Item *bigger = new Item[cap];
@@ -246,7 +246,7 @@ void Vec::append(const Item &amp;it) {
 <section>
   <h2>Now You Need a Destructor</h2>
   <pre><code class="language-cpp" data-trim>
-Vec::~Vec() {
+PyList::~PyList() {
     delete [] myArray;
     myArray = nullptr;
 }
@@ -254,7 +254,7 @@ Vec::~Vec() {
   <p style="font-size:0.68em">C++ writes a destructor for you, but it only destroys the <em>members</em>. It destroys the pointer, not what the pointer points at.</p>
   <div class="callout callout-maroon">
     <strong>The rule:</strong> if your class calls <code>new</code>, your class must define a destructor.
-    Otherwise every <code>Vec</code> that dies leaves its heap block behind.
+    Otherwise every <code>PyList</code> that dies leaves its heap block behind.
   </div>
 </section>
 
@@ -278,11 +278,11 @@ Vec::~Vec() {
 <section>
   <h2>The Copy That Bites</h2>
   <pre style="font-size:0.62em"><code class="language-cpp" data-trim>
-Vec a;
+PyList a;
 a.append(3);
 a.append(7);
 
-Vec b = a;       // what exactly got copied?
+PyList b = a;          // what exactly got copied?
   </code></pre>
   <div class="mem-diagram" style="max-width:620px">
     <div class="mem-row"><span class="mem-lbl">a.myArray</span><span class="mem-val">0x5f2a10</span><span class="mem-addr">→ [ 3 | 7 ]</span></div>
@@ -311,7 +311,7 @@ Vec b = a;       // what exactly got copied?
 <section>
   <h2>Deep Copy: the Copy Constructor</h2>
   <pre><code class="language-cpp" data-trim>
-Vec::Vec(const Vec &amp;orig) {
+PyList::PyList(const PyList &amp;orig) {
   mySize     = orig.mySize;
   myCapacity = orig.myCapacity;
   myArray    = new Item[myCapacity];   // our OWN block
@@ -326,13 +326,13 @@ Vec::Vec(const Vec &amp;orig) {
 <section>
   <h2>Three Times It Copies</h2>
   <pre style="font-size:0.58em"><code class="language-cpp" data-trim>
-Vec b = a;              // 1. explicit copy
+PyList b = a;                 // 1. explicit copy
 
-void show(Vec v);       // 2. pass-by-value
+void show(PyList v);          // 2. pass-by-value
 show(a);
 
-Vec makeVec() {         // 3. return by value
-    Vec local;
+PyList makeList() {           // 3. return by value
+    PyList local;
     return local;
 }
   </code></pre>
@@ -362,7 +362,7 @@ Vec makeVec() {         // 3. return by value
 <section>
   <h2>Returning a Reference: <code>operator[]</code></h2>
   <pre><code class="language-cpp" data-trim>
-Item&amp; Vec::operator[](unsigned i) {
+Item&amp; PyList::operator[](unsigned i) {
     return myArray[i];         // a reference, not a copy
 }
 

@@ -103,14 +103,14 @@
 <section>
   <h2>One Class, One Type</h2>
   <pre style="font-size:0.62em"><code class="language-cpp" data-trim>
-typedef double Item;      // in Vec.h
+typedef double Item;      // in PyList.h
 
-Vec scores;               // holds doubles ✓
-Vec names;                // also doubles ✗
+PyList scores;            // holds doubles ✓
+PyList names;             // also doubles ✗
   </code></pre>
   <div class="callout callout-maroon">
-    Change the <code>typedef</code> and <em>every</em> <code>Vec</code> in the program changes with it.
-    Want a <code>Vec</code> of doubles and a <code>Vec</code> of strings in one program? You'd need two copies
+    Change the <code>typedef</code> and <em>every</em> <code>PyList</code> in the program changes with it.
+    Want a <code>PyList</code> of doubles and a <code>PyList</code> of strings in one program? You'd need two copies
     of the class with different names.
   </div>
   <div class="callout">Python never had this problem, a list holds anything. C++ needs types at compile time, so it needs another way.</div>
@@ -120,7 +120,7 @@ Vec names;                // also doubles ✗
   <h2>A Class That Takes a Type</h2>
   <pre><code class="language-cpp" data-trim>
 template &lt;typename Item&gt;
-class Vec {
+class PyList {
  public:
   void append(const Item &amp;it);
  private:
@@ -128,10 +128,10 @@ class Vec {
   unsigned  mySize;
 };
 
-Vec&lt;double&gt;  scores;      // a Vec of doubles
-Vec&lt;string&gt;  names;       // a Vec of strings
+PyList&lt;double&gt;  scores;   // a PyList of doubles
+PyList&lt;string&gt;  names;    // a PyList of strings
   </code></pre>
-  <div class="callout">You instantiate a <em>class</em> to get an object. You instantiate a <em>class template</em> to get a class. <code>Vec&lt;double&gt;</code> and <code>Vec&lt;string&gt;</code> are two different, separately compiled classes.</div>
+  <div class="callout">You instantiate a <em>class</em> to get an object. You instantiate a <em>class template</em> to get a class. <code>PyList&lt;double&gt;</code> and <code>PyList&lt;string&gt;</code> are two different, separately compiled classes.</div>
 </section>
 
 <section>
@@ -140,12 +140,12 @@ Vec&lt;string&gt;  names;       // a Vec of strings
     <li>Build and debug it first with <code>typedef double Item;</code>: get it working</li>
     <li>Replace the typedef with <code>template &lt;typename Item&gt;</code> above the class</li>
     <li>In the <code>.cpp</code>, put that same line above <strong>every</strong> method</li>
-    <li>Change each <code>Vec::</code> to <code>Vec&lt;Item&gt;::</code></li>
+    <li>Change each <code>PyList::</code> to <code>PyList&lt;Item&gt;::</code></li>
     <li>Move the implementation into the header, then <code>#include</code> it</li>
   </ul>
   <pre style="font-size:0.5em"><code class="language-cpp" data-trim>
 template &lt;typename Item&gt;
-void Vec&lt;Item&gt;::append(const Item &amp;it) { ... }
+void PyList&lt;Item&gt;::append(const Item &amp;it) { ... }
   </code></pre>
   <div class="callout">Debug once as a concrete class, then generalise. Templated compiler errors are famously unfriendly, don't meet them and your own bugs at the same time.</div>
 </section>
@@ -163,7 +163,7 @@ void Vec&lt;Item&gt;::append(const Item &amp;it) { ... }
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>B.</strong> <code>Vec&lt;string&gt;</code> doesn't exist until someone writes it. The compiler generates the class on demand, which means the full body must be visible wherever it's used: so it lives in the header.
+    <strong>B.</strong> <code>PyList&lt;string&gt;</code> doesn't exist until someone writes it. The compiler generates the class on demand, which means the full body must be visible wherever it's used: so it lives in the header.
   </div>
 </section>
 
@@ -332,7 +332,7 @@ delete old
   <h2>Week 05 Recap</h2>
   <ul style="font-size:0.72em; color:rgba(255,255,255,0.92)">
     <li>A <strong>class template</strong> takes a type the way a function takes an argument</li>
-    <li><code style='color:var(--gold)'>Vec&lt;int&gt;</code> and <code style='color:var(--gold)'>Vec&lt;string&gt;</code> are two separately generated classes</li>
+    <li><code style='color:var(--gold)'>PyList&lt;int&gt;</code> and <code style='color:var(--gold)'>PyList&lt;string&gt;</code> are two separately generated classes</li>
     <li>Template implementations live in the <strong>header</strong></li>
     <li>Every STL container is walked with <code style='color:var(--gold)'>begin()</code> and <code style='color:var(--gold)'>end()</code></li>
     <li>Indexing is constant; append is <strong>amortized constant</strong>; inserting at the front is linear</li>
