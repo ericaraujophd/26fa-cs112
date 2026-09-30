@@ -71,6 +71,10 @@ INDEX = HERE / "index.qmd"
 START_MARKER = "<!-- THISWEEK:START -->"
 END_MARKER = "<!-- THISWEEK:END -->"
 
+CHECKIN_CONFIG = HERE / "checkin-windows.yml"
+CHECKIN_START = "<!-- CHECKIN:START -->"
+CHECKIN_END = "<!-- CHECKIN:END -->"
+
 MONTHS = ["January", "February", "March", "April", "May", "June", "July",
           "August", "September", "October", "November", "December"]
 
@@ -169,6 +173,114 @@ def collect():
         out.append(entry)
 
     return out
+
+
+def checkin_windows():
+    """The booking windows, as the browser will need them.
+
+    A window with no URL yet is kept rather than dropped. A button that
+    disappears tells a student nothing, and "#" as a link is exactly how the
+    front page ended up with a dead button.
+    """
+    if not CHECKIN_CONFIG.exists():
+        return []
+    data = yaml.safe_load(CHECKIN_CONFIG.read_text(encoding="utf-8")) or {}
+    out = []
+    for w in data.get("windows") or []:
+        out.append({
+            "n": int(w["n"]),
+            "opens": iso(w["opens"]),
+            "reference": iso(w["reference"]),
+            "closes": iso(w["closes"]),
+            "opensLabel": pretty(w["opens"]),
+            "referenceLabel": pretty(w["reference"]),
+            "closesLabel": pretty(w["closes"]),
+            "url": w.get("url") or None,
+        })
+    return out
+
+
+CHECKIN_SCRIPT = """
+<script>
+// The booking button, chosen from the visitor's clock. Which window is open is
+// a fact about today, so it is decided here rather than baked in at build time.
+(function () {
+  var WINDOWS = %s;
+
+  function todayISO() {
+    var d = new Date();
+    return d.getFullYear() + '-' +
+           String(d.getMonth() + 1).padStart(2, '0') + '-' +
+           String(d.getDate()).padStart(2, '0');
+  }
+
+  function render() {
+    var host = document.getElementById('checkin-book');
+    if (!host) return;
+    var today = todayISO();
+
+    // The window currently open. Windows overlap, since an earlier one stays
+    // bookable, so the LAST one that has opened is the one to offer.
+    var open = null;
+    for (var i = 0; i < WINDOWS.length; i++) {
+      if (WINDOWS[i].opens <= today && today <= WINDOWS[i].closes) {
+        open = WINDOWS[i];
+      }
+    }
+
+    // Nothing open: either the semester has not started or it is over.
+    if (!open) {
+      var next = null;
+      for (var j = 0; j < WINDOWS.length; j++) {
+        if (WINDOWS[j].opens > today) { next = WINDOWS[j]; break; }
+      }
+      host.innerHTML = next
+        ? '<a href="content/checkins.html" class="btn btn-sm btn-outline-secondary">' +
+          'Check-in booking opens ' + next.opensLabel + '</a>'
+        : '<a href="content/checkins.html" class="btn btn-sm btn-outline-secondary">' +
+          'Check-in bookings are closed</a>';
+      return;
+    }
+
+    if (open.url) {
+      host.innerHTML =
+        '<a href="' + open.url + '" target="_blank" rel="noopener" ' +
+        'class="btn btn-sm" style="background:#6E1C2E;color:#fff;border-color:#6E1C2E;" ' +
+        'title="Window ' + open.n + ' is assessed against ' + open.referenceLabel +
+        '. Bookings close ' + open.closesLabel + '.">' +
+        'Book your Window ' + open.n + ' check-in</a>';
+    } else {
+      host.innerHTML =
+        '<a href="content/checkins.html" class="btn btn-sm btn-outline-secondary" ' +
+        'title="The Window ' + open.n + ' link is not published yet.">' +
+        'Window ' + open.n + ' check-in, link coming</a>';
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', render);
+  } else {
+    render();
+  }
+})();
+</script>
+"""
+
+
+def checkin_block(windows):
+    payload = json.dumps(windows, separators=(",", ":"))
+    return "\n".join([
+        CHECKIN_START,
+        "```{=html}",
+        # The fallback is a real link, not "#". Without JavaScript a student
+        # still reaches the page that explains booking.
+        '<span id="checkin-book">'
+        '<a href="content/checkins.html" class="btn btn-sm btn-outline-secondary">'
+        'Book a check-in</a></span>',
+        (CHECKIN_SCRIPT % payload).strip(),
+        "```",
+        CHECKIN_END,
+    ])
 
 
 CSS = """
@@ -355,10 +467,26 @@ def main():
         re.escape(START_MARKER) + r".*?" + re.escape(END_MARKER),
         lambda _: block(weeks),
         text, flags=re.S)
+
+    windows = checkin_windows()
+    if windows and CHECKIN_START in new and CHECKIN_END in new:
+        new = re.sub(
+            re.escape(CHECKIN_START) + r".*?" + re.escape(CHECKIN_END),
+            lambda _: checkin_block(windows),
+            new, flags=re.S)
+    elif windows:
+        print(f"  note: no {CHECKIN_START} / {CHECKIN_END} pair, "
+              f"the booking button was not written")
+
     INDEX.write_text(new, encoding="utf-8")
 
     today = date.today().isoformat()
     print(f"wrote the this-week block into {INDEX.name}")
+    for w in windows:
+        state = ("open" if w["opens"] <= today <= w["closes"]
+                 else "not yet" if w["opens"] > today else "closed")
+        print(f"  check-in window {w['n']}  {state:<8}"
+              f"{'link published' if w['url'] else 'NO LINK YET'}")
     print(f"  {len(weeks)} weeks embedded")
     for w in weeks:
         here = " <- today" if w["start"] <= today <= w["end"] else ""

@@ -426,7 +426,74 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="instructor-detail">🏢 Office NH 293</div>
     <div class="instructor-btns">
       <a href="https://outlook.office.com/book/AdvisingDays12@calvincollege.onmicrosoft.com/s/NI9r43tRjUKJ5UjiSmktgg2" target="_blank" rel="noopener" class="btn btn-sm" style="background:#6E1C2E;color:#fff;border-color:#6E1C2E;">📅 Book Office Hours</a>
-      <a href="#" class="btn btn-sm btn-outline-secondary">📝 Book Check-in Exam</a>
+<!-- CHECKIN:START -->
+```{=html}
+<span id="checkin-book"><a href="content/checkins.html" class="btn btn-sm btn-outline-secondary">Book a check-in</a></span>
+<script>
+// The booking button, chosen from the visitor's clock. Which window is open is
+// a fact about today, so it is decided here rather than baked in at build time.
+(function () {
+  var WINDOWS = [{"n":1,"opens":"2026-09-29","reference":"2026-10-23","closes":"2026-12-09","opensLabel":"29 September","referenceLabel":"23 October","closesLabel":"9 December","url":"https://bookings.cloud.microsoft/book/AdvisingDays12@calvincollege.onmicrosoft.com/s/Tx-rOrayH0aWDoFY8HXavw2?ismsaljsauthenabled"},{"n":2,"opens":"2026-10-26","reference":"2026-11-20","closes":"2026-12-09","opensLabel":"26 October","referenceLabel":"20 November","closesLabel":"9 December","url":null},{"n":3,"opens":"2026-11-16","reference":"2026-12-02","closes":"2026-12-09","opensLabel":"16 November","referenceLabel":"2 December","closesLabel":"9 December","url":null}];
+
+  function todayISO() {
+    var d = new Date();
+    return d.getFullYear() + '-' +
+           String(d.getMonth() + 1).padStart(2, '0') + '-' +
+           String(d.getDate()).padStart(2, '0');
+  }
+
+  function render() {
+    var host = document.getElementById('checkin-book');
+    if (!host) return;
+    var today = todayISO();
+
+    // The window currently open. Windows overlap, since an earlier one stays
+    // bookable, so the LAST one that has opened is the one to offer.
+    var open = null;
+    for (var i = 0; i < WINDOWS.length; i++) {
+      if (WINDOWS[i].opens <= today && today <= WINDOWS[i].closes) {
+        open = WINDOWS[i];
+      }
+    }
+
+    // Nothing open: either the semester has not started or it is over.
+    if (!open) {
+      var next = null;
+      for (var j = 0; j < WINDOWS.length; j++) {
+        if (WINDOWS[j].opens > today) { next = WINDOWS[j]; break; }
+      }
+      host.innerHTML = next
+        ? '<a href="content/checkins.html" class="btn btn-sm btn-outline-secondary">' +
+          'Check-in booking opens ' + next.opensLabel + '</a>'
+        : '<a href="content/checkins.html" class="btn btn-sm btn-outline-secondary">' +
+          'Check-in bookings are closed</a>';
+      return;
+    }
+
+    if (open.url) {
+      host.innerHTML =
+        '<a href="' + open.url + '" target="_blank" rel="noopener" ' +
+        'class="btn btn-sm" style="background:#6E1C2E;color:#fff;border-color:#6E1C2E;" ' +
+        'title="Window ' + open.n + ' is assessed against ' + open.referenceLabel +
+        '. Bookings close ' + open.closesLabel + '.">' +
+        'Book your Window ' + open.n + ' check-in</a>';
+    } else {
+      host.innerHTML =
+        '<a href="content/checkins.html" class="btn btn-sm btn-outline-secondary" ' +
+        'title="The Window ' + open.n + ' link is not published yet.">' +
+        'Window ' + open.n + ' check-in, link coming</a>';
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', render);
+  } else {
+    render();
+  }
+})();
+</script>
+```
+<!-- CHECKIN:END -->
     </div>
   </div>
   <div class="slo-card">
