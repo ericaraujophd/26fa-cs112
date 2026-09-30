@@ -478,6 +478,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="instructor-name">Prof. Eric Araújo</div>
     <div class="instructor-detail">📧 eric.araujo@calvin.edu</div>
     <div class="instructor-detail">🏢 Office NH 293</div>
+    <div class="instructor-detail">🌐 <a href="https://ericaraujo.com" target="_blank" rel="noopener">ericaraujo.com</a></div>
     <div class="instructor-btns">
       <a href="https://outlook.office.com/book/AdvisingDays12@calvincollege.onmicrosoft.com/s/NI9r43tRjUKJ5UjiSmktgg2" target="_blank" rel="noopener" class="btn btn-sm" style="background:#6E1C2E;color:#fff;border-color:#6E1C2E;">📅 Book Office Hours</a>
 <!-- CHECKIN:START -->
