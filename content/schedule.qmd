@@ -168,6 +168,12 @@ learning objectives are there too, folded away until you want them.
         <div class="res-label">🖥️ Slides</div>
         <div class="res-val"><a href="../slides/week00.html?fs=1" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week00.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week00-bw.pdf">print version</a></div>
 
+        <!-- One outline per class meeting. "read" is the plain
+             version, pages front to back; "booklet" is the same
+             pages imposed onto one sheet to be folded once. -->
+        <div class="res-label">🗒️ Outlines</div>
+        <div class="res-val">Mon 31 Aug <a href="../outlines/CS112-outline-2026-08-31.pdf">read</a><span class="res-sep">·</span><a href="../outlines/CS112-outline-2026-08-31-booklet.pdf">booklet</a><span class="res-sep">·</span>Wed 2 Sep <a href="../outlines/CS112-outline-2026-09-02.pdf">read</a><span class="res-sep">·</span><a href="../outlines/CS112-outline-2026-09-02-booklet.pdf">booklet</a><span class="res-sep">·</span>Fri 4 Sep <a href="../outlines/CS112-outline-2026-09-04.pdf">read</a><span class="res-sep">·</span><a href="../outlines/CS112-outline-2026-09-04-booklet.pdf">booklet</a> <em>Drafts, written after the fact.</em></div>
+
         <div class="res-label">🔗 Explore</div>
         <div class="res-val"><a href="https://integer.exposed/#0x0008" target="_blank" rel="noopener">Binary Exposed</a></div>
       </div>
@@ -225,6 +231,12 @@ learning objectives are there too, folded away until you want them.
 
         <div class="res-label">🖥️ Slides</div>
         <div class="res-val"><a href="../slides/week01.html?fs=1" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week01.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week01-bw.pdf">print version</a></div>
+
+        <!-- One outline per class meeting. "read" is the plain
+             version, pages front to back; "booklet" is the same
+             pages imposed onto one sheet to be folded once. -->
+        <div class="res-label">🗒️ Outlines</div>
+        <div class="res-val">Wed 9 Sep <a href="../outlines/CS112-outline-2026-09-09.pdf">read</a><span class="res-sep">·</span><a href="../outlines/CS112-outline-2026-09-09-booklet.pdf">booklet</a><span class="res-sep">·</span>Fri 11 Sep <a href="../outlines/CS112-outline-2026-09-11.pdf">read</a><span class="res-sep">·</span><a href="../outlines/CS112-outline-2026-09-11-booklet.pdf">booklet</a> <em>Drafts, written after the fact.</em></div>
       </div>
       <details class="slo-details">
         <summary class="slo-summary">Learning objectives <span class="slo-count">7</span></summary>
@@ -278,6 +290,12 @@ learning objectives are there too, folded away until you want them.
 
         <div class="res-label">🖥️ Slides</div>
         <div class="res-val"><a href="../slides/week02.html?fs=1" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week02.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week02-bw.pdf">print version</a></div>
+
+        <!-- One outline per class meeting. "read" is the plain
+             version, pages front to back; "booklet" is the same
+             pages imposed onto one sheet to be folded once. -->
+        <div class="res-label">🗒️ Outlines</div>
+        <div class="res-val">Mon 14 Sep <a href="../outlines/CS112-outline-2026-09-14.pdf">read</a><span class="res-sep">·</span><a href="../outlines/CS112-outline-2026-09-14-booklet.pdf">booklet</a><span class="res-sep">·</span>Wed 16 Sep <a href="../outlines/CS112-outline-2026-09-16.pdf">read</a><span class="res-sep">·</span><a href="../outlines/CS112-outline-2026-09-16-booklet.pdf">booklet</a><span class="res-sep">·</span>Fri 18 Sep <a href="../outlines/CS112-outline-2026-09-18.pdf">read</a><span class="res-sep">·</span><a href="../outlines/CS112-outline-2026-09-18-booklet.pdf">booklet</a> <em>Drafts, written after the fact.</em></div>
       </div>
       <details class="slo-details">
         <summary class="slo-summary">Learning objectives <span class="slo-count">5</span></summary>
@@ -329,6 +347,12 @@ learning objectives are there too, folded away until you want them.
 
         <div class="res-label">🖥️ Slides</div>
         <div class="res-val"><a href="../slides/week03.html?fs=1" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week03.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week03-bw.pdf">print version</a></div>
+
+        <!-- One outline per class meeting. "read" is the plain
+             version, pages front to back; "booklet" is the same
+             pages imposed onto one sheet to be folded once. -->
+        <div class="res-label">🗒️ Outlines</div>
+        <div class="res-val">Mon 21 Sep <a href="../outlines/CS112-outline-2026-09-21.pdf">read</a><span class="res-sep">·</span><a href="../outlines/CS112-outline-2026-09-21-booklet.pdf">booklet</a><span class="res-sep">·</span>Wed 23 Sep <a href="../outlines/CS112-outline-2026-09-23.pdf">read</a><span class="res-sep">·</span><a href="../outlines/CS112-outline-2026-09-23-booklet.pdf">booklet</a><span class="res-sep">·</span>Fri 25 Sep <a href="../outlines/CS112-outline-2026-09-25.pdf">read</a><span class="res-sep">·</span><a href="../outlines/CS112-outline-2026-09-25-booklet.pdf">booklet</a> <em>Drafts, written after the fact.</em></div>
 
         <div class="res-label">📌 Reference</div>
         <div class="res-val"><a href="cheatsheets/operator-overloading.html">Operator overloading cheatsheet</a>, every operator, in the style we write in class</div>
