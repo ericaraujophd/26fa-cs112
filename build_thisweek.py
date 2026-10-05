@@ -346,11 +346,38 @@ CSS = """
   display: inline-block; background: #fdf8ec; border: 1px solid #C49A2C;
   border-radius: .3rem; padding: .15rem .5rem; font-size: .875rem;
 }
-/* The site has a dark mode; these are the only colours that need a say. */
-@media (prefers-color-scheme: dark) {
-  .tw-card { background: transparent; border-color: #444; }
-  .tw-assign { background: rgba(196,154,44,.12); }
+/* ── Dark mode ───────────────────────────────────────────────
+   THE TRIGGER IS .quarto-dark, NOT prefers-color-scheme. This block used the
+   media query, which only fires when the READER'S SYSTEM is dark. The site's
+   dark mode is a toggle in the display panel, and Quarto signals it by putting
+   .quarto-dark on the body. On a light system with dark chosen, the media
+   query never matched: the card kept background #fff while the theme switched
+   the text to near-white, so the whole week block went invisible at a measured
+   1.05:1. Reported 2026-10-05.
+
+   Maroon goes gold on dark, which is what every other accent in custom.css
+   already does: #6E1C2E on the card below measures 1.28:1, #C49A2C measures
+   5.47:1 against the same surface.
+
+   The card keeps a surface of its own rather than going transparent. It is a
+   card; it should read as one in both themes.                            */
+.quarto-dark .tw-card {
+  background: #2a2a2a;
+  border-color: #444;
+  border-left-color: var(--calvin-gold, #C49A2C);
 }
+.quarto-dark .tw-week { color: var(--calvin-gold, #C49A2C); }
+/* The pill is a link, so custom.css paints it --calvin-gold. Over a 12% gold
+   tint on #2a2a2a that measures 4.26:1, just under the 4.5 AA floor, so the
+   pill gets an opaque surface and a lighter gold of its own: 7.72:1. The hover
+   rule is here because .quarto-dark a:hover is more specific than a bare class
+   pair and would otherwise drop the text to --calvin-gold-dark at 3.17:1. */
+.quarto-dark .tw-assign {
+  background: #3a3222;
+  border-color: var(--calvin-gold, #C49A2C);
+  color: #e8c76a;
+}
+.quarto-dark .tw-assign:hover { color: #f4dc9a; }
 </style>
 """
 
