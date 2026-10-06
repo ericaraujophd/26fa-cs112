@@ -65,15 +65,14 @@ thirty years, and it has been sitting in `<vector>` the entire time.
 ::: {.callout-note}
 **So why did you build one?**
 
-Because `vector` is not magic, and now you know it is not. You know that
+Because you now know what `vector` does. You know that
 `push_back` sometimes has to allocate a bigger array and copy everything across.
 You know why `size` and `capacity` are different numbers. You know that handing
 one to a function by value copies every element. You know what the destructor
 has to do.
 
 Someone who has only ever *used* `vector` knows none of that, and it shows the
-first time they write a loop that copies a big one on every iteration. This is
-the week you get to use the good one, and you get to use it with your eyes open.
+first time they write a loop that copies a big one on every iteration.
 :::
 
 The data is a real Formula 1 season: every driver's result at every Grand Prix
@@ -214,7 +213,7 @@ teams[1] = "Mercedes";             // subscript works on both sides
 You have written every one of these. `push_back` is `append`. `size()` is
 `getSize()`. `operator[]` is the one you had to write twice, once `const`.
 
-Two differences worth knowing:
+Two differences:
 
 - **`vector` has no bounds checking on `operator[]`.** `teams[99]` on a vector of
   two does not throw; it reads whatever is at that address. Your `Trace` threw a
@@ -239,8 +238,7 @@ teams.begin()          // points at teams[0]
 teams.end()            // points ONE PAST the last element
 ```
 
-`end()` is the strange one, and it is worth being precise about. It does not
-point at the last element. It points at the position *after* the last element,
+`end()` is the strange one. It does not point at the last element. It points at the position *after* the last element,
 somewhere you may never read from. It exists so that a range can be written as a
 pair, `[begin, end)`, and so that an empty container has `begin() == end()`
 without any special case.
@@ -353,8 +351,8 @@ answer and does the work over and over. Collect first; order once at the end.
 This is deliberately not the shortest way to write it. `std::set` would
 de-duplicate and sort in one move, and later in the course you will use it. The
 point of doing it this way now is that `find` and `sort` over a pair of
-iterators is the shape almost every STL algorithm has, and it is worth writing
-by hand once before you let a container do it for you.
+iterators is the shape almost every STL algorithm has. Write it by hand once
+before you let a container do it for you.
 :::
 
 ---
@@ -493,9 +491,9 @@ call, to do a job that only ever reads them. With the `&`, the function works on
 the caller's vector and nothing is copied at all.
 
 **The `const`.** It says the function will not change what it was given, and the
-compiler holds you to it. That is worth having for its own sake, you can call
-`collectAllTeams` and know your `results` came back untouched, but it also
-means a caller with a `const vector<Result>` can use your function at all.
+compiler holds you to it. You can call `collectAllTeams` and know your
+`results` came back untouched, and a caller holding a `const vector<Result>`
+can use your function at all, which without the `const` it could not.
 
 ::: {.callout-note}
 Two of the checks look for these signatures, and one of them fails if a

@@ -281,8 +281,8 @@ Three words, each doing a job:
   (`class` here means "this parameter is a type"; it does not mean `Item` has to
   be a class. `Trace<int>` is fine.)
 - `Item`, the name you chose for that parameter. You could call it anything.
-  `Item` is a good choice because it is exactly what the `typedef` was already
-  called in spirit, so most of the class does not have to change at all.
+  `Item` is a good choice because the `typedef` was already called `Sample`,
+  so most of the class does not have to change at all.
 
 Once the compiler has read that declaration, the name of the template is
 `Trace<Item>`.
@@ -299,8 +299,7 @@ it builds two classes from the blueprint, one with every `Item` replaced by
 of `speed` and `gear`. You wrote the class once. You get as many as you ask for.
 
 ::: {.callout-tip}
-**The rule the lecture gives, worth repeating because it is why this assignment
-is shaped the way it is:** build the container with a `typedef` and test it
+**The rule:** build the container with a `typedef` and test it
 thoroughly *first*, then convert it. Writing a template from scratch is where
 the syntax errors come from, you end up debugging the template machinery and
 the logic at the same time, and cannot tell which is which.
@@ -379,9 +378,8 @@ to compile into it. `make` will tell you loudly if you miss one.
 ::: {.callout-note}
 `Channels.cpp` stays. Those two functions are ordinary functions, not templates:
 the compiler can compile them once, on their own, and the linker will find them
-later. Only templates have to be visible at the point of use. That contrast is
-worth holding onto, the rule is not "put things in headers", it is "templates
-go in headers".
+later. Only templates have to be visible at the point of use. The rule is
+"templates go in headers", not "declarations go in headers".
 :::
 
 ### 6.3, TODO 3: every method becomes a method template
@@ -439,7 +437,7 @@ that all reference each other and none of which is the real one.
 
 Convert one, compile, fix, move on. `make checks` is the fastest signal, it
 compiles everything against your header. The errors stay confined to the method
-you just touched, which is the whole point of doing it this way.
+you just touched.
 :::
 
 ### 6.4, TODO 3, part two: `0` is not a default value
@@ -641,7 +639,7 @@ Replace it. What is being checked:
 | `countChanges` tested more than once | on more than one instantiation |
 | they all pass | a failing test of your own is still information, but fix it |
 
-Worth testing, if you want a starting list:
+A starting list:
 
 - a `Trace<int>` and a `Trace<double>` side by side, behaving identically
 - a `Trace<char>` or `Trace<string>`, which proves the class never assumed its
