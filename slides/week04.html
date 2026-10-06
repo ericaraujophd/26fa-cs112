@@ -816,9 +816,9 @@ void PyList::append(const Item &amp;it) {
 <section>
   <h2>Destructor</h2>
   <pre><code class="language-cpp" data-trim>
-PyList::~PyList() {       // the class name, with a ~ in front
-    delete [] myArray;    // give the block back
-    myArray = nullptr;    // and don't keep the address
+PyList::~PyList() {     // a ~ then the class name
+    delete [] myArray;  // give the block back
+    myArray = nullptr;  // and don't keep the address
 }
   </code></pre>
   <ul style="font-size:0.66em">
