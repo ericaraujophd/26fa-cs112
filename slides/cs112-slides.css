@@ -1089,3 +1089,34 @@
   border-bottom: 1px solid #2f6f43;
 }
 .reveal table tr.ttyn-right td:first-child { color: #2f6f43; }
+
+    /* ── A printed step of an animated figure ──
+       On screen a stepped figure is one slide and the steps are keypresses.
+       On paper build_slides_pdf.py expands it into one slide per step, and
+       this caption is the only thing telling a reader which step they are
+       looking at. It never appears on screen. */
+    .reveal .step-cap {
+      font-size: 0.62em;
+      color: #5c574f;
+      margin: 0.1em 0 0.35em;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+    }
+    .reveal .step-cap .step-n {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 1.6em;
+      height: 1.6em;
+      border-radius: 50%;
+      background: var(--maroon);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.86em;
+      flex: 0 0 auto;
+    }
+    .reveal .step-cap code {
+      font-size: 0.94em;
+    }
