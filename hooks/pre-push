@@ -35,6 +35,21 @@ if ! command -v pandoc >/dev/null 2>&1; then
     exit 0
 fi
 
+# The Weil reading is classroom display only. The Craufurd translation is in
+# copyright, so the deck lives in course/slides/weil/ and the course site never
+# serves it. This catches a stray copy before it is public rather than after.
+# See course/slides/weil/README.md.
+weil=$(git ls-files | grep -i 'weil' || true)
+if [ -n "$weil" ]; then
+    echo >&2
+    echo "pre-push: a Weil file is tracked in the WEBSITE repository:" >&2
+    echo "$weil" | sed 's/^/          /' >&2
+    echo "          That reading is classroom display only and must not be" >&2
+    echo "          published. It belongs in course/slides/weil/." >&2
+    echo "          Remove it with: git rm --cached <file>" >&2
+    exit 1
+fi
+
 echo "pre-push: checking the pages"
 if ! python3 check_pages.py; then
     echo >&2
