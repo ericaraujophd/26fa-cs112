@@ -276,6 +276,98 @@ void PyList::append(const Item &amp;it) {
 </section>
 
 <section>
+  <h2>Growing, Step by Step</h2>
+  <svg class="gr-anim" viewBox="0 0 1180 430" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A full array is replaced by one twice its size">
+  <style>
+  .gr-lbl   { font: 700 15px 'Segoe UI', system-ui, sans-serif; fill: #6b665e; }
+  .gr-code  { font: 15px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .gr-val   { font: 700 24px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .gr-ptr   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .gr-addr  { font: 12px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
+  .gr-note  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #6E1C2E; }
+  .gr-head  { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .gr-rule  { stroke: #EADFD2; stroke-width: 1.4; }
+</style>
+  <defs>
+    <marker id="grArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
+    <marker id="grCopy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6FA3D6"/></marker>
+  </defs>
+  <rect x="24" y="96" width="196" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
+  <path d="M32,96 h180 a8,8 0 0 1 8,8 v22 H24 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
+  <text class="gr-head" x="38" y="117">PyList v;</text>
+  <text class="gr-code" x="38" y="149">mySize</text>
+  <path class="gr-rule" d="M25,160 H219"/>
+  <text class="gr-code" x="38" y="183">myCapacity</text>
+  <path class="gr-rule" d="M25,194 H219"/>
+  <text class="gr-code" x="38" y="217">myArray</text>
+  <text x="204" y="149" text-anchor="end" class="gr-code fragment fade-out" data-fragment-index="5">4</text>
+  <text x="204" y="149" text-anchor="end" class="gr-code fragment fade-in" data-fragment-index="5" fill="#6E1C2E">5</text>
+  <text x="204" y="183" text-anchor="end" class="gr-code fragment fade-out" data-fragment-index="1">4</text>
+  <text x="204" y="183" text-anchor="end" class="gr-code fragment fade-in" data-fragment-index="1" fill="#6E1C2E">8</text>
+  <text x="204" y="217" text-anchor="end" class="gr-ptr fragment fade-out" data-fragment-index="4">0x1A40</text>
+  <text x="204" y="217" text-anchor="end" class="gr-ptr fragment fade-in" data-fragment-index="4">0x2B00</text>
+  <rect x="290" y="92" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+  <text class="gr-val" x="333.0" y="134" text-anchor="middle">3</text>
+  <rect x="384" y="92" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+  <text class="gr-val" x="427.0" y="134" text-anchor="middle">7</text>
+  <rect x="478" y="92" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+  <text class="gr-val" x="521.0" y="134" text-anchor="middle">11</text>
+  <rect x="572" y="92" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+  <text class="gr-val" x="615.0" y="134" text-anchor="middle">5</text>
+  <text class="gr-addr" x="290" y="82">0x1A40</text>
+  <g class="fragment fade-in" data-fragment-index="0">
+  <rect x="284" y="86" width="380" height="74" rx="8" fill="none" stroke="#6E1C2E" stroke-width="2.4"/>
+  <text class="gr-note" x="674" y="130">mySize == myCapacity, no room</text>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="1">
+  <rect x="290" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+  <rect x="384" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+  <rect x="478" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+  <rect x="572" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+  <rect x="666" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+  <rect x="760" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+  <rect x="854" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+  <rect x="948" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+  <text class="gr-addr" x="290" y="258">0x2B00</text>
+  <text class="gr-note" x="1050" y="306">new Item[8]</text>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="2">
+  <rect x="290" y="268" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+  <text class="gr-val" x="333.0" y="310" text-anchor="middle">3</text>
+  <path d="M333.0,160 L333.0,260" fill="none" stroke="#6FA3D6" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#grCopy)"/>
+  <rect x="384" y="268" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+  <text class="gr-val" x="427.0" y="310" text-anchor="middle">7</text>
+  <path d="M427.0,160 L427.0,260" fill="none" stroke="#6FA3D6" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#grCopy)"/>
+  <rect x="478" y="268" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+  <text class="gr-val" x="521.0" y="310" text-anchor="middle">11</text>
+  <path d="M521.0,160 L521.0,260" fill="none" stroke="#6FA3D6" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#grCopy)"/>
+  <rect x="572" y="268" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+  <text class="gr-val" x="615.0" y="310" text-anchor="middle">5</text>
+  <path d="M615.0,160 L615.0,260" fill="none" stroke="#6FA3D6" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#grCopy)"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="3">
+  <rect x="284" y="86" width="380" height="74" rx="8" fill="#F2F1EE" opacity="0.82"/>
+  <path d="M290,123.0 H658" stroke="#b0aca4" stroke-width="2.4"/>
+  <text class="gr-note" x="674" y="158" fill="#8a857c">delete [] myArray</text>
+  </g>
+  <g class="fragment fade-out" data-fragment-index="4">
+  <path d="M226,211 L280,123.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#grArrow)"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="4">
+  <path d="M226,219 L280,299.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#grArrow)"/>
+  <text class="gr-note" x="234" y="364">myArray = bigger</text>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="5">
+  <rect x="666" y="268" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+  <text class="gr-val" x="709.0" y="310" text-anchor="middle">9</text>
+  <rect x="662" y="264" width="94" height="70" rx="7" fill="none" stroke="#6E1C2E" stroke-width="2.4"/>
+  </g>
+  </svg>
+</section>
+
+<section>
   <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
   <div class="pi-question">
     <strong>Why double the capacity instead of adding one slot?</strong>
