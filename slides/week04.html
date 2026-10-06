@@ -253,9 +253,9 @@ class PyList {
   <div class="callout"><strong>size</strong> is how many items you have. <strong>capacity</strong> is how many fit before it must grow.</div>
 </section>
 
-<section>
+<section data-nofit>
   <h2>Appending</h2>
-  <pre style="font-size:0.54em"><code class="language-cpp" data-trim>
+  <pre style="font-size:0.48em"><code class="language-cpp" data-trim>
 void PyList::append(const Item &amp;it) {
   if (mySize == myCapacity) {      // no room left
     myCapacity = (myCapacity == 0)
@@ -272,12 +272,12 @@ void PyList::append(const Item &amp;it) {
   ++mySize;
 }
   </code></pre>
-  <div class="callout callout-maroon">Most appends are two operations. A full array costs <em>n</em> copies first.</div>
 </section>
 
+<!--CS112-SCREEN-ONLY-->
 <section>
   <h2>Growing, Step by Step</h2>
-  <svg class="gr-anim" viewBox="0 0 1180 430" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A full array is replaced by one twice its size">
+  <svg class="step-anim" viewBox="0 0 1180 430" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A full array is replaced by one twice its size">
   <style>
   .gr-lbl   { font: 700 15px 'Segoe UI', system-ui, sans-serif; fill: #6b665e; }
   .gr-code  { font: 15px 'Fira Code','Consolas',monospace; fill: #3a3630; }
@@ -285,13 +285,16 @@ void PyList::append(const Item &amp;it) {
   .gr-ptr   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
   .gr-addr  { font: 12px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
   .gr-note  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #6E1C2E; }
+  .gr-gone  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
   .gr-head  { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
   .gr-rule  { stroke: #EADFD2; stroke-width: 1.4; }
 </style>
   <defs>
-    <marker id="grArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto">
+    <marker id="grArrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="9" markerHeight="9" orient="auto">
       <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
-    <marker id="grCopy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+    <marker id="grCopy" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="8" markerHeight="8" orient="auto">
       <path d="M0,0 L10,5 L0,10 z" fill="#6FA3D6"/></marker>
   </defs>
   <rect x="24" y="96" width="196" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
@@ -302,70 +305,497 @@ void PyList::append(const Item &amp;it) {
   <text class="gr-code" x="38" y="183">myCapacity</text>
   <path class="gr-rule" d="M25,194 H219"/>
   <text class="gr-code" x="38" y="217">myArray</text>
-  <text x="204" y="149" text-anchor="end" class="gr-code fragment fade-out" data-fragment-index="5">4</text>
-  <text x="204" y="149" text-anchor="end" class="gr-code fragment fade-in" data-fragment-index="5" fill="#6E1C2E">5</text>
-  <text x="204" y="183" text-anchor="end" class="gr-code fragment fade-out" data-fragment-index="1">4</text>
-  <text x="204" y="183" text-anchor="end" class="gr-code fragment fade-in" data-fragment-index="1" fill="#6E1C2E">8</text>
-  <text x="204" y="217" text-anchor="end" class="gr-ptr fragment fade-out" data-fragment-index="4">0x1A40</text>
-  <text x="204" y="217" text-anchor="end" class="gr-ptr fragment fade-in" data-fragment-index="4">0x2B00</text>
-  <rect x="290" y="92" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
-  <text class="gr-val" x="333.0" y="134" text-anchor="middle">3</text>
-  <rect x="384" y="92" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
-  <text class="gr-val" x="427.0" y="134" text-anchor="middle">7</text>
-  <rect x="478" y="92" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
-  <text class="gr-val" x="521.0" y="134" text-anchor="middle">11</text>
-  <rect x="572" y="92" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
-  <text class="gr-val" x="615.0" y="134" text-anchor="middle">5</text>
-  <text class="gr-addr" x="290" y="82">0x1A40</text>
-  <g class="fragment fade-in" data-fragment-index="0">
-  <rect x="284" y="86" width="380" height="74" rx="8" fill="none" stroke="#6E1C2E" stroke-width="2.4"/>
-  <text class="gr-note" x="674" y="130">mySize == myCapacity, no room</text>
-  </g>
-  <g class="fragment fade-in" data-fragment-index="1">
-  <rect x="290" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
-  <rect x="384" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
-  <rect x="478" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
-  <rect x="572" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
-  <rect x="666" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
-  <rect x="760" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
-  <rect x="854" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
-  <rect x="948" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
-  <text class="gr-addr" x="290" y="258">0x2B00</text>
-  <text class="gr-note" x="1050" y="306">new Item[8]</text>
-  </g>
-  <g class="fragment fade-in" data-fragment-index="2">
-  <rect x="290" y="268" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
-  <text class="gr-val" x="333.0" y="310" text-anchor="middle">3</text>
-  <path d="M333.0,160 L333.0,260" fill="none" stroke="#6FA3D6" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#grCopy)"/>
-  <rect x="384" y="268" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
-  <text class="gr-val" x="427.0" y="310" text-anchor="middle">7</text>
-  <path d="M427.0,160 L427.0,260" fill="none" stroke="#6FA3D6" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#grCopy)"/>
-  <rect x="478" y="268" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
-  <text class="gr-val" x="521.0" y="310" text-anchor="middle">11</text>
-  <path d="M521.0,160 L521.0,260" fill="none" stroke="#6FA3D6" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#grCopy)"/>
-  <rect x="572" y="268" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
-  <text class="gr-val" x="615.0" y="310" text-anchor="middle">5</text>
-  <path d="M615.0,160 L615.0,260" fill="none" stroke="#6FA3D6" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#grCopy)"/>
-  </g>
-  <g class="fragment fade-in" data-fragment-index="3">
-  <rect x="284" y="86" width="380" height="74" rx="8" fill="#F2F1EE" opacity="0.82"/>
-  <path d="M290,123.0 H658" stroke="#b0aca4" stroke-width="2.4"/>
-  <text class="gr-note" x="674" y="158" fill="#8a857c">delete [] myArray</text>
-  </g>
-  <g class="fragment fade-out" data-fragment-index="4">
-  <path d="M226,211 L280,123.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#grArrow)"/>
-  </g>
-  <g class="fragment fade-in" data-fragment-index="4">
-  <path d="M226,219 L280,299.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#grArrow)"/>
-  <text class="gr-note" x="234" y="364">myArray = bigger</text>
+  <g class="fragment fade-out" data-fragment-index="5">
+    <text class="gr-code" x="204" y="149" text-anchor="end">4</text>
   </g>
   <g class="fragment fade-in" data-fragment-index="5">
-  <rect x="666" y="268" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
-  <text class="gr-val" x="709.0" y="310" text-anchor="middle">9</text>
-  <rect x="662" y="264" width="94" height="70" rx="7" fill="none" stroke="#6E1C2E" stroke-width="2.4"/>
+    <text class="gr-code" x="204" y="149" text-anchor="end" fill="#6E1C2E">5</text>
+  </g>
+  <g class="fragment fade-out" data-fragment-index="1">
+    <text class="gr-code" x="204" y="183" text-anchor="end">4</text>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="1">
+    <text class="gr-code" x="204" y="183" text-anchor="end" fill="#6E1C2E">8</text>
+  </g>
+  <g class="fragment fade-out" data-fragment-index="4">
+    <text class="gr-ptr" x="204" y="217" text-anchor="end">0x1A40</text>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="4">
+    <text class="gr-ptr" x="204" y="217" text-anchor="end">0x2B00</text>
+  </g>
+  <rect x="290" y="92" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="333.0" y="134" text-anchor="middle">3</text>
+  <rect x="384" y="92" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="427.0" y="134" text-anchor="middle">7</text>
+  <rect x="478" y="92" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="521.0" y="134" text-anchor="middle">11</text>
+  <rect x="572" y="92" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="615.0" y="134" text-anchor="middle">5</text>
+  <text class="gr-addr" x="290" y="82">0x1A40</text>
+  <g class="fragment fade-in" data-fragment-index="0">
+    <rect x="284" y="86" width="380" height="74" rx="8" fill="none" stroke="#6E1C2E" stroke-width="2.4"/>
+    <text class="gr-note" x="676" y="130">mySize == myCapacity</text>
+    <text class="gr-gone" x="676" y="150">no room for one more</text>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="1">
+    <rect x="290" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <rect x="384" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <rect x="478" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <rect x="572" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <rect x="666" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <rect x="760" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <rect x="854" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <rect x="948" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <text class="gr-addr" x="290" y="258">0x2B00</text>
+    <text class="gr-note" x="1034" y="258" text-anchor="end">new Item[8]</text>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="2">
+    <rect x="290" y="268" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="333.0" y="310" text-anchor="middle">3</text>
+    <path d="M333.0,160 L333.0,242" fill="none" stroke="#6FA3D6" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#grCopy)"/>
+    <rect x="384" y="268" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="427.0" y="310" text-anchor="middle">7</text>
+    <path d="M427.0,160 L427.0,242" fill="none" stroke="#6FA3D6" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#grCopy)"/>
+    <rect x="478" y="268" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="521.0" y="310" text-anchor="middle">11</text>
+    <path d="M521.0,160 L521.0,242" fill="none" stroke="#6FA3D6" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#grCopy)"/>
+    <rect x="572" y="268" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="615.0" y="310" text-anchor="middle">5</text>
+    <path d="M615.0,160 L615.0,242" fill="none" stroke="#6FA3D6" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#grCopy)"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="3">
+    <rect x="284" y="86" width="380" height="74" rx="8" fill="#F2F1EE" opacity="0.82"/>
+    <path d="M290,123.0 H658" stroke="#b0aca4" stroke-width="2.4"/>
+    <text class="gr-gone" x="676" y="180">delete [] myArray</text>
+  </g>
+  <g class="fragment fade-out" data-fragment-index="4">
+    <path d="M226,211 L280,123.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#grArrow)"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="4">
+    <path d="M226,219 L280,299.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#grArrow)"/>
+    <text class="gr-note" x="54" y="364">myArray = bigger</text>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="5">
+    <rect x="666" y="268" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="709.0" y="310" text-anchor="middle">9</text>
+    <rect x="662" y="264" width="94" height="70" rx="7" fill="none" stroke="#6E1C2E" stroke-width="2.4"/>
   </g>
   </svg>
 </section>
+<!--/CS112-SCREEN-ONLY-->
+<!--CS112-PRINT-STEPS
+<section>
+  <h2>Growing, Step by Step</h2>
+  <p class="step-cap"><span class="step-n">1</span>The array is full. There is no room for one more.</p>
+  <svg class="step-anim step-still" viewBox="0 0 1180 430" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A full array is replaced by one twice its size">
+  <style>
+  .gr-lbl   { font: 700 15px 'Segoe UI', system-ui, sans-serif; fill: #6b665e; }
+  .gr-code  { font: 15px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .gr-val   { font: 700 24px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .gr-ptr   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .gr-addr  { font: 12px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
+  .gr-note  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #6E1C2E; }
+  .gr-gone  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .gr-head  { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .gr-rule  { stroke: #EADFD2; stroke-width: 1.4; }
+</style>
+  <defs>
+    <marker id="grArrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
+    <marker id="grCopy" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6FA3D6"/></marker>
+  </defs>
+  <rect x="24" y="96" width="196" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
+  <path d="M32,96 h180 a8,8 0 0 1 8,8 v22 H24 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
+  <text class="gr-head" x="38" y="117">PyList v;</text>
+  <text class="gr-code" x="38" y="149">mySize</text>
+  <path class="gr-rule" d="M25,160 H219"/>
+  <text class="gr-code" x="38" y="183">myCapacity</text>
+  <path class="gr-rule" d="M25,194 H219"/>
+  <text class="gr-code" x="38" y="217">myArray</text>
+  <text class="gr-code" x="204" y="149" text-anchor="end">4</text>
+  <text class="gr-code" x="204" y="183" text-anchor="end">4</text>
+  <text class="gr-ptr" x="204" y="217" text-anchor="end">0x1A40</text>
+  <rect x="290" y="92" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="333.0" y="134" text-anchor="middle">3</text>
+  <rect x="384" y="92" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="427.0" y="134" text-anchor="middle">7</text>
+  <rect x="478" y="92" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="521.0" y="134" text-anchor="middle">11</text>
+  <rect x="572" y="92" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="615.0" y="134" text-anchor="middle">5</text>
+  <text class="gr-addr" x="290" y="82">0x1A40</text>
+  <rect x="284" y="86" width="380" height="74" rx="8" fill="none" stroke="#6E1C2E" stroke-width="2.4"/>
+    <text class="gr-note" x="676" y="130">mySize == myCapacity</text>
+    <text class="gr-gone" x="676" y="150">no room for one more</text>
+  <path d="M226,211 L280,123.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#grArrow)"/>
+  </svg>
+</section>
+
+<section>
+  <h2>Growing, Step by Step</h2>
+  <p class="step-cap"><span class="step-n">2</span>Ask the heap for a block twice the size.</p>
+  <svg class="step-anim step-still" viewBox="0 0 1180 430" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A full array is replaced by one twice its size">
+  <style>
+  .gr-lbl   { font: 700 15px 'Segoe UI', system-ui, sans-serif; fill: #6b665e; }
+  .gr-code  { font: 15px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .gr-val   { font: 700 24px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .gr-ptr   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .gr-addr  { font: 12px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
+  .gr-note  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #6E1C2E; }
+  .gr-gone  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .gr-head  { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .gr-rule  { stroke: #EADFD2; stroke-width: 1.4; }
+</style>
+  <defs>
+    <marker id="grArrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
+    <marker id="grCopy" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6FA3D6"/></marker>
+  </defs>
+  <rect x="24" y="96" width="196" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
+  <path d="M32,96 h180 a8,8 0 0 1 8,8 v22 H24 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
+  <text class="gr-head" x="38" y="117">PyList v;</text>
+  <text class="gr-code" x="38" y="149">mySize</text>
+  <path class="gr-rule" d="M25,160 H219"/>
+  <text class="gr-code" x="38" y="183">myCapacity</text>
+  <path class="gr-rule" d="M25,194 H219"/>
+  <text class="gr-code" x="38" y="217">myArray</text>
+  <text class="gr-code" x="204" y="149" text-anchor="end">4</text>
+  <text class="gr-code" x="204" y="183" text-anchor="end" fill="#6E1C2E">8</text>
+  <text class="gr-ptr" x="204" y="217" text-anchor="end">0x1A40</text>
+  <rect x="290" y="92" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="333.0" y="134" text-anchor="middle">3</text>
+  <rect x="384" y="92" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="427.0" y="134" text-anchor="middle">7</text>
+  <rect x="478" y="92" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="521.0" y="134" text-anchor="middle">11</text>
+  <rect x="572" y="92" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="615.0" y="134" text-anchor="middle">5</text>
+  <text class="gr-addr" x="290" y="82">0x1A40</text>
+  <rect x="284" y="86" width="380" height="74" rx="8" fill="none" stroke="#6E1C2E" stroke-width="2.4"/>
+    <text class="gr-note" x="676" y="130">mySize == myCapacity</text>
+    <text class="gr-gone" x="676" y="150">no room for one more</text>
+  <rect x="290" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <rect x="384" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <rect x="478" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <rect x="572" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <rect x="666" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <rect x="760" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <rect x="854" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <rect x="948" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <text class="gr-addr" x="290" y="258">0x2B00</text>
+    <text class="gr-note" x="1034" y="258" text-anchor="end">new Item[8]</text>
+  <path d="M226,211 L280,123.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#grArrow)"/>
+  </svg>
+</section>
+
+<section>
+  <h2>Growing, Step by Step</h2>
+  <p class="step-cap"><span class="step-n">3</span>Copy every item across.</p>
+  <svg class="step-anim step-still" viewBox="0 0 1180 430" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A full array is replaced by one twice its size">
+  <style>
+  .gr-lbl   { font: 700 15px 'Segoe UI', system-ui, sans-serif; fill: #6b665e; }
+  .gr-code  { font: 15px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .gr-val   { font: 700 24px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .gr-ptr   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .gr-addr  { font: 12px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
+  .gr-note  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #6E1C2E; }
+  .gr-gone  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .gr-head  { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .gr-rule  { stroke: #EADFD2; stroke-width: 1.4; }
+</style>
+  <defs>
+    <marker id="grArrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
+    <marker id="grCopy" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6FA3D6"/></marker>
+  </defs>
+  <rect x="24" y="96" width="196" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
+  <path d="M32,96 h180 a8,8 0 0 1 8,8 v22 H24 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
+  <text class="gr-head" x="38" y="117">PyList v;</text>
+  <text class="gr-code" x="38" y="149">mySize</text>
+  <path class="gr-rule" d="M25,160 H219"/>
+  <text class="gr-code" x="38" y="183">myCapacity</text>
+  <path class="gr-rule" d="M25,194 H219"/>
+  <text class="gr-code" x="38" y="217">myArray</text>
+  <text class="gr-code" x="204" y="149" text-anchor="end">4</text>
+  <text class="gr-code" x="204" y="183" text-anchor="end" fill="#6E1C2E">8</text>
+  <text class="gr-ptr" x="204" y="217" text-anchor="end">0x1A40</text>
+  <rect x="290" y="92" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="333.0" y="134" text-anchor="middle">3</text>
+  <rect x="384" y="92" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="427.0" y="134" text-anchor="middle">7</text>
+  <rect x="478" y="92" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="521.0" y="134" text-anchor="middle">11</text>
+  <rect x="572" y="92" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="615.0" y="134" text-anchor="middle">5</text>
+  <text class="gr-addr" x="290" y="82">0x1A40</text>
+  <rect x="284" y="86" width="380" height="74" rx="8" fill="none" stroke="#6E1C2E" stroke-width="2.4"/>
+    <text class="gr-note" x="676" y="130">mySize == myCapacity</text>
+    <text class="gr-gone" x="676" y="150">no room for one more</text>
+  <rect x="290" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <rect x="384" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <rect x="478" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <rect x="572" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <rect x="666" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <rect x="760" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <rect x="854" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <rect x="948" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <text class="gr-addr" x="290" y="258">0x2B00</text>
+    <text class="gr-note" x="1034" y="258" text-anchor="end">new Item[8]</text>
+  <rect x="290" y="268" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="333.0" y="310" text-anchor="middle">3</text>
+    <path d="M333.0,160 L333.0,242" fill="none" stroke="#6FA3D6" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#grCopy)"/>
+    <rect x="384" y="268" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="427.0" y="310" text-anchor="middle">7</text>
+    <path d="M427.0,160 L427.0,242" fill="none" stroke="#6FA3D6" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#grCopy)"/>
+    <rect x="478" y="268" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="521.0" y="310" text-anchor="middle">11</text>
+    <path d="M521.0,160 L521.0,242" fill="none" stroke="#6FA3D6" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#grCopy)"/>
+    <rect x="572" y="268" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="615.0" y="310" text-anchor="middle">5</text>
+    <path d="M615.0,160 L615.0,242" fill="none" stroke="#6FA3D6" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#grCopy)"/>
+  <path d="M226,211 L280,123.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#grArrow)"/>
+  </svg>
+</section>
+
+<section>
+  <h2>Growing, Step by Step</h2>
+  <p class="step-cap"><span class="step-n">4</span>Free the old block.</p>
+  <svg class="step-anim step-still" viewBox="0 0 1180 430" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A full array is replaced by one twice its size">
+  <style>
+  .gr-lbl   { font: 700 15px 'Segoe UI', system-ui, sans-serif; fill: #6b665e; }
+  .gr-code  { font: 15px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .gr-val   { font: 700 24px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .gr-ptr   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .gr-addr  { font: 12px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
+  .gr-note  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #6E1C2E; }
+  .gr-gone  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .gr-head  { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .gr-rule  { stroke: #EADFD2; stroke-width: 1.4; }
+</style>
+  <defs>
+    <marker id="grArrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
+    <marker id="grCopy" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6FA3D6"/></marker>
+  </defs>
+  <rect x="24" y="96" width="196" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
+  <path d="M32,96 h180 a8,8 0 0 1 8,8 v22 H24 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
+  <text class="gr-head" x="38" y="117">PyList v;</text>
+  <text class="gr-code" x="38" y="149">mySize</text>
+  <path class="gr-rule" d="M25,160 H219"/>
+  <text class="gr-code" x="38" y="183">myCapacity</text>
+  <path class="gr-rule" d="M25,194 H219"/>
+  <text class="gr-code" x="38" y="217">myArray</text>
+  <text class="gr-code" x="204" y="149" text-anchor="end">4</text>
+  <text class="gr-code" x="204" y="183" text-anchor="end" fill="#6E1C2E">8</text>
+  <text class="gr-ptr" x="204" y="217" text-anchor="end">0x1A40</text>
+  <rect x="290" y="92" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="333.0" y="134" text-anchor="middle">3</text>
+  <rect x="384" y="92" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="427.0" y="134" text-anchor="middle">7</text>
+  <rect x="478" y="92" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="521.0" y="134" text-anchor="middle">11</text>
+  <rect x="572" y="92" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="615.0" y="134" text-anchor="middle">5</text>
+  <text class="gr-addr" x="290" y="82">0x1A40</text>
+  <rect x="284" y="86" width="380" height="74" rx="8" fill="none" stroke="#6E1C2E" stroke-width="2.4"/>
+    <text class="gr-note" x="676" y="130">mySize == myCapacity</text>
+    <text class="gr-gone" x="676" y="150">no room for one more</text>
+  <rect x="290" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <rect x="384" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <rect x="478" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <rect x="572" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <rect x="666" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <rect x="760" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <rect x="854" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <rect x="948" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <text class="gr-addr" x="290" y="258">0x2B00</text>
+    <text class="gr-note" x="1034" y="258" text-anchor="end">new Item[8]</text>
+  <rect x="290" y="268" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="333.0" y="310" text-anchor="middle">3</text>
+    <path d="M333.0,160 L333.0,242" fill="none" stroke="#6FA3D6" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#grCopy)"/>
+    <rect x="384" y="268" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="427.0" y="310" text-anchor="middle">7</text>
+    <path d="M427.0,160 L427.0,242" fill="none" stroke="#6FA3D6" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#grCopy)"/>
+    <rect x="478" y="268" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="521.0" y="310" text-anchor="middle">11</text>
+    <path d="M521.0,160 L521.0,242" fill="none" stroke="#6FA3D6" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#grCopy)"/>
+    <rect x="572" y="268" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="615.0" y="310" text-anchor="middle">5</text>
+    <path d="M615.0,160 L615.0,242" fill="none" stroke="#6FA3D6" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#grCopy)"/>
+  <rect x="284" y="86" width="380" height="74" rx="8" fill="#F2F1EE" opacity="0.82"/>
+    <path d="M290,123.0 H658" stroke="#b0aca4" stroke-width="2.4"/>
+    <text class="gr-gone" x="676" y="180">delete [] myArray</text>
+  <path d="M226,211 L280,123.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#grArrow)"/>
+  </svg>
+</section>
+
+<section>
+  <h2>Growing, Step by Step</h2>
+  <p class="step-cap"><span class="step-n">5</span>Point <code>myArray</code> at the new block.</p>
+  <svg class="step-anim step-still" viewBox="0 0 1180 430" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A full array is replaced by one twice its size">
+  <style>
+  .gr-lbl   { font: 700 15px 'Segoe UI', system-ui, sans-serif; fill: #6b665e; }
+  .gr-code  { font: 15px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .gr-val   { font: 700 24px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .gr-ptr   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .gr-addr  { font: 12px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
+  .gr-note  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #6E1C2E; }
+  .gr-gone  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .gr-head  { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .gr-rule  { stroke: #EADFD2; stroke-width: 1.4; }
+</style>
+  <defs>
+    <marker id="grArrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
+    <marker id="grCopy" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6FA3D6"/></marker>
+  </defs>
+  <rect x="24" y="96" width="196" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
+  <path d="M32,96 h180 a8,8 0 0 1 8,8 v22 H24 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
+  <text class="gr-head" x="38" y="117">PyList v;</text>
+  <text class="gr-code" x="38" y="149">mySize</text>
+  <path class="gr-rule" d="M25,160 H219"/>
+  <text class="gr-code" x="38" y="183">myCapacity</text>
+  <path class="gr-rule" d="M25,194 H219"/>
+  <text class="gr-code" x="38" y="217">myArray</text>
+  <text class="gr-code" x="204" y="149" text-anchor="end">4</text>
+  <text class="gr-code" x="204" y="183" text-anchor="end" fill="#6E1C2E">8</text>
+  <text class="gr-ptr" x="204" y="217" text-anchor="end">0x2B00</text>
+  <rect x="290" y="92" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="333.0" y="134" text-anchor="middle">3</text>
+  <rect x="384" y="92" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="427.0" y="134" text-anchor="middle">7</text>
+  <rect x="478" y="92" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="521.0" y="134" text-anchor="middle">11</text>
+  <rect x="572" y="92" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="615.0" y="134" text-anchor="middle">5</text>
+  <text class="gr-addr" x="290" y="82">0x1A40</text>
+  <rect x="284" y="86" width="380" height="74" rx="8" fill="none" stroke="#6E1C2E" stroke-width="2.4"/>
+    <text class="gr-note" x="676" y="130">mySize == myCapacity</text>
+    <text class="gr-gone" x="676" y="150">no room for one more</text>
+  <rect x="290" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <rect x="384" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <rect x="478" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <rect x="572" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <rect x="666" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <rect x="760" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <rect x="854" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <rect x="948" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <text class="gr-addr" x="290" y="258">0x2B00</text>
+    <text class="gr-note" x="1034" y="258" text-anchor="end">new Item[8]</text>
+  <rect x="290" y="268" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="333.0" y="310" text-anchor="middle">3</text>
+    <path d="M333.0,160 L333.0,242" fill="none" stroke="#6FA3D6" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#grCopy)"/>
+    <rect x="384" y="268" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="427.0" y="310" text-anchor="middle">7</text>
+    <path d="M427.0,160 L427.0,242" fill="none" stroke="#6FA3D6" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#grCopy)"/>
+    <rect x="478" y="268" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="521.0" y="310" text-anchor="middle">11</text>
+    <path d="M521.0,160 L521.0,242" fill="none" stroke="#6FA3D6" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#grCopy)"/>
+    <rect x="572" y="268" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="615.0" y="310" text-anchor="middle">5</text>
+    <path d="M615.0,160 L615.0,242" fill="none" stroke="#6FA3D6" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#grCopy)"/>
+  <rect x="284" y="86" width="380" height="74" rx="8" fill="#F2F1EE" opacity="0.82"/>
+    <path d="M290,123.0 H658" stroke="#b0aca4" stroke-width="2.4"/>
+    <text class="gr-gone" x="676" y="180">delete [] myArray</text>
+  <path d="M226,219 L280,299.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#grArrow)"/>
+    <text class="gr-note" x="54" y="364">myArray = bigger</text>
+  </svg>
+</section>
+
+<section>
+  <h2>Growing, Step by Step</h2>
+  <p class="step-cap"><span class="step-n">6</span>Store the new item, and count it.</p>
+  <svg class="step-anim step-still" viewBox="0 0 1180 430" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A full array is replaced by one twice its size">
+  <style>
+  .gr-lbl   { font: 700 15px 'Segoe UI', system-ui, sans-serif; fill: #6b665e; }
+  .gr-code  { font: 15px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .gr-val   { font: 700 24px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .gr-ptr   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .gr-addr  { font: 12px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
+  .gr-note  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #6E1C2E; }
+  .gr-gone  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .gr-head  { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .gr-rule  { stroke: #EADFD2; stroke-width: 1.4; }
+</style>
+  <defs>
+    <marker id="grArrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
+    <marker id="grCopy" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6FA3D6"/></marker>
+  </defs>
+  <rect x="24" y="96" width="196" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
+  <path d="M32,96 h180 a8,8 0 0 1 8,8 v22 H24 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
+  <text class="gr-head" x="38" y="117">PyList v;</text>
+  <text class="gr-code" x="38" y="149">mySize</text>
+  <path class="gr-rule" d="M25,160 H219"/>
+  <text class="gr-code" x="38" y="183">myCapacity</text>
+  <path class="gr-rule" d="M25,194 H219"/>
+  <text class="gr-code" x="38" y="217">myArray</text>
+  <text class="gr-code" x="204" y="149" text-anchor="end" fill="#6E1C2E">5</text>
+  <text class="gr-code" x="204" y="183" text-anchor="end" fill="#6E1C2E">8</text>
+  <text class="gr-ptr" x="204" y="217" text-anchor="end">0x2B00</text>
+  <rect x="290" y="92" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="333.0" y="134" text-anchor="middle">3</text>
+  <rect x="384" y="92" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="427.0" y="134" text-anchor="middle">7</text>
+  <rect x="478" y="92" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="521.0" y="134" text-anchor="middle">11</text>
+  <rect x="572" y="92" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="615.0" y="134" text-anchor="middle">5</text>
+  <text class="gr-addr" x="290" y="82">0x1A40</text>
+  <rect x="284" y="86" width="380" height="74" rx="8" fill="none" stroke="#6E1C2E" stroke-width="2.4"/>
+    <text class="gr-note" x="676" y="130">mySize == myCapacity</text>
+    <text class="gr-gone" x="676" y="150">no room for one more</text>
+  <rect x="290" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <rect x="384" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <rect x="478" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <rect x="572" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <rect x="666" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <rect x="760" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <rect x="854" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <rect x="948" y="268" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+    <text class="gr-addr" x="290" y="258">0x2B00</text>
+    <text class="gr-note" x="1034" y="258" text-anchor="end">new Item[8]</text>
+  <rect x="290" y="268" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="333.0" y="310" text-anchor="middle">3</text>
+    <path d="M333.0,160 L333.0,242" fill="none" stroke="#6FA3D6" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#grCopy)"/>
+    <rect x="384" y="268" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="427.0" y="310" text-anchor="middle">7</text>
+    <path d="M427.0,160 L427.0,242" fill="none" stroke="#6FA3D6" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#grCopy)"/>
+    <rect x="478" y="268" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="521.0" y="310" text-anchor="middle">11</text>
+    <path d="M521.0,160 L521.0,242" fill="none" stroke="#6FA3D6" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#grCopy)"/>
+    <rect x="572" y="268" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="615.0" y="310" text-anchor="middle">5</text>
+    <path d="M615.0,160 L615.0,242" fill="none" stroke="#6FA3D6" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#grCopy)"/>
+  <rect x="284" y="86" width="380" height="74" rx="8" fill="#F2F1EE" opacity="0.82"/>
+    <path d="M290,123.0 H658" stroke="#b0aca4" stroke-width="2.4"/>
+    <text class="gr-gone" x="676" y="180">delete [] myArray</text>
+  <path d="M226,219 L280,299.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#grArrow)"/>
+    <text class="gr-note" x="54" y="364">myArray = bigger</text>
+  <rect x="666" y="268" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="gr-val" x="709.0" y="310" text-anchor="middle">9</text>
+    <rect x="662" y="264" width="94" height="70" rx="7" fill="none" stroke="#6E1C2E" stroke-width="2.4"/>
+  </svg>
+</section>
+/CS112-PRINT-STEPS-->
 
 <section>
   <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
@@ -375,93 +805,885 @@ void PyList::append(const Item &amp;it) {
   <ul class="pi-choices pi-compact">
     <li><span class="letter">A.</span> Doubling uses less memory</li>
     <li class="fragment correct" data-fragment-index="1"><span class="letter">B.</span> Adding one would make every append copy the whole array</li>
-    <li><span class="letter">C.</span> The heap only hands out sizes that are powers of two</li>
-    <li><span class="letter">D.</span> It doesn't matter, both are equally fast</li>
+    <li><span class="letter">C.</span> It doesn't matter, both are equally fast</li>
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>B.</strong> Growing by one means a full copy on <em>every</em> append, which is O(n) each time. Doubling spreads the cost: the expensive copies get rarer as the array grows.
+    <strong>B.</strong> Add one slot and every single append copies everything that is already there. Double it and the copies get rarer as the list grows: by the time it holds a thousand items, one append in a thousand copies anything and the other 999 just write one slot.
   </div>
 </section>
 
 <section>
-  <h2>Now You Need a Destructor</h2>
+  <h2>Destructor</h2>
   <pre><code class="language-cpp" data-trim>
-PyList::~PyList() {
-    delete [] myArray;
-    myArray = nullptr;
+PyList::~PyList() {       // the class name, with a ~ in front
+    delete [] myArray;    // give the block back
+    myArray = nullptr;    // and don't keep the address
 }
   </code></pre>
-  <p style="font-size:0.68em">C++ writes a destructor for you, but it only destroys the <em>members</em>. It destroys the pointer, not what the pointer points at.</p>
-  <div class="callout callout-maroon">
-    <strong>The rule:</strong> if your class calls <code>new</code>, your class must define a destructor.
-    Otherwise every <code>PyList</code> that dies leaves its heap block behind.
-  </div>
+  <ul style="font-size:0.66em">
+    <li>No arguments, no return type, and <strong>you never call it</strong></li>
+    <li>It runs when a local object reaches the end of its scope, and when you <code>delete</code> one you made with <code>new</code></li>
+    <li>One per class: there is nothing to overload</li>
+  </ul>
 </section>
+
+<!--CS112-SCREEN-ONLY-->
+<section>
+  <h2>Rule of Thumb</h2>
+  <svg class="step-anim" viewBox="0 0 1150 420" style="width:94%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The members of an object are destroyed while its heap block stays allocated">
+  <style>
+  .dt-zone  { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
+              letter-spacing: 0.08em; }
+  .dt-code  { font: 15px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .dt-val   { font: 700 24px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .dt-ptr   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .dt-addr  { font: 12px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
+  .dt-note  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #6E1C2E; }
+  .dt-gone  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .dt-head  { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .dt-brace { font: 700 40px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .dt-tag   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #ffffff;
+              letter-spacing: 0.06em; }
+  .dt-rule  { stroke: #EADFD2; stroke-width: 1.4; }
+</style>
+  <defs>
+    <marker id="dtArrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
+  </defs>
+  <text class="dt-zone" x="46" y="76">THE STACK</text>
+  <text class="dt-zone" x="470" y="76">THE HEAP</text>
+  <rect x="46" y="104" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
+  <path d="M54,104 h198 a8,8 0 0 1 8,8 v22 H46 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
+  <text class="dt-head" x="60" y="125">PyList v;</text>
+  <text class="dt-code" x="60" y="157">mySize</text>
+  <text class="dt-code" x="244" y="157" text-anchor="end">3</text>
+  <path class="dt-rule" d="M47,168 H259"/>
+  <text class="dt-code" x="60" y="191">myCapacity</text>
+  <text class="dt-code" x="244" y="191" text-anchor="end">4</text>
+  <path class="dt-rule" d="M47,202 H259"/>
+  <text class="dt-code" x="60" y="225">myArray</text>
+  <text class="dt-ptr" x="244" y="225" text-anchor="end">0x1A40</text>
+  <rect x="470" y="120" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="dt-val" x="513.0" y="162" text-anchor="middle">3</text>
+  <rect x="564" y="120" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="dt-val" x="607.0" y="162" text-anchor="middle">7</text>
+  <rect x="658" y="120" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="dt-val" x="701.0" y="162" text-anchor="middle">11</text>
+  <rect x="752" y="120" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+  <text class="dt-addr" x="470" y="100">0x1A40</text>
+  <text class="dt-addr" x="838" y="100" text-anchor="end">4 &#215; sizeof(Item)</text>
+  <g class="fragment fade-in" data-fragment-index="0">
+    <text class="dt-brace" x="52" y="298">&#125;</text>
+    <text class="dt-note" x="88" y="288">f() returns</text>
+    <text class="dt-gone" x="88" y="308">v goes out of scope</text>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="1">
+    <rect x="39" y="97" width="228" height="146" rx="11" fill="none" stroke="#6E1C2E" stroke-width="2.6"/>
+    <text class="dt-note" x="88" y="338">~PyList() runs</text>
+    <text class="dt-gone" x="88" y="358">the one C++ wrote for you</text>
+  </g>
+  <g class="fragment fade-out" data-fragment-index="2">
+    <path d="M266,219 L458,151.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#dtArrow)"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="2">
+    <rect x="47" y="134" width="212" height="102" fill="#F2F1EE" opacity="0.84"/>
+    <path d="M56,151.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
+    <path d="M56,185.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
+    <path d="M56,219.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
+    <text class="dt-gone" x="88" y="388">all three of them, the pointer included</text>
+  </g>
+  <g class="fragment fade-in-then-out" data-fragment-index="3">
+    <rect x="462" y="112" width="384" height="78" rx="10" fill="none" stroke="#6E1C2E" stroke-width="2.8"/>
+    <rect x="470" y="204" width="68" height="24" rx="12" fill="#6E1C2E"/>
+    <text class="dt-tag" x="504" y="221" text-anchor="middle">LEAK</text>
+    <text class="dt-note" x="552" y="221">still allocated, and nothing points at it</text>
+    <text class="dt-gone" x="552" y="241">it stays there until the process ends</text>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="4">
+    <rect x="466" y="116" width="376" height="70" rx="7" fill="#F2F1EE" opacity="0.88"/>
+    <path d="M470,151.0 H838" stroke="#b0aca4" stroke-width="2.4"/>
+    <text class="dt-note" x="470" y="221">delete [] myArray;</text>
+    <text class="dt-gone" x="470" y="241">in a destructor you write yourself</text>
+  </g>
+  </svg>
+  <div class="callout"><strong>If your class calls <code>new</code>, your class defines a destructor.</strong> The one C++ writes for you destroys the members, and the block is not a member.</div>
+</section>
+<!--/CS112-SCREEN-ONLY-->
+<!--CS112-PRINT-STEPS
+<section>
+  <h2>Rule of Thumb</h2>
+  <p class="step-cap"><span class="step-n">1</span>The function returns, so <code>v</code> goes out of scope.</p>
+  <svg class="step-anim step-still" viewBox="0 0 1150 420" style="width:94%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The members of an object are destroyed while its heap block stays allocated">
+  <style>
+  .dt-zone  { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
+              letter-spacing: 0.08em; }
+  .dt-code  { font: 15px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .dt-val   { font: 700 24px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .dt-ptr   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .dt-addr  { font: 12px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
+  .dt-note  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #6E1C2E; }
+  .dt-gone  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .dt-head  { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .dt-brace { font: 700 40px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .dt-tag   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #ffffff;
+              letter-spacing: 0.06em; }
+  .dt-rule  { stroke: #EADFD2; stroke-width: 1.4; }
+</style>
+  <defs>
+    <marker id="dtArrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
+  </defs>
+  <text class="dt-zone" x="46" y="76">THE STACK</text>
+  <text class="dt-zone" x="470" y="76">THE HEAP</text>
+  <rect x="46" y="104" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
+  <path d="M54,104 h198 a8,8 0 0 1 8,8 v22 H46 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
+  <text class="dt-head" x="60" y="125">PyList v;</text>
+  <text class="dt-code" x="60" y="157">mySize</text>
+  <text class="dt-code" x="244" y="157" text-anchor="end">3</text>
+  <path class="dt-rule" d="M47,168 H259"/>
+  <text class="dt-code" x="60" y="191">myCapacity</text>
+  <text class="dt-code" x="244" y="191" text-anchor="end">4</text>
+  <path class="dt-rule" d="M47,202 H259"/>
+  <text class="dt-code" x="60" y="225">myArray</text>
+  <text class="dt-ptr" x="244" y="225" text-anchor="end">0x1A40</text>
+  <rect x="470" y="120" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="dt-val" x="513.0" y="162" text-anchor="middle">3</text>
+  <rect x="564" y="120" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="dt-val" x="607.0" y="162" text-anchor="middle">7</text>
+  <rect x="658" y="120" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="dt-val" x="701.0" y="162" text-anchor="middle">11</text>
+  <rect x="752" y="120" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+  <text class="dt-addr" x="470" y="100">0x1A40</text>
+  <text class="dt-addr" x="838" y="100" text-anchor="end">4 &#215; sizeof(Item)</text>
+  <text class="dt-brace" x="52" y="298">&#125;</text>
+    <text class="dt-note" x="88" y="288">f() returns</text>
+    <text class="dt-gone" x="88" y="308">v goes out of scope</text>
+  <path d="M266,219 L458,151.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#dtArrow)"/>
+  </svg>
+</section>
+
+<section>
+  <h2>Rule of Thumb</h2>
+  <p class="step-cap"><span class="step-n">2</span>The destructor C++ wrote for you runs.</p>
+  <svg class="step-anim step-still" viewBox="0 0 1150 420" style="width:94%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The members of an object are destroyed while its heap block stays allocated">
+  <style>
+  .dt-zone  { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
+              letter-spacing: 0.08em; }
+  .dt-code  { font: 15px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .dt-val   { font: 700 24px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .dt-ptr   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .dt-addr  { font: 12px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
+  .dt-note  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #6E1C2E; }
+  .dt-gone  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .dt-head  { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .dt-brace { font: 700 40px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .dt-tag   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #ffffff;
+              letter-spacing: 0.06em; }
+  .dt-rule  { stroke: #EADFD2; stroke-width: 1.4; }
+</style>
+  <defs>
+    <marker id="dtArrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
+  </defs>
+  <text class="dt-zone" x="46" y="76">THE STACK</text>
+  <text class="dt-zone" x="470" y="76">THE HEAP</text>
+  <rect x="46" y="104" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
+  <path d="M54,104 h198 a8,8 0 0 1 8,8 v22 H46 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
+  <text class="dt-head" x="60" y="125">PyList v;</text>
+  <text class="dt-code" x="60" y="157">mySize</text>
+  <text class="dt-code" x="244" y="157" text-anchor="end">3</text>
+  <path class="dt-rule" d="M47,168 H259"/>
+  <text class="dt-code" x="60" y="191">myCapacity</text>
+  <text class="dt-code" x="244" y="191" text-anchor="end">4</text>
+  <path class="dt-rule" d="M47,202 H259"/>
+  <text class="dt-code" x="60" y="225">myArray</text>
+  <text class="dt-ptr" x="244" y="225" text-anchor="end">0x1A40</text>
+  <rect x="470" y="120" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="dt-val" x="513.0" y="162" text-anchor="middle">3</text>
+  <rect x="564" y="120" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="dt-val" x="607.0" y="162" text-anchor="middle">7</text>
+  <rect x="658" y="120" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="dt-val" x="701.0" y="162" text-anchor="middle">11</text>
+  <rect x="752" y="120" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+  <text class="dt-addr" x="470" y="100">0x1A40</text>
+  <text class="dt-addr" x="838" y="100" text-anchor="end">4 &#215; sizeof(Item)</text>
+  <text class="dt-brace" x="52" y="298">&#125;</text>
+    <text class="dt-note" x="88" y="288">f() returns</text>
+    <text class="dt-gone" x="88" y="308">v goes out of scope</text>
+  <rect x="39" y="97" width="228" height="146" rx="11" fill="none" stroke="#6E1C2E" stroke-width="2.6"/>
+    <text class="dt-note" x="88" y="338">~PyList() runs</text>
+    <text class="dt-gone" x="88" y="358">the one C++ wrote for you</text>
+  <path d="M266,219 L458,151.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#dtArrow)"/>
+  </svg>
+</section>
+
+<section>
+  <h2>Rule of Thumb</h2>
+  <p class="step-cap"><span class="step-n">3</span>It destroys the three members. The pointer is one of them.</p>
+  <svg class="step-anim step-still" viewBox="0 0 1150 420" style="width:94%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The members of an object are destroyed while its heap block stays allocated">
+  <style>
+  .dt-zone  { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
+              letter-spacing: 0.08em; }
+  .dt-code  { font: 15px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .dt-val   { font: 700 24px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .dt-ptr   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .dt-addr  { font: 12px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
+  .dt-note  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #6E1C2E; }
+  .dt-gone  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .dt-head  { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .dt-brace { font: 700 40px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .dt-tag   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #ffffff;
+              letter-spacing: 0.06em; }
+  .dt-rule  { stroke: #EADFD2; stroke-width: 1.4; }
+</style>
+  <defs>
+    <marker id="dtArrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
+  </defs>
+  <text class="dt-zone" x="46" y="76">THE STACK</text>
+  <text class="dt-zone" x="470" y="76">THE HEAP</text>
+  <rect x="46" y="104" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
+  <path d="M54,104 h198 a8,8 0 0 1 8,8 v22 H46 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
+  <text class="dt-head" x="60" y="125">PyList v;</text>
+  <text class="dt-code" x="60" y="157">mySize</text>
+  <text class="dt-code" x="244" y="157" text-anchor="end">3</text>
+  <path class="dt-rule" d="M47,168 H259"/>
+  <text class="dt-code" x="60" y="191">myCapacity</text>
+  <text class="dt-code" x="244" y="191" text-anchor="end">4</text>
+  <path class="dt-rule" d="M47,202 H259"/>
+  <text class="dt-code" x="60" y="225">myArray</text>
+  <text class="dt-ptr" x="244" y="225" text-anchor="end">0x1A40</text>
+  <rect x="470" y="120" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="dt-val" x="513.0" y="162" text-anchor="middle">3</text>
+  <rect x="564" y="120" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="dt-val" x="607.0" y="162" text-anchor="middle">7</text>
+  <rect x="658" y="120" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="dt-val" x="701.0" y="162" text-anchor="middle">11</text>
+  <rect x="752" y="120" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+  <text class="dt-addr" x="470" y="100">0x1A40</text>
+  <text class="dt-addr" x="838" y="100" text-anchor="end">4 &#215; sizeof(Item)</text>
+  <text class="dt-brace" x="52" y="298">&#125;</text>
+    <text class="dt-note" x="88" y="288">f() returns</text>
+    <text class="dt-gone" x="88" y="308">v goes out of scope</text>
+  <rect x="39" y="97" width="228" height="146" rx="11" fill="none" stroke="#6E1C2E" stroke-width="2.6"/>
+    <text class="dt-note" x="88" y="338">~PyList() runs</text>
+    <text class="dt-gone" x="88" y="358">the one C++ wrote for you</text>
+  <rect x="47" y="134" width="212" height="102" fill="#F2F1EE" opacity="0.84"/>
+    <path d="M56,151.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
+    <path d="M56,185.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
+    <path d="M56,219.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
+    <text class="dt-gone" x="88" y="388">all three of them, the pointer included</text>
+  </svg>
+</section>
+
+<section>
+  <h2>Rule of Thumb</h2>
+  <p class="step-cap"><span class="step-n">4</span>The block is still allocated, and nothing points at it.</p>
+  <svg class="step-anim step-still" viewBox="0 0 1150 420" style="width:94%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The members of an object are destroyed while its heap block stays allocated">
+  <style>
+  .dt-zone  { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
+              letter-spacing: 0.08em; }
+  .dt-code  { font: 15px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .dt-val   { font: 700 24px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .dt-ptr   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .dt-addr  { font: 12px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
+  .dt-note  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #6E1C2E; }
+  .dt-gone  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .dt-head  { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .dt-brace { font: 700 40px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .dt-tag   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #ffffff;
+              letter-spacing: 0.06em; }
+  .dt-rule  { stroke: #EADFD2; stroke-width: 1.4; }
+</style>
+  <defs>
+    <marker id="dtArrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
+  </defs>
+  <text class="dt-zone" x="46" y="76">THE STACK</text>
+  <text class="dt-zone" x="470" y="76">THE HEAP</text>
+  <rect x="46" y="104" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
+  <path d="M54,104 h198 a8,8 0 0 1 8,8 v22 H46 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
+  <text class="dt-head" x="60" y="125">PyList v;</text>
+  <text class="dt-code" x="60" y="157">mySize</text>
+  <text class="dt-code" x="244" y="157" text-anchor="end">3</text>
+  <path class="dt-rule" d="M47,168 H259"/>
+  <text class="dt-code" x="60" y="191">myCapacity</text>
+  <text class="dt-code" x="244" y="191" text-anchor="end">4</text>
+  <path class="dt-rule" d="M47,202 H259"/>
+  <text class="dt-code" x="60" y="225">myArray</text>
+  <text class="dt-ptr" x="244" y="225" text-anchor="end">0x1A40</text>
+  <rect x="470" y="120" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="dt-val" x="513.0" y="162" text-anchor="middle">3</text>
+  <rect x="564" y="120" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="dt-val" x="607.0" y="162" text-anchor="middle">7</text>
+  <rect x="658" y="120" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="dt-val" x="701.0" y="162" text-anchor="middle">11</text>
+  <rect x="752" y="120" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+  <text class="dt-addr" x="470" y="100">0x1A40</text>
+  <text class="dt-addr" x="838" y="100" text-anchor="end">4 &#215; sizeof(Item)</text>
+  <text class="dt-brace" x="52" y="298">&#125;</text>
+    <text class="dt-note" x="88" y="288">f() returns</text>
+    <text class="dt-gone" x="88" y="308">v goes out of scope</text>
+  <rect x="39" y="97" width="228" height="146" rx="11" fill="none" stroke="#6E1C2E" stroke-width="2.6"/>
+    <text class="dt-note" x="88" y="338">~PyList() runs</text>
+    <text class="dt-gone" x="88" y="358">the one C++ wrote for you</text>
+  <rect x="47" y="134" width="212" height="102" fill="#F2F1EE" opacity="0.84"/>
+    <path d="M56,151.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
+    <path d="M56,185.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
+    <path d="M56,219.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
+    <text class="dt-gone" x="88" y="388">all three of them, the pointer included</text>
+  <rect x="462" y="112" width="384" height="78" rx="10" fill="none" stroke="#6E1C2E" stroke-width="2.8"/>
+    <rect x="470" y="204" width="68" height="24" rx="12" fill="#6E1C2E"/>
+    <text class="dt-tag" x="504" y="221" text-anchor="middle">LEAK</text>
+    <text class="dt-note" x="552" y="221">still allocated, and nothing points at it</text>
+    <text class="dt-gone" x="552" y="241">it stays there until the process ends</text>
+  </svg>
+</section>
+
+<section>
+  <h2>Rule of Thumb</h2>
+  <p class="step-cap"><span class="step-n">5</span>The line that frees it has to be yours.</p>
+  <svg class="step-anim step-still" viewBox="0 0 1150 420" style="width:94%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The members of an object are destroyed while its heap block stays allocated">
+  <style>
+  .dt-zone  { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
+              letter-spacing: 0.08em; }
+  .dt-code  { font: 15px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .dt-val   { font: 700 24px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .dt-ptr   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .dt-addr  { font: 12px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
+  .dt-note  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #6E1C2E; }
+  .dt-gone  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .dt-head  { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .dt-brace { font: 700 40px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .dt-tag   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #ffffff;
+              letter-spacing: 0.06em; }
+  .dt-rule  { stroke: #EADFD2; stroke-width: 1.4; }
+</style>
+  <defs>
+    <marker id="dtArrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
+  </defs>
+  <text class="dt-zone" x="46" y="76">THE STACK</text>
+  <text class="dt-zone" x="470" y="76">THE HEAP</text>
+  <rect x="46" y="104" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
+  <path d="M54,104 h198 a8,8 0 0 1 8,8 v22 H46 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
+  <text class="dt-head" x="60" y="125">PyList v;</text>
+  <text class="dt-code" x="60" y="157">mySize</text>
+  <text class="dt-code" x="244" y="157" text-anchor="end">3</text>
+  <path class="dt-rule" d="M47,168 H259"/>
+  <text class="dt-code" x="60" y="191">myCapacity</text>
+  <text class="dt-code" x="244" y="191" text-anchor="end">4</text>
+  <path class="dt-rule" d="M47,202 H259"/>
+  <text class="dt-code" x="60" y="225">myArray</text>
+  <text class="dt-ptr" x="244" y="225" text-anchor="end">0x1A40</text>
+  <rect x="470" y="120" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="dt-val" x="513.0" y="162" text-anchor="middle">3</text>
+  <rect x="564" y="120" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="dt-val" x="607.0" y="162" text-anchor="middle">7</text>
+  <rect x="658" y="120" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="dt-val" x="701.0" y="162" text-anchor="middle">11</text>
+  <rect x="752" y="120" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
+  <text class="dt-addr" x="470" y="100">0x1A40</text>
+  <text class="dt-addr" x="838" y="100" text-anchor="end">4 &#215; sizeof(Item)</text>
+  <text class="dt-brace" x="52" y="298">&#125;</text>
+    <text class="dt-note" x="88" y="288">f() returns</text>
+    <text class="dt-gone" x="88" y="308">v goes out of scope</text>
+  <rect x="39" y="97" width="228" height="146" rx="11" fill="none" stroke="#6E1C2E" stroke-width="2.6"/>
+    <text class="dt-note" x="88" y="338">~PyList() runs</text>
+    <text class="dt-gone" x="88" y="358">the one C++ wrote for you</text>
+  <rect x="47" y="134" width="212" height="102" fill="#F2F1EE" opacity="0.84"/>
+    <path d="M56,151.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
+    <path d="M56,185.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
+    <path d="M56,219.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
+    <text class="dt-gone" x="88" y="388">all three of them, the pointer included</text>
+  <rect x="466" y="116" width="376" height="70" rx="7" fill="#F2F1EE" opacity="0.88"/>
+    <path d="M470,151.0 H838" stroke="#b0aca4" stroke-width="2.4"/>
+    <text class="dt-note" x="470" y="221">delete [] myArray;</text>
+    <text class="dt-gone" x="470" y="241">in a destructor you write yourself</text>
+  </svg>
+  <div class="callout"><strong>If your class calls <code>new</code>, your class defines a destructor.</strong> The one C++ writes for you destroys the members, and the block is not a member.</div>
+</section>
+/CS112-PRINT-STEPS-->
 
 <section>
   <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
   <div class="pi-question">
-    <strong>When does a destructor run?</strong>
+    <strong>In which lines does a <code>PyList</code> destructor run?</strong>
+    <pre style="font-size:0.56em"><code class="language-cpp" data-trim>
+void f() {                  // 1
+  PyList *p = new PyList;   // 2
+  PyList v;                 // 3
+  v.append(3);              // 4
+  delete p;                 // 5
+}                           // 6
+    </code></pre>
   </div>
   <ul class="pi-choices pi-compact">
-    <li><span class="letter">A.</span> Only when you write <code>delete</code></li>
-    <li class="fragment correct" data-fragment-index="1"><span class="letter">B.</span> When a local object reaches the end of its scope, or is deleted</li>
-    <li><span class="letter">C.</span> At the end of <code>main()</code>, for every object</li>
-    <li><span class="letter">D.</span> When the garbage collector decides</li>
+    <li><span class="letter">A.</span> Lines 2 and 3, where the two objects are built</li>
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">B.</span> Lines 5 and 6</li>
+    <li><span class="letter">C.</span> Line 6 only, at the closing brace</li>
+    <li><span class="letter">D.</span> Line 5 only, because that is the only <code>delete</code></li>
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>B.</strong> Local objects are destroyed automatically at the closing brace; heap objects when you <code>delete</code> them; members when their owner dies. There is no garbage collector: the rules are exact and predictable.
+    <strong>B.</strong> Two objects, so two destructors. <code>delete p</code> on line 5 runs the one for the object on the heap, and the closing brace on line 6 runs the one for <code>v</code>, which is local. Neither call is written down anywhere.
   </div>
 </section>
 
 <section>
-  <h2>The Copy That Bites</h2>
-  <pre style="font-size:0.62em"><code class="language-cpp" data-trim>
-PyList a;
-a.append(3);
-a.append(7);
+  <h2>Copying a PyList</h2>
+  <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
+  <div class="pi-question">
+    <strong>What exactly got copied?</strong>
+    <pre style="font-size:0.56em"><code class="language-cpp" data-trim>
+PyList a;        // mySize 0, myCapacity 0, myArray nullptr
+a.append(3);     // a block of 1 on the heap
+a.append(7);     // full, so a new block of 2
 
-PyList b = a;          // what exactly got copied?
-  </code></pre>
-  <div class="mem-diagram" style="max-width:620px">
-    <div class="mem-row"><span class="mem-lbl">a.myArray</span><span class="mem-val">0x5f2a10</span><span class="mem-addr">→ [ 3 | 7 ]</span></div>
-    <div class="mem-row"><span class="mem-lbl">b.myArray</span><span class="mem-val">0x5f2a10</span><span class="mem-addr">→ the same block!</span></div>
+PyList b = a;    // b is built FROM a
+    </code></pre>
   </div>
-  <div class="callout callout-maroon">The default copy duplicates the <strong>pointer</strong>, not the data. Two objects now own one block, a <strong>shallow copy</strong>.</div>
+  <ul class="pi-choices pi-compact">
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">A.</span> The three members, so <code>b.myArray</code> holds the same address as <code>a.myArray</code></li>
+    <li><span class="letter">B.</span> The two items, into a block of <code>b</code>'s own</li>
+    <li><span class="letter">C.</span> Nothing: <code>b</code> is another name for <code>a</code></li>
+    <li><span class="letter">D.</span> Only the pointer; <code>mySize</code> and <code>myCapacity</code> stay 0</li>
+  </ul>
+  <div class="answer-box fragment" data-fragment-index="1">
+    <div class="ans-label">&#10003; Answer</div>
+    <strong>A.</strong> Nobody wrote a copy constructor, so C++ supplies one, and it copies each member in turn. <code>myArray</code> is a member, and what a pointer holds is an address. The block is never copied, because the block is not a member.
+  </div>
 </section>
+
+<!--CS112-SCREEN-ONLY-->
+<section>
+  <h2>One Block, Two Owners</h2>
+  <svg class="step-anim" viewBox="0 0 1150 452" style="width:94%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two objects whose pointers hold the same address, and the double free that follows">
+  <style>
+  .sh-zone  { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
+              letter-spacing: 0.08em; }
+  .sh-code  { font: 15px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .sh-val   { font: 700 24px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .sh-new   { font: 700 24px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .sh-ptr   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .sh-addr  { font: 12px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
+  .sh-note  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #6E1C2E; }
+  .sh-gone  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .sh-head  { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .sh-tag   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #ffffff;
+              letter-spacing: 0.06em; }
+  .sh-crash { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .sh-rule  { stroke: #EADFD2; stroke-width: 1.4; }
+</style>
+  <defs>
+    <marker id="shArrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
+  </defs>
+  <text class="sh-zone" x="46" y="52">THE STACK</text>
+  <text class="sh-zone" x="520" y="166">THE HEAP</text>
+  <rect x="46" y="78" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
+    <path d="M54,78 h198 a8,8 0 0 1 8,8 v22 H46 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
+    <text class="sh-head" x="60" y="99">PyList a;</text>
+    <text class="sh-code" x="60" y="131">mySize</text>
+    <text class="sh-code" x="244" y="131" text-anchor="end">2</text>
+    <path class="sh-rule" d="M47,142 H259"/>
+    <text class="sh-code" x="60" y="165">myCapacity</text>
+    <text class="sh-code" x="244" y="165" text-anchor="end">2</text>
+    <path class="sh-rule" d="M47,176 H259"/>
+    <text class="sh-code" x="60" y="199">myArray</text>
+    <text class="sh-ptr" x="244" y="199" text-anchor="end">0x1A40</text>
+  <rect x="520" y="196" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+  <rect x="614" y="196" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+  <text class="sh-addr" x="520" y="186">0x1A40</text>
+  <g class="fragment fade-out" data-fragment-index="1">
+    <text class="sh-val" x="563.0" y="238" text-anchor="middle">3</text>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="1">
+    <text class="sh-new" x="563.0" y="238" text-anchor="middle">9</text>
+  </g>
+  <text class="sh-val" x="657.0" y="238" text-anchor="middle">7</text>
+  <path d="M266,193 L508,219.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#shArrow)"/>
+  <g class="fragment fade-in" data-fragment-index="0">
+    <rect x="46" y="248" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
+    <path d="M54,248 h198 a8,8 0 0 1 8,8 v22 H46 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
+    <text class="sh-head" x="60" y="269">PyList b;</text>
+    <text class="sh-code" x="60" y="301">mySize</text>
+    <text class="sh-code" x="244" y="301" text-anchor="end">2</text>
+    <path class="sh-rule" d="M47,312 H259"/>
+    <text class="sh-code" x="60" y="335">myCapacity</text>
+    <text class="sh-code" x="244" y="335" text-anchor="end">2</text>
+    <path class="sh-rule" d="M47,346 H259"/>
+    <text class="sh-code" x="60" y="369">myArray</text>
+    <text class="sh-ptr" x="244" y="369" text-anchor="end">0x1A40</text>
+    <path d="M266,363 L508,239.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#shArrow)"/>
+    <text class="sh-note" x="46" y="406">PyList b = a;</text>
+    <text class="sh-gone" x="46" y="426">the same address, not a second block</text>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="1">
+    <rect x="516" y="192" width="94" height="70" rx="7" fill="none" stroke="#6E1C2E" stroke-width="2.4"/>
+    <text class="sh-note" x="720" y="222">b[0] = 9;</text>
+    <text class="sh-gone" x="720" y="242">and a[0] reads 9</text>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="2">
+    <rect x="47" y="278" width="212" height="102" fill="#F2F1EE" opacity="0.84"/>
+    <path d="M56,295.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
+    <path d="M56,329.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
+    <path d="M56,363.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="2">
+    <rect x="516" y="192" width="188" height="70" rx="7" fill="#F2F1EE" opacity="0.9"/>
+    <path d="M520,227.0 H700" stroke="#b0aca4" stroke-width="2.4"/>
+    <text class="sh-note" x="520" y="290">b is destroyed: delete [] myArray</text>
+    <text class="sh-gone" x="520" y="310">the block is given back</text>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="3">
+    <rect x="47" y="108" width="212" height="102" fill="#F2F1EE" opacity="0.84"/>
+    <path d="M56,125.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
+    <path d="M56,159.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
+    <path d="M56,193.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="3">
+    <text class="sh-note" x="520" y="342">a is destroyed: delete [] myArray, again</text>
+    <rect x="520" y="356" width="86" height="24" rx="12" fill="#6E1C2E"/>
+    <text class="sh-tag" x="563" y="373" text-anchor="middle">CRASH</text>
+    <text class="sh-crash" x="620" y="373">free(): double free detected</text>
+  </g>
+  </svg>
+  <div class="callout">The default copy duplicated the <strong>address</strong>, not the data. That is a <strong>shallow copy</strong>, and it goes wrong twice.</div>
+</section>
+<!--/CS112-SCREEN-ONLY-->
+<!--CS112-PRINT-STEPS
+<section>
+  <h2>One Block, Two Owners</h2>
+  <p class="step-cap"><span class="step-n">1</span><code>PyList b = a;</code> copies the three members, address and all.</p>
+  <svg class="step-anim step-still" viewBox="0 0 1150 452" style="width:94%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two objects whose pointers hold the same address, and the double free that follows">
+  <style>
+  .sh-zone  { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
+              letter-spacing: 0.08em; }
+  .sh-code  { font: 15px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .sh-val   { font: 700 24px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .sh-new   { font: 700 24px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .sh-ptr   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .sh-addr  { font: 12px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
+  .sh-note  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #6E1C2E; }
+  .sh-gone  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .sh-head  { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .sh-tag   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #ffffff;
+              letter-spacing: 0.06em; }
+  .sh-crash { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .sh-rule  { stroke: #EADFD2; stroke-width: 1.4; }
+</style>
+  <defs>
+    <marker id="shArrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
+  </defs>
+  <text class="sh-zone" x="46" y="52">THE STACK</text>
+  <text class="sh-zone" x="520" y="166">THE HEAP</text>
+  <rect x="46" y="78" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
+    <path d="M54,78 h198 a8,8 0 0 1 8,8 v22 H46 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
+    <text class="sh-head" x="60" y="99">PyList a;</text>
+    <text class="sh-code" x="60" y="131">mySize</text>
+    <text class="sh-code" x="244" y="131" text-anchor="end">2</text>
+    <path class="sh-rule" d="M47,142 H259"/>
+    <text class="sh-code" x="60" y="165">myCapacity</text>
+    <text class="sh-code" x="244" y="165" text-anchor="end">2</text>
+    <path class="sh-rule" d="M47,176 H259"/>
+    <text class="sh-code" x="60" y="199">myArray</text>
+    <text class="sh-ptr" x="244" y="199" text-anchor="end">0x1A40</text>
+  <rect x="520" y="196" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+  <rect x="614" y="196" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+  <text class="sh-addr" x="520" y="186">0x1A40</text>
+  <text class="sh-val" x="563.0" y="238" text-anchor="middle">3</text>
+  <text class="sh-val" x="657.0" y="238" text-anchor="middle">7</text>
+  <path d="M266,193 L508,219.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#shArrow)"/>
+  <rect x="46" y="248" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
+    <path d="M54,248 h198 a8,8 0 0 1 8,8 v22 H46 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
+    <text class="sh-head" x="60" y="269">PyList b;</text>
+    <text class="sh-code" x="60" y="301">mySize</text>
+    <text class="sh-code" x="244" y="301" text-anchor="end">2</text>
+    <path class="sh-rule" d="M47,312 H259"/>
+    <text class="sh-code" x="60" y="335">myCapacity</text>
+    <text class="sh-code" x="244" y="335" text-anchor="end">2</text>
+    <path class="sh-rule" d="M47,346 H259"/>
+    <text class="sh-code" x="60" y="369">myArray</text>
+    <text class="sh-ptr" x="244" y="369" text-anchor="end">0x1A40</text>
+    <path d="M266,363 L508,239.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#shArrow)"/>
+    <text class="sh-note" x="46" y="406">PyList b = a;</text>
+    <text class="sh-gone" x="46" y="426">the same address, not a second block</text>
+  </svg>
+</section>
+
+<section>
+  <h2>One Block, Two Owners</h2>
+  <p class="step-cap"><span class="step-n">2</span><code>b[0] = 9;</code> changes what <code>a[0]</code> reads.</p>
+  <svg class="step-anim step-still" viewBox="0 0 1150 452" style="width:94%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two objects whose pointers hold the same address, and the double free that follows">
+  <style>
+  .sh-zone  { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
+              letter-spacing: 0.08em; }
+  .sh-code  { font: 15px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .sh-val   { font: 700 24px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .sh-new   { font: 700 24px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .sh-ptr   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .sh-addr  { font: 12px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
+  .sh-note  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #6E1C2E; }
+  .sh-gone  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .sh-head  { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .sh-tag   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #ffffff;
+              letter-spacing: 0.06em; }
+  .sh-crash { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .sh-rule  { stroke: #EADFD2; stroke-width: 1.4; }
+</style>
+  <defs>
+    <marker id="shArrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
+  </defs>
+  <text class="sh-zone" x="46" y="52">THE STACK</text>
+  <text class="sh-zone" x="520" y="166">THE HEAP</text>
+  <rect x="46" y="78" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
+    <path d="M54,78 h198 a8,8 0 0 1 8,8 v22 H46 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
+    <text class="sh-head" x="60" y="99">PyList a;</text>
+    <text class="sh-code" x="60" y="131">mySize</text>
+    <text class="sh-code" x="244" y="131" text-anchor="end">2</text>
+    <path class="sh-rule" d="M47,142 H259"/>
+    <text class="sh-code" x="60" y="165">myCapacity</text>
+    <text class="sh-code" x="244" y="165" text-anchor="end">2</text>
+    <path class="sh-rule" d="M47,176 H259"/>
+    <text class="sh-code" x="60" y="199">myArray</text>
+    <text class="sh-ptr" x="244" y="199" text-anchor="end">0x1A40</text>
+  <rect x="520" y="196" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+  <rect x="614" y="196" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+  <text class="sh-addr" x="520" y="186">0x1A40</text>
+  <text class="sh-new" x="563.0" y="238" text-anchor="middle">9</text>
+  <text class="sh-val" x="657.0" y="238" text-anchor="middle">7</text>
+  <path d="M266,193 L508,219.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#shArrow)"/>
+  <rect x="46" y="248" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
+    <path d="M54,248 h198 a8,8 0 0 1 8,8 v22 H46 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
+    <text class="sh-head" x="60" y="269">PyList b;</text>
+    <text class="sh-code" x="60" y="301">mySize</text>
+    <text class="sh-code" x="244" y="301" text-anchor="end">2</text>
+    <path class="sh-rule" d="M47,312 H259"/>
+    <text class="sh-code" x="60" y="335">myCapacity</text>
+    <text class="sh-code" x="244" y="335" text-anchor="end">2</text>
+    <path class="sh-rule" d="M47,346 H259"/>
+    <text class="sh-code" x="60" y="369">myArray</text>
+    <text class="sh-ptr" x="244" y="369" text-anchor="end">0x1A40</text>
+    <path d="M266,363 L508,239.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#shArrow)"/>
+    <text class="sh-note" x="46" y="406">PyList b = a;</text>
+    <text class="sh-gone" x="46" y="426">the same address, not a second block</text>
+  <rect x="516" y="192" width="94" height="70" rx="7" fill="none" stroke="#6E1C2E" stroke-width="2.4"/>
+    <text class="sh-note" x="720" y="222">b[0] = 9;</text>
+    <text class="sh-gone" x="720" y="242">and a[0] reads 9</text>
+  </svg>
+</section>
+
+<section>
+  <h2>One Block, Two Owners</h2>
+  <p class="step-cap"><span class="step-n">3</span><code>b</code> is destroyed, and frees the block.</p>
+  <svg class="step-anim step-still" viewBox="0 0 1150 452" style="width:94%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two objects whose pointers hold the same address, and the double free that follows">
+  <style>
+  .sh-zone  { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
+              letter-spacing: 0.08em; }
+  .sh-code  { font: 15px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .sh-val   { font: 700 24px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .sh-new   { font: 700 24px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .sh-ptr   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .sh-addr  { font: 12px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
+  .sh-note  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #6E1C2E; }
+  .sh-gone  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .sh-head  { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .sh-tag   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #ffffff;
+              letter-spacing: 0.06em; }
+  .sh-crash { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .sh-rule  { stroke: #EADFD2; stroke-width: 1.4; }
+</style>
+  <defs>
+    <marker id="shArrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
+  </defs>
+  <text class="sh-zone" x="46" y="52">THE STACK</text>
+  <text class="sh-zone" x="520" y="166">THE HEAP</text>
+  <rect x="46" y="78" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
+    <path d="M54,78 h198 a8,8 0 0 1 8,8 v22 H46 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
+    <text class="sh-head" x="60" y="99">PyList a;</text>
+    <text class="sh-code" x="60" y="131">mySize</text>
+    <text class="sh-code" x="244" y="131" text-anchor="end">2</text>
+    <path class="sh-rule" d="M47,142 H259"/>
+    <text class="sh-code" x="60" y="165">myCapacity</text>
+    <text class="sh-code" x="244" y="165" text-anchor="end">2</text>
+    <path class="sh-rule" d="M47,176 H259"/>
+    <text class="sh-code" x="60" y="199">myArray</text>
+    <text class="sh-ptr" x="244" y="199" text-anchor="end">0x1A40</text>
+  <rect x="520" y="196" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+  <rect x="614" y="196" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+  <text class="sh-addr" x="520" y="186">0x1A40</text>
+  <text class="sh-new" x="563.0" y="238" text-anchor="middle">9</text>
+  <text class="sh-val" x="657.0" y="238" text-anchor="middle">7</text>
+  <path d="M266,193 L508,219.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#shArrow)"/>
+  <rect x="46" y="248" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
+    <path d="M54,248 h198 a8,8 0 0 1 8,8 v22 H46 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
+    <text class="sh-head" x="60" y="269">PyList b;</text>
+    <text class="sh-code" x="60" y="301">mySize</text>
+    <text class="sh-code" x="244" y="301" text-anchor="end">2</text>
+    <path class="sh-rule" d="M47,312 H259"/>
+    <text class="sh-code" x="60" y="335">myCapacity</text>
+    <text class="sh-code" x="244" y="335" text-anchor="end">2</text>
+    <path class="sh-rule" d="M47,346 H259"/>
+    <text class="sh-code" x="60" y="369">myArray</text>
+    <text class="sh-ptr" x="244" y="369" text-anchor="end">0x1A40</text>
+    <path d="M266,363 L508,239.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#shArrow)"/>
+    <text class="sh-note" x="46" y="406">PyList b = a;</text>
+    <text class="sh-gone" x="46" y="426">the same address, not a second block</text>
+  <rect x="516" y="192" width="94" height="70" rx="7" fill="none" stroke="#6E1C2E" stroke-width="2.4"/>
+    <text class="sh-note" x="720" y="222">b[0] = 9;</text>
+    <text class="sh-gone" x="720" y="242">and a[0] reads 9</text>
+  <rect x="47" y="278" width="212" height="102" fill="#F2F1EE" opacity="0.84"/>
+    <path d="M56,295.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
+    <path d="M56,329.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
+    <path d="M56,363.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
+  <rect x="516" y="192" width="188" height="70" rx="7" fill="#F2F1EE" opacity="0.9"/>
+    <path d="M520,227.0 H700" stroke="#b0aca4" stroke-width="2.4"/>
+    <text class="sh-note" x="520" y="290">b is destroyed: delete [] myArray</text>
+    <text class="sh-gone" x="520" y="310">the block is given back</text>
+  </svg>
+</section>
+
+<section>
+  <h2>One Block, Two Owners</h2>
+  <p class="step-cap"><span class="step-n">4</span><code>a</code> is destroyed, and frees it again.</p>
+  <svg class="step-anim step-still" viewBox="0 0 1150 452" style="width:94%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two objects whose pointers hold the same address, and the double free that follows">
+  <style>
+  .sh-zone  { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
+              letter-spacing: 0.08em; }
+  .sh-code  { font: 15px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .sh-val   { font: 700 24px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .sh-new   { font: 700 24px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .sh-ptr   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .sh-addr  { font: 12px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
+  .sh-note  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #6E1C2E; }
+  .sh-gone  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .sh-head  { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .sh-tag   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #ffffff;
+              letter-spacing: 0.06em; }
+  .sh-crash { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .sh-rule  { stroke: #EADFD2; stroke-width: 1.4; }
+</style>
+  <defs>
+    <marker id="shArrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
+  </defs>
+  <text class="sh-zone" x="46" y="52">THE STACK</text>
+  <text class="sh-zone" x="520" y="166">THE HEAP</text>
+  <rect x="46" y="78" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
+    <path d="M54,78 h198 a8,8 0 0 1 8,8 v22 H46 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
+    <text class="sh-head" x="60" y="99">PyList a;</text>
+    <text class="sh-code" x="60" y="131">mySize</text>
+    <text class="sh-code" x="244" y="131" text-anchor="end">2</text>
+    <path class="sh-rule" d="M47,142 H259"/>
+    <text class="sh-code" x="60" y="165">myCapacity</text>
+    <text class="sh-code" x="244" y="165" text-anchor="end">2</text>
+    <path class="sh-rule" d="M47,176 H259"/>
+    <text class="sh-code" x="60" y="199">myArray</text>
+    <text class="sh-ptr" x="244" y="199" text-anchor="end">0x1A40</text>
+  <rect x="520" y="196" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+  <rect x="614" y="196" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+  <text class="sh-addr" x="520" y="186">0x1A40</text>
+  <text class="sh-new" x="563.0" y="238" text-anchor="middle">9</text>
+  <text class="sh-val" x="657.0" y="238" text-anchor="middle">7</text>
+  <path d="M266,193 L508,219.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#shArrow)"/>
+  <rect x="46" y="248" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
+    <path d="M54,248 h198 a8,8 0 0 1 8,8 v22 H46 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
+    <text class="sh-head" x="60" y="269">PyList b;</text>
+    <text class="sh-code" x="60" y="301">mySize</text>
+    <text class="sh-code" x="244" y="301" text-anchor="end">2</text>
+    <path class="sh-rule" d="M47,312 H259"/>
+    <text class="sh-code" x="60" y="335">myCapacity</text>
+    <text class="sh-code" x="244" y="335" text-anchor="end">2</text>
+    <path class="sh-rule" d="M47,346 H259"/>
+    <text class="sh-code" x="60" y="369">myArray</text>
+    <text class="sh-ptr" x="244" y="369" text-anchor="end">0x1A40</text>
+    <path d="M266,363 L508,239.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#shArrow)"/>
+    <text class="sh-note" x="46" y="406">PyList b = a;</text>
+    <text class="sh-gone" x="46" y="426">the same address, not a second block</text>
+  <rect x="516" y="192" width="94" height="70" rx="7" fill="none" stroke="#6E1C2E" stroke-width="2.4"/>
+    <text class="sh-note" x="720" y="222">b[0] = 9;</text>
+    <text class="sh-gone" x="720" y="242">and a[0] reads 9</text>
+  <rect x="47" y="278" width="212" height="102" fill="#F2F1EE" opacity="0.84"/>
+    <path d="M56,295.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
+    <path d="M56,329.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
+    <path d="M56,363.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
+  <rect x="516" y="192" width="188" height="70" rx="7" fill="#F2F1EE" opacity="0.9"/>
+    <path d="M520,227.0 H700" stroke="#b0aca4" stroke-width="2.4"/>
+    <text class="sh-note" x="520" y="290">b is destroyed: delete [] myArray</text>
+    <text class="sh-gone" x="520" y="310">the block is given back</text>
+  <rect x="47" y="108" width="212" height="102" fill="#F2F1EE" opacity="0.84"/>
+    <path d="M56,125.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
+    <path d="M56,159.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
+    <path d="M56,193.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
+  <text class="sh-note" x="520" y="342">a is destroyed: delete [] myArray, again</text>
+    <rect x="520" y="356" width="86" height="24" rx="12" fill="#6E1C2E"/>
+    <text class="sh-tag" x="563" y="373" text-anchor="middle">CRASH</text>
+    <text class="sh-crash" x="620" y="373">free(): double free detected</text>
+  </svg>
+  <div class="callout">The default copy duplicated the <strong>address</strong>, not the data. That is a <strong>shallow copy</strong>, and it goes wrong twice.</div>
+</section>
+/CS112-PRINT-STEPS-->
 
 <section>
   <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
   <div class="pi-question">
-    <strong>What goes wrong with that shallow copy?</strong>
+    <strong>What does this print, and what happens at line 6?</strong>
+    <pre style="font-size:0.56em"><code class="language-cpp" data-trim>
+PyList a;                 // 1
+a.append(3);              // 2
+PyList b = a;             // 3
+b[0] = 9;                 // 4
+cout &lt;&lt; a[0] &lt;&lt; endl;     // 5
+                          // 6  a and b both go out of scope
+    </code></pre>
   </div>
   <ul class="pi-choices pi-compact">
-    <li><span class="letter">A.</span> Nothing: sharing the block saves memory</li>
-    <li><span class="letter">B.</span> Changing <code>b[0]</code> also changes <code>a[0]</code></li>
-    <li><span class="letter">C.</span> Both destructors delete the same block, undefined behavior</li>
-    <li class="fragment correct" data-fragment-index="1"><span class="letter">D.</span> Both B and C</li>
+    <li><span class="letter">A.</span> 3, and each object frees its own block</li>
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">B.</span> 9, and the second destructor frees a block that is already gone</li>
+    <li><span class="letter">C.</span> 3, and one block is leaked</li>
+    <li><span class="letter">D.</span> 9, and line 3 does not compile</li>
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>D.</strong> They alias each other <em>and</em> the second destructor frees memory that was already freed. A double delete usually crashes: but only sometimes, which is worse.
+    <strong>B.</strong> <code>b[0] = 9</code> writes into the one block both objects point at, so <code>a[0]</code> reads 9. Then both destructors run on the same address: the first gives the block back, the second gives back something that is not there, and the allocator stops the program.
   </div>
 </section>
 
 <section>
   <h2>Deep Copy: the Copy Constructor</h2>
-  <pre><code class="language-cpp" data-trim>
-PyList::PyList(const PyList &amp;orig) {
-  mySize     = orig.mySize;
-  myCapacity = orig.myCapacity;
-  myArray    = new Item[myCapacity];   // our OWN block
+  <div class="def-card" style="max-width:880px;margin:0 auto 0.35em">
+    <div class="def-name">copy constructor</div>
+    <p class="def-txt">A constructor whose one parameter is <strong>another object of the same class</strong>.
+    C++ calls it whenever a new object is built from an existing one. Write none and C++ supplies
+    one that copies the address; write one and you decide what copying means.</p>
+  </div>
+  <pre style="font-size:0.52em"><code class="language-cpp" data-trim>
+PyList::PyList(const PyList &amp;orig) {   // orig is the one we copy FROM
+  mySize     = orig.mySize;            // same count
+  myCapacity = orig.myCapacity;        // same room
+  myArray    = new Item[myCapacity];   // our OWN block, a new address
   for (unsigned i = 0; i &lt; mySize; ++i) {
-    myArray[i] = orig.myArray[i];      // copy the values
+    myArray[i] = orig.myArray[i];      // copy the values across
   }
 }
   </code></pre>
-  <div class="callout">Same shape as the growth code: allocate, copy, own. Now <code>a</code> and <code>b</code> are independent, and each destructor frees its own block.</div>
+  <div class="callout">Allocate, copy, own: the same three moves as growing. Now each object frees its own block.</div>
 </section>
 
 <section>
@@ -480,26 +1702,6 @@ PyList makeList() {           // 3. return by value
   <div class="callout callout-maroon">Case 2 is why week 1 said <em>pass big objects by const reference</em>. Every by-value call to <code>show()</code> copies the whole heap block.</div>
 </section>
 
-<section class="demo-slide" data-background-color="#6E1C2E">
-  <h1>Demo</h1>
-  <div class="demo-rule"></div>
-  <svg class="demo-art" viewBox="0 -34 320 246" xmlns="http://www.w3.org/2000/svg">
-    <path d="M254,12 C250,0 260,-6 256,-20 C270,-11 267,1 261,12 Z" fill="#E8873A"/>
-    <path d="M266,12 C264,4 270,0 268,-10 C277,-3 275,5 271,12 Z" fill="#F2CD00"/>
-    <path d="M243,12 C241,5 246,2 244,-6 C251,-1 250,6 247,12 Z" fill="#E8873A" opacity=".75"/>
-    <rect x="40" y="10" width="240" height="150" rx="9" fill="#1e1f1a" stroke="#C49A2C" stroke-width="3"/>
-    <text x="58" y="46" font-family="'Fira Code',Consolas,monospace" font-size="15.0" fill="#9be36b">$ ./vec_test</text>
-    <text x="58" y="76" font-family="'Fira Code',Consolas,monospace" font-size="12.0" fill="#ff7b72">free(): double free detected</text>
-    <text x="58" y="96" font-family="'Fira Code',Consolas,monospace" font-size="12.0" fill="#ff7b72">Aborted (core dumped)</text>
-    <text x="58" y="134" font-family="'Fira Code',Consolas,monospace" font-size="15" fill="#9be36b">$</text>
-    <rect x="72" y="122" width="9" height="15" fill="#9be36b"/>
-    <path d="M22,168 L298,168 L314,196 L6,196 Z" fill="#eceae3" stroke="#8d8d86" stroke-width="2.5" stroke-linejoin="round"/>
-    <rect x="140" y="174" width="40" height="6" rx="3" fill="#cfcdc6"/>
-  </svg>
-  <p class="demo-cap">Watching a shallow copy destroy itself.</p>
-  <p class="demo-sub">(two objects, one array, zero survivors)</p>
-</section>
-
 <section>
   <h2>Returning a Reference: <code>operator[]</code></h2>
   <pre><code class="language-cpp" data-trim>
@@ -509,7 +1711,7 @@ Item&amp; PyList::operator[](unsigned i) {
 
 v[2] = 99;      // works because v[2] IS the slot
   </code></pre>
-  <div class="callout">Return <code>Item</code> and you get a copy, assigning to it would change a temporary and vanish. Returning <code>Item&amp;</code> makes the call an <em>alias</em> for the element.</div>
+  <div class="callout">Return <code>Item</code> and the call hands back a copy, and <code>v[2] = 99</code> does not compile at all. Returning <code>Item&amp;</code> makes the call another name for the element.</div>
 </section>
 
 <section>
