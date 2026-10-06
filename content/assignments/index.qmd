@@ -276,7 +276,7 @@ Each assignment **opens on the Monday of its week**. You can see the whole term 
       <div class="asg-desc">One container, three types, turning last week's class into a template.</div>
     </a>
 
-    <a class="asg-card" data-opens="2026-10-05" href="a07.html">
+    <a class="asg-card" data-opens="2026-10-07" href="a07.html">
       <div class="asg-top">
         <span class="asg-id">a07</span>
         <span class="asg-status asg-live">Published</span>
