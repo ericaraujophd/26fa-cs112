@@ -122,17 +122,18 @@
       </ul>
     </div>
   </div>
-  <div class="callout">Python's <code>list</code> grows on demand. This week we build that, and find out what it costs.</div>
+  <div class="callout">This week we will build a Python-like list that grows if needed.</div>
 </section>
 
 <section>
-  <h2>Memory You Ask For</h2>
+  <h2>Dynamic Memory Allocation</h2>
   <pre><code class="language-cpp" data-trim>
 int *arr = new int[capacity];  // ask the OS for space
+                               // and a delete to match
 
 arr[0] = 42;                   // use it like an array
 
-delete [] arr;                 // give it back
+delete [] arr;                 // free the space afterwards
 arr = nullptr;                 // don't keep the address
   </code></pre>
   <ul>
@@ -140,7 +141,6 @@ arr = nullptr;                 // don't keep the address
     <li>The size can be a variable: decided while the program runs</li>
     <li><code>delete []</code> for arrays, plain <code>delete</code> for single objects</li>
   </ul>
-  <div class="callout callout-maroon">The <code>new</code> command needs a matching <code>delete</code>. So if you create new memory, you have to remember to free the space afterwards.</div>
 </section>
 
 <section>
@@ -230,7 +230,7 @@ arr = nullptr;                 // don't keep the address
   <path d="M757.5,212 L757.5,354" fill="none" stroke="#6E1C2E" stroke-width="2.8" marker-end="url(#mmArrow)"/>
   <text class="mm-note" x="773.5" y="280.0">the object holds only the address</text>
   </svg>
-  <div class="callout callout-maroon">The object goes away by itself at the end of its scope. The block it points at does not: that one is yours to free.</div>
+  <div class="callout callout-maroon">The object is on the stack. Its data is on the heap. Only the heap part needs a <code>delete</code>.</div>
 </section>
 
 <section>
@@ -238,55 +238,41 @@ arr = nullptr;                 // don't keep the address
   <pre style="font-size:0.6em"><code class="language-cpp" data-trim>
 class PyList {
  public:
-  PyList();
-  PyList(const PyList &amp;original);      // copy constructor
-  ~PyList();                        // destructor
-  unsigned getSize() const;
-  void     append(const Item &amp;it);
-  Item&amp;    operator[](unsigned i);
+  PyList();                        // starts empty, with no array
+  PyList(const PyList &amp;original);  // copy: builds its own array
+  ~PyList();                       // frees the array
+  unsigned getSize() const;        // how many items are in it
+  void     append(const Item &amp;it); // add one more at the end
+  Item&amp;    operator[](unsigned i); // v[i], on either side of an =
  private:
-  Item     *myArray;             // heap block
-  unsigned  mySize;              // slots in use
-  unsigned  myCapacity;          // slots available
+  Item     *myArray;     // address of the block, or nullptr
+  unsigned  mySize;      // slots used so far
+  unsigned  myCapacity;  // slots the block has room for
 };
   </code></pre>
-  <div class="callout"><strong>size</strong> is how many items you have. <strong>capacity</strong> is how many fit before it must grow. Keeping them apart is what makes appending cheap most of the time.</div>
+  <div class="callout"><strong>size</strong> is how many items you have. <strong>capacity</strong> is how many fit before it must grow.</div>
 </section>
 
-<section data-auto-animate>
-  <h2>Appending When There's Room</h2>
-  <pre data-id="grow"><code class="language-cpp" data-trim>
+<section>
+  <h2>Appending</h2>
+  <pre style="font-size:0.54em"><code class="language-cpp" data-trim>
 void PyList::append(const Item &amp;it) {
-    myArray[mySize] = it;
-    ++mySize;
-}
-  </code></pre>
-  <div class="mem-diagram" style="max-width:600px">
-    <div class="mem-row"><span class="mem-lbl">before</span><span class="mem-val">[ 3 | 7 | _ | _ ]</span><span class="mem-addr">size 2, cap 4</span></div>
-    <div class="mem-row"><span class="mem-lbl">after</span><span class="mem-val">[ 3 | 7 | 11 | _ ]</span><span class="mem-addr">size 3, cap 4</span></div>
-  </div>
-  <div class="callout">Two operations, no matter how big the array is. <strong>Constant time.</strong></div>
-</section>
-
-<section data-auto-animate>
-  <h2>Appending When It's Full</h2>
-  <pre data-id="grow"><code class="language-cpp" data-trim>
-void PyList::append(const Item &amp;it) {
-  if (mySize == myCapacity) {
-    unsigned cap = (myCapacity == 0) ? 1 : myCapacity*2;
-    Item *bigger = new Item[cap];
+  if (mySize == myCapacity) {      // no room left
+    myCapacity = (myCapacity == 0)
+               ? 1                 // first append
+               : myCapacity * 2;   // else double
+    Item *bigger = new Item[myCapacity];
     for (unsigned i = 0; i &lt; mySize; ++i) {
-      bigger[i] = myArray[i];      // copy everything
+      bigger[i] = myArray[i];      // copy each one
     }
-    delete [] myArray;             // release the old
-    myArray = bigger;
-    myCapacity = cap;
+    delete [] myArray;             // free the old
+    myArray = bigger;              // keep the new
   }
-  myArray[mySize] = it;
+  myArray[mySize] = it;            // room now
   ++mySize;
 }
   </code></pre>
-  <div class="callout callout-maroon">Now it copies all <em>n</em> items: <strong>linear time</strong>. Doubling means this happens rarely, more on that next week.</div>
+  <div class="callout callout-maroon">Most appends are two operations. A full array costs <em>n</em> copies first.</div>
 </section>
 
 <section>
