@@ -1949,7 +1949,7 @@ PyList b = a;    // 4
 <section>
   <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
   <div class="pi-question">
-    <strong>What does this print, and what happens at line 6?</strong>
+    <strong>What happens when this runs?</strong>
     <pre style="font-size:0.56em"><code class="language-cpp" data-trim>
 PyList a;                 // 1
 a.append(3);              // 2
@@ -1960,25 +1960,21 @@ cout &lt;&lt; a[0] &lt;&lt; endl;     // 5
     </code></pre>
   </div>
   <ul class="pi-choices pi-compact">
-    <li><span class="letter">A.</span> 3, and each object frees its own block</li>
-    <li class="fragment correct" data-fragment-index="1"><span class="letter">B.</span> 9, and the second destructor frees a block that is already gone</li>
-    <li><span class="letter">C.</span> 3, and one block is leaked</li>
-    <li><span class="letter">D.</span> 9, and line 3 does not compile</li>
+    <li><span class="letter">A.</span> Prints 3, then each block is freed once</li>
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">B.</span> Prints 9, then one block is freed twice</li>
+    <li><span class="letter">C.</span> Prints 3, and one block leaks</li>
+    <li><span class="letter">D.</span> Prints 9, then line 3 fails to compile</li>
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>B.</strong> <code>b[0] = 9</code> writes into the one block both objects point at, so <code>a[0]</code> reads 9. Then both destructors run on the same address: the first gives the block back, the second gives back something that is not there, and the allocator stops the program.
+    <strong>B.</strong> Both objects hold the one address, so <code>b[0] = 9</code> is also <code>a[0]</code>. Then the second destructor frees a block that is already gone.
   </div>
 </section>
 
 <section>
-  <h2>Deep Copy: the Copy Constructor</h2>
-  <div class="def-card" style="max-width:880px;margin:0 auto 0.35em">
-    <div class="def-name">copy constructor</div>
-    <p class="def-txt">A constructor whose one parameter is <strong>another object of the same class</strong>.
-    C++ calls it whenever a new object is built from an existing one. Write none and C++ supplies
-    one that copies the address; write one and you decide what copying means.</p>
-  </div>
+  <h2>The Copy Constructor</h2>
+  <p style="font-size:0.6em;color:#5c574f;margin:0 0 0.35em">A constructor whose
+  parameter is <strong>another object of the same class</strong>.</p>
   <pre style="font-size:0.52em"><code class="language-cpp" data-trim>
 PyList::PyList(const PyList &amp;orig) {   // orig is the one we copy FROM
   mySize     = orig.mySize;            // same count
@@ -1989,7 +1985,6 @@ PyList::PyList(const PyList &amp;orig) {   // orig is the one we copy FROM
   }
 }
   </code></pre>
-  <div class="callout">Allocate, copy, own: the same three moves as growing. Now each object frees its own block.</div>
 </section>
 
 <section>
