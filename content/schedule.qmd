@@ -414,7 +414,7 @@ learning objectives are there too, folded away until you want them.
              "read" is the plain version, four pages front to back. "booklet"
              is the same four pages imposed onto one sheet to be folded once. -->
         <div class="res-label">🗒️ Outlines</div>
-        <div class="res-val">Mon 28 Sep <a href="../outlines/CS112-outline-2026-09-28.pdf">read</a><span class="res-sep">·</span><a href="../outlines/CS112-outline-2026-09-28-booklet.pdf">booklet</a><span class="res-sep">·</span>Wed 30 Sep <a href="../outlines/CS112-outline-2026-09-30.pdf">read</a><span class="res-sep">·</span><a href="../outlines/CS112-outline-2026-09-30-booklet.pdf">booklet</a><span class="res-sep">·</span>Fri 2 Oct <a href="../outlines/CS112-outline-2026-10-02.pdf">read</a><span class="res-sep">·</span><a href="../outlines/CS112-outline-2026-10-02-booklet.pdf">booklet</a><span class="res-sep">·</span>Wed 7 Oct <a href="../outlines/CS112-outline-2026-10-07.pdf">read</a><span class="res-sep">·</span><a href="../outlines/CS112-outline-2026-10-07-booklet.pdf">booklet</a></div>
+        <div class="res-val">Mon 28 Sep <a href="../outlines/CS112-outline-2026-09-28.pdf">read</a><span class="res-sep">·</span><a href="../outlines/CS112-outline-2026-09-28-booklet.pdf">booklet</a><span class="res-sep">·</span>Wed 30 Sep <a href="../outlines/CS112-outline-2026-09-30.pdf">read</a><span class="res-sep">·</span><a href="../outlines/CS112-outline-2026-09-30-booklet.pdf">booklet</a><span class="res-sep">·</span>Fri 2 Oct <a href="../outlines/CS112-outline-2026-10-02.pdf">read</a><span class="res-sep">·</span><a href="../outlines/CS112-outline-2026-10-02-booklet.pdf">booklet</a></div>
       </div>
       <details class="slo-details">
         <summary class="slo-summary">Learning objectives <span class="slo-count">7</span></summary>
@@ -468,6 +468,12 @@ learning objectives are there too, folded away until you want them.
 
         <div class="res-label">🖥️ Slides</div>
         <div class="res-val"><a href="../slides/week05.html?fs=1" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week05.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week05-bw.pdf">print version</a></div>
+
+        <!-- One outline per class meeting: what we did that day, in order.
+             "read" is the plain version, four pages front to back. "booklet"
+             is the same four pages imposed onto one sheet to be folded once. -->
+        <div class="res-label">🗒️ Outlines</div>
+        <div class="res-val">Mon 5 Oct <a href="../outlines/CS112-outline-2026-10-05.pdf">read</a><span class="res-sep">·</span><a href="../outlines/CS112-outline-2026-10-05-booklet.pdf">booklet</a><span class="res-sep">·</span>Wed 7 Oct <a href="../outlines/CS112-outline-2026-10-07.pdf">read</a><span class="res-sep">·</span><a href="../outlines/CS112-outline-2026-10-07-booklet.pdf">booklet</a> <em>Monday's was written after the fact.</em></div>
       </div>
       <details class="slo-details">
         <summary class="slo-summary">Learning objectives <span class="slo-count">6</span></summary>
