@@ -184,6 +184,44 @@ cout &lt;&lt; scores[0];          // 90
 </section>
 
 <section>
+  <h2>What <code>vector</code> Gives You</h2>
+  <div class="two-col" style="font-size:0.56em">
+    <div>
+      <h3>Size and room</h3>
+      <ul>
+        <li><code>size()</code> how many are in it</li>
+        <li><code>capacity()</code> how many fit before it grows</li>
+        <li><code>empty()</code> is it size 0</li>
+        <li><code>reserve(n)</code> ask for room up front</li>
+        <li><code>resize(n)</code> change the size itself</li>
+      </ul>
+      <h3>Reaching an element</h3>
+      <ul>
+        <li><code>v[i]</code> no bounds check</li>
+        <li><code>at(i)</code> checked, throws if out of range</li>
+        <li><code>front()</code>, <code>back()</code> the ends</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Adding and removing</h3>
+      <ul>
+        <li><code>push_back(x)</code> our <code>append</code></li>
+        <li><code>pop_back()</code> drop the last</li>
+        <li><code>insert(pos, x)</code> put one anywhere</li>
+        <li><code>erase(pos)</code> take one out</li>
+        <li><code>clear()</code> empty it</li>
+      </ul>
+      <h3>Positions</h3>
+      <ul>
+        <li><code>begin()</code>, <code>end()</code> walk it forwards</li>
+        <li><code>rbegin()</code>, <code>rend()</code> walk it backwards</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout">Every one of these is something <code>PyList</code> either has or could have. The list is worth keeping: <code>w3schools.com/cpp/cpp_ref_vector.asp</code></div>
+</section>
+
+<section>
   <h2>Iterators</h2>
   <pre style="font-size:0.6em"><code class="language-cpp" data-trim>
 vector&lt;string&gt;::iterator it;
@@ -611,23 +649,25 @@ v[i]    →    *(myArray + i * sizeof(Item))
   <div class="two-col">
     <div>
       <h3>Room left</h3>
-      <pre style="font-size:0.46em"><code class="language-cpp" data-trim>
-myArray[mySize] = it;
-++mySize;
+      <pre style="font-size:0.44em"><code class="language-cpp" data-trim>
+myArray[mySize] = it;   // 1 store
+++mySize;               // 1 add
       </code></pre>
-      <p style="font-size:0.56em">2 operations → <strong>constant</strong></p>
+      <p style="font-size:0.54em"><strong>2</strong> operations, whatever <em>n</em> is</p>
     </div>
     <div>
       <h3>Full</h3>
-      <pre style="font-size:0.46em"><code class="language-cpp" data-trim>
-allocate 2n
-copy n items
-delete old
+      <pre style="font-size:0.44em"><code class="language-cpp" data-trim>
+new Item[2 * n]   // room for 2n items
+copy n items      // 3 ops each
+delete [] old     // give it back
+myArray = bigger  // repoint
       </code></pre>
-      <p style="font-size:0.56em">≈ 3n + 5 → <strong>linear</strong></p>
+      <p style="font-size:0.54em"><strong>3n + 5</strong>: three per item copied, plus five
+      that do not depend on <em>n</em> (allocate, store, delete, repoint, count)</p>
     </div>
   </div>
-  <div class="callout callout-maroon">So which is it? The honest answer is "usually cheap, occasionally expensive", and we need a way to talk about that.</div>
+  <p style="text-align:center;font-size:0.84em;margin-top:0.35em"><strong>So which is it?</strong></p>
 </section>
 
 <!--CS112-SCREEN-ONLY-->
@@ -686,31 +726,52 @@ delete old
     <text class="am-cap" x="681" y="56">copying an item</text>
   <g class="fragment fade-in" data-fragment-index="0">
     <rect x="170" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="210" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="250" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="290" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="330" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="370" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="410" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="450" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="490" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="530" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="570" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="610" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="650" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="690" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="730" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="770" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
   </g>
   <g class="fragment fade-in" data-fragment-index="1">
-    <g class="fragment fade-out" data-fragment-index="4">
+    <rect x="210" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="1">
+    <g class="fragment fade-out" data-fragment-index="17">
     <rect x="210" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    </g>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="2">
+    <rect x="250" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="2">
+    <g class="fragment fade-out" data-fragment-index="17">
     <rect x="250" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
     <rect x="250" y="243" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    </g>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="3">
+    <rect x="290" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="4">
+    <rect x="330" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="4">
+    <g class="fragment fade-out" data-fragment-index="17">
     <rect x="330" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
     <rect x="330" y="243" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
     <rect x="330" y="218" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
     <rect x="330" y="193" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    </g>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="5">
+    <rect x="370" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="6">
+    <rect x="410" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="7">
+    <rect x="450" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="8">
+    <rect x="490" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="8">
+    <g class="fragment fade-out" data-fragment-index="17">
     <rect x="490" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
     <rect x="490" y="243" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
     <rect x="490" y="218" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
@@ -721,23 +782,56 @@ delete old
     <rect x="490" y="93" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
     </g>
   </g>
+  <g class="fragment fade-in" data-fragment-index="9">
+    <rect x="530" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="10">
+    <rect x="570" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="11">
+    <rect x="610" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="12">
+    <rect x="650" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="13">
+    <rect x="690" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="14">
+    <rect x="730" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="15">
+    <rect x="770" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="0">
+    <path class="am-brk" d="M170,348 V354 H204 V348"/>
+    <text class="am-cap" x="187.0" y="370" text-anchor="middle">1</text>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="1">
+    <path class="am-brk" d="M210,348 V354 H244 V348"/>
+    <text class="am-cap" x="227.0" y="370" text-anchor="middle">2</text>
+  </g>
   <g class="fragment fade-in" data-fragment-index="2">
     <path class="am-brk" d="M250,348 V354 H324 V348"/>
     <text class="am-cap" x="287.0" y="370" text-anchor="middle">capacity 4</text>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="4">
     <path class="am-brk" d="M330,348 V354 H484 V348"/>
     <text class="am-cap" x="407.0" y="370" text-anchor="middle">capacity 8</text>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="8">
     <path class="am-brk" d="M490,348 V354 H804 V348"/>
     <text class="am-cap" x="647.0" y="370" text-anchor="middle">capacity 16</text>
   </g>
-  <g class="fragment fade-in" data-fragment-index="3">
-    <g class="fragment fade-out" data-fragment-index="5">
+  <g class="fragment fade-in" data-fragment-index="16">
+    <g class="fragment fade-out" data-fragment-index="17">
     <path d="M284,245 Q295.5,215 307.0,235" fill="none" stroke="#6E1C2E" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#amArrow)"/>
     <path d="M364,195 Q395.5,165 427.0,235" fill="none" stroke="#6E1C2E" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#amArrow)"/>
     <path d="M524,95 Q595.5,65 667.0,235" fill="none" stroke="#6E1C2E" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#amArrow)"/>
     <text class="am-note" x="170" y="71">15 copies, paid off by the appends after them</text>
     </g>
   </g>
-  <g class="fragment fade-in" data-fragment-index="4">
+  <g class="fragment fade-in" data-fragment-index="17">
     <rect x="170" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
     <rect x="210" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
     <rect x="250" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
@@ -754,7 +848,7 @@ delete old
     <rect x="690" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
     <rect x="730" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
   </g>
-  <g class="fragment fade-in" data-fragment-index="5">
+  <g class="fragment fade-in" data-fragment-index="18">
     <path d="M160,268 H818" stroke="#6E1C2E" stroke-width="2.2" stroke-dasharray="7 5"/>
     <text class="am-sum" x="170" y="71">31 blocks / 16 appends = 1.94 each</text>
     <text class="am-gone" x="170" y="91">extend the table and it stays under 2</text>
@@ -765,7 +859,7 @@ delete old
 <!--CS112-PRINT-STEPS
 <section>
   <h2>Amortized Constant Time</h2>
-  <p class="step-cap"><span class="step-n">1</span>Every append stores its item. That is one block.</p>
+  <p class="step-cap"><span class="step-n">1</span>Append 1: there is room, so it just stores the item.</p>
   <svg class="step-anim step-still" viewBox="0 0 1020 420" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A bar chart of the work each append costs, with the copying spread over the appends that follow it">
   <style>
   .am-axis  { stroke: #b5b0a6; stroke-width: 2; fill: none; }
@@ -818,27 +912,14 @@ delete old
   <rect x="654" y="44" width="20" height="14" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
     <text class="am-cap" x="681" y="56">copying an item</text>
   <rect x="170" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="210" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="250" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="290" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="330" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="370" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="410" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="450" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="490" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="530" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="570" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="610" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="650" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="690" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="730" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="770" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <path class="am-brk" d="M170,348 V354 H204 V348"/>
+    <text class="am-cap" x="187.0" y="370" text-anchor="middle">1</text>
   </svg>
 </section>
 
 <section>
   <h2>Amortized Constant Time</h2>
-  <p class="step-cap"><span class="step-n">2</span>An append that finds the array full copies everything first.</p>
+  <p class="step-cap"><span class="step-n">2</span>Append 3: the array is full, so it copies 2 items first.</p>
   <svg class="step-anim step-still" viewBox="0 0 1020 420" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A bar chart of the work each append costs, with the copying spread over the appends that follow it">
   <style>
   .am-axis  { stroke: #b5b0a6; stroke-width: 2; fill: none; }
@@ -891,136 +972,191 @@ delete old
   <rect x="654" y="44" width="20" height="14" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
     <text class="am-cap" x="681" y="56">copying an item</text>
   <rect x="170" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="210" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="250" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="290" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="330" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="370" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="410" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="450" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="490" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="530" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="570" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="610" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="650" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="690" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="730" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="770" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="210" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
   <rect x="210" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
-    <rect x="250" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+  <rect x="250" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="250" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
     <rect x="250" y="243" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
-    <rect x="330" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
-    <rect x="330" y="243" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
-    <rect x="330" y="218" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
-    <rect x="330" y="193" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
-    <rect x="490" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
-    <rect x="490" y="243" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
-    <rect x="490" y="218" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
-    <rect x="490" y="193" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
-    <rect x="490" y="168" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
-    <rect x="490" y="143" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
-    <rect x="490" y="118" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
-    <rect x="490" y="93" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
-  </svg>
-</section>
-
-<section>
-  <h2>Amortized Constant Time</h2>
-  <p class="step-cap"><span class="step-n">3</span>The tall ones are where capacity doubled: 1, 2, 4 and 8 copies.</p>
-  <svg class="step-anim step-still" viewBox="0 0 1020 420" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A bar chart of the work each append costs, with the copying spread over the appends that follow it">
-  <style>
-  .am-axis  { stroke: #b5b0a6; stroke-width: 2; fill: none; }
-  .am-grid  { stroke: #ece7df; stroke-width: 1; fill: none; }
-  .am-tick  { font: 12px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
-  .am-lab   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #8a857c;
-              letter-spacing: 0.06em; }
-  .am-note  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #6E1C2E; }
-  .am-gone  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
-  .am-cap   { font: 12px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
-  .am-sum   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
-  .am-brk   { stroke: #c9c4bb; stroke-width: 1.6; fill: none; }
-</style>
-  <defs>
-    <marker id="amArrow" viewBox="0 0 10 10" refX="9" refY="5"
-            markerWidth="8" markerHeight="8" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
-  </defs>
-  <path class="am-grid" d="M160,290 H814"/>
-  <text class="am-tick" x="152" y="294" text-anchor="end">2</text>
-  <path class="am-grid" d="M160,240 H814"/>
-  <text class="am-tick" x="152" y="244" text-anchor="end">4</text>
-  <path class="am-grid" d="M160,190 H814"/>
-  <text class="am-tick" x="152" y="194" text-anchor="end">6</text>
-  <path class="am-grid" d="M160,140 H814"/>
-  <text class="am-tick" x="152" y="144" text-anchor="end">8</text>
-  <path class="am-grid" d="M160,90 H814"/>
-  <text class="am-tick" x="152" y="94" text-anchor="end">10</text>
-  <path class="am-axis" d="M160,79 V318 H818"/>
-  <text class="am-tick" x="187.0" y="336" text-anchor="middle">1</text>
-  <text class="am-tick" x="227.0" y="336" text-anchor="middle">2</text>
-  <text class="am-tick" x="267.0" y="336" text-anchor="middle">3</text>
-  <text class="am-tick" x="307.0" y="336" text-anchor="middle">4</text>
-  <text class="am-tick" x="347.0" y="336" text-anchor="middle">5</text>
-  <text class="am-tick" x="387.0" y="336" text-anchor="middle">6</text>
-  <text class="am-tick" x="427.0" y="336" text-anchor="middle">7</text>
-  <text class="am-tick" x="467.0" y="336" text-anchor="middle">8</text>
-  <text class="am-tick" x="507.0" y="336" text-anchor="middle">9</text>
-  <text class="am-tick" x="547.0" y="336" text-anchor="middle">10</text>
-  <text class="am-tick" x="587.0" y="336" text-anchor="middle">11</text>
-  <text class="am-tick" x="627.0" y="336" text-anchor="middle">12</text>
-  <text class="am-tick" x="667.0" y="336" text-anchor="middle">13</text>
-  <text class="am-tick" x="707.0" y="336" text-anchor="middle">14</text>
-  <text class="am-tick" x="747.0" y="336" text-anchor="middle">15</text>
-  <text class="am-tick" x="787.0" y="336" text-anchor="middle">16</text>
-  <text class="am-lab" x="487.0" y="404" text-anchor="middle">THE n-TH APPEND</text>
-  <text class="am-lab" x="136" y="193" text-anchor="middle" transform="rotate(-90 136 193)">BLOCKS OF WORK</text>
-  <rect x="504" y="44" width="20" height="14" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <text class="am-cap" x="531" y="56">storing the item</text>
-  <rect x="654" y="44" width="20" height="14" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
-    <text class="am-cap" x="681" y="56">copying an item</text>
-  <rect x="170" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="210" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="250" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="290" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="330" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="370" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="410" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="450" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="490" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="530" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="570" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="610" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="650" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="690" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="730" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="770" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-  <rect x="210" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
-    <rect x="250" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
-    <rect x="250" y="243" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
-    <rect x="330" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
-    <rect x="330" y="243" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
-    <rect x="330" y="218" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
-    <rect x="330" y="193" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
-    <rect x="490" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
-    <rect x="490" y="243" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
-    <rect x="490" y="218" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
-    <rect x="490" y="193" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
-    <rect x="490" y="168" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
-    <rect x="490" y="143" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
-    <rect x="490" y="118" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
-    <rect x="490" y="93" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+  <path class="am-brk" d="M170,348 V354 H204 V348"/>
+    <text class="am-cap" x="187.0" y="370" text-anchor="middle">1</text>
+  <path class="am-brk" d="M210,348 V354 H244 V348"/>
+    <text class="am-cap" x="227.0" y="370" text-anchor="middle">2</text>
   <path class="am-brk" d="M250,348 V354 H324 V348"/>
     <text class="am-cap" x="287.0" y="370" text-anchor="middle">capacity 4</text>
-    <path class="am-brk" d="M330,348 V354 H484 V348"/>
+  </svg>
+</section>
+
+<section>
+  <h2>Amortized Constant Time</h2>
+  <p class="step-cap"><span class="step-n">3</span>Append 5: the array is full, so it copies 4 items first.</p>
+  <svg class="step-anim step-still" viewBox="0 0 1020 420" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A bar chart of the work each append costs, with the copying spread over the appends that follow it">
+  <style>
+  .am-axis  { stroke: #b5b0a6; stroke-width: 2; fill: none; }
+  .am-grid  { stroke: #ece7df; stroke-width: 1; fill: none; }
+  .am-tick  { font: 12px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
+  .am-lab   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #8a857c;
+              letter-spacing: 0.06em; }
+  .am-note  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #6E1C2E; }
+  .am-gone  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .am-cap   { font: 12px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .am-sum   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .am-brk   { stroke: #c9c4bb; stroke-width: 1.6; fill: none; }
+</style>
+  <defs>
+    <marker id="amArrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
+  </defs>
+  <path class="am-grid" d="M160,290 H814"/>
+  <text class="am-tick" x="152" y="294" text-anchor="end">2</text>
+  <path class="am-grid" d="M160,240 H814"/>
+  <text class="am-tick" x="152" y="244" text-anchor="end">4</text>
+  <path class="am-grid" d="M160,190 H814"/>
+  <text class="am-tick" x="152" y="194" text-anchor="end">6</text>
+  <path class="am-grid" d="M160,140 H814"/>
+  <text class="am-tick" x="152" y="144" text-anchor="end">8</text>
+  <path class="am-grid" d="M160,90 H814"/>
+  <text class="am-tick" x="152" y="94" text-anchor="end">10</text>
+  <path class="am-axis" d="M160,79 V318 H818"/>
+  <text class="am-tick" x="187.0" y="336" text-anchor="middle">1</text>
+  <text class="am-tick" x="227.0" y="336" text-anchor="middle">2</text>
+  <text class="am-tick" x="267.0" y="336" text-anchor="middle">3</text>
+  <text class="am-tick" x="307.0" y="336" text-anchor="middle">4</text>
+  <text class="am-tick" x="347.0" y="336" text-anchor="middle">5</text>
+  <text class="am-tick" x="387.0" y="336" text-anchor="middle">6</text>
+  <text class="am-tick" x="427.0" y="336" text-anchor="middle">7</text>
+  <text class="am-tick" x="467.0" y="336" text-anchor="middle">8</text>
+  <text class="am-tick" x="507.0" y="336" text-anchor="middle">9</text>
+  <text class="am-tick" x="547.0" y="336" text-anchor="middle">10</text>
+  <text class="am-tick" x="587.0" y="336" text-anchor="middle">11</text>
+  <text class="am-tick" x="627.0" y="336" text-anchor="middle">12</text>
+  <text class="am-tick" x="667.0" y="336" text-anchor="middle">13</text>
+  <text class="am-tick" x="707.0" y="336" text-anchor="middle">14</text>
+  <text class="am-tick" x="747.0" y="336" text-anchor="middle">15</text>
+  <text class="am-tick" x="787.0" y="336" text-anchor="middle">16</text>
+  <text class="am-lab" x="487.0" y="404" text-anchor="middle">THE n-TH APPEND</text>
+  <text class="am-lab" x="136" y="193" text-anchor="middle" transform="rotate(-90 136 193)">BLOCKS OF WORK</text>
+  <rect x="504" y="44" width="20" height="14" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+    <text class="am-cap" x="531" y="56">storing the item</text>
+  <rect x="654" y="44" width="20" height="14" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <text class="am-cap" x="681" y="56">copying an item</text>
+  <rect x="170" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="210" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="210" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+  <rect x="250" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="250" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="250" y="243" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+  <rect x="290" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="330" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="330" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="330" y="243" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="330" y="218" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="330" y="193" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+  <path class="am-brk" d="M170,348 V354 H204 V348"/>
+    <text class="am-cap" x="187.0" y="370" text-anchor="middle">1</text>
+  <path class="am-brk" d="M210,348 V354 H244 V348"/>
+    <text class="am-cap" x="227.0" y="370" text-anchor="middle">2</text>
+  <path class="am-brk" d="M250,348 V354 H324 V348"/>
+    <text class="am-cap" x="287.0" y="370" text-anchor="middle">capacity 4</text>
+  <path class="am-brk" d="M330,348 V354 H484 V348"/>
     <text class="am-cap" x="407.0" y="370" text-anchor="middle">capacity 8</text>
-    <path class="am-brk" d="M490,348 V354 H804 V348"/>
+  </svg>
+</section>
+
+<section>
+  <h2>Amortized Constant Time</h2>
+  <p class="step-cap"><span class="step-n">4</span>Append 9: the array is full, so it copies 8 items first.</p>
+  <svg class="step-anim step-still" viewBox="0 0 1020 420" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A bar chart of the work each append costs, with the copying spread over the appends that follow it">
+  <style>
+  .am-axis  { stroke: #b5b0a6; stroke-width: 2; fill: none; }
+  .am-grid  { stroke: #ece7df; stroke-width: 1; fill: none; }
+  .am-tick  { font: 12px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
+  .am-lab   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #8a857c;
+              letter-spacing: 0.06em; }
+  .am-note  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #6E1C2E; }
+  .am-gone  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .am-cap   { font: 12px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .am-sum   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .am-brk   { stroke: #c9c4bb; stroke-width: 1.6; fill: none; }
+</style>
+  <defs>
+    <marker id="amArrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
+  </defs>
+  <path class="am-grid" d="M160,290 H814"/>
+  <text class="am-tick" x="152" y="294" text-anchor="end">2</text>
+  <path class="am-grid" d="M160,240 H814"/>
+  <text class="am-tick" x="152" y="244" text-anchor="end">4</text>
+  <path class="am-grid" d="M160,190 H814"/>
+  <text class="am-tick" x="152" y="194" text-anchor="end">6</text>
+  <path class="am-grid" d="M160,140 H814"/>
+  <text class="am-tick" x="152" y="144" text-anchor="end">8</text>
+  <path class="am-grid" d="M160,90 H814"/>
+  <text class="am-tick" x="152" y="94" text-anchor="end">10</text>
+  <path class="am-axis" d="M160,79 V318 H818"/>
+  <text class="am-tick" x="187.0" y="336" text-anchor="middle">1</text>
+  <text class="am-tick" x="227.0" y="336" text-anchor="middle">2</text>
+  <text class="am-tick" x="267.0" y="336" text-anchor="middle">3</text>
+  <text class="am-tick" x="307.0" y="336" text-anchor="middle">4</text>
+  <text class="am-tick" x="347.0" y="336" text-anchor="middle">5</text>
+  <text class="am-tick" x="387.0" y="336" text-anchor="middle">6</text>
+  <text class="am-tick" x="427.0" y="336" text-anchor="middle">7</text>
+  <text class="am-tick" x="467.0" y="336" text-anchor="middle">8</text>
+  <text class="am-tick" x="507.0" y="336" text-anchor="middle">9</text>
+  <text class="am-tick" x="547.0" y="336" text-anchor="middle">10</text>
+  <text class="am-tick" x="587.0" y="336" text-anchor="middle">11</text>
+  <text class="am-tick" x="627.0" y="336" text-anchor="middle">12</text>
+  <text class="am-tick" x="667.0" y="336" text-anchor="middle">13</text>
+  <text class="am-tick" x="707.0" y="336" text-anchor="middle">14</text>
+  <text class="am-tick" x="747.0" y="336" text-anchor="middle">15</text>
+  <text class="am-tick" x="787.0" y="336" text-anchor="middle">16</text>
+  <text class="am-lab" x="487.0" y="404" text-anchor="middle">THE n-TH APPEND</text>
+  <text class="am-lab" x="136" y="193" text-anchor="middle" transform="rotate(-90 136 193)">BLOCKS OF WORK</text>
+  <rect x="504" y="44" width="20" height="14" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+    <text class="am-cap" x="531" y="56">storing the item</text>
+  <rect x="654" y="44" width="20" height="14" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <text class="am-cap" x="681" y="56">copying an item</text>
+  <rect x="170" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="210" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="210" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+  <rect x="250" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="250" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="250" y="243" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+  <rect x="290" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="330" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="330" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="330" y="243" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="330" y="218" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="330" y="193" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+  <rect x="370" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="410" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="450" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="490" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="490" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="243" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="218" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="193" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="168" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="143" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="118" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="93" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+  <path class="am-brk" d="M170,348 V354 H204 V348"/>
+    <text class="am-cap" x="187.0" y="370" text-anchor="middle">1</text>
+  <path class="am-brk" d="M210,348 V354 H244 V348"/>
+    <text class="am-cap" x="227.0" y="370" text-anchor="middle">2</text>
+  <path class="am-brk" d="M250,348 V354 H324 V348"/>
+    <text class="am-cap" x="287.0" y="370" text-anchor="middle">capacity 4</text>
+  <path class="am-brk" d="M330,348 V354 H484 V348"/>
+    <text class="am-cap" x="407.0" y="370" text-anchor="middle">capacity 8</text>
+  <path class="am-brk" d="M490,348 V354 H804 V348"/>
     <text class="am-cap" x="647.0" y="370" text-anchor="middle">capacity 16</text>
   </svg>
 </section>
 
 <section>
   <h2>Amortized Constant Time</h2>
-  <p class="step-cap"><span class="step-n">4</span>Each spike is paid for by the appends that follow it.</p>
+  <p class="step-cap"><span class="step-n">5</span>Append 16: there is room, so it just stores the item.</p>
   <svg class="step-anim step-still" viewBox="0 0 1020 420" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A bar chart of the work each append costs, with the copying spread over the appends that follow it">
   <style>
   .am-axis  { stroke: #b5b0a6; stroke-width: 2; fill: none; }
@@ -1073,29 +1209,22 @@ delete old
   <rect x="654" y="44" width="20" height="14" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
     <text class="am-cap" x="681" y="56">copying an item</text>
   <rect x="170" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="210" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="250" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="290" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="330" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="370" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="410" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="450" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="490" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="530" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="570" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="610" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="650" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="690" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="730" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="770" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="210" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
   <rect x="210" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
-    <rect x="250" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+  <rect x="250" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="250" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
     <rect x="250" y="243" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
-    <rect x="330" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+  <rect x="290" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="330" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="330" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
     <rect x="330" y="243" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
     <rect x="330" y="218" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
     <rect x="330" y="193" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
-    <rect x="490" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+  <rect x="370" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="410" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="450" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="490" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="490" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
     <rect x="490" y="243" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
     <rect x="490" y="218" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
     <rect x="490" y="193" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
@@ -1103,11 +1232,120 @@ delete old
     <rect x="490" y="143" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
     <rect x="490" y="118" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
     <rect x="490" y="93" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+  <rect x="530" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="570" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="610" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="650" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="690" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="730" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="770" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <path class="am-brk" d="M170,348 V354 H204 V348"/>
+    <text class="am-cap" x="187.0" y="370" text-anchor="middle">1</text>
+  <path class="am-brk" d="M210,348 V354 H244 V348"/>
+    <text class="am-cap" x="227.0" y="370" text-anchor="middle">2</text>
   <path class="am-brk" d="M250,348 V354 H324 V348"/>
     <text class="am-cap" x="287.0" y="370" text-anchor="middle">capacity 4</text>
-    <path class="am-brk" d="M330,348 V354 H484 V348"/>
+  <path class="am-brk" d="M330,348 V354 H484 V348"/>
     <text class="am-cap" x="407.0" y="370" text-anchor="middle">capacity 8</text>
-    <path class="am-brk" d="M490,348 V354 H804 V348"/>
+  <path class="am-brk" d="M490,348 V354 H804 V348"/>
+    <text class="am-cap" x="647.0" y="370" text-anchor="middle">capacity 16</text>
+  </svg>
+</section>
+
+<section>
+  <h2>Amortized Constant Time</h2>
+  <p class="step-cap"><span class="step-n">6</span>Each spike is paid for by the appends that follow it.</p>
+  <svg class="step-anim step-still" viewBox="0 0 1020 420" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A bar chart of the work each append costs, with the copying spread over the appends that follow it">
+  <style>
+  .am-axis  { stroke: #b5b0a6; stroke-width: 2; fill: none; }
+  .am-grid  { stroke: #ece7df; stroke-width: 1; fill: none; }
+  .am-tick  { font: 12px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
+  .am-lab   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #8a857c;
+              letter-spacing: 0.06em; }
+  .am-note  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #6E1C2E; }
+  .am-gone  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .am-cap   { font: 12px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .am-sum   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .am-brk   { stroke: #c9c4bb; stroke-width: 1.6; fill: none; }
+</style>
+  <defs>
+    <marker id="amArrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
+  </defs>
+  <path class="am-grid" d="M160,290 H814"/>
+  <text class="am-tick" x="152" y="294" text-anchor="end">2</text>
+  <path class="am-grid" d="M160,240 H814"/>
+  <text class="am-tick" x="152" y="244" text-anchor="end">4</text>
+  <path class="am-grid" d="M160,190 H814"/>
+  <text class="am-tick" x="152" y="194" text-anchor="end">6</text>
+  <path class="am-grid" d="M160,140 H814"/>
+  <text class="am-tick" x="152" y="144" text-anchor="end">8</text>
+  <path class="am-grid" d="M160,90 H814"/>
+  <text class="am-tick" x="152" y="94" text-anchor="end">10</text>
+  <path class="am-axis" d="M160,79 V318 H818"/>
+  <text class="am-tick" x="187.0" y="336" text-anchor="middle">1</text>
+  <text class="am-tick" x="227.0" y="336" text-anchor="middle">2</text>
+  <text class="am-tick" x="267.0" y="336" text-anchor="middle">3</text>
+  <text class="am-tick" x="307.0" y="336" text-anchor="middle">4</text>
+  <text class="am-tick" x="347.0" y="336" text-anchor="middle">5</text>
+  <text class="am-tick" x="387.0" y="336" text-anchor="middle">6</text>
+  <text class="am-tick" x="427.0" y="336" text-anchor="middle">7</text>
+  <text class="am-tick" x="467.0" y="336" text-anchor="middle">8</text>
+  <text class="am-tick" x="507.0" y="336" text-anchor="middle">9</text>
+  <text class="am-tick" x="547.0" y="336" text-anchor="middle">10</text>
+  <text class="am-tick" x="587.0" y="336" text-anchor="middle">11</text>
+  <text class="am-tick" x="627.0" y="336" text-anchor="middle">12</text>
+  <text class="am-tick" x="667.0" y="336" text-anchor="middle">13</text>
+  <text class="am-tick" x="707.0" y="336" text-anchor="middle">14</text>
+  <text class="am-tick" x="747.0" y="336" text-anchor="middle">15</text>
+  <text class="am-tick" x="787.0" y="336" text-anchor="middle">16</text>
+  <text class="am-lab" x="487.0" y="404" text-anchor="middle">THE n-TH APPEND</text>
+  <text class="am-lab" x="136" y="193" text-anchor="middle" transform="rotate(-90 136 193)">BLOCKS OF WORK</text>
+  <rect x="504" y="44" width="20" height="14" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+    <text class="am-cap" x="531" y="56">storing the item</text>
+  <rect x="654" y="44" width="20" height="14" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <text class="am-cap" x="681" y="56">copying an item</text>
+  <rect x="170" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="210" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="210" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+  <rect x="250" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="250" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="250" y="243" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+  <rect x="290" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="330" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="330" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="330" y="243" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="330" y="218" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="330" y="193" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+  <rect x="370" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="410" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="450" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="490" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="490" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="243" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="218" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="193" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="168" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="143" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="118" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="93" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+  <rect x="530" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="570" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="610" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="650" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="690" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="730" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="770" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <path class="am-brk" d="M170,348 V354 H204 V348"/>
+    <text class="am-cap" x="187.0" y="370" text-anchor="middle">1</text>
+  <path class="am-brk" d="M210,348 V354 H244 V348"/>
+    <text class="am-cap" x="227.0" y="370" text-anchor="middle">2</text>
+  <path class="am-brk" d="M250,348 V354 H324 V348"/>
+    <text class="am-cap" x="287.0" y="370" text-anchor="middle">capacity 4</text>
+  <path class="am-brk" d="M330,348 V354 H484 V348"/>
+    <text class="am-cap" x="407.0" y="370" text-anchor="middle">capacity 8</text>
+  <path class="am-brk" d="M490,348 V354 H804 V348"/>
     <text class="am-cap" x="647.0" y="370" text-anchor="middle">capacity 16</text>
   <path d="M284,245 Q295.5,215 307.0,235" fill="none" stroke="#6E1C2E" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#amArrow)"/>
     <path d="M364,195 Q395.5,165 427.0,235" fill="none" stroke="#6E1C2E" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#amArrow)"/>
@@ -1118,7 +1356,7 @@ delete old
 
 <section>
   <h2>Amortized Constant Time</h2>
-  <p class="step-cap"><span class="step-n">5</span>The same blocks, spread out. Nothing was added or removed.</p>
+  <p class="step-cap"><span class="step-n">7</span>The same blocks, laid flat. Nothing was added or removed.</p>
   <svg class="step-anim step-still" viewBox="0 0 1020 420" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A bar chart of the work each append costs, with the copying spread over the appends that follow it">
   <style>
   .am-axis  { stroke: #b5b0a6; stroke-width: 2; fill: none; }
@@ -1171,31 +1409,31 @@ delete old
   <rect x="654" y="44" width="20" height="14" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
     <text class="am-cap" x="681" y="56">copying an item</text>
   <rect x="170" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="210" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="250" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="290" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="330" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="370" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="410" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="450" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="490" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="530" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="570" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="610" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="650" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="690" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="730" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="770" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="210" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="250" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="290" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="330" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="370" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="410" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="450" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="490" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="530" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="570" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="610" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="650" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="690" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="730" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="770" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <path class="am-brk" d="M170,348 V354 H204 V348"/>
+    <text class="am-cap" x="187.0" y="370" text-anchor="middle">1</text>
+  <path class="am-brk" d="M210,348 V354 H244 V348"/>
+    <text class="am-cap" x="227.0" y="370" text-anchor="middle">2</text>
   <path class="am-brk" d="M250,348 V354 H324 V348"/>
     <text class="am-cap" x="287.0" y="370" text-anchor="middle">capacity 4</text>
-    <path class="am-brk" d="M330,348 V354 H484 V348"/>
+  <path class="am-brk" d="M330,348 V354 H484 V348"/>
     <text class="am-cap" x="407.0" y="370" text-anchor="middle">capacity 8</text>
-    <path class="am-brk" d="M490,348 V354 H804 V348"/>
+  <path class="am-brk" d="M490,348 V354 H804 V348"/>
     <text class="am-cap" x="647.0" y="370" text-anchor="middle">capacity 16</text>
-  <path d="M284,245 Q295.5,215 307.0,235" fill="none" stroke="#6E1C2E" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#amArrow)"/>
-    <path d="M364,195 Q395.5,165 427.0,235" fill="none" stroke="#6E1C2E" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#amArrow)"/>
-    <path d="M524,95 Q595.5,65 667.0,235" fill="none" stroke="#6E1C2E" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#amArrow)"/>
-    <text class="am-note" x="170" y="71">15 copies, paid off by the appends after them</text>
   <rect x="170" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
     <rect x="210" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
     <rect x="250" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
@@ -1216,7 +1454,7 @@ delete old
 
 <section>
   <h2>Amortized Constant Time</h2>
-  <p class="step-cap"><span class="step-n">6</span>31 blocks over 16 appends, and the average does not grow with n.</p>
+  <p class="step-cap"><span class="step-n">8</span>31 blocks over 16 appends, and the average does not grow with n.</p>
   <svg class="step-anim step-still" viewBox="0 0 1020 420" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A bar chart of the work each append costs, with the copying spread over the appends that follow it">
   <style>
   .am-axis  { stroke: #b5b0a6; stroke-width: 2; fill: none; }
@@ -1269,26 +1507,30 @@ delete old
   <rect x="654" y="44" width="20" height="14" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
     <text class="am-cap" x="681" y="56">copying an item</text>
   <rect x="170" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="210" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="250" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="290" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="330" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="370" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="410" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="450" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="490" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="530" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="570" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="610" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="650" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="690" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="730" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
-    <rect x="770" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="210" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="250" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="290" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="330" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="370" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="410" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="450" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="490" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="530" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="570" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="610" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="650" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="690" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="730" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="770" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <path class="am-brk" d="M170,348 V354 H204 V348"/>
+    <text class="am-cap" x="187.0" y="370" text-anchor="middle">1</text>
+  <path class="am-brk" d="M210,348 V354 H244 V348"/>
+    <text class="am-cap" x="227.0" y="370" text-anchor="middle">2</text>
   <path class="am-brk" d="M250,348 V354 H324 V348"/>
     <text class="am-cap" x="287.0" y="370" text-anchor="middle">capacity 4</text>
-    <path class="am-brk" d="M330,348 V354 H484 V348"/>
+  <path class="am-brk" d="M330,348 V354 H484 V348"/>
     <text class="am-cap" x="407.0" y="370" text-anchor="middle">capacity 8</text>
-    <path class="am-brk" d="M490,348 V354 H804 V348"/>
+  <path class="am-brk" d="M490,348 V354 H804 V348"/>
     <text class="am-cap" x="647.0" y="370" text-anchor="middle">capacity 16</text>
   <rect x="170" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
     <rect x="210" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
@@ -1313,19 +1555,33 @@ delete old
 /CS112-PRINT-STEPS-->
 
 <section>
+  <h2>The Same Thing in Algebra</h2>
+  <p style="font-size:0.62em">Suppose the array is full, holding <em>n</em> items. Take the next <em>n</em> appends:</p>
+  <ul style="font-size:0.62em">
+    <li>The first one is the expensive one. Call its cost <strong><em>n</em></strong>.</li>
+    <li>The other <em>n</em> &minus; 1 find room. Call each one <strong>1</strong>.</li>
+  </ul>
+  <div class="mem-diagram" style="max-width:720px;font-size:0.72em">
+    <div class="mem-row"><span class="mem-lbl">total</span><span class="mem-val">n + (n &minus; 1) &times; 1 = 2n &minus; 1</span></div>
+    <div class="mem-row"><span class="mem-lbl">per append</span><span class="mem-val">(2n &minus; 1) / n = 2 &minus; 1/n</span></div>
+  </div>
+  <div class="callout callout-maroon">As <em>n</em> grows, 1/<em>n</em> shrinks and the average settles just under <strong>2</strong>. It does not grow with <em>n</em>, and that is what <strong>amortized constant</strong> means.</div>
+</section>
+
+<section>
   <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
   <div class="pi-question">
-    <strong>What is the time complexity of <code>append()</code> on a dynamic array?</strong>
+    <strong>An earlier <code>append</code> grew the array by one slot each time it filled up. What did one append cost then?</strong>
   </div>
   <ul class="pi-choices pi-compact">
-    <li><span class="letter">A.</span> Constant; it's just two operations</li>
-    <li><span class="letter">B.</span> Linear; it might copy everything</li>
-    <li class="fragment correct" data-fragment-index="1"><span class="letter">C.</span> Amortized constant, usually two operations, occasionally n</li>
-    <li><span class="letter">D.</span> It depends on the Item type</li>
+    <li><span class="letter">A.</span> Constant: it only adds one slot</li>
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">B.</span> Linear: every append copies the whole array</li>
+    <li><span class="letter">C.</span> Amortized constant</li>
+    <li><span class="letter">D.</span> It depends on the <code>Item</code> type</li>
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>C.</strong> Any single append <em>could</em> be linear, but doubling makes those rare enough that a long run of appends averages out to constant. That average-over-a-sequence is exactly what &ldquo;amortized&rdquo; means.
+    <strong>B.</strong> Growing by one leaves the array full again, so the next append finds it full too. Every append allocates, copies all <em>n</em> items and frees. None of them is cheap, so there is nothing for the expensive ones to be spread across.
   </div>
 </section>
 
@@ -1334,6 +1590,40 @@ delete old
   <div class="pi-question">
     <strong>Inserting at the <em>front</em> of a dynamic array is…</strong>
   </div>
+  <svg viewBox="0 0 980 230" style="width:92%;height:auto;display:block;margin:0.3em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Inserting at the front of an array: every element already there moves up one slot first">
+  <style>
+  .if-val   { font: 700 22px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .if-new   { font: 700 22px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .if-idx   { font: 12px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
+  .if-note  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #6E1C2E; }
+  .if-gone  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .if-code  { font: 700 16px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+</style>
+  <defs><marker id="ifArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker></defs>
+  <rect x="150" y="96" width="92" height="56" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+  <text class="if-idx" x="196.0" y="84" text-anchor="middle">[0]</text>
+  <text class="if-val" x="196.0" y="133" text-anchor="middle">3</text>
+  <rect x="250" y="96" width="92" height="56" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+  <text class="if-idx" x="296.0" y="84" text-anchor="middle">[1]</text>
+  <text class="if-val" x="296.0" y="133" text-anchor="middle">7</text>
+  <rect x="350" y="96" width="92" height="56" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+  <text class="if-idx" x="396.0" y="84" text-anchor="middle">[2]</text>
+  <text class="if-val" x="396.0" y="133" text-anchor="middle">11</text>
+  <rect x="450" y="96" width="92" height="56" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+  <text class="if-idx" x="496.0" y="84" text-anchor="middle">[3]</text>
+  <text class="if-val" x="496.0" y="133" text-anchor="middle">5</text>
+  <rect x="550" y="96" width="92" height="56" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="2.2" stroke-dasharray="6 5"/>
+  <text class="if-idx" x="596.0" y="84" text-anchor="middle">[4]</text>
+  <path d="M510.0,170 H582.0" fill="none" stroke="#6E1C2E" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#ifArrow)"/>
+  <path d="M410.0,170 H482.0" fill="none" stroke="#6E1C2E" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#ifArrow)"/>
+  <path d="M310.0,170 H382.0" fill="none" stroke="#6E1C2E" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#ifArrow)"/>
+  <path d="M210.0,170 H282.0" fill="none" stroke="#6E1C2E" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#ifArrow)"/>
+  <text class="if-code" x="150" y="36">insert 9 at the front</text>
+  <text class="if-new" x="196.0" y="68" text-anchor="middle">9</text>
+  <path d="M196.0,74 V88" fill="none" stroke="#6E1C2E" stroke-width="2.4" marker-end="url(#ifArrow)"/>
+  <text class="if-note" x="660" y="176">4 moves before the new value fits</text>
+  <text class="if-gone" x="660" y="196">and the last one moves first</text>
+  </svg>
   <ul class="pi-choices pi-compact">
     <li><span class="letter">A.</span> Constant time</li>
     <li><span class="letter">B.</span> Amortized constant time</li>
@@ -1342,28 +1632,8 @@ delete old
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>C.</strong> There's no way around it: every existing element moves one slot to make room. That cost is what pushes us toward a different structure next week.
+    <strong>C.</strong> Every element already there moves one slot first, and the last one has to move first of all.
   </div>
-</section>
-
-<section class="demo-slide" data-background-color="#6E1C2E">
-  <h1>Demo</h1>
-  <div class="demo-rule"></div>
-  <svg class="demo-art" viewBox="0 -34 320 246" xmlns="http://www.w3.org/2000/svg">
-    <path d="M254,12 C250,0 260,-6 256,-20 C270,-11 267,1 261,12 Z" fill="#E8873A"/>
-    <path d="M266,12 C264,4 270,0 268,-10 C277,-3 275,5 271,12 Z" fill="#F2CD00"/>
-    <path d="M243,12 C241,5 246,2 244,-6 C251,-1 250,6 247,12 Z" fill="#E8873A" opacity=".75"/>
-    <rect x="40" y="10" width="240" height="150" rx="9" fill="#1e1f1a" stroke="#C49A2C" stroke-width="3"/>
-    <text x="58" y="46" font-family="'Fira Code',Consolas,monospace" font-size="15.0" fill="#9be36b">$ make vec_test</text>
-    <text x="58" y="76" font-family="'Fira Code',Consolas,monospace" font-size="8.8" fill="#ff7b72">error: no match for 'operator&lt;&lt;'</text>
-    <text x="58" y="96" font-family="'Fira Code',Consolas,monospace" font-size="8.8" fill="#ff7b72">(operand types are ostream and Item)</text>
-    <text x="58" y="134" font-family="'Fira Code',Consolas,monospace" font-size="15" fill="#9be36b">$</text>
-    <rect x="72" y="122" width="9" height="15" fill="#9be36b"/>
-    <path d="M22,168 L298,168 L314,196 L6,196 Z" fill="#eceae3" stroke="#8d8d86" stroke-width="2.5" stroke-linejoin="round"/>
-    <rect x="140" y="174" width="40" height="6" rx="3" fill="#cfcdc6"/>
-  </svg>
-  <p class="demo-cap">One template, many types.</p>
-  <p class="demo-sub">(the template compiles fine. Item does not.)</p>
 </section>
 
 <section>
