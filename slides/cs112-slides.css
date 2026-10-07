@@ -82,6 +82,20 @@
       font-family: 'Fira Code', 'Consolas', monospace;
     }
 
+    /* The chip rule above is for INLINE code, and a <pre><code> inside a TTYN
+       question matched it too, so a six-line listing came out as one long
+       cream chip instead of the dark panel every other code block on the deck
+       uses. Put the panel back. */
+    .reveal .pi-question pre code,
+    .reveal .answer-box pre code {
+      background: #272822;
+      color: #f8f8f2;
+      padding: 0.8em 1em;
+      border-radius: 8px;
+      font-size: 1em;
+      display: block;
+    }
+
     .reveal h2 code, .reveal h1 code {
       font-family: 'Fira Code', 'Consolas', monospace;
       background: #f3ece0;
