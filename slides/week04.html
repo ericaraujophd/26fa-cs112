@@ -854,14 +854,15 @@ PyList::~PyList() {     // a ~ then the class name
   <h2>Rule of Thumb</h2>
   <svg class="step-anim" viewBox="0 0 1200 452" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Four lines of code walked through, with the stack and the heap beside them">
   <style>
+  .sf-src { font: 17px 'Fira Code','Consolas',monospace; fill: #e8e6e0; }
+  .sf-kw  { fill: #f07178; }
+  .sf-ty  { fill: #a6e22e; }
+  .sf-cm  { font: italic 15px 'Fira Code','Consolas',monospace; fill: #8f8a80; }
+  .sf-cap { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
+            letter-spacing: 0.06em; }
+
   .dt-zone  { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
               letter-spacing: 0.08em; }
-  .dt-src   { font: 17px 'Fira Code','Consolas',monospace; fill: #e8e6e0; }
-  .dt-kw    { fill: #f07178; }
-  .dt-ty    { fill: #a6e22e; }
-  .dt-cm    { font: italic 15px 'Fira Code','Consolas',monospace; fill: #8f8a80; }
-  .dt-cap   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
-              letter-spacing: 0.06em; }
   .dt-code  { font: 15px 'Fira Code','Consolas',monospace; fill: #3a3630; }
   .dt-val   { font: 700 24px 'Fira Code','Consolas',monospace; fill: #3a3630; }
   .dt-ptr   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
@@ -879,7 +880,7 @@ PyList::~PyList() {     // a ~ then the class name
             markerWidth="9" markerHeight="9" orient="auto">
       <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
   </defs>
-  <rect x="20" y="76" width="420" height="134" rx="9" fill="#272822"/>
+  <rect x="20" y="76" width="420" height="143" rx="9" fill="#272822"/>
   <g class="fragment fade-in" data-fragment-index="0">
     <g class="fragment fade-out" data-fragment-index="1">
     <rect x="28" y="120" width="404" height="25" rx="5" fill="#6E1C2E" opacity="0.30"/>
@@ -895,12 +896,12 @@ PyList::~PyList() {     // a ~ then the class name
     <rect x="28" y="174" width="404" height="25" rx="5" fill="#6E1C2E" opacity="0.30"/>
     </g>
   </g>
-  <text class="dt-src" x="40" y="112"><tspan class="dt-ty">void</tspan> f() {</text>
-  <text class="dt-src" x="62" y="139"><tspan class="dt-ty">PyList</tspan> v;</text>
-  <text class="dt-src" x="62" y="166">v.append(<tspan class="dt-kw">3</tspan>);</text>
-  <text class="dt-src" x="40" y="193">}</text>
+  <text class="sf-src" x="40" y="112"><tspan class="sf-ty">void</tspan> f() {</text>
+    <text class="sf-src" x="62" y="139"><tspan class="sf-ty">PyList</tspan> v;</text>
+    <text class="sf-src" x="62" y="166">v.append(<tspan class="sf-kw">3</tspan>);</text>
+    <text class="sf-src" x="40" y="193">}</text>
   <g class="fragment fade-in" data-fragment-index="2">
-    <text class="dt-cm" x="70" y="193">// v is destroyed here</text>
+    <text class="sf-cm" x="70" y="193">// v is destroyed here</text>
   </g>
   <text class="dt-zone" x="500" y="64">THE STACK</text>
   <text class="dt-zone" x="862" y="64">THE HEAP</text>
@@ -981,11 +982,11 @@ PyList::~PyList() {     // a ~ then the class name
     </g>
   </g>
   <g class="fragment fade-in" data-fragment-index="5">
-    <text class="dt-cap" x="20" y="232">THE ONE YOU WRITE</text>
-    <rect x="20" y="246" width="420" height="107" rx="9" fill="#272822"/>
-    <text class="dt-src" x="40" y="282"><tspan class="dt-ty">PyList</tspan>::~<tspan class="dt-ty">PyList</tspan>() {</text>
-    <text class="dt-src" x="62" y="309"><tspan class="dt-kw">delete</tspan> [] myArray;</text>
-    <text class="dt-src" x="40" y="336">}</text>
+    <text class="sf-cap" x="20" y="241">THE ONE YOU WRITE</text>
+    <rect x="20" y="255" width="420" height="116" rx="9" fill="#272822"/>
+    <text class="sf-src" x="40" y="291"><tspan class="sf-ty">PyList</tspan>::~<tspan class="sf-ty">PyList</tspan>() {</text>
+    <text class="sf-src" x="62" y="318"><tspan class="sf-kw">delete</tspan> [] myArray;</text>
+    <text class="sf-src" x="40" y="345">}</text>
   </g>
   <g class="fragment fade-in" data-fragment-index="5">
     <rect x="858" y="166" width="94" height="70" rx="7" fill="#F2F1EE" opacity="0.9"/>
@@ -1002,14 +1003,15 @@ PyList::~PyList() {     // a ~ then the class name
   <p class="step-cap"><span class="step-n">1</span><code>PyList v;</code> puts an object on the stack. There is no block yet.</p>
   <svg class="step-anim step-still" viewBox="0 0 1200 452" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Four lines of code walked through, with the stack and the heap beside them">
   <style>
+  .sf-src { font: 17px 'Fira Code','Consolas',monospace; fill: #e8e6e0; }
+  .sf-kw  { fill: #f07178; }
+  .sf-ty  { fill: #a6e22e; }
+  .sf-cm  { font: italic 15px 'Fira Code','Consolas',monospace; fill: #8f8a80; }
+  .sf-cap { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
+            letter-spacing: 0.06em; }
+
   .dt-zone  { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
               letter-spacing: 0.08em; }
-  .dt-src   { font: 17px 'Fira Code','Consolas',monospace; fill: #e8e6e0; }
-  .dt-kw    { fill: #f07178; }
-  .dt-ty    { fill: #a6e22e; }
-  .dt-cm    { font: italic 15px 'Fira Code','Consolas',monospace; fill: #8f8a80; }
-  .dt-cap   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
-              letter-spacing: 0.06em; }
   .dt-code  { font: 15px 'Fira Code','Consolas',monospace; fill: #3a3630; }
   .dt-val   { font: 700 24px 'Fira Code','Consolas',monospace; fill: #3a3630; }
   .dt-ptr   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
@@ -1027,12 +1029,12 @@ PyList::~PyList() {     // a ~ then the class name
             markerWidth="9" markerHeight="9" orient="auto">
       <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
   </defs>
-  <rect x="20" y="76" width="420" height="134" rx="9" fill="#272822"/>
+  <rect x="20" y="76" width="420" height="143" rx="9" fill="#272822"/>
   <rect x="28" y="120" width="404" height="25" rx="5" fill="#6E1C2E" opacity="0.30"/>
-  <text class="dt-src" x="40" y="112"><tspan class="dt-ty">void</tspan> f() {</text>
-  <text class="dt-src" x="62" y="139"><tspan class="dt-ty">PyList</tspan> v;</text>
-  <text class="dt-src" x="62" y="166">v.append(<tspan class="dt-kw">3</tspan>);</text>
-  <text class="dt-src" x="40" y="193">}</text>
+  <text class="sf-src" x="40" y="112"><tspan class="sf-ty">void</tspan> f() {</text>
+    <text class="sf-src" x="62" y="139"><tspan class="sf-ty">PyList</tspan> v;</text>
+    <text class="sf-src" x="62" y="166">v.append(<tspan class="sf-kw">3</tspan>);</text>
+    <text class="sf-src" x="40" y="193">}</text>
   <text class="dt-zone" x="500" y="64">THE STACK</text>
   <text class="dt-zone" x="862" y="64">THE HEAP</text>
   <rect x="500" y="86" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
@@ -1054,14 +1056,15 @@ PyList::~PyList() {     // a ~ then the class name
   <p class="step-cap"><span class="step-n">2</span><code>v.append(3);</code> asks the heap for a block. <code>myArray</code> holds its address.</p>
   <svg class="step-anim step-still" viewBox="0 0 1200 452" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Four lines of code walked through, with the stack and the heap beside them">
   <style>
+  .sf-src { font: 17px 'Fira Code','Consolas',monospace; fill: #e8e6e0; }
+  .sf-kw  { fill: #f07178; }
+  .sf-ty  { fill: #a6e22e; }
+  .sf-cm  { font: italic 15px 'Fira Code','Consolas',monospace; fill: #8f8a80; }
+  .sf-cap { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
+            letter-spacing: 0.06em; }
+
   .dt-zone  { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
               letter-spacing: 0.08em; }
-  .dt-src   { font: 17px 'Fira Code','Consolas',monospace; fill: #e8e6e0; }
-  .dt-kw    { fill: #f07178; }
-  .dt-ty    { fill: #a6e22e; }
-  .dt-cm    { font: italic 15px 'Fira Code','Consolas',monospace; fill: #8f8a80; }
-  .dt-cap   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
-              letter-spacing: 0.06em; }
   .dt-code  { font: 15px 'Fira Code','Consolas',monospace; fill: #3a3630; }
   .dt-val   { font: 700 24px 'Fira Code','Consolas',monospace; fill: #3a3630; }
   .dt-ptr   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
@@ -1079,12 +1082,12 @@ PyList::~PyList() {     // a ~ then the class name
             markerWidth="9" markerHeight="9" orient="auto">
       <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
   </defs>
-  <rect x="20" y="76" width="420" height="134" rx="9" fill="#272822"/>
+  <rect x="20" y="76" width="420" height="143" rx="9" fill="#272822"/>
   <rect x="28" y="147" width="404" height="25" rx="5" fill="#6E1C2E" opacity="0.30"/>
-  <text class="dt-src" x="40" y="112"><tspan class="dt-ty">void</tspan> f() {</text>
-  <text class="dt-src" x="62" y="139"><tspan class="dt-ty">PyList</tspan> v;</text>
-  <text class="dt-src" x="62" y="166">v.append(<tspan class="dt-kw">3</tspan>);</text>
-  <text class="dt-src" x="40" y="193">}</text>
+  <text class="sf-src" x="40" y="112"><tspan class="sf-ty">void</tspan> f() {</text>
+    <text class="sf-src" x="62" y="139"><tspan class="sf-ty">PyList</tspan> v;</text>
+    <text class="sf-src" x="62" y="166">v.append(<tspan class="sf-kw">3</tspan>);</text>
+    <text class="sf-src" x="40" y="193">}</text>
   <text class="dt-zone" x="500" y="64">THE STACK</text>
   <text class="dt-zone" x="862" y="64">THE HEAP</text>
   <rect x="500" y="86" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
@@ -1111,14 +1114,15 @@ PyList::~PyList() {     // a ~ then the class name
   <p class="step-cap"><span class="step-n">3</span>The closing brace destroys <code>v</code>, so a destructor runs.</p>
   <svg class="step-anim step-still" viewBox="0 0 1200 452" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Four lines of code walked through, with the stack and the heap beside them">
   <style>
+  .sf-src { font: 17px 'Fira Code','Consolas',monospace; fill: #e8e6e0; }
+  .sf-kw  { fill: #f07178; }
+  .sf-ty  { fill: #a6e22e; }
+  .sf-cm  { font: italic 15px 'Fira Code','Consolas',monospace; fill: #8f8a80; }
+  .sf-cap { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
+            letter-spacing: 0.06em; }
+
   .dt-zone  { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
               letter-spacing: 0.08em; }
-  .dt-src   { font: 17px 'Fira Code','Consolas',monospace; fill: #e8e6e0; }
-  .dt-kw    { fill: #f07178; }
-  .dt-ty    { fill: #a6e22e; }
-  .dt-cm    { font: italic 15px 'Fira Code','Consolas',monospace; fill: #8f8a80; }
-  .dt-cap   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
-              letter-spacing: 0.06em; }
   .dt-code  { font: 15px 'Fira Code','Consolas',monospace; fill: #3a3630; }
   .dt-val   { font: 700 24px 'Fira Code','Consolas',monospace; fill: #3a3630; }
   .dt-ptr   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
@@ -1136,13 +1140,13 @@ PyList::~PyList() {     // a ~ then the class name
             markerWidth="9" markerHeight="9" orient="auto">
       <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
   </defs>
-  <rect x="20" y="76" width="420" height="134" rx="9" fill="#272822"/>
+  <rect x="20" y="76" width="420" height="143" rx="9" fill="#272822"/>
   <rect x="28" y="174" width="404" height="25" rx="5" fill="#6E1C2E" opacity="0.30"/>
-  <text class="dt-src" x="40" y="112"><tspan class="dt-ty">void</tspan> f() {</text>
-  <text class="dt-src" x="62" y="139"><tspan class="dt-ty">PyList</tspan> v;</text>
-  <text class="dt-src" x="62" y="166">v.append(<tspan class="dt-kw">3</tspan>);</text>
-  <text class="dt-src" x="40" y="193">}</text>
-  <text class="dt-cm" x="70" y="193">// v is destroyed here</text>
+  <text class="sf-src" x="40" y="112"><tspan class="sf-ty">void</tspan> f() {</text>
+    <text class="sf-src" x="62" y="139"><tspan class="sf-ty">PyList</tspan> v;</text>
+    <text class="sf-src" x="62" y="166">v.append(<tspan class="sf-kw">3</tspan>);</text>
+    <text class="sf-src" x="40" y="193">}</text>
+  <text class="sf-cm" x="70" y="193">// v is destroyed here</text>
   <text class="dt-zone" x="500" y="64">THE STACK</text>
   <text class="dt-zone" x="862" y="64">THE HEAP</text>
   <rect x="500" y="86" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
@@ -1172,14 +1176,15 @@ PyList::~PyList() {     // a ~ then the class name
   <p class="step-cap"><span class="step-n">4</span>The one C++ wrote destroys the three members, the pointer included.</p>
   <svg class="step-anim step-still" viewBox="0 0 1200 452" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Four lines of code walked through, with the stack and the heap beside them">
   <style>
+  .sf-src { font: 17px 'Fira Code','Consolas',monospace; fill: #e8e6e0; }
+  .sf-kw  { fill: #f07178; }
+  .sf-ty  { fill: #a6e22e; }
+  .sf-cm  { font: italic 15px 'Fira Code','Consolas',monospace; fill: #8f8a80; }
+  .sf-cap { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
+            letter-spacing: 0.06em; }
+
   .dt-zone  { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
               letter-spacing: 0.08em; }
-  .dt-src   { font: 17px 'Fira Code','Consolas',monospace; fill: #e8e6e0; }
-  .dt-kw    { fill: #f07178; }
-  .dt-ty    { fill: #a6e22e; }
-  .dt-cm    { font: italic 15px 'Fira Code','Consolas',monospace; fill: #8f8a80; }
-  .dt-cap   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
-              letter-spacing: 0.06em; }
   .dt-code  { font: 15px 'Fira Code','Consolas',monospace; fill: #3a3630; }
   .dt-val   { font: 700 24px 'Fira Code','Consolas',monospace; fill: #3a3630; }
   .dt-ptr   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
@@ -1197,13 +1202,13 @@ PyList::~PyList() {     // a ~ then the class name
             markerWidth="9" markerHeight="9" orient="auto">
       <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
   </defs>
-  <rect x="20" y="76" width="420" height="134" rx="9" fill="#272822"/>
+  <rect x="20" y="76" width="420" height="143" rx="9" fill="#272822"/>
   <rect x="28" y="174" width="404" height="25" rx="5" fill="#6E1C2E" opacity="0.30"/>
-  <text class="dt-src" x="40" y="112"><tspan class="dt-ty">void</tspan> f() {</text>
-  <text class="dt-src" x="62" y="139"><tspan class="dt-ty">PyList</tspan> v;</text>
-  <text class="dt-src" x="62" y="166">v.append(<tspan class="dt-kw">3</tspan>);</text>
-  <text class="dt-src" x="40" y="193">}</text>
-  <text class="dt-cm" x="70" y="193">// v is destroyed here</text>
+  <text class="sf-src" x="40" y="112"><tspan class="sf-ty">void</tspan> f() {</text>
+    <text class="sf-src" x="62" y="139"><tspan class="sf-ty">PyList</tspan> v;</text>
+    <text class="sf-src" x="62" y="166">v.append(<tspan class="sf-kw">3</tspan>);</text>
+    <text class="sf-src" x="40" y="193">}</text>
+  <text class="sf-cm" x="70" y="193">// v is destroyed here</text>
   <text class="dt-zone" x="500" y="64">THE STACK</text>
   <text class="dt-zone" x="862" y="64">THE HEAP</text>
   <rect x="500" y="86" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
@@ -1237,14 +1242,15 @@ PyList::~PyList() {     // a ~ then the class name
   <p class="step-cap"><span class="step-n">5</span>The block is still allocated, and nothing points at it.</p>
   <svg class="step-anim step-still" viewBox="0 0 1200 452" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Four lines of code walked through, with the stack and the heap beside them">
   <style>
+  .sf-src { font: 17px 'Fira Code','Consolas',monospace; fill: #e8e6e0; }
+  .sf-kw  { fill: #f07178; }
+  .sf-ty  { fill: #a6e22e; }
+  .sf-cm  { font: italic 15px 'Fira Code','Consolas',monospace; fill: #8f8a80; }
+  .sf-cap { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
+            letter-spacing: 0.06em; }
+
   .dt-zone  { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
               letter-spacing: 0.08em; }
-  .dt-src   { font: 17px 'Fira Code','Consolas',monospace; fill: #e8e6e0; }
-  .dt-kw    { fill: #f07178; }
-  .dt-ty    { fill: #a6e22e; }
-  .dt-cm    { font: italic 15px 'Fira Code','Consolas',monospace; fill: #8f8a80; }
-  .dt-cap   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
-              letter-spacing: 0.06em; }
   .dt-code  { font: 15px 'Fira Code','Consolas',monospace; fill: #3a3630; }
   .dt-val   { font: 700 24px 'Fira Code','Consolas',monospace; fill: #3a3630; }
   .dt-ptr   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
@@ -1262,13 +1268,13 @@ PyList::~PyList() {     // a ~ then the class name
             markerWidth="9" markerHeight="9" orient="auto">
       <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
   </defs>
-  <rect x="20" y="76" width="420" height="134" rx="9" fill="#272822"/>
+  <rect x="20" y="76" width="420" height="143" rx="9" fill="#272822"/>
   <rect x="28" y="174" width="404" height="25" rx="5" fill="#6E1C2E" opacity="0.30"/>
-  <text class="dt-src" x="40" y="112"><tspan class="dt-ty">void</tspan> f() {</text>
-  <text class="dt-src" x="62" y="139"><tspan class="dt-ty">PyList</tspan> v;</text>
-  <text class="dt-src" x="62" y="166">v.append(<tspan class="dt-kw">3</tspan>);</text>
-  <text class="dt-src" x="40" y="193">}</text>
-  <text class="dt-cm" x="70" y="193">// v is destroyed here</text>
+  <text class="sf-src" x="40" y="112"><tspan class="sf-ty">void</tspan> f() {</text>
+    <text class="sf-src" x="62" y="139"><tspan class="sf-ty">PyList</tspan> v;</text>
+    <text class="sf-src" x="62" y="166">v.append(<tspan class="sf-kw">3</tspan>);</text>
+    <text class="sf-src" x="40" y="193">}</text>
+  <text class="sf-cm" x="70" y="193">// v is destroyed here</text>
   <text class="dt-zone" x="500" y="64">THE STACK</text>
   <text class="dt-zone" x="862" y="64">THE HEAP</text>
   <rect x="500" y="86" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
@@ -1307,14 +1313,15 @@ PyList::~PyList() {     // a ~ then the class name
   <p class="step-cap"><span class="step-n">6</span>A destructor you write is what gives the block back.</p>
   <svg class="step-anim step-still" viewBox="0 0 1200 452" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Four lines of code walked through, with the stack and the heap beside them">
   <style>
+  .sf-src { font: 17px 'Fira Code','Consolas',monospace; fill: #e8e6e0; }
+  .sf-kw  { fill: #f07178; }
+  .sf-ty  { fill: #a6e22e; }
+  .sf-cm  { font: italic 15px 'Fira Code','Consolas',monospace; fill: #8f8a80; }
+  .sf-cap { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
+            letter-spacing: 0.06em; }
+
   .dt-zone  { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
               letter-spacing: 0.08em; }
-  .dt-src   { font: 17px 'Fira Code','Consolas',monospace; fill: #e8e6e0; }
-  .dt-kw    { fill: #f07178; }
-  .dt-ty    { fill: #a6e22e; }
-  .dt-cm    { font: italic 15px 'Fira Code','Consolas',monospace; fill: #8f8a80; }
-  .dt-cap   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
-              letter-spacing: 0.06em; }
   .dt-code  { font: 15px 'Fira Code','Consolas',monospace; fill: #3a3630; }
   .dt-val   { font: 700 24px 'Fira Code','Consolas',monospace; fill: #3a3630; }
   .dt-ptr   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
@@ -1332,12 +1339,12 @@ PyList::~PyList() {     // a ~ then the class name
             markerWidth="9" markerHeight="9" orient="auto">
       <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
   </defs>
-  <rect x="20" y="76" width="420" height="134" rx="9" fill="#272822"/>
-  <text class="dt-src" x="40" y="112"><tspan class="dt-ty">void</tspan> f() {</text>
-  <text class="dt-src" x="62" y="139"><tspan class="dt-ty">PyList</tspan> v;</text>
-  <text class="dt-src" x="62" y="166">v.append(<tspan class="dt-kw">3</tspan>);</text>
-  <text class="dt-src" x="40" y="193">}</text>
-  <text class="dt-cm" x="70" y="193">// v is destroyed here</text>
+  <rect x="20" y="76" width="420" height="143" rx="9" fill="#272822"/>
+  <text class="sf-src" x="40" y="112"><tspan class="sf-ty">void</tspan> f() {</text>
+    <text class="sf-src" x="62" y="139"><tspan class="sf-ty">PyList</tspan> v;</text>
+    <text class="sf-src" x="62" y="166">v.append(<tspan class="sf-kw">3</tspan>);</text>
+    <text class="sf-src" x="40" y="193">}</text>
+  <text class="sf-cm" x="70" y="193">// v is destroyed here</text>
   <text class="dt-zone" x="500" y="64">THE STACK</text>
   <text class="dt-zone" x="862" y="64">THE HEAP</text>
   <rect x="500" y="86" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
@@ -1363,11 +1370,11 @@ PyList::~PyList() {     // a ~ then the class name
     <path d="M510,167.0 H704" stroke="#b0aca4" stroke-width="2.2"/>
     <path d="M510,201.0 H704" stroke="#b0aca4" stroke-width="2.2"/>
     <text class="dt-gone" x="500" y="288">all three members, the pointer included</text>
-  <text class="dt-cap" x="20" y="232">THE ONE YOU WRITE</text>
-    <rect x="20" y="246" width="420" height="107" rx="9" fill="#272822"/>
-    <text class="dt-src" x="40" y="282"><tspan class="dt-ty">PyList</tspan>::~<tspan class="dt-ty">PyList</tspan>() {</text>
-    <text class="dt-src" x="62" y="309"><tspan class="dt-kw">delete</tspan> [] myArray;</text>
-    <text class="dt-src" x="40" y="336">}</text>
+  <text class="sf-cap" x="20" y="241">THE ONE YOU WRITE</text>
+    <rect x="20" y="255" width="420" height="116" rx="9" fill="#272822"/>
+    <text class="sf-src" x="40" y="291"><tspan class="sf-ty">PyList</tspan>::~<tspan class="sf-ty">PyList</tspan>() {</text>
+    <text class="sf-src" x="62" y="318"><tspan class="sf-kw">delete</tspan> [] myArray;</text>
+    <text class="sf-src" x="40" y="345">}</text>
   <rect x="858" y="166" width="94" height="70" rx="7" fill="#F2F1EE" opacity="0.9"/>
     <path d="M862,201.0 H948" stroke="#b0aca4" stroke-width="2.4"/>
     <text class="dt-note" x="862" y="316">given back</text>
@@ -1402,35 +1409,40 @@ void f() {                  // 1
 </section>
 
 <section>
-  <h2>Copying a PyList</h2>
   <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
   <div class="pi-question">
-    <strong>What exactly got copied?</strong>
+    <strong>After line 4, what does <code>b.myArray</code> hold?</strong>
     <pre style="font-size:0.56em"><code class="language-cpp" data-trim>
-PyList a;        // mySize 0, myCapacity 0, myArray nullptr
-a.append(3);     // a block of 1 on the heap
-a.append(7);     // full, so a new block of 2
-
-PyList b = a;    // b is built FROM a
+PyList a;        // 1
+a.append(3);     // 2
+a.append(7);     // 3
+PyList b = a;    // 4
     </code></pre>
   </div>
   <ul class="pi-choices pi-compact">
-    <li class="fragment correct" data-fragment-index="1"><span class="letter">A.</span> The three members, so <code>b.myArray</code> holds the same address as <code>a.myArray</code></li>
-    <li><span class="letter">B.</span> The two items, into a block of <code>b</code>'s own</li>
-    <li><span class="letter">C.</span> Nothing: <code>b</code> is another name for <code>a</code></li>
-    <li><span class="letter">D.</span> Only the pointer; <code>mySize</code> and <code>myCapacity</code> stay 0</li>
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">A.</span> The same address as <code>a.myArray</code></li>
+    <li><span class="letter">B.</span> The address of a new block</li>
+    <li><span class="letter">C.</span> <code>nullptr</code></li>
+    <li><span class="letter">D.</span> The two items themselves</li>
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>A.</strong> Nobody wrote a copy constructor, so C++ supplies one, and it copies each member in turn. <code>myArray</code> is a member, and what a pointer holds is an address. The block is never copied, because the block is not a member.
+    <strong>A.</strong> Nobody wrote a copy constructor, so C++ supplies one, and it copies each member. <code>myArray</code> is a member, and a pointer holds an address. One block, two owners.
   </div>
 </section>
 
 <!--CS112-SCREEN-ONLY-->
 <section>
-  <h2>One Block, Two Owners</h2>
-  <svg class="step-anim" viewBox="0 0 1150 452" style="width:94%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two objects whose pointers hold the same address, and the double free that follows">
+  <h2>The Shallow Copy</h2>
+  <svg class="step-anim" viewBox="0 0 1200 430" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Five lines of code walked through: two objects end up holding one address, and the block is freed twice">
   <style>
+  .sf-src { font: 17px 'Fira Code','Consolas',monospace; fill: #e8e6e0; }
+  .sf-kw  { fill: #f07178; }
+  .sf-ty  { fill: #a6e22e; }
+  .sf-cm  { font: italic 15px 'Fira Code','Consolas',monospace; fill: #8f8a80; }
+  .sf-cap { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
+            letter-spacing: 0.06em; }
+
   .sh-zone  { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
               letter-spacing: 0.08em; }
   .sh-code  { font: 15px 'Fira Code','Consolas',monospace; fill: #3a3630; }
@@ -1451,85 +1463,118 @@ PyList b = a;    // b is built FROM a
             markerWidth="9" markerHeight="9" orient="auto">
       <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
   </defs>
-  <text class="sh-zone" x="46" y="52">THE STACK</text>
-  <text class="sh-zone" x="520" y="166">THE HEAP</text>
-  <rect x="46" y="78" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
-    <path d="M54,78 h198 a8,8 0 0 1 8,8 v22 H46 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
-    <text class="sh-head" x="60" y="99">PyList a;</text>
-    <text class="sh-code" x="60" y="131">mySize</text>
-    <text class="sh-code" x="244" y="131" text-anchor="end">2</text>
-    <path class="sh-rule" d="M47,142 H259"/>
-    <text class="sh-code" x="60" y="165">myCapacity</text>
-    <text class="sh-code" x="244" y="165" text-anchor="end">2</text>
-    <path class="sh-rule" d="M47,176 H259"/>
-    <text class="sh-code" x="60" y="199">myArray</text>
-    <text class="sh-ptr" x="244" y="199" text-anchor="end">0x1A40</text>
-  <rect x="520" y="196" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
-  <rect x="614" y="196" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
-  <text class="sh-addr" x="520" y="186">0x1A40</text>
-  <g class="fragment fade-out" data-fragment-index="1">
-    <text class="sh-val" x="563.0" y="238" text-anchor="middle">3</text>
-  </g>
-  <g class="fragment fade-in" data-fragment-index="1">
-    <text class="sh-new" x="563.0" y="238" text-anchor="middle">9</text>
-  </g>
-  <text class="sh-val" x="657.0" y="238" text-anchor="middle">7</text>
-  <path d="M266,193 L508,219.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#shArrow)"/>
+  <rect x="20" y="72" width="420" height="197" rx="9" fill="#272822"/>
   <g class="fragment fade-in" data-fragment-index="0">
-    <rect x="46" y="248" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
-    <path d="M54,248 h198 a8,8 0 0 1 8,8 v22 H46 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
-    <text class="sh-head" x="60" y="269">PyList b;</text>
-    <text class="sh-code" x="60" y="301">mySize</text>
-    <text class="sh-code" x="244" y="301" text-anchor="end">2</text>
-    <path class="sh-rule" d="M47,312 H259"/>
-    <text class="sh-code" x="60" y="335">myCapacity</text>
-    <text class="sh-code" x="244" y="335" text-anchor="end">2</text>
-    <path class="sh-rule" d="M47,346 H259"/>
-    <text class="sh-code" x="60" y="369">myArray</text>
-    <text class="sh-ptr" x="244" y="369" text-anchor="end">0x1A40</text>
-    <path d="M266,363 L508,239.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#shArrow)"/>
-    <text class="sh-note" x="46" y="406">PyList b = a;</text>
-    <text class="sh-gone" x="46" y="426">the same address, not a second block</text>
+    <g class="fragment fade-out" data-fragment-index="1">
+    <rect x="28" y="116" width="404" height="52" rx="5" fill="#6E1C2E" opacity="0.30"/>
+    </g>
   </g>
   <g class="fragment fade-in" data-fragment-index="1">
-    <rect x="516" y="192" width="94" height="70" rx="7" fill="none" stroke="#6E1C2E" stroke-width="2.4"/>
-    <text class="sh-note" x="720" y="222">b[0] = 9;</text>
-    <text class="sh-gone" x="720" y="242">and a[0] reads 9</text>
+    <g class="fragment fade-out" data-fragment-index="2">
+    <rect x="28" y="170" width="404" height="25" rx="5" fill="#6E1C2E" opacity="0.30"/>
+    </g>
   </g>
   <g class="fragment fade-in" data-fragment-index="2">
-    <rect x="47" y="278" width="212" height="102" fill="#F2F1EE" opacity="0.84"/>
-    <path d="M56,295.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
-    <path d="M56,329.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
-    <path d="M56,363.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
+    <g class="fragment fade-out" data-fragment-index="3">
+    <rect x="28" y="197" width="404" height="25" rx="5" fill="#6E1C2E" opacity="0.30"/>
+    </g>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="3">
+    <rect x="28" y="224" width="404" height="25" rx="5" fill="#6E1C2E" opacity="0.30"/>
+  </g>
+  <text class="sf-src" x="40" y="108"><tspan class="sf-ty">void</tspan> f() {</text>
+    <text class="sf-src" x="62" y="135"><tspan class="sf-ty">PyList</tspan> a;</text>
+    <text class="sf-src" x="62" y="162">a.append(<tspan class="sf-kw">3</tspan>);</text>
+    <text class="sf-src" x="62" y="189"><tspan class="sf-ty">PyList</tspan> b = a;</text>
+    <text class="sf-src" x="62" y="216">b[0] = <tspan class="sf-kw">9</tspan>;</text>
+    <text class="sf-src" x="40" y="243">}</text>
+  <g class="fragment fade-in" data-fragment-index="3">
+    <text class="sf-cm" x="64" y="243">// a and b are both destroyed here</text>
+  </g>
+  <text class="sh-zone" x="500" y="50">THE STACK</text>
+  <text class="sh-zone" x="880" y="50">THE HEAP</text>
+  <rect x="500" y="72" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
+    <path d="M508,72 h198 a8,8 0 0 1 8,8 v22 H500 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
+    <text class="sh-head" x="514" y="93">PyList a;</text>
+    <text class="sh-code" x="514" y="125">mySize</text>
+    <text class="sh-code" x="698" y="125" text-anchor="end">1</text>
+    <path class="sh-rule" d="M501,136 H713"/>
+    <text class="sh-code" x="514" y="159">myCapacity</text>
+    <text class="sh-code" x="698" y="159" text-anchor="end">1</text>
+    <path class="sh-rule" d="M501,170 H713"/>
+    <text class="sh-code" x="514" y="193">myArray</text>
+    <text class="sh-ptr" x="698" y="193" text-anchor="end">0x1A40</text>
+  <rect x="880" y="176" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+  <text class="sh-addr" x="880" y="164">0x1A40</text>
+  <g class="fragment fade-out" data-fragment-index="2">
+    <text class="sh-val" x="923.0" y="218" text-anchor="middle">3</text>
   </g>
   <g class="fragment fade-in" data-fragment-index="2">
-    <rect x="516" y="192" width="188" height="70" rx="7" fill="#F2F1EE" opacity="0.9"/>
-    <path d="M520,227.0 H700" stroke="#b0aca4" stroke-width="2.4"/>
-    <text class="sh-note" x="520" y="290">b is destroyed: delete [] myArray</text>
-    <text class="sh-gone" x="520" y="310">the block is given back</text>
+    <text class="sh-new" x="923.0" y="218" text-anchor="middle">9</text>
+  </g>
+  <path d="M722,187 L866,199.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#shArrow)"/>
+  <g class="fragment fade-in" data-fragment-index="1">
+    <rect x="500" y="228" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
+    <path d="M508,228 h198 a8,8 0 0 1 8,8 v22 H500 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
+    <text class="sh-head" x="514" y="249">PyList b;</text>
+    <text class="sh-code" x="514" y="281">mySize</text>
+    <text class="sh-code" x="698" y="281" text-anchor="end">1</text>
+    <path class="sh-rule" d="M501,292 H713"/>
+    <text class="sh-code" x="514" y="315">myCapacity</text>
+    <text class="sh-code" x="698" y="315" text-anchor="end">1</text>
+    <path class="sh-rule" d="M501,326 H713"/>
+    <text class="sh-code" x="514" y="349">myArray</text>
+    <text class="sh-ptr" x="698" y="349" text-anchor="end">0x1A40</text>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="1">
+    <path d="M722,343 L866,217.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#shArrow)"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="1">
+    <text class="sh-gone" x="500" y="386">the same address, not a second block</text>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="2">
+    <rect x="876" y="172" width="94" height="70" rx="7" fill="none" stroke="#6E1C2E" stroke-width="2.4"/>
+    <text class="sh-note" x="984" y="214">a[0] reads 9 too</text>
   </g>
   <g class="fragment fade-in" data-fragment-index="3">
-    <rect x="47" y="108" width="212" height="102" fill="#F2F1EE" opacity="0.84"/>
-    <path d="M56,125.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
-    <path d="M56,159.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
-    <path d="M56,193.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
+    <rect x="501" y="258" width="212" height="102" fill="#F2F1EE" opacity="0.86"/>
+    <path d="M510,275.0 H704" stroke="#b0aca4" stroke-width="2.2"/>
+    <path d="M510,309.0 H704" stroke="#b0aca4" stroke-width="2.2"/>
+    <path d="M510,343.0 H704" stroke="#b0aca4" stroke-width="2.2"/>
   </g>
   <g class="fragment fade-in" data-fragment-index="3">
-    <text class="sh-note" x="520" y="342">a is destroyed: delete [] myArray, again</text>
-    <rect x="520" y="356" width="86" height="24" rx="12" fill="#6E1C2E"/>
-    <text class="sh-tag" x="563" y="373" text-anchor="middle">CRASH</text>
-    <text class="sh-crash" x="620" y="373">free(): double free detected</text>
+    <rect x="876" y="172" width="94" height="70" rx="7" fill="#F2F1EE" opacity="0.92"/>
+    <path d="M880,207.0 H966" stroke="#b0aca4" stroke-width="2.4"/>
+    <text class="sh-gone" x="880" y="268">freed by b</text>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="4">
+    <rect x="501" y="102" width="212" height="102" fill="#F2F1EE" opacity="0.86"/>
+    <path d="M510,119.0 H704" stroke="#b0aca4" stroke-width="2.2"/>
+    <path d="M510,153.0 H704" stroke="#b0aca4" stroke-width="2.2"/>
+    <path d="M510,187.0 H704" stroke="#b0aca4" stroke-width="2.2"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="4">
+    <text class="sh-note" x="880" y="300">a frees it again</text>
+    <rect x="880" y="314" width="86" height="24" rx="12" fill="#6E1C2E"/>
+    <text class="sh-tag" x="923" y="331" text-anchor="middle">CRASH</text>
+    <text class="sh-crash" x="500" y="420">free(): double free detected</text>
   </g>
   </svg>
-  <div class="callout">The default copy duplicated the <strong>address</strong>, not the data. That is a <strong>shallow copy</strong>, and it goes wrong twice.</div>
 </section>
 <!--/CS112-SCREEN-ONLY-->
 <!--CS112-PRINT-STEPS
 <section>
-  <h2>One Block, Two Owners</h2>
-  <p class="step-cap"><span class="step-n">1</span><code>PyList b = a;</code> copies the three members, address and all.</p>
-  <svg class="step-anim step-still" viewBox="0 0 1150 452" style="width:94%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two objects whose pointers hold the same address, and the double free that follows">
+  <h2>The Shallow Copy</h2>
+  <p class="step-cap"><span class="step-n">1</span><code>a</code> has one item, in a block of its own.</p>
+  <svg class="step-anim step-still" viewBox="0 0 1200 430" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Five lines of code walked through: two objects end up holding one address, and the block is freed twice">
   <style>
+  .sf-src { font: 17px 'Fira Code','Consolas',monospace; fill: #e8e6e0; }
+  .sf-kw  { fill: #f07178; }
+  .sf-ty  { fill: #a6e22e; }
+  .sf-cm  { font: italic 15px 'Fira Code','Consolas',monospace; fill: #8f8a80; }
+  .sf-cap { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
+            letter-spacing: 0.06em; }
+
   .sh-zone  { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
               letter-spacing: 0.08em; }
   .sh-code  { font: 15px 'Fira Code','Consolas',monospace; fill: #3a3630; }
@@ -1550,47 +1595,46 @@ PyList b = a;    // b is built FROM a
             markerWidth="9" markerHeight="9" orient="auto">
       <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
   </defs>
-  <text class="sh-zone" x="46" y="52">THE STACK</text>
-  <text class="sh-zone" x="520" y="166">THE HEAP</text>
-  <rect x="46" y="78" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
-    <path d="M54,78 h198 a8,8 0 0 1 8,8 v22 H46 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
-    <text class="sh-head" x="60" y="99">PyList a;</text>
-    <text class="sh-code" x="60" y="131">mySize</text>
-    <text class="sh-code" x="244" y="131" text-anchor="end">2</text>
-    <path class="sh-rule" d="M47,142 H259"/>
-    <text class="sh-code" x="60" y="165">myCapacity</text>
-    <text class="sh-code" x="244" y="165" text-anchor="end">2</text>
-    <path class="sh-rule" d="M47,176 H259"/>
-    <text class="sh-code" x="60" y="199">myArray</text>
-    <text class="sh-ptr" x="244" y="199" text-anchor="end">0x1A40</text>
-  <rect x="520" y="196" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
-  <rect x="614" y="196" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
-  <text class="sh-addr" x="520" y="186">0x1A40</text>
-  <text class="sh-val" x="563.0" y="238" text-anchor="middle">3</text>
-  <text class="sh-val" x="657.0" y="238" text-anchor="middle">7</text>
-  <path d="M266,193 L508,219.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#shArrow)"/>
-  <rect x="46" y="248" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
-    <path d="M54,248 h198 a8,8 0 0 1 8,8 v22 H46 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
-    <text class="sh-head" x="60" y="269">PyList b;</text>
-    <text class="sh-code" x="60" y="301">mySize</text>
-    <text class="sh-code" x="244" y="301" text-anchor="end">2</text>
-    <path class="sh-rule" d="M47,312 H259"/>
-    <text class="sh-code" x="60" y="335">myCapacity</text>
-    <text class="sh-code" x="244" y="335" text-anchor="end">2</text>
-    <path class="sh-rule" d="M47,346 H259"/>
-    <text class="sh-code" x="60" y="369">myArray</text>
-    <text class="sh-ptr" x="244" y="369" text-anchor="end">0x1A40</text>
-    <path d="M266,363 L508,239.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#shArrow)"/>
-    <text class="sh-note" x="46" y="406">PyList b = a;</text>
-    <text class="sh-gone" x="46" y="426">the same address, not a second block</text>
+  <rect x="20" y="72" width="420" height="197" rx="9" fill="#272822"/>
+  <rect x="28" y="116" width="404" height="52" rx="5" fill="#6E1C2E" opacity="0.30"/>
+  <text class="sf-src" x="40" y="108"><tspan class="sf-ty">void</tspan> f() {</text>
+    <text class="sf-src" x="62" y="135"><tspan class="sf-ty">PyList</tspan> a;</text>
+    <text class="sf-src" x="62" y="162">a.append(<tspan class="sf-kw">3</tspan>);</text>
+    <text class="sf-src" x="62" y="189"><tspan class="sf-ty">PyList</tspan> b = a;</text>
+    <text class="sf-src" x="62" y="216">b[0] = <tspan class="sf-kw">9</tspan>;</text>
+    <text class="sf-src" x="40" y="243">}</text>
+  <text class="sh-zone" x="500" y="50">THE STACK</text>
+  <text class="sh-zone" x="880" y="50">THE HEAP</text>
+  <rect x="500" y="72" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
+    <path d="M508,72 h198 a8,8 0 0 1 8,8 v22 H500 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
+    <text class="sh-head" x="514" y="93">PyList a;</text>
+    <text class="sh-code" x="514" y="125">mySize</text>
+    <text class="sh-code" x="698" y="125" text-anchor="end">1</text>
+    <path class="sh-rule" d="M501,136 H713"/>
+    <text class="sh-code" x="514" y="159">myCapacity</text>
+    <text class="sh-code" x="698" y="159" text-anchor="end">1</text>
+    <path class="sh-rule" d="M501,170 H713"/>
+    <text class="sh-code" x="514" y="193">myArray</text>
+    <text class="sh-ptr" x="698" y="193" text-anchor="end">0x1A40</text>
+  <rect x="880" y="176" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+  <text class="sh-addr" x="880" y="164">0x1A40</text>
+  <text class="sh-val" x="923.0" y="218" text-anchor="middle">3</text>
+  <path d="M722,187 L866,199.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#shArrow)"/>
   </svg>
 </section>
 
 <section>
-  <h2>One Block, Two Owners</h2>
-  <p class="step-cap"><span class="step-n">2</span><code>b[0] = 9;</code> changes what <code>a[0]</code> reads.</p>
-  <svg class="step-anim step-still" viewBox="0 0 1150 452" style="width:94%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two objects whose pointers hold the same address, and the double free that follows">
+  <h2>The Shallow Copy</h2>
+  <p class="step-cap"><span class="step-n">2</span><code>b</code> copies the three members. One block, two arrows.</p>
+  <svg class="step-anim step-still" viewBox="0 0 1200 430" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Five lines of code walked through: two objects end up holding one address, and the block is freed twice">
   <style>
+  .sf-src { font: 17px 'Fira Code','Consolas',monospace; fill: #e8e6e0; }
+  .sf-kw  { fill: #f07178; }
+  .sf-ty  { fill: #a6e22e; }
+  .sf-cm  { font: italic 15px 'Fira Code','Consolas',monospace; fill: #8f8a80; }
+  .sf-cap { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
+            letter-spacing: 0.06em; }
+
   .sh-zone  { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
               letter-spacing: 0.08em; }
   .sh-code  { font: 15px 'Fira Code','Consolas',monospace; fill: #3a3630; }
@@ -1611,50 +1655,59 @@ PyList b = a;    // b is built FROM a
             markerWidth="9" markerHeight="9" orient="auto">
       <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
   </defs>
-  <text class="sh-zone" x="46" y="52">THE STACK</text>
-  <text class="sh-zone" x="520" y="166">THE HEAP</text>
-  <rect x="46" y="78" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
-    <path d="M54,78 h198 a8,8 0 0 1 8,8 v22 H46 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
-    <text class="sh-head" x="60" y="99">PyList a;</text>
-    <text class="sh-code" x="60" y="131">mySize</text>
-    <text class="sh-code" x="244" y="131" text-anchor="end">2</text>
-    <path class="sh-rule" d="M47,142 H259"/>
-    <text class="sh-code" x="60" y="165">myCapacity</text>
-    <text class="sh-code" x="244" y="165" text-anchor="end">2</text>
-    <path class="sh-rule" d="M47,176 H259"/>
-    <text class="sh-code" x="60" y="199">myArray</text>
-    <text class="sh-ptr" x="244" y="199" text-anchor="end">0x1A40</text>
-  <rect x="520" y="196" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
-  <rect x="614" y="196" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
-  <text class="sh-addr" x="520" y="186">0x1A40</text>
-  <text class="sh-new" x="563.0" y="238" text-anchor="middle">9</text>
-  <text class="sh-val" x="657.0" y="238" text-anchor="middle">7</text>
-  <path d="M266,193 L508,219.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#shArrow)"/>
-  <rect x="46" y="248" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
-    <path d="M54,248 h198 a8,8 0 0 1 8,8 v22 H46 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
-    <text class="sh-head" x="60" y="269">PyList b;</text>
-    <text class="sh-code" x="60" y="301">mySize</text>
-    <text class="sh-code" x="244" y="301" text-anchor="end">2</text>
-    <path class="sh-rule" d="M47,312 H259"/>
-    <text class="sh-code" x="60" y="335">myCapacity</text>
-    <text class="sh-code" x="244" y="335" text-anchor="end">2</text>
-    <path class="sh-rule" d="M47,346 H259"/>
-    <text class="sh-code" x="60" y="369">myArray</text>
-    <text class="sh-ptr" x="244" y="369" text-anchor="end">0x1A40</text>
-    <path d="M266,363 L508,239.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#shArrow)"/>
-    <text class="sh-note" x="46" y="406">PyList b = a;</text>
-    <text class="sh-gone" x="46" y="426">the same address, not a second block</text>
-  <rect x="516" y="192" width="94" height="70" rx="7" fill="none" stroke="#6E1C2E" stroke-width="2.4"/>
-    <text class="sh-note" x="720" y="222">b[0] = 9;</text>
-    <text class="sh-gone" x="720" y="242">and a[0] reads 9</text>
+  <rect x="20" y="72" width="420" height="197" rx="9" fill="#272822"/>
+  <rect x="28" y="170" width="404" height="25" rx="5" fill="#6E1C2E" opacity="0.30"/>
+  <text class="sf-src" x="40" y="108"><tspan class="sf-ty">void</tspan> f() {</text>
+    <text class="sf-src" x="62" y="135"><tspan class="sf-ty">PyList</tspan> a;</text>
+    <text class="sf-src" x="62" y="162">a.append(<tspan class="sf-kw">3</tspan>);</text>
+    <text class="sf-src" x="62" y="189"><tspan class="sf-ty">PyList</tspan> b = a;</text>
+    <text class="sf-src" x="62" y="216">b[0] = <tspan class="sf-kw">9</tspan>;</text>
+    <text class="sf-src" x="40" y="243">}</text>
+  <text class="sh-zone" x="500" y="50">THE STACK</text>
+  <text class="sh-zone" x="880" y="50">THE HEAP</text>
+  <rect x="500" y="72" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
+    <path d="M508,72 h198 a8,8 0 0 1 8,8 v22 H500 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
+    <text class="sh-head" x="514" y="93">PyList a;</text>
+    <text class="sh-code" x="514" y="125">mySize</text>
+    <text class="sh-code" x="698" y="125" text-anchor="end">1</text>
+    <path class="sh-rule" d="M501,136 H713"/>
+    <text class="sh-code" x="514" y="159">myCapacity</text>
+    <text class="sh-code" x="698" y="159" text-anchor="end">1</text>
+    <path class="sh-rule" d="M501,170 H713"/>
+    <text class="sh-code" x="514" y="193">myArray</text>
+    <text class="sh-ptr" x="698" y="193" text-anchor="end">0x1A40</text>
+  <rect x="880" y="176" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+  <text class="sh-addr" x="880" y="164">0x1A40</text>
+  <text class="sh-val" x="923.0" y="218" text-anchor="middle">3</text>
+  <path d="M722,187 L866,199.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#shArrow)"/>
+  <rect x="500" y="228" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
+    <path d="M508,228 h198 a8,8 0 0 1 8,8 v22 H500 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
+    <text class="sh-head" x="514" y="249">PyList b;</text>
+    <text class="sh-code" x="514" y="281">mySize</text>
+    <text class="sh-code" x="698" y="281" text-anchor="end">1</text>
+    <path class="sh-rule" d="M501,292 H713"/>
+    <text class="sh-code" x="514" y="315">myCapacity</text>
+    <text class="sh-code" x="698" y="315" text-anchor="end">1</text>
+    <path class="sh-rule" d="M501,326 H713"/>
+    <text class="sh-code" x="514" y="349">myArray</text>
+    <text class="sh-ptr" x="698" y="349" text-anchor="end">0x1A40</text>
+  <path d="M722,343 L866,217.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#shArrow)"/>
+  <text class="sh-gone" x="500" y="386">the same address, not a second block</text>
   </svg>
 </section>
 
 <section>
-  <h2>One Block, Two Owners</h2>
-  <p class="step-cap"><span class="step-n">3</span><code>b</code> is destroyed, and frees the block.</p>
-  <svg class="step-anim step-still" viewBox="0 0 1150 452" style="width:94%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two objects whose pointers hold the same address, and the double free that follows">
+  <h2>The Shallow Copy</h2>
+  <p class="step-cap"><span class="step-n">3</span>A write through <code>b</code> changes what <code>a</code> reads.</p>
+  <svg class="step-anim step-still" viewBox="0 0 1200 430" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Five lines of code walked through: two objects end up holding one address, and the block is freed twice">
   <style>
+  .sf-src { font: 17px 'Fira Code','Consolas',monospace; fill: #e8e6e0; }
+  .sf-kw  { fill: #f07178; }
+  .sf-ty  { fill: #a6e22e; }
+  .sf-cm  { font: italic 15px 'Fira Code','Consolas',monospace; fill: #8f8a80; }
+  .sf-cap { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
+            letter-spacing: 0.06em; }
+
   .sh-zone  { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
               letter-spacing: 0.08em; }
   .sh-code  { font: 15px 'Fira Code','Consolas',monospace; fill: #3a3630; }
@@ -1675,58 +1728,61 @@ PyList b = a;    // b is built FROM a
             markerWidth="9" markerHeight="9" orient="auto">
       <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
   </defs>
-  <text class="sh-zone" x="46" y="52">THE STACK</text>
-  <text class="sh-zone" x="520" y="166">THE HEAP</text>
-  <rect x="46" y="78" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
-    <path d="M54,78 h198 a8,8 0 0 1 8,8 v22 H46 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
-    <text class="sh-head" x="60" y="99">PyList a;</text>
-    <text class="sh-code" x="60" y="131">mySize</text>
-    <text class="sh-code" x="244" y="131" text-anchor="end">2</text>
-    <path class="sh-rule" d="M47,142 H259"/>
-    <text class="sh-code" x="60" y="165">myCapacity</text>
-    <text class="sh-code" x="244" y="165" text-anchor="end">2</text>
-    <path class="sh-rule" d="M47,176 H259"/>
-    <text class="sh-code" x="60" y="199">myArray</text>
-    <text class="sh-ptr" x="244" y="199" text-anchor="end">0x1A40</text>
-  <rect x="520" y="196" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
-  <rect x="614" y="196" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
-  <text class="sh-addr" x="520" y="186">0x1A40</text>
-  <text class="sh-new" x="563.0" y="238" text-anchor="middle">9</text>
-  <text class="sh-val" x="657.0" y="238" text-anchor="middle">7</text>
-  <path d="M266,193 L508,219.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#shArrow)"/>
-  <rect x="46" y="248" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
-    <path d="M54,248 h198 a8,8 0 0 1 8,8 v22 H46 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
-    <text class="sh-head" x="60" y="269">PyList b;</text>
-    <text class="sh-code" x="60" y="301">mySize</text>
-    <text class="sh-code" x="244" y="301" text-anchor="end">2</text>
-    <path class="sh-rule" d="M47,312 H259"/>
-    <text class="sh-code" x="60" y="335">myCapacity</text>
-    <text class="sh-code" x="244" y="335" text-anchor="end">2</text>
-    <path class="sh-rule" d="M47,346 H259"/>
-    <text class="sh-code" x="60" y="369">myArray</text>
-    <text class="sh-ptr" x="244" y="369" text-anchor="end">0x1A40</text>
-    <path d="M266,363 L508,239.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#shArrow)"/>
-    <text class="sh-note" x="46" y="406">PyList b = a;</text>
-    <text class="sh-gone" x="46" y="426">the same address, not a second block</text>
-  <rect x="516" y="192" width="94" height="70" rx="7" fill="none" stroke="#6E1C2E" stroke-width="2.4"/>
-    <text class="sh-note" x="720" y="222">b[0] = 9;</text>
-    <text class="sh-gone" x="720" y="242">and a[0] reads 9</text>
-  <rect x="47" y="278" width="212" height="102" fill="#F2F1EE" opacity="0.84"/>
-    <path d="M56,295.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
-    <path d="M56,329.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
-    <path d="M56,363.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
-  <rect x="516" y="192" width="188" height="70" rx="7" fill="#F2F1EE" opacity="0.9"/>
-    <path d="M520,227.0 H700" stroke="#b0aca4" stroke-width="2.4"/>
-    <text class="sh-note" x="520" y="290">b is destroyed: delete [] myArray</text>
-    <text class="sh-gone" x="520" y="310">the block is given back</text>
+  <rect x="20" y="72" width="420" height="197" rx="9" fill="#272822"/>
+  <rect x="28" y="197" width="404" height="25" rx="5" fill="#6E1C2E" opacity="0.30"/>
+  <text class="sf-src" x="40" y="108"><tspan class="sf-ty">void</tspan> f() {</text>
+    <text class="sf-src" x="62" y="135"><tspan class="sf-ty">PyList</tspan> a;</text>
+    <text class="sf-src" x="62" y="162">a.append(<tspan class="sf-kw">3</tspan>);</text>
+    <text class="sf-src" x="62" y="189"><tspan class="sf-ty">PyList</tspan> b = a;</text>
+    <text class="sf-src" x="62" y="216">b[0] = <tspan class="sf-kw">9</tspan>;</text>
+    <text class="sf-src" x="40" y="243">}</text>
+  <text class="sh-zone" x="500" y="50">THE STACK</text>
+  <text class="sh-zone" x="880" y="50">THE HEAP</text>
+  <rect x="500" y="72" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
+    <path d="M508,72 h198 a8,8 0 0 1 8,8 v22 H500 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
+    <text class="sh-head" x="514" y="93">PyList a;</text>
+    <text class="sh-code" x="514" y="125">mySize</text>
+    <text class="sh-code" x="698" y="125" text-anchor="end">1</text>
+    <path class="sh-rule" d="M501,136 H713"/>
+    <text class="sh-code" x="514" y="159">myCapacity</text>
+    <text class="sh-code" x="698" y="159" text-anchor="end">1</text>
+    <path class="sh-rule" d="M501,170 H713"/>
+    <text class="sh-code" x="514" y="193">myArray</text>
+    <text class="sh-ptr" x="698" y="193" text-anchor="end">0x1A40</text>
+  <rect x="880" y="176" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+  <text class="sh-addr" x="880" y="164">0x1A40</text>
+  <text class="sh-new" x="923.0" y="218" text-anchor="middle">9</text>
+  <path d="M722,187 L866,199.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#shArrow)"/>
+  <rect x="500" y="228" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
+    <path d="M508,228 h198 a8,8 0 0 1 8,8 v22 H500 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
+    <text class="sh-head" x="514" y="249">PyList b;</text>
+    <text class="sh-code" x="514" y="281">mySize</text>
+    <text class="sh-code" x="698" y="281" text-anchor="end">1</text>
+    <path class="sh-rule" d="M501,292 H713"/>
+    <text class="sh-code" x="514" y="315">myCapacity</text>
+    <text class="sh-code" x="698" y="315" text-anchor="end">1</text>
+    <path class="sh-rule" d="M501,326 H713"/>
+    <text class="sh-code" x="514" y="349">myArray</text>
+    <text class="sh-ptr" x="698" y="349" text-anchor="end">0x1A40</text>
+  <path d="M722,343 L866,217.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#shArrow)"/>
+  <text class="sh-gone" x="500" y="386">the same address, not a second block</text>
+  <rect x="876" y="172" width="94" height="70" rx="7" fill="none" stroke="#6E1C2E" stroke-width="2.4"/>
+    <text class="sh-note" x="984" y="214">a[0] reads 9 too</text>
   </svg>
 </section>
 
 <section>
-  <h2>One Block, Two Owners</h2>
-  <p class="step-cap"><span class="step-n">4</span><code>a</code> is destroyed, and frees it again.</p>
-  <svg class="step-anim step-still" viewBox="0 0 1150 452" style="width:94%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two objects whose pointers hold the same address, and the double free that follows">
+  <h2>The Shallow Copy</h2>
+  <p class="step-cap"><span class="step-n">4</span><code>b</code> is destroyed, and frees the block.</p>
+  <svg class="step-anim step-still" viewBox="0 0 1200 430" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Five lines of code walked through: two objects end up holding one address, and the block is freed twice">
   <style>
+  .sf-src { font: 17px 'Fira Code','Consolas',monospace; fill: #e8e6e0; }
+  .sf-kw  { fill: #f07178; }
+  .sf-ty  { fill: #a6e22e; }
+  .sf-cm  { font: italic 15px 'Fira Code','Consolas',monospace; fill: #8f8a80; }
+  .sf-cap { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
+            letter-spacing: 0.06em; }
+
   .sh-zone  { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
               letter-spacing: 0.08em; }
   .sh-code  { font: 15px 'Fira Code','Consolas',monospace; fill: #3a3630; }
@@ -1747,60 +1803,146 @@ PyList b = a;    // b is built FROM a
             markerWidth="9" markerHeight="9" orient="auto">
       <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
   </defs>
-  <text class="sh-zone" x="46" y="52">THE STACK</text>
-  <text class="sh-zone" x="520" y="166">THE HEAP</text>
-  <rect x="46" y="78" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
-    <path d="M54,78 h198 a8,8 0 0 1 8,8 v22 H46 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
-    <text class="sh-head" x="60" y="99">PyList a;</text>
-    <text class="sh-code" x="60" y="131">mySize</text>
-    <text class="sh-code" x="244" y="131" text-anchor="end">2</text>
-    <path class="sh-rule" d="M47,142 H259"/>
-    <text class="sh-code" x="60" y="165">myCapacity</text>
-    <text class="sh-code" x="244" y="165" text-anchor="end">2</text>
-    <path class="sh-rule" d="M47,176 H259"/>
-    <text class="sh-code" x="60" y="199">myArray</text>
-    <text class="sh-ptr" x="244" y="199" text-anchor="end">0x1A40</text>
-  <rect x="520" y="196" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
-  <rect x="614" y="196" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
-  <text class="sh-addr" x="520" y="186">0x1A40</text>
-  <text class="sh-new" x="563.0" y="238" text-anchor="middle">9</text>
-  <text class="sh-val" x="657.0" y="238" text-anchor="middle">7</text>
-  <path d="M266,193 L508,219.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#shArrow)"/>
-  <rect x="46" y="248" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
-    <path d="M54,248 h198 a8,8 0 0 1 8,8 v22 H46 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
-    <text class="sh-head" x="60" y="269">PyList b;</text>
-    <text class="sh-code" x="60" y="301">mySize</text>
-    <text class="sh-code" x="244" y="301" text-anchor="end">2</text>
-    <path class="sh-rule" d="M47,312 H259"/>
-    <text class="sh-code" x="60" y="335">myCapacity</text>
-    <text class="sh-code" x="244" y="335" text-anchor="end">2</text>
-    <path class="sh-rule" d="M47,346 H259"/>
-    <text class="sh-code" x="60" y="369">myArray</text>
-    <text class="sh-ptr" x="244" y="369" text-anchor="end">0x1A40</text>
-    <path d="M266,363 L508,239.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#shArrow)"/>
-    <text class="sh-note" x="46" y="406">PyList b = a;</text>
-    <text class="sh-gone" x="46" y="426">the same address, not a second block</text>
-  <rect x="516" y="192" width="94" height="70" rx="7" fill="none" stroke="#6E1C2E" stroke-width="2.4"/>
-    <text class="sh-note" x="720" y="222">b[0] = 9;</text>
-    <text class="sh-gone" x="720" y="242">and a[0] reads 9</text>
-  <rect x="47" y="278" width="212" height="102" fill="#F2F1EE" opacity="0.84"/>
-    <path d="M56,295.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
-    <path d="M56,329.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
-    <path d="M56,363.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
-  <rect x="516" y="192" width="188" height="70" rx="7" fill="#F2F1EE" opacity="0.9"/>
-    <path d="M520,227.0 H700" stroke="#b0aca4" stroke-width="2.4"/>
-    <text class="sh-note" x="520" y="290">b is destroyed: delete [] myArray</text>
-    <text class="sh-gone" x="520" y="310">the block is given back</text>
-  <rect x="47" y="108" width="212" height="102" fill="#F2F1EE" opacity="0.84"/>
-    <path d="M56,125.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
-    <path d="M56,159.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
-    <path d="M56,193.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
-  <text class="sh-note" x="520" y="342">a is destroyed: delete [] myArray, again</text>
-    <rect x="520" y="356" width="86" height="24" rx="12" fill="#6E1C2E"/>
-    <text class="sh-tag" x="563" y="373" text-anchor="middle">CRASH</text>
-    <text class="sh-crash" x="620" y="373">free(): double free detected</text>
+  <rect x="20" y="72" width="420" height="197" rx="9" fill="#272822"/>
+  <rect x="28" y="224" width="404" height="25" rx="5" fill="#6E1C2E" opacity="0.30"/>
+  <text class="sf-src" x="40" y="108"><tspan class="sf-ty">void</tspan> f() {</text>
+    <text class="sf-src" x="62" y="135"><tspan class="sf-ty">PyList</tspan> a;</text>
+    <text class="sf-src" x="62" y="162">a.append(<tspan class="sf-kw">3</tspan>);</text>
+    <text class="sf-src" x="62" y="189"><tspan class="sf-ty">PyList</tspan> b = a;</text>
+    <text class="sf-src" x="62" y="216">b[0] = <tspan class="sf-kw">9</tspan>;</text>
+    <text class="sf-src" x="40" y="243">}</text>
+  <text class="sf-cm" x="64" y="243">// a and b are both destroyed here</text>
+  <text class="sh-zone" x="500" y="50">THE STACK</text>
+  <text class="sh-zone" x="880" y="50">THE HEAP</text>
+  <rect x="500" y="72" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
+    <path d="M508,72 h198 a8,8 0 0 1 8,8 v22 H500 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
+    <text class="sh-head" x="514" y="93">PyList a;</text>
+    <text class="sh-code" x="514" y="125">mySize</text>
+    <text class="sh-code" x="698" y="125" text-anchor="end">1</text>
+    <path class="sh-rule" d="M501,136 H713"/>
+    <text class="sh-code" x="514" y="159">myCapacity</text>
+    <text class="sh-code" x="698" y="159" text-anchor="end">1</text>
+    <path class="sh-rule" d="M501,170 H713"/>
+    <text class="sh-code" x="514" y="193">myArray</text>
+    <text class="sh-ptr" x="698" y="193" text-anchor="end">0x1A40</text>
+  <rect x="880" y="176" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+  <text class="sh-addr" x="880" y="164">0x1A40</text>
+  <text class="sh-new" x="923.0" y="218" text-anchor="middle">9</text>
+  <path d="M722,187 L866,199.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#shArrow)"/>
+  <rect x="500" y="228" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
+    <path d="M508,228 h198 a8,8 0 0 1 8,8 v22 H500 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
+    <text class="sh-head" x="514" y="249">PyList b;</text>
+    <text class="sh-code" x="514" y="281">mySize</text>
+    <text class="sh-code" x="698" y="281" text-anchor="end">1</text>
+    <path class="sh-rule" d="M501,292 H713"/>
+    <text class="sh-code" x="514" y="315">myCapacity</text>
+    <text class="sh-code" x="698" y="315" text-anchor="end">1</text>
+    <path class="sh-rule" d="M501,326 H713"/>
+    <text class="sh-code" x="514" y="349">myArray</text>
+    <text class="sh-ptr" x="698" y="349" text-anchor="end">0x1A40</text>
+  <path d="M722,343 L866,217.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#shArrow)"/>
+  <text class="sh-gone" x="500" y="386">the same address, not a second block</text>
+  <rect x="876" y="172" width="94" height="70" rx="7" fill="none" stroke="#6E1C2E" stroke-width="2.4"/>
+    <text class="sh-note" x="984" y="214">a[0] reads 9 too</text>
+  <rect x="501" y="258" width="212" height="102" fill="#F2F1EE" opacity="0.86"/>
+    <path d="M510,275.0 H704" stroke="#b0aca4" stroke-width="2.2"/>
+    <path d="M510,309.0 H704" stroke="#b0aca4" stroke-width="2.2"/>
+    <path d="M510,343.0 H704" stroke="#b0aca4" stroke-width="2.2"/>
+  <rect x="876" y="172" width="94" height="70" rx="7" fill="#F2F1EE" opacity="0.92"/>
+    <path d="M880,207.0 H966" stroke="#b0aca4" stroke-width="2.4"/>
+    <text class="sh-gone" x="880" y="268">freed by b</text>
   </svg>
-  <div class="callout">The default copy duplicated the <strong>address</strong>, not the data. That is a <strong>shallow copy</strong>, and it goes wrong twice.</div>
+</section>
+
+<section>
+  <h2>The Shallow Copy</h2>
+  <p class="step-cap"><span class="step-n">5</span><code>a</code> is destroyed, and frees it again.</p>
+  <svg class="step-anim step-still" viewBox="0 0 1200 430" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Five lines of code walked through: two objects end up holding one address, and the block is freed twice">
+  <style>
+  .sf-src { font: 17px 'Fira Code','Consolas',monospace; fill: #e8e6e0; }
+  .sf-kw  { fill: #f07178; }
+  .sf-ty  { fill: #a6e22e; }
+  .sf-cm  { font: italic 15px 'Fira Code','Consolas',monospace; fill: #8f8a80; }
+  .sf-cap { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
+            letter-spacing: 0.06em; }
+
+  .sh-zone  { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
+              letter-spacing: 0.08em; }
+  .sh-code  { font: 15px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .sh-val   { font: 700 24px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .sh-new   { font: 700 24px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .sh-ptr   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .sh-addr  { font: 12px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
+  .sh-note  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #6E1C2E; }
+  .sh-gone  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .sh-head  { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .sh-tag   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #ffffff;
+              letter-spacing: 0.06em; }
+  .sh-crash { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .sh-rule  { stroke: #EADFD2; stroke-width: 1.4; }
+</style>
+  <defs>
+    <marker id="shArrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
+  </defs>
+  <rect x="20" y="72" width="420" height="197" rx="9" fill="#272822"/>
+  <rect x="28" y="224" width="404" height="25" rx="5" fill="#6E1C2E" opacity="0.30"/>
+  <text class="sf-src" x="40" y="108"><tspan class="sf-ty">void</tspan> f() {</text>
+    <text class="sf-src" x="62" y="135"><tspan class="sf-ty">PyList</tspan> a;</text>
+    <text class="sf-src" x="62" y="162">a.append(<tspan class="sf-kw">3</tspan>);</text>
+    <text class="sf-src" x="62" y="189"><tspan class="sf-ty">PyList</tspan> b = a;</text>
+    <text class="sf-src" x="62" y="216">b[0] = <tspan class="sf-kw">9</tspan>;</text>
+    <text class="sf-src" x="40" y="243">}</text>
+  <text class="sf-cm" x="64" y="243">// a and b are both destroyed here</text>
+  <text class="sh-zone" x="500" y="50">THE STACK</text>
+  <text class="sh-zone" x="880" y="50">THE HEAP</text>
+  <rect x="500" y="72" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
+    <path d="M508,72 h198 a8,8 0 0 1 8,8 v22 H500 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
+    <text class="sh-head" x="514" y="93">PyList a;</text>
+    <text class="sh-code" x="514" y="125">mySize</text>
+    <text class="sh-code" x="698" y="125" text-anchor="end">1</text>
+    <path class="sh-rule" d="M501,136 H713"/>
+    <text class="sh-code" x="514" y="159">myCapacity</text>
+    <text class="sh-code" x="698" y="159" text-anchor="end">1</text>
+    <path class="sh-rule" d="M501,170 H713"/>
+    <text class="sh-code" x="514" y="193">myArray</text>
+    <text class="sh-ptr" x="698" y="193" text-anchor="end">0x1A40</text>
+  <rect x="880" y="176" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+  <text class="sh-addr" x="880" y="164">0x1A40</text>
+  <text class="sh-new" x="923.0" y="218" text-anchor="middle">9</text>
+  <path d="M722,187 L866,199.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#shArrow)"/>
+  <rect x="500" y="228" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
+    <path d="M508,228 h198 a8,8 0 0 1 8,8 v22 H500 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
+    <text class="sh-head" x="514" y="249">PyList b;</text>
+    <text class="sh-code" x="514" y="281">mySize</text>
+    <text class="sh-code" x="698" y="281" text-anchor="end">1</text>
+    <path class="sh-rule" d="M501,292 H713"/>
+    <text class="sh-code" x="514" y="315">myCapacity</text>
+    <text class="sh-code" x="698" y="315" text-anchor="end">1</text>
+    <path class="sh-rule" d="M501,326 H713"/>
+    <text class="sh-code" x="514" y="349">myArray</text>
+    <text class="sh-ptr" x="698" y="349" text-anchor="end">0x1A40</text>
+  <path d="M722,343 L866,217.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#shArrow)"/>
+  <text class="sh-gone" x="500" y="386">the same address, not a second block</text>
+  <rect x="876" y="172" width="94" height="70" rx="7" fill="none" stroke="#6E1C2E" stroke-width="2.4"/>
+    <text class="sh-note" x="984" y="214">a[0] reads 9 too</text>
+  <rect x="501" y="258" width="212" height="102" fill="#F2F1EE" opacity="0.86"/>
+    <path d="M510,275.0 H704" stroke="#b0aca4" stroke-width="2.2"/>
+    <path d="M510,309.0 H704" stroke="#b0aca4" stroke-width="2.2"/>
+    <path d="M510,343.0 H704" stroke="#b0aca4" stroke-width="2.2"/>
+  <rect x="876" y="172" width="94" height="70" rx="7" fill="#F2F1EE" opacity="0.92"/>
+    <path d="M880,207.0 H966" stroke="#b0aca4" stroke-width="2.4"/>
+    <text class="sh-gone" x="880" y="268">freed by b</text>
+  <rect x="501" y="102" width="212" height="102" fill="#F2F1EE" opacity="0.86"/>
+    <path d="M510,119.0 H704" stroke="#b0aca4" stroke-width="2.2"/>
+    <path d="M510,153.0 H704" stroke="#b0aca4" stroke-width="2.2"/>
+    <path d="M510,187.0 H704" stroke="#b0aca4" stroke-width="2.2"/>
+  <text class="sh-note" x="880" y="300">a frees it again</text>
+    <rect x="880" y="314" width="86" height="24" rx="12" fill="#6E1C2E"/>
+    <text class="sh-tag" x="923" y="331" text-anchor="middle">CRASH</text>
+    <text class="sh-crash" x="500" y="420">free(): double free detected</text>
+  </svg>
 </section>
 /CS112-PRINT-STEPS-->
 
