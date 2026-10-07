@@ -852,18 +852,24 @@ PyList::~PyList() {     // a ~ then the class name
 <!--CS112-SCREEN-ONLY-->
 <section>
   <h2>Rule of Thumb</h2>
-  <svg class="step-anim" viewBox="0 0 1150 420" style="width:94%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The members of an object are destroyed while its heap block stays allocated">
+  <svg class="step-anim" viewBox="0 0 1200 452" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Four lines of code walked through, with the stack and the heap beside them">
   <style>
   .dt-zone  { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
               letter-spacing: 0.08em; }
+  .dt-src   { font: 17px 'Fira Code','Consolas',monospace; fill: #e8e6e0; }
+  .dt-kw    { fill: #f07178; }
+  .dt-ty    { fill: #a6e22e; }
+  .dt-cm    { font: italic 15px 'Fira Code','Consolas',monospace; fill: #8f8a80; }
+  .dt-cap   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
+              letter-spacing: 0.06em; }
   .dt-code  { font: 15px 'Fira Code','Consolas',monospace; fill: #3a3630; }
   .dt-val   { font: 700 24px 'Fira Code','Consolas',monospace; fill: #3a3630; }
   .dt-ptr   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .dt-null  { font: 15px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
   .dt-addr  { font: 12px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
   .dt-note  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #6E1C2E; }
   .dt-gone  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
   .dt-head  { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
-  .dt-brace { font: 700 40px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
   .dt-tag   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #ffffff;
               letter-spacing: 0.06em; }
   .dt-rule  { stroke: #EADFD2; stroke-width: 1.4; }
@@ -873,81 +879,145 @@ PyList::~PyList() {     // a ~ then the class name
             markerWidth="9" markerHeight="9" orient="auto">
       <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
   </defs>
-  <text class="dt-zone" x="46" y="76">THE STACK</text>
-  <text class="dt-zone" x="470" y="76">THE HEAP</text>
-  <rect x="46" y="104" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
-  <path d="M54,104 h198 a8,8 0 0 1 8,8 v22 H46 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
-  <text class="dt-head" x="60" y="125">PyList v;</text>
-  <text class="dt-code" x="60" y="157">mySize</text>
-  <text class="dt-code" x="244" y="157" text-anchor="end">3</text>
-  <path class="dt-rule" d="M47,168 H259"/>
-  <text class="dt-code" x="60" y="191">myCapacity</text>
-  <text class="dt-code" x="244" y="191" text-anchor="end">4</text>
-  <path class="dt-rule" d="M47,202 H259"/>
-  <text class="dt-code" x="60" y="225">myArray</text>
-  <text class="dt-ptr" x="244" y="225" text-anchor="end">0x1A40</text>
-  <rect x="470" y="120" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
-    <text class="dt-val" x="513.0" y="162" text-anchor="middle">3</text>
-  <rect x="564" y="120" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
-    <text class="dt-val" x="607.0" y="162" text-anchor="middle">7</text>
-  <rect x="658" y="120" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
-    <text class="dt-val" x="701.0" y="162" text-anchor="middle">11</text>
-  <rect x="752" y="120" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
-  <text class="dt-addr" x="470" y="100">0x1A40</text>
-  <text class="dt-addr" x="838" y="100" text-anchor="end">4 &#215; sizeof(Item)</text>
+  <rect x="20" y="76" width="420" height="134" rx="9" fill="#272822"/>
   <g class="fragment fade-in" data-fragment-index="0">
-    <text class="dt-brace" x="52" y="298">&#125;</text>
-    <text class="dt-note" x="88" y="288">f() returns</text>
-    <text class="dt-gone" x="88" y="308">v goes out of scope</text>
+    <g class="fragment fade-out" data-fragment-index="1">
+    <rect x="28" y="120" width="404" height="25" rx="5" fill="#6E1C2E" opacity="0.30"/>
+    </g>
   </g>
   <g class="fragment fade-in" data-fragment-index="1">
-    <rect x="39" y="97" width="228" height="146" rx="11" fill="none" stroke="#6E1C2E" stroke-width="2.6"/>
-    <text class="dt-note" x="88" y="338">~PyList() runs</text>
-    <text class="dt-gone" x="88" y="358">the one C++ wrote for you</text>
-  </g>
-  <g class="fragment fade-out" data-fragment-index="2">
-    <path d="M266,219 L458,151.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#dtArrow)"/>
+    <g class="fragment fade-out" data-fragment-index="2">
+    <rect x="28" y="147" width="404" height="25" rx="5" fill="#6E1C2E" opacity="0.30"/>
+    </g>
   </g>
   <g class="fragment fade-in" data-fragment-index="2">
-    <rect x="47" y="134" width="212" height="102" fill="#F2F1EE" opacity="0.84"/>
-    <path d="M56,151.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
-    <path d="M56,185.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
-    <path d="M56,219.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
-    <text class="dt-gone" x="88" y="388">all three of them, the pointer included</text>
+    <g class="fragment fade-out" data-fragment-index="5">
+    <rect x="28" y="174" width="404" height="25" rx="5" fill="#6E1C2E" opacity="0.30"/>
+    </g>
   </g>
-  <g class="fragment fade-in-then-out" data-fragment-index="3">
-    <rect x="462" y="112" width="384" height="78" rx="10" fill="none" stroke="#6E1C2E" stroke-width="2.8"/>
-    <rect x="470" y="204" width="68" height="24" rx="12" fill="#6E1C2E"/>
-    <text class="dt-tag" x="504" y="221" text-anchor="middle">LEAK</text>
-    <text class="dt-note" x="552" y="221">still allocated, and nothing points at it</text>
-    <text class="dt-gone" x="552" y="241">it stays there until the process ends</text>
+  <text class="dt-src" x="40" y="112"><tspan class="dt-ty">void</tspan> f() {</text>
+  <text class="dt-src" x="62" y="139"><tspan class="dt-ty">PyList</tspan> v;</text>
+  <text class="dt-src" x="62" y="166">v.append(<tspan class="dt-kw">3</tspan>);</text>
+  <text class="dt-src" x="40" y="193">}</text>
+  <g class="fragment fade-in" data-fragment-index="2">
+    <text class="dt-cm" x="70" y="193">// v is destroyed here</text>
+  </g>
+  <text class="dt-zone" x="500" y="64">THE STACK</text>
+  <text class="dt-zone" x="862" y="64">THE HEAP</text>
+  <g class="fragment fade-in" data-fragment-index="0">
+    <rect x="500" y="86" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
+    <path d="M508,86 h198 a8,8 0 0 1 8,8 v22 H500 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
+    <text class="dt-head" x="514" y="107">PyList v;</text>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="0">
+    <text class="dt-code" x="514" y="139">mySize</text>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="0">
+    <path class="dt-rule" d="M501,150 H713"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="0">
+    <text class="dt-code" x="514" y="173">myCapacity</text>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="0">
+    <path class="dt-rule" d="M501,184 H713"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="0">
+    <text class="dt-code" x="514" y="207">myArray</text>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="0">
+    <g class="fragment fade-out" data-fragment-index="1">
+    <text class="dt-code" x="698" y="139" text-anchor="end">0</text>
+    </g>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="0">
+    <g class="fragment fade-out" data-fragment-index="1">
+    <text class="dt-code" x="698" y="173" text-anchor="end">0</text>
+    </g>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="0">
+    <g class="fragment fade-out" data-fragment-index="1">
+    <text class="dt-null" x="698" y="207" text-anchor="end">nullptr</text>
+    </g>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="1">
+    <text class="dt-code" x="698" y="139" text-anchor="end">1</text>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="1">
+    <text class="dt-code" x="698" y="173" text-anchor="end">1</text>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="1">
+    <text class="dt-ptr" x="698" y="207" text-anchor="end">0x1A40</text>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="1">
+    <rect x="862" y="170" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="dt-val" x="905.0" y="212" text-anchor="middle">3</text>
+    <text class="dt-addr" x="862" y="158">0x1A40</text>
+    <text class="dt-gone" x="862" y="256">new Item[1]</text>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="1">
+    <g class="fragment fade-out" data-fragment-index="3">
+    <path d="M722,201 L848,201.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#dtArrow)"/>
+    </g>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="2">
+    <rect x="493" y="79" width="228" height="146" rx="11" fill="none" stroke="#6E1C2E" stroke-width="2.6"/>
+    <text class="dt-note" x="500" y="248">~PyList() runs</text>
+    <text class="dt-gone" x="500" y="268">the one C++ wrote for you</text>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="3">
+    <rect x="501" y="116" width="212" height="102" fill="#F2F1EE" opacity="0.86"/>
+    <path d="M510,133.0 H704" stroke="#b0aca4" stroke-width="2.2"/>
+    <path d="M510,167.0 H704" stroke="#b0aca4" stroke-width="2.2"/>
+    <path d="M510,201.0 H704" stroke="#b0aca4" stroke-width="2.2"/>
+    <text class="dt-gone" x="500" y="288">all three members, the pointer included</text>
   </g>
   <g class="fragment fade-in" data-fragment-index="4">
-    <rect x="466" y="116" width="376" height="70" rx="7" fill="#F2F1EE" opacity="0.88"/>
-    <path d="M470,151.0 H838" stroke="#b0aca4" stroke-width="2.4"/>
-    <text class="dt-note" x="470" y="221">delete [] myArray;</text>
-    <text class="dt-gone" x="470" y="241">in a destructor you write yourself</text>
+    <g class="fragment fade-out" data-fragment-index="5">
+    <rect x="854" y="162" width="102" height="78" rx="10" fill="none" stroke="#6E1C2E" stroke-width="2.8"/>
+    <rect x="862" y="270" width="68" height="24" rx="12" fill="#6E1C2E"/>
+    <text class="dt-tag" x="896" y="287" text-anchor="middle">LEAK</text>
+    <text class="dt-note" x="862" y="316">still allocated</text>
+    <text class="dt-gone" x="862" y="336">and nothing points at it</text>
+    </g>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="5">
+    <text class="dt-cap" x="20" y="232">THE ONE YOU WRITE</text>
+    <rect x="20" y="246" width="420" height="107" rx="9" fill="#272822"/>
+    <text class="dt-src" x="40" y="282"><tspan class="dt-ty">PyList</tspan>::~<tspan class="dt-ty">PyList</tspan>() {</text>
+    <text class="dt-src" x="62" y="309"><tspan class="dt-kw">delete</tspan> [] myArray;</text>
+    <text class="dt-src" x="40" y="336">}</text>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="5">
+    <rect x="858" y="166" width="94" height="70" rx="7" fill="#F2F1EE" opacity="0.9"/>
+    <path d="M862,201.0 H948" stroke="#b0aca4" stroke-width="2.4"/>
+    <text class="dt-note" x="862" y="316">given back</text>
   </g>
   </svg>
-  <div class="callout"><strong>If your class calls <code>new</code>, your class defines a destructor.</strong> The one C++ writes for you destroys the members, and the block is not a member.</div>
+  <div class="callout"><strong>If your class calls <code>new</code>, you must define a destructor.</strong> C++ creates a destructor for you if you are not using <code>new</code>.</div>
 </section>
 <!--/CS112-SCREEN-ONLY-->
 <!--CS112-PRINT-STEPS
 <section>
   <h2>Rule of Thumb</h2>
-  <p class="step-cap"><span class="step-n">1</span>The function returns, so <code>v</code> goes out of scope.</p>
-  <svg class="step-anim step-still" viewBox="0 0 1150 420" style="width:94%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The members of an object are destroyed while its heap block stays allocated">
+  <p class="step-cap"><span class="step-n">1</span><code>PyList v;</code> puts an object on the stack. There is no block yet.</p>
+  <svg class="step-anim step-still" viewBox="0 0 1200 452" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Four lines of code walked through, with the stack and the heap beside them">
   <style>
   .dt-zone  { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
               letter-spacing: 0.08em; }
+  .dt-src   { font: 17px 'Fira Code','Consolas',monospace; fill: #e8e6e0; }
+  .dt-kw    { fill: #f07178; }
+  .dt-ty    { fill: #a6e22e; }
+  .dt-cm    { font: italic 15px 'Fira Code','Consolas',monospace; fill: #8f8a80; }
+  .dt-cap   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
+              letter-spacing: 0.06em; }
   .dt-code  { font: 15px 'Fira Code','Consolas',monospace; fill: #3a3630; }
   .dt-val   { font: 700 24px 'Fira Code','Consolas',monospace; fill: #3a3630; }
   .dt-ptr   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .dt-null  { font: 15px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
   .dt-addr  { font: 12px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
   .dt-note  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #6E1C2E; }
   .dt-gone  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
   .dt-head  { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
-  .dt-brace { font: 700 40px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
   .dt-tag   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #ffffff;
               letter-spacing: 0.06em; }
   .dt-rule  { stroke: #EADFD2; stroke-width: 1.4; }
@@ -957,50 +1027,49 @@ PyList::~PyList() {     // a ~ then the class name
             markerWidth="9" markerHeight="9" orient="auto">
       <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
   </defs>
-  <text class="dt-zone" x="46" y="76">THE STACK</text>
-  <text class="dt-zone" x="470" y="76">THE HEAP</text>
-  <rect x="46" y="104" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
-  <path d="M54,104 h198 a8,8 0 0 1 8,8 v22 H46 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
-  <text class="dt-head" x="60" y="125">PyList v;</text>
-  <text class="dt-code" x="60" y="157">mySize</text>
-  <text class="dt-code" x="244" y="157" text-anchor="end">3</text>
-  <path class="dt-rule" d="M47,168 H259"/>
-  <text class="dt-code" x="60" y="191">myCapacity</text>
-  <text class="dt-code" x="244" y="191" text-anchor="end">4</text>
-  <path class="dt-rule" d="M47,202 H259"/>
-  <text class="dt-code" x="60" y="225">myArray</text>
-  <text class="dt-ptr" x="244" y="225" text-anchor="end">0x1A40</text>
-  <rect x="470" y="120" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
-    <text class="dt-val" x="513.0" y="162" text-anchor="middle">3</text>
-  <rect x="564" y="120" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
-    <text class="dt-val" x="607.0" y="162" text-anchor="middle">7</text>
-  <rect x="658" y="120" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
-    <text class="dt-val" x="701.0" y="162" text-anchor="middle">11</text>
-  <rect x="752" y="120" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
-  <text class="dt-addr" x="470" y="100">0x1A40</text>
-  <text class="dt-addr" x="838" y="100" text-anchor="end">4 &#215; sizeof(Item)</text>
-  <text class="dt-brace" x="52" y="298">&#125;</text>
-    <text class="dt-note" x="88" y="288">f() returns</text>
-    <text class="dt-gone" x="88" y="308">v goes out of scope</text>
-  <path d="M266,219 L458,151.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#dtArrow)"/>
+  <rect x="20" y="76" width="420" height="134" rx="9" fill="#272822"/>
+  <rect x="28" y="120" width="404" height="25" rx="5" fill="#6E1C2E" opacity="0.30"/>
+  <text class="dt-src" x="40" y="112"><tspan class="dt-ty">void</tspan> f() {</text>
+  <text class="dt-src" x="62" y="139"><tspan class="dt-ty">PyList</tspan> v;</text>
+  <text class="dt-src" x="62" y="166">v.append(<tspan class="dt-kw">3</tspan>);</text>
+  <text class="dt-src" x="40" y="193">}</text>
+  <text class="dt-zone" x="500" y="64">THE STACK</text>
+  <text class="dt-zone" x="862" y="64">THE HEAP</text>
+  <rect x="500" y="86" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
+    <path d="M508,86 h198 a8,8 0 0 1 8,8 v22 H500 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
+    <text class="dt-head" x="514" y="107">PyList v;</text>
+  <text class="dt-code" x="514" y="139">mySize</text>
+  <path class="dt-rule" d="M501,150 H713"/>
+  <text class="dt-code" x="514" y="173">myCapacity</text>
+  <path class="dt-rule" d="M501,184 H713"/>
+  <text class="dt-code" x="514" y="207">myArray</text>
+  <text class="dt-code" x="698" y="139" text-anchor="end">0</text>
+  <text class="dt-code" x="698" y="173" text-anchor="end">0</text>
+  <text class="dt-null" x="698" y="207" text-anchor="end">nullptr</text>
   </svg>
 </section>
 
 <section>
   <h2>Rule of Thumb</h2>
-  <p class="step-cap"><span class="step-n">2</span>The destructor C++ wrote for you runs.</p>
-  <svg class="step-anim step-still" viewBox="0 0 1150 420" style="width:94%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The members of an object are destroyed while its heap block stays allocated">
+  <p class="step-cap"><span class="step-n">2</span><code>v.append(3);</code> asks the heap for a block. <code>myArray</code> holds its address.</p>
+  <svg class="step-anim step-still" viewBox="0 0 1200 452" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Four lines of code walked through, with the stack and the heap beside them">
   <style>
   .dt-zone  { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
               letter-spacing: 0.08em; }
+  .dt-src   { font: 17px 'Fira Code','Consolas',monospace; fill: #e8e6e0; }
+  .dt-kw    { fill: #f07178; }
+  .dt-ty    { fill: #a6e22e; }
+  .dt-cm    { font: italic 15px 'Fira Code','Consolas',monospace; fill: #8f8a80; }
+  .dt-cap   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
+              letter-spacing: 0.06em; }
   .dt-code  { font: 15px 'Fira Code','Consolas',monospace; fill: #3a3630; }
   .dt-val   { font: 700 24px 'Fira Code','Consolas',monospace; fill: #3a3630; }
   .dt-ptr   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .dt-null  { font: 15px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
   .dt-addr  { font: 12px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
   .dt-note  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #6E1C2E; }
   .dt-gone  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
   .dt-head  { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
-  .dt-brace { font: 700 40px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
   .dt-tag   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #ffffff;
               letter-spacing: 0.06em; }
   .dt-rule  { stroke: #EADFD2; stroke-width: 1.4; }
@@ -1010,53 +1079,54 @@ PyList::~PyList() {     // a ~ then the class name
             markerWidth="9" markerHeight="9" orient="auto">
       <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
   </defs>
-  <text class="dt-zone" x="46" y="76">THE STACK</text>
-  <text class="dt-zone" x="470" y="76">THE HEAP</text>
-  <rect x="46" y="104" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
-  <path d="M54,104 h198 a8,8 0 0 1 8,8 v22 H46 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
-  <text class="dt-head" x="60" y="125">PyList v;</text>
-  <text class="dt-code" x="60" y="157">mySize</text>
-  <text class="dt-code" x="244" y="157" text-anchor="end">3</text>
-  <path class="dt-rule" d="M47,168 H259"/>
-  <text class="dt-code" x="60" y="191">myCapacity</text>
-  <text class="dt-code" x="244" y="191" text-anchor="end">4</text>
-  <path class="dt-rule" d="M47,202 H259"/>
-  <text class="dt-code" x="60" y="225">myArray</text>
-  <text class="dt-ptr" x="244" y="225" text-anchor="end">0x1A40</text>
-  <rect x="470" y="120" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
-    <text class="dt-val" x="513.0" y="162" text-anchor="middle">3</text>
-  <rect x="564" y="120" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
-    <text class="dt-val" x="607.0" y="162" text-anchor="middle">7</text>
-  <rect x="658" y="120" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
-    <text class="dt-val" x="701.0" y="162" text-anchor="middle">11</text>
-  <rect x="752" y="120" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
-  <text class="dt-addr" x="470" y="100">0x1A40</text>
-  <text class="dt-addr" x="838" y="100" text-anchor="end">4 &#215; sizeof(Item)</text>
-  <text class="dt-brace" x="52" y="298">&#125;</text>
-    <text class="dt-note" x="88" y="288">f() returns</text>
-    <text class="dt-gone" x="88" y="308">v goes out of scope</text>
-  <rect x="39" y="97" width="228" height="146" rx="11" fill="none" stroke="#6E1C2E" stroke-width="2.6"/>
-    <text class="dt-note" x="88" y="338">~PyList() runs</text>
-    <text class="dt-gone" x="88" y="358">the one C++ wrote for you</text>
-  <path d="M266,219 L458,151.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#dtArrow)"/>
+  <rect x="20" y="76" width="420" height="134" rx="9" fill="#272822"/>
+  <rect x="28" y="147" width="404" height="25" rx="5" fill="#6E1C2E" opacity="0.30"/>
+  <text class="dt-src" x="40" y="112"><tspan class="dt-ty">void</tspan> f() {</text>
+  <text class="dt-src" x="62" y="139"><tspan class="dt-ty">PyList</tspan> v;</text>
+  <text class="dt-src" x="62" y="166">v.append(<tspan class="dt-kw">3</tspan>);</text>
+  <text class="dt-src" x="40" y="193">}</text>
+  <text class="dt-zone" x="500" y="64">THE STACK</text>
+  <text class="dt-zone" x="862" y="64">THE HEAP</text>
+  <rect x="500" y="86" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
+    <path d="M508,86 h198 a8,8 0 0 1 8,8 v22 H500 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
+    <text class="dt-head" x="514" y="107">PyList v;</text>
+  <text class="dt-code" x="514" y="139">mySize</text>
+  <path class="dt-rule" d="M501,150 H713"/>
+  <text class="dt-code" x="514" y="173">myCapacity</text>
+  <path class="dt-rule" d="M501,184 H713"/>
+  <text class="dt-code" x="514" y="207">myArray</text>
+  <text class="dt-code" x="698" y="139" text-anchor="end">1</text>
+  <text class="dt-code" x="698" y="173" text-anchor="end">1</text>
+  <text class="dt-ptr" x="698" y="207" text-anchor="end">0x1A40</text>
+  <rect x="862" y="170" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="dt-val" x="905.0" y="212" text-anchor="middle">3</text>
+    <text class="dt-addr" x="862" y="158">0x1A40</text>
+    <text class="dt-gone" x="862" y="256">new Item[1]</text>
+  <path d="M722,201 L848,201.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#dtArrow)"/>
   </svg>
 </section>
 
 <section>
   <h2>Rule of Thumb</h2>
-  <p class="step-cap"><span class="step-n">3</span>It destroys the three members. The pointer is one of them.</p>
-  <svg class="step-anim step-still" viewBox="0 0 1150 420" style="width:94%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The members of an object are destroyed while its heap block stays allocated">
+  <p class="step-cap"><span class="step-n">3</span>The closing brace destroys <code>v</code>, so a destructor runs.</p>
+  <svg class="step-anim step-still" viewBox="0 0 1200 452" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Four lines of code walked through, with the stack and the heap beside them">
   <style>
   .dt-zone  { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
               letter-spacing: 0.08em; }
+  .dt-src   { font: 17px 'Fira Code','Consolas',monospace; fill: #e8e6e0; }
+  .dt-kw    { fill: #f07178; }
+  .dt-ty    { fill: #a6e22e; }
+  .dt-cm    { font: italic 15px 'Fira Code','Consolas',monospace; fill: #8f8a80; }
+  .dt-cap   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
+              letter-spacing: 0.06em; }
   .dt-code  { font: 15px 'Fira Code','Consolas',monospace; fill: #3a3630; }
   .dt-val   { font: 700 24px 'Fira Code','Consolas',monospace; fill: #3a3630; }
   .dt-ptr   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .dt-null  { font: 15px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
   .dt-addr  { font: 12px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
   .dt-note  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #6E1C2E; }
   .dt-gone  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
   .dt-head  { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
-  .dt-brace { font: 700 40px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
   .dt-tag   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #ffffff;
               letter-spacing: 0.06em; }
   .dt-rule  { stroke: #EADFD2; stroke-width: 1.4; }
@@ -1066,57 +1136,58 @@ PyList::~PyList() {     // a ~ then the class name
             markerWidth="9" markerHeight="9" orient="auto">
       <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
   </defs>
-  <text class="dt-zone" x="46" y="76">THE STACK</text>
-  <text class="dt-zone" x="470" y="76">THE HEAP</text>
-  <rect x="46" y="104" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
-  <path d="M54,104 h198 a8,8 0 0 1 8,8 v22 H46 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
-  <text class="dt-head" x="60" y="125">PyList v;</text>
-  <text class="dt-code" x="60" y="157">mySize</text>
-  <text class="dt-code" x="244" y="157" text-anchor="end">3</text>
-  <path class="dt-rule" d="M47,168 H259"/>
-  <text class="dt-code" x="60" y="191">myCapacity</text>
-  <text class="dt-code" x="244" y="191" text-anchor="end">4</text>
-  <path class="dt-rule" d="M47,202 H259"/>
-  <text class="dt-code" x="60" y="225">myArray</text>
-  <text class="dt-ptr" x="244" y="225" text-anchor="end">0x1A40</text>
-  <rect x="470" y="120" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
-    <text class="dt-val" x="513.0" y="162" text-anchor="middle">3</text>
-  <rect x="564" y="120" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
-    <text class="dt-val" x="607.0" y="162" text-anchor="middle">7</text>
-  <rect x="658" y="120" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
-    <text class="dt-val" x="701.0" y="162" text-anchor="middle">11</text>
-  <rect x="752" y="120" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
-  <text class="dt-addr" x="470" y="100">0x1A40</text>
-  <text class="dt-addr" x="838" y="100" text-anchor="end">4 &#215; sizeof(Item)</text>
-  <text class="dt-brace" x="52" y="298">&#125;</text>
-    <text class="dt-note" x="88" y="288">f() returns</text>
-    <text class="dt-gone" x="88" y="308">v goes out of scope</text>
-  <rect x="39" y="97" width="228" height="146" rx="11" fill="none" stroke="#6E1C2E" stroke-width="2.6"/>
-    <text class="dt-note" x="88" y="338">~PyList() runs</text>
-    <text class="dt-gone" x="88" y="358">the one C++ wrote for you</text>
-  <rect x="47" y="134" width="212" height="102" fill="#F2F1EE" opacity="0.84"/>
-    <path d="M56,151.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
-    <path d="M56,185.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
-    <path d="M56,219.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
-    <text class="dt-gone" x="88" y="388">all three of them, the pointer included</text>
+  <rect x="20" y="76" width="420" height="134" rx="9" fill="#272822"/>
+  <rect x="28" y="174" width="404" height="25" rx="5" fill="#6E1C2E" opacity="0.30"/>
+  <text class="dt-src" x="40" y="112"><tspan class="dt-ty">void</tspan> f() {</text>
+  <text class="dt-src" x="62" y="139"><tspan class="dt-ty">PyList</tspan> v;</text>
+  <text class="dt-src" x="62" y="166">v.append(<tspan class="dt-kw">3</tspan>);</text>
+  <text class="dt-src" x="40" y="193">}</text>
+  <text class="dt-cm" x="70" y="193">// v is destroyed here</text>
+  <text class="dt-zone" x="500" y="64">THE STACK</text>
+  <text class="dt-zone" x="862" y="64">THE HEAP</text>
+  <rect x="500" y="86" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
+    <path d="M508,86 h198 a8,8 0 0 1 8,8 v22 H500 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
+    <text class="dt-head" x="514" y="107">PyList v;</text>
+  <text class="dt-code" x="514" y="139">mySize</text>
+  <path class="dt-rule" d="M501,150 H713"/>
+  <text class="dt-code" x="514" y="173">myCapacity</text>
+  <path class="dt-rule" d="M501,184 H713"/>
+  <text class="dt-code" x="514" y="207">myArray</text>
+  <text class="dt-code" x="698" y="139" text-anchor="end">1</text>
+  <text class="dt-code" x="698" y="173" text-anchor="end">1</text>
+  <text class="dt-ptr" x="698" y="207" text-anchor="end">0x1A40</text>
+  <rect x="862" y="170" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="dt-val" x="905.0" y="212" text-anchor="middle">3</text>
+    <text class="dt-addr" x="862" y="158">0x1A40</text>
+    <text class="dt-gone" x="862" y="256">new Item[1]</text>
+  <path d="M722,201 L848,201.0" fill="none" stroke="#6E1C2E" stroke-width="2.6" marker-end="url(#dtArrow)"/>
+  <rect x="493" y="79" width="228" height="146" rx="11" fill="none" stroke="#6E1C2E" stroke-width="2.6"/>
+    <text class="dt-note" x="500" y="248">~PyList() runs</text>
+    <text class="dt-gone" x="500" y="268">the one C++ wrote for you</text>
   </svg>
 </section>
 
 <section>
   <h2>Rule of Thumb</h2>
-  <p class="step-cap"><span class="step-n">4</span>The block is still allocated, and nothing points at it.</p>
-  <svg class="step-anim step-still" viewBox="0 0 1150 420" style="width:94%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The members of an object are destroyed while its heap block stays allocated">
+  <p class="step-cap"><span class="step-n">4</span>The one C++ wrote destroys the three members, the pointer included.</p>
+  <svg class="step-anim step-still" viewBox="0 0 1200 452" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Four lines of code walked through, with the stack and the heap beside them">
   <style>
   .dt-zone  { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
               letter-spacing: 0.08em; }
+  .dt-src   { font: 17px 'Fira Code','Consolas',monospace; fill: #e8e6e0; }
+  .dt-kw    { fill: #f07178; }
+  .dt-ty    { fill: #a6e22e; }
+  .dt-cm    { font: italic 15px 'Fira Code','Consolas',monospace; fill: #8f8a80; }
+  .dt-cap   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
+              letter-spacing: 0.06em; }
   .dt-code  { font: 15px 'Fira Code','Consolas',monospace; fill: #3a3630; }
   .dt-val   { font: 700 24px 'Fira Code','Consolas',monospace; fill: #3a3630; }
   .dt-ptr   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .dt-null  { font: 15px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
   .dt-addr  { font: 12px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
   .dt-note  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #6E1C2E; }
   .dt-gone  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
   .dt-head  { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
-  .dt-brace { font: 700 40px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
   .dt-tag   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #ffffff;
               letter-spacing: 0.06em; }
   .dt-rule  { stroke: #EADFD2; stroke-width: 1.4; }
@@ -1126,62 +1197,62 @@ PyList::~PyList() {     // a ~ then the class name
             markerWidth="9" markerHeight="9" orient="auto">
       <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
   </defs>
-  <text class="dt-zone" x="46" y="76">THE STACK</text>
-  <text class="dt-zone" x="470" y="76">THE HEAP</text>
-  <rect x="46" y="104" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
-  <path d="M54,104 h198 a8,8 0 0 1 8,8 v22 H46 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
-  <text class="dt-head" x="60" y="125">PyList v;</text>
-  <text class="dt-code" x="60" y="157">mySize</text>
-  <text class="dt-code" x="244" y="157" text-anchor="end">3</text>
-  <path class="dt-rule" d="M47,168 H259"/>
-  <text class="dt-code" x="60" y="191">myCapacity</text>
-  <text class="dt-code" x="244" y="191" text-anchor="end">4</text>
-  <path class="dt-rule" d="M47,202 H259"/>
-  <text class="dt-code" x="60" y="225">myArray</text>
-  <text class="dt-ptr" x="244" y="225" text-anchor="end">0x1A40</text>
-  <rect x="470" y="120" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
-    <text class="dt-val" x="513.0" y="162" text-anchor="middle">3</text>
-  <rect x="564" y="120" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
-    <text class="dt-val" x="607.0" y="162" text-anchor="middle">7</text>
-  <rect x="658" y="120" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
-    <text class="dt-val" x="701.0" y="162" text-anchor="middle">11</text>
-  <rect x="752" y="120" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
-  <text class="dt-addr" x="470" y="100">0x1A40</text>
-  <text class="dt-addr" x="838" y="100" text-anchor="end">4 &#215; sizeof(Item)</text>
-  <text class="dt-brace" x="52" y="298">&#125;</text>
-    <text class="dt-note" x="88" y="288">f() returns</text>
-    <text class="dt-gone" x="88" y="308">v goes out of scope</text>
-  <rect x="39" y="97" width="228" height="146" rx="11" fill="none" stroke="#6E1C2E" stroke-width="2.6"/>
-    <text class="dt-note" x="88" y="338">~PyList() runs</text>
-    <text class="dt-gone" x="88" y="358">the one C++ wrote for you</text>
-  <rect x="47" y="134" width="212" height="102" fill="#F2F1EE" opacity="0.84"/>
-    <path d="M56,151.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
-    <path d="M56,185.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
-    <path d="M56,219.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
-    <text class="dt-gone" x="88" y="388">all three of them, the pointer included</text>
-  <rect x="462" y="112" width="384" height="78" rx="10" fill="none" stroke="#6E1C2E" stroke-width="2.8"/>
-    <rect x="470" y="204" width="68" height="24" rx="12" fill="#6E1C2E"/>
-    <text class="dt-tag" x="504" y="221" text-anchor="middle">LEAK</text>
-    <text class="dt-note" x="552" y="221">still allocated, and nothing points at it</text>
-    <text class="dt-gone" x="552" y="241">it stays there until the process ends</text>
+  <rect x="20" y="76" width="420" height="134" rx="9" fill="#272822"/>
+  <rect x="28" y="174" width="404" height="25" rx="5" fill="#6E1C2E" opacity="0.30"/>
+  <text class="dt-src" x="40" y="112"><tspan class="dt-ty">void</tspan> f() {</text>
+  <text class="dt-src" x="62" y="139"><tspan class="dt-ty">PyList</tspan> v;</text>
+  <text class="dt-src" x="62" y="166">v.append(<tspan class="dt-kw">3</tspan>);</text>
+  <text class="dt-src" x="40" y="193">}</text>
+  <text class="dt-cm" x="70" y="193">// v is destroyed here</text>
+  <text class="dt-zone" x="500" y="64">THE STACK</text>
+  <text class="dt-zone" x="862" y="64">THE HEAP</text>
+  <rect x="500" y="86" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
+    <path d="M508,86 h198 a8,8 0 0 1 8,8 v22 H500 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
+    <text class="dt-head" x="514" y="107">PyList v;</text>
+  <text class="dt-code" x="514" y="139">mySize</text>
+  <path class="dt-rule" d="M501,150 H713"/>
+  <text class="dt-code" x="514" y="173">myCapacity</text>
+  <path class="dt-rule" d="M501,184 H713"/>
+  <text class="dt-code" x="514" y="207">myArray</text>
+  <text class="dt-code" x="698" y="139" text-anchor="end">1</text>
+  <text class="dt-code" x="698" y="173" text-anchor="end">1</text>
+  <text class="dt-ptr" x="698" y="207" text-anchor="end">0x1A40</text>
+  <rect x="862" y="170" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="dt-val" x="905.0" y="212" text-anchor="middle">3</text>
+    <text class="dt-addr" x="862" y="158">0x1A40</text>
+    <text class="dt-gone" x="862" y="256">new Item[1]</text>
+  <rect x="493" y="79" width="228" height="146" rx="11" fill="none" stroke="#6E1C2E" stroke-width="2.6"/>
+    <text class="dt-note" x="500" y="248">~PyList() runs</text>
+    <text class="dt-gone" x="500" y="268">the one C++ wrote for you</text>
+  <rect x="501" y="116" width="212" height="102" fill="#F2F1EE" opacity="0.86"/>
+    <path d="M510,133.0 H704" stroke="#b0aca4" stroke-width="2.2"/>
+    <path d="M510,167.0 H704" stroke="#b0aca4" stroke-width="2.2"/>
+    <path d="M510,201.0 H704" stroke="#b0aca4" stroke-width="2.2"/>
+    <text class="dt-gone" x="500" y="288">all three members, the pointer included</text>
   </svg>
 </section>
 
 <section>
   <h2>Rule of Thumb</h2>
-  <p class="step-cap"><span class="step-n">5</span>The line that frees it has to be yours.</p>
-  <svg class="step-anim step-still" viewBox="0 0 1150 420" style="width:94%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The members of an object are destroyed while its heap block stays allocated">
+  <p class="step-cap"><span class="step-n">5</span>The block is still allocated, and nothing points at it.</p>
+  <svg class="step-anim step-still" viewBox="0 0 1200 452" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Four lines of code walked through, with the stack and the heap beside them">
   <style>
   .dt-zone  { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
               letter-spacing: 0.08em; }
+  .dt-src   { font: 17px 'Fira Code','Consolas',monospace; fill: #e8e6e0; }
+  .dt-kw    { fill: #f07178; }
+  .dt-ty    { fill: #a6e22e; }
+  .dt-cm    { font: italic 15px 'Fira Code','Consolas',monospace; fill: #8f8a80; }
+  .dt-cap   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
+              letter-spacing: 0.06em; }
   .dt-code  { font: 15px 'Fira Code','Consolas',monospace; fill: #3a3630; }
   .dt-val   { font: 700 24px 'Fira Code','Consolas',monospace; fill: #3a3630; }
   .dt-ptr   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .dt-null  { font: 15px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
   .dt-addr  { font: 12px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
   .dt-note  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #6E1C2E; }
   .dt-gone  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
   .dt-head  { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
-  .dt-brace { font: 700 40px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
   .dt-tag   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #ffffff;
               letter-spacing: 0.06em; }
   .dt-rule  { stroke: #EADFD2; stroke-width: 1.4; }
@@ -1191,45 +1262,117 @@ PyList::~PyList() {     // a ~ then the class name
             markerWidth="9" markerHeight="9" orient="auto">
       <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
   </defs>
-  <text class="dt-zone" x="46" y="76">THE STACK</text>
-  <text class="dt-zone" x="470" y="76">THE HEAP</text>
-  <rect x="46" y="104" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
-  <path d="M54,104 h198 a8,8 0 0 1 8,8 v22 H46 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
-  <text class="dt-head" x="60" y="125">PyList v;</text>
-  <text class="dt-code" x="60" y="157">mySize</text>
-  <text class="dt-code" x="244" y="157" text-anchor="end">3</text>
-  <path class="dt-rule" d="M47,168 H259"/>
-  <text class="dt-code" x="60" y="191">myCapacity</text>
-  <text class="dt-code" x="244" y="191" text-anchor="end">4</text>
-  <path class="dt-rule" d="M47,202 H259"/>
-  <text class="dt-code" x="60" y="225">myArray</text>
-  <text class="dt-ptr" x="244" y="225" text-anchor="end">0x1A40</text>
-  <rect x="470" y="120" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
-    <text class="dt-val" x="513.0" y="162" text-anchor="middle">3</text>
-  <rect x="564" y="120" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
-    <text class="dt-val" x="607.0" y="162" text-anchor="middle">7</text>
-  <rect x="658" y="120" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
-    <text class="dt-val" x="701.0" y="162" text-anchor="middle">11</text>
-  <rect x="752" y="120" width="86" height="62" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="1.8" stroke-dasharray="6 5"/>
-  <text class="dt-addr" x="470" y="100">0x1A40</text>
-  <text class="dt-addr" x="838" y="100" text-anchor="end">4 &#215; sizeof(Item)</text>
-  <text class="dt-brace" x="52" y="298">&#125;</text>
-    <text class="dt-note" x="88" y="288">f() returns</text>
-    <text class="dt-gone" x="88" y="308">v goes out of scope</text>
-  <rect x="39" y="97" width="228" height="146" rx="11" fill="none" stroke="#6E1C2E" stroke-width="2.6"/>
-    <text class="dt-note" x="88" y="338">~PyList() runs</text>
-    <text class="dt-gone" x="88" y="358">the one C++ wrote for you</text>
-  <rect x="47" y="134" width="212" height="102" fill="#F2F1EE" opacity="0.84"/>
-    <path d="M56,151.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
-    <path d="M56,185.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
-    <path d="M56,219.0 H250" stroke="#b0aca4" stroke-width="2.2"/>
-    <text class="dt-gone" x="88" y="388">all three of them, the pointer included</text>
-  <rect x="466" y="116" width="376" height="70" rx="7" fill="#F2F1EE" opacity="0.88"/>
-    <path d="M470,151.0 H838" stroke="#b0aca4" stroke-width="2.4"/>
-    <text class="dt-note" x="470" y="221">delete [] myArray;</text>
-    <text class="dt-gone" x="470" y="241">in a destructor you write yourself</text>
+  <rect x="20" y="76" width="420" height="134" rx="9" fill="#272822"/>
+  <rect x="28" y="174" width="404" height="25" rx="5" fill="#6E1C2E" opacity="0.30"/>
+  <text class="dt-src" x="40" y="112"><tspan class="dt-ty">void</tspan> f() {</text>
+  <text class="dt-src" x="62" y="139"><tspan class="dt-ty">PyList</tspan> v;</text>
+  <text class="dt-src" x="62" y="166">v.append(<tspan class="dt-kw">3</tspan>);</text>
+  <text class="dt-src" x="40" y="193">}</text>
+  <text class="dt-cm" x="70" y="193">// v is destroyed here</text>
+  <text class="dt-zone" x="500" y="64">THE STACK</text>
+  <text class="dt-zone" x="862" y="64">THE HEAP</text>
+  <rect x="500" y="86" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
+    <path d="M508,86 h198 a8,8 0 0 1 8,8 v22 H500 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
+    <text class="dt-head" x="514" y="107">PyList v;</text>
+  <text class="dt-code" x="514" y="139">mySize</text>
+  <path class="dt-rule" d="M501,150 H713"/>
+  <text class="dt-code" x="514" y="173">myCapacity</text>
+  <path class="dt-rule" d="M501,184 H713"/>
+  <text class="dt-code" x="514" y="207">myArray</text>
+  <text class="dt-code" x="698" y="139" text-anchor="end">1</text>
+  <text class="dt-code" x="698" y="173" text-anchor="end">1</text>
+  <text class="dt-ptr" x="698" y="207" text-anchor="end">0x1A40</text>
+  <rect x="862" y="170" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="dt-val" x="905.0" y="212" text-anchor="middle">3</text>
+    <text class="dt-addr" x="862" y="158">0x1A40</text>
+    <text class="dt-gone" x="862" y="256">new Item[1]</text>
+  <rect x="493" y="79" width="228" height="146" rx="11" fill="none" stroke="#6E1C2E" stroke-width="2.6"/>
+    <text class="dt-note" x="500" y="248">~PyList() runs</text>
+    <text class="dt-gone" x="500" y="268">the one C++ wrote for you</text>
+  <rect x="501" y="116" width="212" height="102" fill="#F2F1EE" opacity="0.86"/>
+    <path d="M510,133.0 H704" stroke="#b0aca4" stroke-width="2.2"/>
+    <path d="M510,167.0 H704" stroke="#b0aca4" stroke-width="2.2"/>
+    <path d="M510,201.0 H704" stroke="#b0aca4" stroke-width="2.2"/>
+    <text class="dt-gone" x="500" y="288">all three members, the pointer included</text>
+  <rect x="854" y="162" width="102" height="78" rx="10" fill="none" stroke="#6E1C2E" stroke-width="2.8"/>
+    <rect x="862" y="270" width="68" height="24" rx="12" fill="#6E1C2E"/>
+    <text class="dt-tag" x="896" y="287" text-anchor="middle">LEAK</text>
+    <text class="dt-note" x="862" y="316">still allocated</text>
+    <text class="dt-gone" x="862" y="336">and nothing points at it</text>
   </svg>
-  <div class="callout"><strong>If your class calls <code>new</code>, your class defines a destructor.</strong> The one C++ writes for you destroys the members, and the block is not a member.</div>
+</section>
+
+<section>
+  <h2>Rule of Thumb</h2>
+  <p class="step-cap"><span class="step-n">6</span>A destructor you write is what gives the block back.</p>
+  <svg class="step-anim step-still" viewBox="0 0 1200 452" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Four lines of code walked through, with the stack and the heap beside them">
+  <style>
+  .dt-zone  { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
+              letter-spacing: 0.08em; }
+  .dt-src   { font: 17px 'Fira Code','Consolas',monospace; fill: #e8e6e0; }
+  .dt-kw    { fill: #f07178; }
+  .dt-ty    { fill: #a6e22e; }
+  .dt-cm    { font: italic 15px 'Fira Code','Consolas',monospace; fill: #8f8a80; }
+  .dt-cap   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
+              letter-spacing: 0.06em; }
+  .dt-code  { font: 15px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .dt-val   { font: 700 24px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .dt-ptr   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .dt-null  { font: 15px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
+  .dt-addr  { font: 12px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
+  .dt-note  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #6E1C2E; }
+  .dt-gone  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .dt-head  { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .dt-tag   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #ffffff;
+              letter-spacing: 0.06em; }
+  .dt-rule  { stroke: #EADFD2; stroke-width: 1.4; }
+</style>
+  <defs>
+    <marker id="dtArrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
+  </defs>
+  <rect x="20" y="76" width="420" height="134" rx="9" fill="#272822"/>
+  <text class="dt-src" x="40" y="112"><tspan class="dt-ty">void</tspan> f() {</text>
+  <text class="dt-src" x="62" y="139"><tspan class="dt-ty">PyList</tspan> v;</text>
+  <text class="dt-src" x="62" y="166">v.append(<tspan class="dt-kw">3</tspan>);</text>
+  <text class="dt-src" x="40" y="193">}</text>
+  <text class="dt-cm" x="70" y="193">// v is destroyed here</text>
+  <text class="dt-zone" x="500" y="64">THE STACK</text>
+  <text class="dt-zone" x="862" y="64">THE HEAP</text>
+  <rect x="500" y="86" width="214" height="132" rx="8" fill="#ffffff" stroke="#D99B5F" stroke-width="2.2"/>
+    <path d="M508,86 h198 a8,8 0 0 1 8,8 v22 H500 v-22 a8,8 0 0 1 8,-8 z" fill="#F6D9BC"/>
+    <text class="dt-head" x="514" y="107">PyList v;</text>
+  <text class="dt-code" x="514" y="139">mySize</text>
+  <path class="dt-rule" d="M501,150 H713"/>
+  <text class="dt-code" x="514" y="173">myCapacity</text>
+  <path class="dt-rule" d="M501,184 H713"/>
+  <text class="dt-code" x="514" y="207">myArray</text>
+  <text class="dt-code" x="698" y="139" text-anchor="end">1</text>
+  <text class="dt-code" x="698" y="173" text-anchor="end">1</text>
+  <text class="dt-ptr" x="698" y="207" text-anchor="end">0x1A40</text>
+  <rect x="862" y="170" width="86" height="62" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+    <text class="dt-val" x="905.0" y="212" text-anchor="middle">3</text>
+    <text class="dt-addr" x="862" y="158">0x1A40</text>
+    <text class="dt-gone" x="862" y="256">new Item[1]</text>
+  <rect x="493" y="79" width="228" height="146" rx="11" fill="none" stroke="#6E1C2E" stroke-width="2.6"/>
+    <text class="dt-note" x="500" y="248">~PyList() runs</text>
+    <text class="dt-gone" x="500" y="268">the one C++ wrote for you</text>
+  <rect x="501" y="116" width="212" height="102" fill="#F2F1EE" opacity="0.86"/>
+    <path d="M510,133.0 H704" stroke="#b0aca4" stroke-width="2.2"/>
+    <path d="M510,167.0 H704" stroke="#b0aca4" stroke-width="2.2"/>
+    <path d="M510,201.0 H704" stroke="#b0aca4" stroke-width="2.2"/>
+    <text class="dt-gone" x="500" y="288">all three members, the pointer included</text>
+  <text class="dt-cap" x="20" y="232">THE ONE YOU WRITE</text>
+    <rect x="20" y="246" width="420" height="107" rx="9" fill="#272822"/>
+    <text class="dt-src" x="40" y="282"><tspan class="dt-ty">PyList</tspan>::~<tspan class="dt-ty">PyList</tspan>() {</text>
+    <text class="dt-src" x="62" y="309"><tspan class="dt-kw">delete</tspan> [] myArray;</text>
+    <text class="dt-src" x="40" y="336">}</text>
+  <rect x="858" y="166" width="94" height="70" rx="7" fill="#F2F1EE" opacity="0.9"/>
+    <path d="M862,201.0 H948" stroke="#b0aca4" stroke-width="2.4"/>
+    <text class="dt-note" x="862" y="316">given back</text>
+  </svg>
+  <div class="callout"><strong>If your class calls <code>new</code>, you must define a destructor.</strong> C++ creates a destructor for you if you are not using <code>new</code>.</div>
 </section>
 /CS112-PRINT-STEPS-->
 
