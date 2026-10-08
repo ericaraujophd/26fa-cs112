@@ -341,21 +341,21 @@ List::~List() {
 <section>
   <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
   <div class="pi-question">
-    <strong>Array or list? <code>c</code> starts empty, and nothing else happens to it.</strong>
+    <strong><code>v</code> is a dynamic array. How many items does this move in all?</strong>
     <pre style="font-size:0.56em"><code class="language-cpp" data-trim>
-for (int i = 0; i &lt; 100000; ++i)
-    c.prepend(i);
+for (int i = 0; i &lt; 1000; ++i)
+    v.insert(0, i);        // put i at the front
     </code></pre>
   </div>
   <ul class="pi-choices pi-compact">
-    <li><span class="letter">A.</span> Array, both do 100,000 moves</li>
-    <li class="fragment correct" data-fragment-index="1"><span class="letter">B.</span> List, 300,000 moves against about 5 billion</li>
-    <li><span class="letter">C.</span> The same, both are linear</li>
-    <li><span class="letter">D.</span> Array, it stores no pointers</li>
+    <li><span class="letter">A.</span> 1,000, one per insert</li>
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">B.</span> About half a million</li>
+    <li><span class="letter">C.</span> About a million</li>
+    <li><span class="letter">D.</span> None, inserting at the front is constant</li>
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>B.</strong> Each <code>prepend</code> into an array shifts everything already there, so the loop moves 0 + 1 + 2 + … items, about 5 billion. On a list each one is three pointer operations, so 300,000. You give up fast indexing, and this loop never indexes.
+    <strong>B.</strong> Every insert shifts everything already there, so the loop moves 0 + 1 + 2 + … + 999 items, which is 499,500. The same thousand items into a linked list is a thousand <code>prepend</code> calls, three pointer operations each.
   </div>
 </section>
 
