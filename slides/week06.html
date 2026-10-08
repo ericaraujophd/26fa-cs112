@@ -90,31 +90,52 @@
 <section>
   <h2>This Week</h2>
   <ul class="agenda-list">
-    <li><div class="agenda-num">1</div> What dynamic arrays are bad at</li>
-    <li><div class="agenda-num">2</div> Nodes and links</li>
-    <li><div class="agenda-num">3</div> The <code>Node</code> and <code>List</code> classes</li>
-    <li><div class="agenda-num">4</div> Traversing</li>
-    <li><div class="agenda-num">5</div> <code>prepend</code> and <code>append</code></li>
-    <li><div class="agenda-num">6</div> The destructor chain reaction <span class='badge'>KEY</span></li>
-    <li><div class="agenda-num">7</div> Linked list vs. dynamic array</li>
+    <li><div class="agenda-num">1</div> The problem with dynamic arrays</li>
+    <li><div class="agenda-num">2</div> A clever solution, and how far to take it</li>
+    <li><div class="agenda-num">3</div> <code>Node</code> and <code>List</code></li>
+    <li><div class="agenda-num">4</div> Two classes, one exposed</li>
+    <li><div class="agenda-num">5</div> <code>prepend</code>, and walking the list</li>
+    <li><div class="agenda-num">6</div> The destructor <span class='badge'>KEY</span></li>
+    <li><div class="agenda-num">7</div> Dynamic array vs. linked list</li>
   </ul>
 </section>
 
 <section>
-  <h2>Where Arrays Hurt</h2>
+  <h2>Which Operations Are Expensive?</h2>
   <ul>
-    <li><code>append()</code> when full, copy everything</li>
-    <li><code>insert()</code> in the middle, shift everything after</li>
-    <li><code>remove()</code>, shift everything back</li>
+    <li><code>append()</code> when the array is full</li>
+    <li><code>insert()</code> in the middle, especially at the front</li>
+    <li><code>delete()</code> in the middle, especially at the front</li>
   </ul>
 </section>
 
 <section>
-  <h2>What If We Broke It Up?</h2>
+  <h2>A Clever Solution?</h2>
+  <p>Store the array in smaller chunks, a collection of smaller arrays.</p>
+  <div class="two-col">
+    <div>
+      <h3>Advantages</h3>
+      <ul><li>Insert and delete shift fewer items</li></ul>
+    </div>
+    <div>
+      <h3>Disadvantages</h3>
+      <ul>
+        <li>Indexing is no longer one step</li>
+        <li>Items are not consecutive, so pointer arithmetic stops working</li>
+        <li>What happens when a chunk fills up?</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>How Big Is a Chunk?</h2>
   <ul>
-    <li>Chunks of 5? 3? 2?</li>
+    <li>5 items each? 3? 2?</li>
   </ul>
-  <div class="callout callout-maroon fragment">Nothing shifts, ever. But the items are no longer neighbors, so <strong>each one has to point to the next.</strong></div>
+  <div class="callout callout-maroon fragment">What if each chunk were just
+    <strong>one</strong> item? Then nothing ever shifts, and we have a linked
+    list.</div>
 </section>
 
 <section>
@@ -140,7 +161,16 @@
   <text class="ll-lbl" x="170.48" y="30" text-anchor="middle">myFirst</text>
   <line class="ll-link" x1="170.48" y1="36" x2="170.48" y2="57" marker-end="url(#llarrow1)"/>
   </svg>
-  <div class="callout">Each <strong>Node</strong> holds one item and the address of the next Node. The last one points to <code>nullptr</code>, which is how you know you've reached the end.</div>
+  <div class="callout">Each item lives in its own <strong>Node</strong>, which
+    also holds the address of the next one. The nodes form a chain.</div>
+  <aside class="notes">
+    The human linked list. You are the List: one arm is myFirst, the other is
+    myLast. Point at a student, who stands and points at another, until four or
+    five are up. Then a sixth student is a temporary pointer: they start at the
+    first node, you run sayYourName() on whoever they point at, and they move
+    along. That is walking the list, and visiting each node. Keep them standing
+    for prepend.
+  </aside>
 </section>
 
 <section>
@@ -148,12 +178,9 @@
   <div class="two-col">
     <div>
       <h3>Node: one link</h3>
-      <pre style="font-size:0.44em"><code class="language-cpp" data-trim>
+      <pre style="font-size:0.46em"><code class="language-cpp" data-trim>
 class Node {
  public:
-  Node();
-  Node(Item it, Node *nxt);
-  ~Node();
   Item  myItem;
   Node *myNext;
 };
@@ -161,15 +188,10 @@ class Node {
     </div>
     <div>
       <h3>List: the container</h3>
-      <pre style="font-size:0.44em"><code class="language-cpp" data-trim>
+      <pre style="font-size:0.46em"><code class="language-cpp" data-trim>
 class List {
- public:
-  List();
-  ~List();
-  void prepend(Item it);
-  void append(Item it);
  private:
-  unsigned mySize;
+  int   mySize;
   Node *myFirst;
   Node *myLast;
 };
@@ -179,15 +201,50 @@ class List {
 </section>
 
 <section>
-  <h2>Traversing</h2>
-  <pre><code class="language-cpp" data-trim>
-Node *current = myFirst;        // start at the front
+  <h2>Two Classes, One Exposed</h2>
+  <pre style="font-size:0.5em"><code class="language-cpp" data-trim>
+class List {
+ public:
+    getSize(), isEmpty(), append(), prepend() …
 
-while (current != nullptr) {    // or run off the end
-    cout &lt;&lt; current-&gt;myItem &lt;&lt; endl;
-    current = current-&gt;myNext;  // or loop forever
-}
+ private:
+    class Node {               // nobody outside List can even name this
+     public:
+        Item  myItem;
+        Node *myNext;
+    };
+
+    Node *myFirst, *myLast;
+};
   </code></pre>
+  <div class="callout">Users of a container do not need to know its inner
+    workings.</div>
+</section>
+
+<section>
+  <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
+  <div class="pi-question">
+    <strong>Which line fails to compile?</strong>
+  </div>
+  <ul class="pi-choices pi-compact">
+    <li><span class="letter">A.</span> <code>List&lt;int&gt; L;</code></li>
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">B.</span> <code>List&lt;int&gt;::Node *n;</code></li>
+    <li><span class="letter">C.</span> <code>L.append(4);</code></li>
+    <li><span class="letter">D.</span> <code>cout &lt;&lt; L.getSize();</code></li>
+  </ul>
+  <div class="answer-box fragment" data-fragment-index="1">
+    <div class="ans-label">&#10003; Answer</div>
+    <strong>B.</strong> <code>Node</code> is private, so outside <code>List</code> the name does not exist. That is the whole point: the chain is <code>List</code>'s business. Inside <code>List</code>, <code>Node</code>'s own members are public, because the enclosing class gets no special access to a nested class's private members.
+  </div>
+</section>
+
+<section>
+  <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
+  <div class="pi-question">
+    <strong>Outline the steps to implement <code>prepend(item)</code>.</strong>
+  </div>
+  <div class="callout callout-maroon">Does your algorithm handle the case where
+    the list is <strong>empty</strong>?</div>
 </section>
 
 <section data-auto-animate>
@@ -213,7 +270,6 @@ while (current != nullptr) {    // or run off the end
   <text class="ll-lbl" x="170.48" y="30" text-anchor="middle">myFirst</text>
   <line class="ll-link" x1="170.48" y1="36" x2="170.48" y2="57" marker-end="url(#llarrow2)"/>
   </svg>
-  <div class="callout">Adding at the front. What has to change?</div>
 </section>
 
 <section data-auto-animate>
@@ -247,49 +303,39 @@ while (current != nullptr) {    // or run off the end
   <pre style="font-size:0.52em"><code class="language-cpp" data-trim>
 void List::prepend(Item it) {
     myFirst = new Node(it, myFirst);   // point the new one at the old first
-    if (mySize == 0) { myLast = myFirst; }
+    if (mySize == 0) { myLast = myFirst; }   // empty list: it is last too
     ++mySize;
 }
   </code></pre>
-  <div class="callout">Three steps, no shifting, no matter how long the list is, <strong>constant time</strong>.</div>
 </section>
 
 <section>
-  <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
-  <div class="pi-question">
-    <strong>Why does <code>prepend()</code> need that <code>if (mySize == 0)</code>?</strong>
-  </div>
-  <ul class="pi-choices pi-compact">
-    <li><span class="letter">A.</span> To avoid a memory leak</li>
-    <li class="fragment correct" data-fragment-index="1"><span class="letter">B.</span> Because on an empty list the new node is also the <em>last</em> node</li>
-    <li><span class="letter">C.</span> To keep <code>mySize</code> correct</li>
-    <li><span class="letter">D.</span> It isn't needed, <code>myLast</code> is never used</li>
+  <h2>Write the Code For…</h2>
+  <ul>
+    <li><code>List</code> and <code>Node</code> constructors</li>
+    <li><code>getFirst</code>, <code>getLast</code>, <code>getSize</code></li>
+    <li><code>prepend</code>, <code>writeTo(ostream &amp;)</code></li>
+    <li><code>List</code> and <code>Node</code> destructors</li>
   </ul>
-  <div class="answer-box fragment" data-fragment-index="1">
-    <div class="ans-label">&#10003; Answer</div>
-    <strong>B.</strong> On an empty list both <code>myFirst</code> and <code>myLast</code> must end up pointing at the new node. Miss it and <code>myLast</code> stays <code>nullptr</code>, which breaks the very next <code>append()</code>. Empty and single-element lists are where linked-list bugs live.
-  </div>
+  <aside class="notes">
+    Live, in w06-lists. Tests first, as with PyList. prepend is the one the
+    slides animate, so write it after they have outlined it themselves.
+  </aside>
 </section>
 
 <section>
-  <h2>append(), Why Keep <code>myLast</code>?</h2>
-  <pre><code class="language-cpp" data-trim>
-void List::append(Item it) {
-    Node *n = new Node(it, nullptr);
-    if (mySize == 0) {
-        myFirst = myLast = n;
-    } else {
-        myLast-&gt;myNext = n;   // old last points at n
-        myLast = n;
-    }
-    ++mySize;
-}
-  </code></pre>
-  <div class="callout">Without <code>myLast</code> you'd walk the whole list to find the end, linear. Storing one extra pointer makes <code>append()</code> constant. <strong>A little memory buys a lot of speed.</strong></div>
+  <h2>Destructor</h2>
+  <p>Two things happen, <strong>in this order</strong>:</p>
+  <ol>
+    <li>The code for the destructor runs</li>
+    <li>The memory for the object goes back</li>
+  </ol>
+  <div class="callout callout-maroon">Called when you <code>delete</code> an
+    object, and when an object goes out of scope.</div>
 </section>
 
 <section>
-  <h2>The Destructor Chain Reaction</h2>
+  <h2>The Chain Reaction</h2>
   <pre><code class="language-cpp" data-trim>
 Node::~Node() {
     delete myNext;      // destroy the rest of the list
@@ -300,7 +346,8 @@ List::~List() {
 }
   </code></pre>
   <div class="callout callout-maroon">
-    Deleting the first Node deletes the second, which deletes the third.
+    The order is why this works. <code>~Node</code> runs <em>before</em> the
+    node's memory goes back, so <code>myNext</code> is still readable.
     <code>delete nullptr</code> is harmless, and that is what stops the chain.
   </div>
 </section>
@@ -318,22 +365,23 @@ List::~List() {
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>B. four.</strong> <code>~List</code> deletes <code>myFirst</code>; each <code>~Node</code> deletes the one after it. The chain stops when it reaches <code>nullptr</code>, which is not a node and needs no destructor.
+    <strong>B. four.</strong> <code>~List</code> deletes <code>myFirst</code>; each <code>~Node</code> deletes the one after it. The chain stops at <code>nullptr</code>, which is not a node and needs no destructor.
   </div>
 </section>
 
 <section>
-  <h2>List vs. Array</h2>
-  <table>
+  <h2>Dynamic Array vs. Linked List</h2>
+  <table style="font-size:0.78em">
     <thead><tr><th>Operation</th><th>Dynamic array</th><th>Linked list</th></tr></thead>
     <tbody>
-      <tr><td>index <code>v[i]</code></td><td><strong>constant</strong></td><td>linear</td></tr>
-      <tr><td>append</td><td>amortized constant</td><td><strong>constant</strong></td></tr>
-      <tr><td>prepend</td><td>linear</td><td><strong>constant</strong></td></tr>
-      <tr><td>insert in middle</td><td>linear</td><td>linear to find, constant to link</td></tr>
-      <tr><td>remove</td><td>linear</td><td>linear to find, constant to unlink</td></tr>
-      <tr><td>traverse all</td><td>linear</td><td>linear</td></tr>
-      <tr><td>memory per item</td><td>just the item</td><td>item + a pointer</td></tr>
+      <tr><td><code>append()</code></td><td>amortized constant</td><td><strong>constant</strong></td></tr>
+      <tr><td><code>prepend()</code></td><td>linear</td><td><strong>constant</strong></td></tr>
+      <tr><td>insert / remove in the middle</td><td>linear</td><td>linear</td></tr>
+      <tr><td>delete the first item</td><td>linear</td><td><strong>constant</strong></td></tr>
+      <tr><td>delete the last item</td><td><strong>constant</strong></td><td>linear (!)</td></tr>
+      <tr><td>traverse, e.g. print</td><td>linear</td><td>linear</td></tr>
+      <tr><td>find the n-th item</td><td><strong>constant</strong></td><td>linear</td></tr>
+      <tr><td>space</td><td>minimal</td><td>a pointer per item</td></tr>
     </tbody>
   </table>
 </section>
@@ -341,21 +389,51 @@ List::~List() {
 <section>
   <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
   <div class="pi-question">
-    <strong><code>v</code> is a dynamic array. How many items does this move in all?</strong>
-    <pre style="font-size:0.56em"><code class="language-cpp" data-trim>
-for (int i = 0; i &lt; 1000; ++i)
-    v.insert(0, i);        // put i at the front
-    </code></pre>
+    <strong>Deleting the <strong>last</strong> node of a linked list is…</strong>
   </div>
   <ul class="pi-choices pi-compact">
-    <li><span class="letter">A.</span> 1,000, one per insert</li>
-    <li class="fragment correct" data-fragment-index="1"><span class="letter">B.</span> About half a million</li>
-    <li><span class="letter">C.</span> About a million</li>
-    <li><span class="letter">D.</span> None, inserting at the front is constant</li>
+    <li><span class="letter">A.</span> constant, <code>myLast</code> points right at it</li>
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">B.</span> linear, you walk the list to find the one before it</li>
+    <li><span class="letter">C.</span> amortized constant</li>
+    <li><span class="letter">D.</span> constant, the destructor chain handles it</li>
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>B.</strong> Every insert shifts everything already there, so the loop moves 0 + 1 + 2 + … + 999 items, which is 499,500. The same thousand items into a linked list is a thousand <code>prepend</code> calls, three pointer operations each.
+    <strong>B.</strong> <code>myLast</code> finds the node instantly, but the node <em>before</em> it has to become the new last, and the only way to reach it is from the front. This is the one row where the array wins outright.
+  </div>
+</section>
+
+<section>
+  <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
+  <div class="pi-question">
+    <strong>Thousands of values, always added at the <strong>front</strong>, count unknown. Which?</strong>
+  </div>
+  <ul class="pi-choices pi-compact">
+    <li><span class="letter">A.</span> An array</li>
+    <li><span class="letter">B.</span> A dynamic array</li>
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">C.</span> A linked list</li>
+    <li><span class="letter">D.</span> Any of them, it makes no difference</li>
+  </ul>
+  <div class="answer-box fragment" data-fragment-index="1">
+    <div class="ans-label">&#10003; Answer</div>
+    <strong>C.</strong> Every prepend into an array shifts everything already there. On a list it is three pointer operations, whatever the size. An array is out on the unknown count alone.
+  </div>
+</section>
+
+<section>
+  <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
+  <div class="pi-question">
+    <strong>Same, but always added at the <strong>end</strong>, then read in random order.</strong>
+  </div>
+  <ul class="pi-choices pi-compact">
+    <li><span class="letter">A.</span> An array</li>
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">B.</span> A dynamic array</li>
+    <li><span class="letter">C.</span> A linked list</li>
+    <li><span class="letter">D.</span> Either B or C, appending is cheap on both</li>
+  </ul>
+  <div class="answer-box fragment" data-fragment-index="1">
+    <div class="ans-label">&#10003; Answer</div>
+    <strong>B.</strong> Appending is cheap on both, so the second half decides it. Reading in random order means indexing, which is constant on a dynamic array and linear on a list.
   </div>
 </section>
 
@@ -364,12 +442,12 @@ for (int i = 0; i &lt; 1000; ++i)
   <ul style="font-size:0.72em; color:rgba(255,255,255,0.92)">
     <li>A linked list trades <strong>contiguity</strong> for <strong>flexibility</strong></li>
     <li>Each <code style='color:var(--gold)'>Node</code> holds an item and the address of the next</li>
-    <li>Traversal is <code style='color:var(--gold)'>while (current != nullptr)</code>: advance or loop forever</li>
-    <li><code style='color:var(--gold)'>prepend</code> and <code style='color:var(--gold)'>append</code> are constant; indexing is linear</li>
-    <li>The empty list and the one-item list are where the bugs hide</li>
-    <li>Node destructors chain, and <code style='color:var(--gold)'>delete nullptr</code> ends the chain safely</li>
+    <li><code style='color:var(--gold)'>Node</code> is private to <code style='color:var(--gold)'>List</code>: users never see the chain</li>
+    <li><code style='color:var(--gold)'>prepend</code> is constant; finding the n-th item is linear</li>
+    <li>The empty list is where the bugs hide</li>
+    <li>Destructors chain, and <code style='color:var(--gold)'>delete nullptr</code> ends the chain safely</li>
   </ul>
-  <div class="next">Next: a07 →</div>
+  <div class="next">Next: a08 →</div>
   <p class="credit-line">
     This deck stands on earlier CS112 materials by<br>
     <strong>Joel Adams</strong> and <strong>Victor Norman</strong> &middot; adapted and extended by <strong>Eric Ara&uacute;jo</strong>
