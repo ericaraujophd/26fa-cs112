@@ -101,47 +101,46 @@
 </section>
 
 <section>
-  <h2>Where Dynamic Arrays Hurt</h2>
+  <h2>Where Arrays Hurt</h2>
   <ul>
-    <li><code>append()</code> when full: allocate, copy everything, delete</li>
-    <li><code>insert()</code> in the middle: shift every element after it</li>
-    <li><code>remove()</code>: shift everything back down</li>
-    <li>Growing needs one <strong>contiguous</strong> block big enough for all of it</li>
+    <li><code>append()</code> when full, copy everything</li>
+    <li><code>insert()</code> in the middle, shift everything after</li>
+    <li><code>remove()</code>, shift everything back</li>
   </ul>
-  <div class="callout">All four problems come from the same source: the elements must sit <em>next to each other</em> in memory.</div>
+  <div class="callout callout-maroon">One cause. The elements have to sit <em>next to each other</em>.</div>
 </section>
 
 <section>
   <h2>What If We Broke It Up?</h2>
-  <p style="font-size:0.7em">Store the data in chunks instead of one block. Inserting then only shifts within a chunk.</p>
   <ul>
     <li>Chunks of 5? 3? 2?</li>
-    <li>What happens when a chunk fills up?</li>
-    <li>…what if each chunk held exactly <strong>one</strong> item?</li>
+    <li>…chunks of <strong>one</strong>?</li>
   </ul>
-  <div class="callout callout-maroon">Then nothing ever shifts. But if the items aren't neighbors in memory, how do we find the next one? <strong>Each one has to point to it.</strong></div>
+  <div class="callout callout-maroon">Nothing shifts, ever. But the items are no longer neighbors, so <strong>each one has to point to the next.</strong></div>
 </section>
 
 <section>
   <h2>A Linked List</h2>
   <svg class="ll-svg" viewBox="0 0 760 150" xmlns="http://www.w3.org/2000/svg">
-  <defs><marker id="llarrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#C49A2C"/></marker></defs>
+  <defs><marker id="llarrow1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#C49A2C"/></marker></defs>
   <rect class="ll-node" x="137.0" y="60" width="108" height="54" rx="6"/>
   <line class="ll-split" x1="203.95999999999998" y1="60" x2="203.95999999999998" y2="114"/>
   <text class="ll-val" x="170.48" y="93.0" text-anchor="middle">3</text>
-  <line class="ll-link" x1="245.0" y1="87.0" x2="283.0" y2="87.0" marker-end="url(#llarrow)"/>
+  <circle class="ll-dot" cx="224.48000000000002" cy="87.0" r="3.5"/>
+  <line class="ll-link" x1="224.48000000000002" y1="87.0" x2="283.0" y2="87.0" marker-end="url(#llarrow1)"/>
   <rect class="ll-node" x="291.0" y="60" width="108" height="54" rx="6"/>
   <line class="ll-split" x1="357.96" y1="60" x2="357.96" y2="114"/>
   <text class="ll-val" x="324.48" y="93.0" text-anchor="middle">7</text>
-  <line class="ll-link" x1="399.0" y1="87.0" x2="437.0" y2="87.0" marker-end="url(#llarrow)"/>
+  <circle class="ll-dot" cx="378.48" cy="87.0" r="3.5"/>
+  <line class="ll-link" x1="378.48" y1="87.0" x2="437.0" y2="87.0" marker-end="url(#llarrow1)"/>
   <rect class="ll-node" x="445.0" y="60" width="108" height="54" rx="6"/>
   <line class="ll-split" x1="511.96" y1="60" x2="511.96" y2="114"/>
   <text class="ll-val" x="478.48" y="93.0" text-anchor="middle">11</text>
   <circle class="ll-dot" cx="532.48" cy="87.0" r="3.5"/>
-  <line class="ll-link" x1="553.0" y1="87.0" x2="587.0" y2="87.0" marker-end="url(#llarrow)"/>
+  <line class="ll-link" x1="532.48" y1="87.0" x2="587.0" y2="87.0" marker-end="url(#llarrow1)"/>
   <text class="ll-null" x="597.0" y="92.0">nullptr</text>
-  <text class="ll-lbl" x="147.0" y="46">myFirst</text>
-  <line class="ll-link" x1="153.0" y1="52" x2="153.0" y2="58" marker-end="url(#llarrow)"/>
+  <text class="ll-lbl" x="170.48" y="30" text-anchor="middle">myFirst</text>
+  <line class="ll-link" x1="170.48" y1="36" x2="170.48" y2="57" marker-end="url(#llarrow1)"/>
   </svg>
   <div class="callout">Each <strong>Node</strong> holds one item and the address of the next Node. The last one points to <code>nullptr</code>, which is how you know you've reached the end.</div>
 </section>
@@ -179,7 +178,7 @@ class List {
       </code></pre>
     </div>
   </div>
-  <div class="callout">Students of your class only ever see <code>List</code>. <code>Node</code> is an implementation detail, which is exactly what <code>private</code> is for.</div>
+  <div class="callout">Whoever uses your <code>List</code> never sees a <code>Node</code>. That is what <code>private</code> is for.</div>
 </section>
 
 <section>
@@ -202,23 +201,25 @@ while (current != nullptr) {
 <section data-auto-animate>
   <h2>prepend(5)</h2>
   <svg class="ll-svg" viewBox="0 0 760 150" xmlns="http://www.w3.org/2000/svg">
-  <defs><marker id="llarrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#C49A2C"/></marker></defs>
+  <defs><marker id="llarrow2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#C49A2C"/></marker></defs>
   <rect class="ll-node" x="137.0" y="60" width="108" height="54" rx="6"/>
   <line class="ll-split" x1="203.95999999999998" y1="60" x2="203.95999999999998" y2="114"/>
   <text class="ll-val" x="170.48" y="93.0" text-anchor="middle">3</text>
-  <line class="ll-link" x1="245.0" y1="87.0" x2="283.0" y2="87.0" marker-end="url(#llarrow)"/>
+  <circle class="ll-dot" cx="224.48000000000002" cy="87.0" r="3.5"/>
+  <line class="ll-link" x1="224.48000000000002" y1="87.0" x2="283.0" y2="87.0" marker-end="url(#llarrow2)"/>
   <rect class="ll-node" x="291.0" y="60" width="108" height="54" rx="6"/>
   <line class="ll-split" x1="357.96" y1="60" x2="357.96" y2="114"/>
   <text class="ll-val" x="324.48" y="93.0" text-anchor="middle">7</text>
-  <line class="ll-link" x1="399.0" y1="87.0" x2="437.0" y2="87.0" marker-end="url(#llarrow)"/>
+  <circle class="ll-dot" cx="378.48" cy="87.0" r="3.5"/>
+  <line class="ll-link" x1="378.48" y1="87.0" x2="437.0" y2="87.0" marker-end="url(#llarrow2)"/>
   <rect class="ll-node" x="445.0" y="60" width="108" height="54" rx="6"/>
   <line class="ll-split" x1="511.96" y1="60" x2="511.96" y2="114"/>
   <text class="ll-val" x="478.48" y="93.0" text-anchor="middle">11</text>
   <circle class="ll-dot" cx="532.48" cy="87.0" r="3.5"/>
-  <line class="ll-link" x1="553.0" y1="87.0" x2="587.0" y2="87.0" marker-end="url(#llarrow)"/>
+  <line class="ll-link" x1="532.48" y1="87.0" x2="587.0" y2="87.0" marker-end="url(#llarrow2)"/>
   <text class="ll-null" x="597.0" y="92.0">nullptr</text>
-  <text class="ll-lbl" x="147.0" y="46">myFirst</text>
-  <line class="ll-link" x1="153.0" y1="52" x2="153.0" y2="58" marker-end="url(#llarrow)"/>
+  <text class="ll-lbl" x="170.48" y="30" text-anchor="middle">myFirst</text>
+  <line class="ll-link" x1="170.48" y1="36" x2="170.48" y2="57" marker-end="url(#llarrow2)"/>
   </svg>
   <div class="callout">Adding at the front. What has to change?</div>
 </section>
@@ -226,27 +227,30 @@ while (current != nullptr) {
 <section data-auto-animate>
   <h2>prepend(5)</h2>
   <svg class="ll-svg" viewBox="0 0 760 150" xmlns="http://www.w3.org/2000/svg">
-  <defs><marker id="llarrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#C49A2C"/></marker></defs>
+  <defs><marker id="llarrow3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#C49A2C"/></marker></defs>
   <rect class="ll-node" x="60.0" y="60" width="108" height="54" rx="6"/>
   <line class="ll-split" x1="126.96" y1="60" x2="126.96" y2="114"/>
   <text class="ll-val" x="93.47999999999999" y="93.0" text-anchor="middle">5</text>
-  <line class="ll-link" x1="168.0" y1="87.0" x2="206.0" y2="87.0" marker-end="url(#llarrow)"/>
+  <circle class="ll-dot" cx="147.48000000000002" cy="87.0" r="3.5"/>
+  <line class="ll-link" x1="147.48000000000002" y1="87.0" x2="206.0" y2="87.0" marker-end="url(#llarrow3)"/>
   <rect class="ll-node" x="214.0" y="60" width="108" height="54" rx="6"/>
   <line class="ll-split" x1="280.96" y1="60" x2="280.96" y2="114"/>
   <text class="ll-val" x="247.48" y="93.0" text-anchor="middle">3</text>
-  <line class="ll-link" x1="322.0" y1="87.0" x2="360.0" y2="87.0" marker-end="url(#llarrow)"/>
+  <circle class="ll-dot" cx="301.48" cy="87.0" r="3.5"/>
+  <line class="ll-link" x1="301.48" y1="87.0" x2="360.0" y2="87.0" marker-end="url(#llarrow3)"/>
   <rect class="ll-node" x="368.0" y="60" width="108" height="54" rx="6"/>
   <line class="ll-split" x1="434.96" y1="60" x2="434.96" y2="114"/>
   <text class="ll-val" x="401.48" y="93.0" text-anchor="middle">7</text>
-  <line class="ll-link" x1="476.0" y1="87.0" x2="514.0" y2="87.0" marker-end="url(#llarrow)"/>
+  <circle class="ll-dot" cx="455.48" cy="87.0" r="3.5"/>
+  <line class="ll-link" x1="455.48" y1="87.0" x2="514.0" y2="87.0" marker-end="url(#llarrow3)"/>
   <rect class="ll-node" x="522.0" y="60" width="108" height="54" rx="6"/>
   <line class="ll-split" x1="588.96" y1="60" x2="588.96" y2="114"/>
   <text class="ll-val" x="555.48" y="93.0" text-anchor="middle">11</text>
   <circle class="ll-dot" cx="609.48" cy="87.0" r="3.5"/>
-  <line class="ll-link" x1="630.0" y1="87.0" x2="664.0" y2="87.0" marker-end="url(#llarrow)"/>
+  <line class="ll-link" x1="609.48" y1="87.0" x2="664.0" y2="87.0" marker-end="url(#llarrow3)"/>
   <text class="ll-null" x="674.0" y="92.0">nullptr</text>
-  <text class="ll-lbl" x="70.0" y="46">myFirst</text>
-  <line class="ll-link" x1="76.0" y1="52" x2="76.0" y2="58" marker-end="url(#llarrow)"/>
+  <text class="ll-lbl" x="93.47999999999999" y="30" text-anchor="middle">myFirst</text>
+  <line class="ll-link" x1="93.47999999999999" y1="36" x2="93.47999999999999" y2="57" marker-end="url(#llarrow3)"/>
   </svg>
   <pre style="font-size:0.52em"><code class="language-cpp" data-trim>
 void List::prepend(Item it) {
@@ -303,10 +307,9 @@ List::~List() {
     delete myFirst;     // starts the chain
 }
   </code></pre>
-  <p style="font-size:0.64em">Deleting the first Node runs <em>its</em> destructor, which deletes the second, which deletes the third…</p>
   <div class="callout callout-maroon">
-    <code>delete nullptr</code> is harmless and defined; that's what stops the chain at the end.
-    Elegant, but on a very long list it also means a very deep stack of destructor calls.
+    Deleting the first Node deletes the second, which deletes the third.
+    <code>delete nullptr</code> is harmless, and that is what stops the chain.
   </div>
 </section>
 
@@ -325,26 +328,6 @@ List::~List() {
     <div class="ans-label">&#10003; Answer</div>
     <strong>B. four.</strong> <code>~List</code> deletes <code>myFirst</code>; each <code>~Node</code> deletes the one after it. The chain stops when it reaches <code>nullptr</code>, which is not a node and needs no destructor.
   </div>
-</section>
-
-<section class="demo-slide" data-background-color="#6E1C2E">
-  <h1>Demo</h1>
-  <div class="demo-rule"></div>
-  <svg class="demo-art" viewBox="0 -34 320 246" xmlns="http://www.w3.org/2000/svg">
-    <path d="M254,12 C250,0 260,-6 256,-20 C270,-11 267,1 261,12 Z" fill="#E8873A"/>
-    <path d="M266,12 C264,4 270,0 268,-10 C277,-3 275,5 271,12 Z" fill="#F2CD00"/>
-    <path d="M243,12 C241,5 246,2 244,-6 C251,-1 250,6 247,12 Z" fill="#E8873A" opacity=".75"/>
-    <rect x="40" y="10" width="240" height="150" rx="9" fill="#1e1f1a" stroke="#C49A2C" stroke-width="3"/>
-    <text x="58" y="46" font-family="'Fira Code',Consolas,monospace" font-size="15.0" fill="#9be36b">$ ./list_test</text>
-    <text x="58" y="76" font-family="'Fira Code',Consolas,monospace" font-size="13.0" fill="#ff7b72">^C  (infinite loop:</text>
-    <text x="58" y="96" font-family="'Fira Code',Consolas,monospace" font-size="13.0" fill="#ff7b72">you never moved current)</text>
-    <text x="58" y="134" font-family="'Fira Code',Consolas,monospace" font-size="15" fill="#9be36b">$</text>
-    <rect x="72" y="122" width="9" height="15" fill="#9be36b"/>
-    <path d="M22,168 L298,168 L314,196 L6,196 Z" fill="#eceae3" stroke="#8d8d86" stroke-width="2.5" stroke-linejoin="round"/>
-    <rect x="140" y="174" width="40" height="6" rx="3" fill="#cfcdc6"/>
-  </svg>
-  <p class="demo-cap">Walking a list, one hop at a time.</p>
-  <p class="demo-sub">(the list is fine. the loop is forever.)</p>
 </section>
 
 <section>
@@ -377,7 +360,7 @@ List::~List() {
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>B.</strong> Prepending to an array shifts everything every time; on a list it's three pointer operations. You give up fast indexing: but you weren't going to index anyway. <em>Match the structure to the operations you actually perform.</em>
+    <strong>B.</strong> Prepending to an array shifts everything every time. On a list it is three pointer operations. You give up fast indexing, and you were not going to index anyway. <em>Match the structure to the operations you actually perform.</em>
   </div>
 </section>
 
