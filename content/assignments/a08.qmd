@@ -33,8 +33,8 @@ By the end of this assignment, you will be able to:
   goes wrong without one
 - Compare two linked lists by walking both at once
 - Explain the destructor chain reaction: how deleting one Node frees the rest
-- Convert a pair of classes into class templates, and say which uses of a class
-  name change and which do not
+- Convert a class into a class template, and say why the `Node` declared inside
+  it needs no conversion of its own
 - Write your own Catch2 test cases, before the code they test
 
 This assignment covers course skill **C3**, *implement a linked list with
@@ -44,8 +44,8 @@ assessed at **Window 2** on Nov 20.
 ::: {.callout-important}
 **This one is deliberately small, and here is why.**
 
-Fall Break runs **Oct 16–21**, and **Window 1 is Oct 23**, the Monday you come
-back. The break is when you prepare for your first check-in, and that check-in
+Fall Break runs **Oct 16–21**, and **Window 1 is assessed against Oct 23**, the
+Friday you come back. The break is when you prepare for your first check-in, and that check-in
 is the one that sets your expectations for the whole scheme.
 
 So this assignment is built to be finished in the week, not carried into the
@@ -98,10 +98,17 @@ because nothing is in anybody's way.
 Monday's lecture built the class. This week you finish it.
 
 ::: {.callout-note}
-**Two classes, not one.** `Node` is one item and one pointer, and that is all it
-is, plumbing, with nothing to protect, which is why its members are public.
-`List` is the handle: it remembers where the chain starts, where it ends, and
-how long it is. Neither is useful without the other.
+**Two classes, one inside the other.** `Node` is one item and one pointer. It is
+declared inside `List`, in the private section, so nothing outside `List` can
+even name it. Whoever uses your list sees a container, never a chain.
+
+`List` is the handle. It remembers where the chain starts, where it ends, and
+how long it is.
+
+`Node`'s own members are public, which looks odd and is deliberate. `Node` is
+private, so public only means public to `List`. And it has to be that way,
+because a class gets no special access to the private members of a class
+declared inside it.
 :::
 
 ---
@@ -170,7 +177,7 @@ happens to match an empty question.
 
 | File | Yours? | What it is |
 |---|---|---|
-| `List.h` | **yes**, at step 5 | the two classes. Read it first. |
+| `List.h` | **yes**, at step 5 | `List`, with `Node` inside it. Read it first. |
 | `List.cpp` | **yes** | steps 1–4. Step 5 **deletes** it. |
 | `tests.cpp` | **yes** | your own tests, a graded deliverable |
 | `makefile` | **yes**, at step 5 | `List.o` has to come out of it |
@@ -178,21 +185,19 @@ happens to match an empty question.
 | `catch.hpp`, `catchmain.cpp` | no | the test framework |
 | `test.py` | no | the grader |
 
-Already written for you, from Monday's lecture: the `Node` constructor and
-destructor, the `List` constructor and destructor, `prepend`, `getSize` and
-`writeTo`.
+Already written for you, from Monday's lecture: `Node`'s constructor and
+destructor, in `List.h`, and the `List` constructor and destructor, `prepend`,
+`getSize` and `writeTo`, in `List.cpp`.
 
 ### Read the destructor first
 
+It is in `List.h`, inside `Node`:
+
 ```cpp
-Node::~Node() {
-    delete myNext;
-    myNext = nullptr;
-}
+~Node() { delete myNext; }
 ```
 
-Four words, and they are the most important four in the file. Deleting one Node
-deletes the one after it, which deletes the one after *that*, and so on to the
+Deleting one Node deletes the one after it, which deletes the one after *that*, and so on to the
 end of the chain. So the `List` destructor does not need a loop:
 
 ```cpp
@@ -250,8 +255,8 @@ after:    myFirst → [a] → [b] → [c] → nullptr     myLast → [c]
 **DRAW PICTURES.** Or don't draw pictures, if you want this step to take much
 longer.
 
-Genuinely: sketch the three boxes and the arrows, then work out which arrows
-have to change and in what order. Every pointer bug in this assignment is a
+Sketch the three boxes and the arrows, then work out which arrows have to
+change and in what order. Every pointer bug in this assignment is a
 picture you did not draw.
 :::
 
@@ -269,14 +274,13 @@ way `mySize` goes up by one.
 ::: {.callout-warning}
 **You do not need a loop.**
 
-`myLast` is already the address of the last Node. That is the entire reason the
-class keeps it, it turns "add to the end" from a walk down the whole chain into
-two assignments.
+`myLast` is already the address of the last Node. Keeping it turns "add to the
+end" from a walk down the whole chain into two assignments.
 
 Walking from `myFirst` to find the end produces the right answer and will pass
-most of the append checks. One of them looks at your code and fails it anyway,
-because on a long list the difference is the whole point of storing `myLast` in
-the first place.
+most of the append checks. One of them reads your code and fails a loop anyway.
+On a list of a million, the walk is a million steps and the two assignments are
+still two.
 :::
 
 The append tests are already written for you in `tests.cpp`. They are the shape
@@ -335,8 +339,8 @@ them apart from a real test by looking. Watching it go red once is the only
 cheap way to know it is wired up.
 :::
 
-Worth covering: an item at the front, one in the middle, one at the end, one
-that is not there at all, and an empty list.
+Cover an item at the front, one in the middle, one at the end, one that is not
+there at all, and an empty list.
 
 ---
 
@@ -356,8 +360,8 @@ Shorter than you might expect, because `append` already does the hard part:
 1. Set `myFirst`, `myLast` and `mySize` to the same defaults `List()` uses.
 2. Walk `original`'s chain, calling `append()` on each item as you go.
 
-That is the whole thing. Each `append` allocates a **new** Node on *this* list,
-which is exactly what makes the copy deep.
+Each `append` allocates a **new** Node on *this* list, so the copy shares
+nothing with the original.
 
 ::: {.callout-warning}
 **Step 1 is not optional.** An object under construction holds whatever happened
@@ -368,8 +372,8 @@ This is the single most common way to lose points on this step, and the symptom
 is a crash that looks nothing like the cause.
 :::
 
-Test case name: **`"copy"`**. Three sections are worth having, an empty list, a
-one-item list, and a longer one. The interesting assertion in all three is that
+Test case name: **`"copy"`**. Write three sections: an empty list, a one-item
+list, and a longer one. The interesting assertion in all three is that
 the copy is **independent**: append to the original afterwards, and the copy
 should not change.
 
@@ -426,24 +430,24 @@ Item>` in front of the class.
 
 You have done this before. Nothing about it should surprise you.
 
-1. Delete the `typedef`. Put `template <class Item>` in front of **both**
-   classes, `Node` holds an `Item` too.
-2. Move every definition out of `List.cpp` and into `List.h`, between the
-   declarations and the `#endif`.
+1. Delete the `typedef`. Put `template <class Item>` in front of `class List`.
+   `Node` is declared inside `List`, so it becomes part of the template with no
+   line of its own.
+2. Move every definition out of `List.cpp` and into `List.h`, between the class
+   and the `#endif`.
 3. Give each definition its own `template <class Item>` line, and qualify it
-   `Node<Item>::` or `List<Item>::`. `operator<<` is a free function and needs
-   its own template line too.
+   `List<Item>::`. `operator<<` is a free function and needs its own template
+   line too.
 4. Delete `List.cpp`, and take `List.o` out of the makefile, it is in three
    places there.
 
-::: {.callout-warning}
-**One thing here is new.** Inside `class Node`, a bare `Node*` still means
-`Node<Item>*`, a class template can refer to itself by its own short name.
+::: {.callout-note}
+**No method body changes.** Inside any `List` method, the bare name `Node` still
+means this list's `Node`, so the code you wrote in steps 1 to 4 moves across
+untouched.
 
-Inside `class List` it does **not**. `Node` is a different class there, so every
-`Node*` member and every `Node*` local becomes `Node<Item>*`. The compiler's
-error message for this one is unhelpful; if `List` suddenly will not compile and
-`Node` will, this is why.
+If you find yourself writing `Node<Item>`, then `Node` has ended up outside
+`List`. Put it back in the private section. One of the checks looks for this.
 :::
 
 Then update `tests.cpp`, `List` on its own has stopped being a type, so every
@@ -547,5 +551,5 @@ tab of your repository shows a run named **Autograde**. Open it: the job summary
 says how many checks passed, and names any that failed. Push as many times as
 you like; the most recent submission is the one that counts.
 
-Then enjoy the break. Window 1 is the Monday you get back, the grading page
-explains how to book.
+Then enjoy the break. Window 1 is assessed against the Friday you get back, and
+the grading page explains how to book.
