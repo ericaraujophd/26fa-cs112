@@ -35,9 +35,8 @@ Linear Data Structures, assessed at **Window 2** on Nov 20.
 This one needs Wednesday's lecture on `vector` and iterators, so it opens after
 that.
 
-Friday's lecture, what a dynamic array costs, and what "amortized constant
-time" means, is the other half of the story, and it is not needed for anything
-here. Nothing in this assignment asks you to measure anything.
+What a dynamic array costs, and what "amortized constant time" means, is the
+other half of the story, and nothing here needs it. Nothing in this assignment asks you to measure anything.
 :::
 
 ---
@@ -75,7 +74,7 @@ Someone who has only ever *used* `vector` knows none of that, and it shows the
 first time they write a loop that copies a big one on every iteration.
 :::
 
-The data is a real Formula 1 season: every driver's result at every Grand Prix
+The data is a real Formula 1 season, every driver's result at every Grand Prix
 of 2024. 479 rows. You will read it into a `vector`, and then ask it questions.
 
 ---
@@ -165,7 +164,7 @@ season,round,race,circuit,country,date,driver,team,grid,position,points,status
 2024,1,Bahrain Grand Prix,Bahrain International Circuit,Bahrain,2024-03-02,Max Verstappen,Red Bull,1,1,26.0,Finished
 ```
 
-That matters more than it sounds. It means you can look the answers up. If your
+It means you can look the answers up. If your
 program says Ferrari fielded a driver who was never in the car, you will know,
 because the season actually happened.
 
@@ -182,15 +181,15 @@ It also means the data is **messy in ways invented data never is**:
 - **`grid` is sometimes 0**, which means a pit-lane start rather than a grid slot.
 
 That mess is the reason the functions below have to de-duplicate rather than
-assume. A tidy made-up season would not have taught you that.
+assume.
 
 ::: {.callout-warning}
 **One thing this file does not have.** These are race results only, so the
 `points` column does not include sprint points. Add up Max Verstappen's column
 and you get 399, not the 437 he finished the championship on, the missing 38
 came from the six sprint races. Nothing in this assignment depends on it, but if
-you go looking for the championship table, that is why your numbers are 20-odd
-points light.
+you go looking for the championship table, that is why every driver comes up short
+by whatever they scored in the sprints.
 :::
 
 ---
@@ -365,9 +364,8 @@ only look at results whose `team` matches the one you were asked about.
 - Match the whole string with `==`. `"Apple"` must not match `"Apple Junior"`.
 - A team nobody drove for gives an **empty vector**. That is an answer, not an
   error, do not throw.
-- Do not assume two drivers. Five teams used three in 2024, and that is the
-  whole reason this function de-duplicates instead of just collecting the first
-  two names it sees.
+- Do not assume two drivers. Five teams used three in 2024, so this function
+  de-duplicates instead of collecting the first two names it sees.
 
 ---
 
@@ -485,8 +483,8 @@ vector<string> collectAllTeams(const vector<Result>& results);
 Neither word is decoration.
 
 **The `&`.** Without it, C++ copies the argument into the function. `results`
-holds 479 `Result` objects, and each one holds six `string`s. Passing it by
-value means allocating and copying nearly three thousand strings, on every
+holds 479 `Result` objects, and each one holds seven `string`s. Passing it by
+value means allocating and copying more than three thousand strings, on every
 call, to do a job that only ever reads them. With the `&`, the function works on
 the caller's vector and nothing is copied at all.
 
@@ -497,9 +495,9 @@ can use your function at all, which without the `const` it could not.
 
 ::: {.callout-note}
 Two of the checks look for these signatures, and one of them fails if a
-`vector<Result>` is passed by value anywhere in `Season.cpp`. This is one of the
-habits the course cares most about: by the time containers are large enough for
-it to matter, the habit has to already be there.
+`vector<Result>` is passed by value anywhere in `Season.cpp`. By the time
+containers are large enough for the copy to matter, the habit has to be there
+already.
 :::
 
 ---
