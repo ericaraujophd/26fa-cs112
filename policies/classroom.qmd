@@ -6,7 +6,7 @@ title: "Classroom"
 No phones, no laptops, unless you are explicitly told you can use them.
 :::
 
-This is a challenging course, and distractions, for you and your neighbors, work against everyone. Devices put away means better focus and a better classroom for all.
+This is a challenging course, and distractions, for you and your neighbors, work against everyone.
 
 ---
 
@@ -53,7 +53,7 @@ page, and questions go to
 
 ## Library and Research Help
 
-Most of what you need for this course is on this website or in the C++ documentation. But when you do need to find something — a reference, a paper, background for a reflection question — the library is there, and asking a librarian is faster than searching alone.
+Most of what you need for this course is on this website or in the C++ documentation. But when you do need to find something (a reference, a paper, background for a reflection question), the library is there, and asking a librarian is faster than searching alone.
 
 **Katherine Swart Van Hof** is the Computer Science department's librarian at Hekman Library.
 
@@ -66,11 +66,11 @@ Most of what you need for this course is on this website or in the C++ documenta
 
 If Katherine is not available, another librarian can help you in person or online, including **24/7 chat**: [library.calvin.edu/research/help](https://library.calvin.edu/research/help).
 
-Worth knowing about:
+Also from the library:
 
-- [Subject research guides](https://library.calvin.edu/research-guides) — starting points by discipline
-- [Hekman Library on YouTube](https://www.youtube.com/c/HekmanLibraryGrandRapids) — short how-to videos
-- [Wise Scholar](https://library.calvin.edu/wise-scholar) — reflections on the virtues of scholarship
+- [Subject research guides](https://library.calvin.edu/research-guides), starting points by discipline
+- [Hekman Library on YouTube](https://www.youtube.com/c/HekmanLibraryGrandRapids), short how-to videos
+- [Wise Scholar](https://library.calvin.edu/wise-scholar), reflections on the virtues of scholarship
 
 ---
 
@@ -80,7 +80,7 @@ Worth knowing about:
 
 - **Daily quizzes** are administered in the first 5 minutes of class on Moodle. Do not show up late.
 - If you are going to miss class due to physical or mental illness, please send an email **before** class starts.
-- Extended absences (illness, family emergency, or other circumstances) should be discussed with the instructor as early as possible. There is no automatic excused-absence policy, but open communication goes a long way.
+- Extended absences (illness, family emergency, or other circumstances) should be discussed with the instructor as early as possible. There is no automatic excused-absence policy.
 
 ---
 

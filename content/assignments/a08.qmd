@@ -1,6 +1,5 @@
 ---
-title: "Assignment 08: Finish the List"
-subtitle: "Four methods, a template, and a chain of Nodes that frees itself"
+title: "Assignment 08: Linked Lists"
 ---
 
 ```{=html}
@@ -128,32 +127,28 @@ cd cs112-a08-YOURUSERNAME
 ```
 
 ::: {.callout-note}
-**Cannot find it? Ask GitHub what you have.**
+**Cannot find your repository?**
 
-If `gh repo clone` answers
-`Could not resolve to a Repository`, this lists every repository you can
-actually see, spelled exactly right:
+If `gh repo clone` answers `Could not resolve to a Repository`, list the
+repositories you can see:
 
 ```bash
 gh repo list 26fa-cs112
 ```
 
-If yours is in that list, you mistyped the name, copy it from the output and
-try again. Watch for usernames that already contain a hyphen or a number; the
-pattern is `cs112-<assignment>-<your username>`, so the two halves run together
-and it often looks wrong when it is right.
+If yours is in the list, you mistyped the name. Copy it from the output and try
+again. Usernames that already contain a hyphen or a number are the easy ones to
+get wrong, because the pattern is `cs112-<assignment>-<your username>`.
 
-**If the list is empty, or the command errors, that is mine to fix rather than
-yours to work around.** The usual causes are an organization invitation you have not accepted yet
-(check your email, including spam and the Promotions tab), or a username I
-mistyped when I built the roster. Either way, email me at
-[eric.araujo@calvin.edu](mailto:eric.araujo@calvin.edu) and I will sort it out
-the same day.
+**If the list is empty, or the command errors, email me.** The usual causes are
+an organization invitation you have not accepted yet (check your email,
+including spam and the Promotions tab), or a username I mistyped when I built
+the roster. Write to [eric.araujo@calvin.edu](mailto:eric.araujo@calvin.edu)
+and I will sort it out the same day.
 
 While you wait, **do not create a repository yourself and do not start the work
 somewhere else.** Only the repository I create for you is connected to grading,
-so anything written outside it has to be moved by hand later, and that is a
-worse afternoon than a short wait.
+and work done anywhere else has to be moved over by hand.
 :::
 
 Open the folder in VS Code, then build it before you change anything:
@@ -163,7 +158,7 @@ make
 make test
 ```
 
-`make` succeeds and `make test` reports **5 / 31**. Both are correct: the
+`make` succeeds and `make test` reports **5 / 31**. Both are correct. The
 starter compiles, and the five that pass mostly pass because an empty answer
 happens to match an empty question.
 

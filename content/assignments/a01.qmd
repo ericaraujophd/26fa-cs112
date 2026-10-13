@@ -1,6 +1,5 @@
 ---
-title: "Assignment 01: RPG Character Creator"
-subtitle: "Variables, memory, control structures, and functions, in C++"
+title: "Assignment 01: Introduction to C++"
 ---
 
 ```{=html}
@@ -94,32 +93,28 @@ cd cs112-a01-YOURUSERNAME
 ```
 
 ::: {.callout-note}
-**Cannot find it? Ask GitHub what you have.**
+**Cannot find your repository?**
 
-If `gh repo clone` answers
-`Could not resolve to a Repository`, this lists every repository you can
-actually see, spelled exactly right:
+If `gh repo clone` answers `Could not resolve to a Repository`, list the
+repositories you can see:
 
 ```bash
 gh repo list 26fa-cs112
 ```
 
-If yours is in that list, you mistyped the name, copy it from the output and
-try again. Watch for usernames that already contain a hyphen or a number; the
-pattern is `cs112-<assignment>-<your username>`, so the two halves run together
-and it often looks wrong when it is right.
+If yours is in the list, you mistyped the name. Copy it from the output and try
+again. Usernames that already contain a hyphen or a number are the easy ones to
+get wrong, because the pattern is `cs112-<assignment>-<your username>`.
 
-**If the list is empty, or the command errors, that is mine to fix rather than
-yours to work around.** The usual causes are an organization invitation you have not accepted yet
-(check your email, including spam and the Promotions tab), or a username I
-mistyped when I built the roster. Either way, email me at
-[eric.araujo@calvin.edu](mailto:eric.araujo@calvin.edu) and I will sort it out
-the same day.
+**If the list is empty, or the command errors, email me.** The usual causes are
+an organization invitation you have not accepted yet (check your email,
+including spam and the Promotions tab), or a username I mistyped when I built
+the roster. Write to [eric.araujo@calvin.edu](mailto:eric.araujo@calvin.edu)
+and I will sort it out the same day.
 
 While you wait, **do not create a repository yourself and do not start the work
 somewhere else.** Only the repository I create for you is connected to grading,
-so anything written outside it has to be moved by hand later, and that is a
-worse afternoon than a short wait.
+and work done anywhere else has to be moved over by hand.
 :::
 
 Open the folder in VS Code and you are ready to start.
@@ -362,7 +357,7 @@ cout << "Value at hpPtr: " << *hpPtr << endl;
 ```
 
 In Python, every variable is already a reference, you can never see or manipulate
-the raw address. In C++, you can, which gives you both power and responsibility.
+the raw address. In C++, you can.
 
 Use these **exact** labels:
 
@@ -829,8 +824,7 @@ void play() {
 ```
 
 Study this function. Anyone reading it immediately understands what it does,
-not because it has comments, but because the function names say it all. This is
-what well-decomposed code looks like.
+because the function names say it all.
 
 ---
 
@@ -937,14 +931,12 @@ what you have.
 ::: {.callout-important}
 **Commit your own work before you pull.** Git will refuse to pull on top of
 uncommitted edits to a file it needs to replace, and the refusal is the polite
-outcome. Commit first and your work is recorded, recoverable, and impossible to
-lose in the process.
+outcome. Commit first and you cannot lose your work in the process.
 
 **Then pull, and let it merge.** Once I have pushed, there is no way to send
 your work up until you have brought mine down. `git push` on its own will be
 rejected with *"the remote contains work that you do not have locally"*, and
-that is not an error you fix by trying harder: it is Git telling you to pull
-first. Pull, which merges the two lines of history, and then push.
+that is Git telling you to pull first. Pull, which merges the two lines of history, and then push.
 :::
 
 ::: {.callout-tip}
@@ -976,7 +968,7 @@ Neither is a continuation of the other; they forked.
 `git pull` fetches my line and **merges** the two, which means it writes one new
 commit joining both. That commit is the only one in your repository with two
 parents, and if you ever look at the history graph it is the point where the two
-strands come back together. It is a normal, healthy thing for a repository to
+strands come back together. It is a normal thing for a repository to
 contain, not a sign that something went wrong.
 
 If an editor opens asking you to confirm a merge message, the default text is

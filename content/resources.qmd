@@ -1,6 +1,6 @@
 ---
 title: "Resources"
-subtitle: "Tools and references worth keeping open all semester"
+subtitle: "Tools and references for the semester"
 ---
 
 <!--
@@ -110,7 +110,7 @@ practice that makes a check-in go well.
 [**en.cppreference.com**](https://en.cppreference.com/w/cpp)
 
 The authoritative C++ reference. It is precise, complete, and **written for
-people who already know C++**, so it can feel cold at first. That is fine: use
+people who already know C++**, so it can feel cold at first. That is fine. Use
 it to answer narrow questions, not to learn from.
 
 Good question for cppreference: *what exactly does `std::vector::resize` do when
@@ -128,9 +128,8 @@ to pick up. Start now, in small doses.
 [**Runestone: C++ for Python Programmers**](https://runestone.academy/runestone/books/published/cpp4python/index.html)
 
 The reading already listed against the first weeks on the
-[Schedule](schedule.qmd). Worth naming again here, because if you are fluent in
-Python and keep tripping over C++ syntax, this is written for exactly that
-situation.
+[Schedule](schedule.qmd). If you are fluent in Python and keep tripping over
+C++ syntax, this is written for that situation.
 
 ---
 

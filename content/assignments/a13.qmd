@@ -1,6 +1,5 @@
 ---
-title: "Assignment 13: Snake"
-subtitle: "The snake is a queue. Not like a queue, a queue."
+title: "Assignment 13: Queues"
 ---
 
 ::: {.callout-note}
@@ -51,11 +50,9 @@ frame 4     ...####@....
 ```
 
 Look at what is actually happening. A square appears at the front. A square
-disappears at the back. **Nothing in the middle moves at all.**
+disappears at the back. Nothing in the middle moves at all.
 
-New in at one end, old out at the other, everything in between untouched.
-That is a queue. Not a queue-like thing, not a useful analogy for a queue, the
-snake's body *is* a `Queue<Segment>`, and the entire animation is:
+The snake's body is a `Queue<Segment>`, and the entire animation is:
 
 ```cpp
 myBody.enqueue(newHead);      // grow a head
@@ -64,7 +61,7 @@ myBody.dequeue();             // lose a tail
 
 once per frame.
 
-And then eating, which is the part worth sitting with:
+And then eating:
 
 > **To grow, skip the dequeue.**
 
@@ -75,14 +72,10 @@ segments along. You will write four lines in TODO 3, and one of them is a
 `return`.
 
 ::: {.callout-note}
-**There is no better fit between a data structure and a problem in this
-course**, and it is worth noticing how little code a good fit costs you. The
-same game written over a `vector` needs to decide what to do about the tail on
-every frame, shift everything down, or track an offset, or reverse the order
+There is no better fit between a data structure and a problem in this
+course. The same game written over a `vector` needs to decide what to do
+about the tail on every frame, shift everything down, or track an offset, or reverse the order
 and pay somewhere else. Over a queue, the question does not come up.
-
-That is the thing to take away from this assignment. Choosing the right
-structure does not make the code faster. It makes the code *disappear*.
 :::
 
 ---
@@ -103,32 +96,28 @@ make test
 ```
 
 ::: {.callout-note}
-**Cannot find it? Ask GitHub what you have.**
+**Cannot find your repository?**
 
-If `gh repo clone` answers
-`Could not resolve to a Repository`, this lists every repository you can
-actually see, spelled exactly right:
+If `gh repo clone` answers `Could not resolve to a Repository`, list the
+repositories you can see:
 
 ```bash
 gh repo list 26fa-cs112
 ```
 
-If yours is in that list, you mistyped the name, copy it from the output and
-try again. Watch for usernames that already contain a hyphen or a number; the
-pattern is `cs112-<assignment>-<your username>`, so the two halves run together
-and it often looks wrong when it is right.
+If yours is in the list, you mistyped the name. Copy it from the output and try
+again. Usernames that already contain a hyphen or a number are the easy ones to
+get wrong, because the pattern is `cs112-<assignment>-<your username>`.
 
-**If the list is empty, or the command errors, that is mine to fix rather than
-yours to work around.** The usual causes are an organization invitation you have not accepted yet
-(check your email, including spam and the Promotions tab), or a username I
-mistyped when I built the roster. Either way, email me at
-[eric.araujo@calvin.edu](mailto:eric.araujo@calvin.edu) and I will sort it out
-the same day.
+**If the list is empty, or the command errors, email me.** The usual causes are
+an organization invitation you have not accepted yet (check your email,
+including spam and the Promotions tab), or a username I mistyped when I built
+the roster. Write to [eric.araujo@calvin.edu](mailto:eric.araujo@calvin.edu)
+and I will sort it out the same day.
 
 While you wait, **do not create a repository yourself and do not start the work
 somewhere else.** Only the repository I create for you is connected to grading,
-so anything written outside it has to be moved by hand later, and that is a
-worse afternoon than a short wait.
+and work done anywhere else has to be moved over by hand.
 :::
 
 `make` succeeds, `./a13` draws an empty board, and `make test` reports
@@ -203,8 +192,7 @@ the size back first:
 
 You met this exact trap in a10, in the circular queue's `getSize`, and it is
 here for the same reason: the remainder operator does not do what you want on
-the way down. It is worth noticing that a wrapping grid and a circular array
-are the same idea wearing different clothes.
+the way down. A wrapping grid and a circular array are the same idea.
 :::
 
 **TODO 3, `updateSnake`.** The queue. Four lines:
@@ -264,8 +252,8 @@ February.
 ::: {.callout-note}
 **Every game you have ever played does this.** A game's world is a seed and a
 formula, which is why two players given the same seed get the same map, and why
-a speedrunner can memorise where an item will be. "Random" in a game almost
-never means unpredictable; it means *you* cannot predict it.
+a speedrunner can memorize where an item will be. In a game, "random" almost
+always means *you* cannot predict it.
 :::
 
 That is what makes TODO 6's procedure non-negotiable. The grader replays whole
@@ -287,9 +275,7 @@ a **script**: a file of `U`, `D`, `L` and `R`, one per frame.
 ```
 
 `greedy.txt` was written by steering toward the target on every frame. It eats
-seventeen times, reaches sixty-nine segments, and survives. Watch it once, it
-is the payoff for TODO 3, and it makes the "skip the dequeue" idea concrete in
-a way that no amount of prose will.
+seventeen times, reaches sixty-nine segments, and survives. Watch it once.
 
 Then watch `moves/suicide.txt`, which grows a little and then drives into
 itself.
@@ -358,7 +344,7 @@ submission counts, and there is no deadline beyond the last day of classes.
 None of this is graded and none of it is required. But the pieces are all here:
 
 - **Play it yourself.** Read a direction from `cin` each frame instead of from
-  a script. It is not a real game, you have to press enter, but it is yours.
+  a script. You will have to press enter each frame.
 - **Walls.** Make the edges lethal instead of wrapping: one condition in
   `nextHead` and one in `detectDeath`.
 - **Two targets at once.** `plantTarget` twice, and check both.
@@ -367,7 +353,6 @@ None of this is graded and none of it is required. But the pieces are all here:
   toward the target and nothing else, which is why it eventually traps itself.
   A script that also avoided its own body would do better.
 
-The last one is not a small exercise, and it is worth knowing why: deciding
-where to go next, given what you know about the board, is a search problem,
-and you wrote three of those last week.
+The last one is not small. Deciding where to go next, given what you know
+about the board, is a search problem, and you wrote three of those last week.
 :::

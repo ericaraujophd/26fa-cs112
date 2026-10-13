@@ -86,7 +86,7 @@ Each appointment is **25 minutes** and covers **every cluster in that window**. 
 
 **How long you get per question depends on the window.** Windows 1 and 3 cover two clusters, so each question gets roughly ten minutes. Window 2 covers three, so its questions run nearer seven minutes each. They are correspondingly shorter, you are not being asked to do more in less time.
 
-A single question may touch more than one skill, and often will: removing a node from a linked list involves pointer manipulation *and* freeing memory. That is realistic, and it is fine. The session as a whole produces **one mark for the window**.
+A single question may touch more than one skill, and often will. Removing a node from a linked list involves pointer manipulation *and* freeing memory. The session as a whole produces **one mark for the window**.
 
 ---
 
@@ -179,7 +179,7 @@ collide with your own classes.
 <!-- CHECKIN:END -->
 
 ::: {.callout-tip}
-**Three things worth knowing before you pick a time.**
+**Read these before you pick a time.**
 
 - **The earliest slots are on Thursday 8 October.** Everything in clusters A
   and B is taught by Friday 2 October, so by the 8th there is nothing on that
@@ -187,15 +187,14 @@ collide with your own classes.
 
 - **Book a slot at least two days after you finish a05.** a05 is where you
   write the deep copy, and the copy constructor is the one question in this
-  window you will not want to meet cold. Having fought it yourself is worth
-  more than having watched it in a lecture.
+  window you will not want to meet cold.
 
 - **The link stays open until Dec 9**, so Window 1 is not a deadline that
-  forces you early. The calendar is a different matter: Window 2 opens in
+  forces you early. The calendar is a different matter. Window 2 opens in
   November and Window 3 in December, into the same set of hours, and Fall
   Break plus a conference take most of the second half of October out. A
   Window 1 appointment in December means three check-ins in the last fortnight
-  of the semester, which is nobody's plan.
+  of the semester.
 :::
 
 ```{=html}
@@ -324,7 +323,7 @@ collide with your own classes.
 
 ## Every Student Does Every Check-In
 
-Check-ins are **not optional and not selective**. Every student books a 25-minute appointment in every window, three across the semester. Completing the assignments is not by itself proof of mastery; it is the preparation that makes the check-in go well. The check-in is where mastery is confirmed.
+Check-ins are **not optional and not selective**. Every student books a 25-minute appointment in every window, three across the semester. Completing the assignments is the preparation that makes the check-in go well. The check-in is where mastery is confirmed.
 
 Book each appointment when you feel ready, ideally after you have completed the assignments for that window's clusters. You do not have to wait for the window's reference date. You also should not wait until the last week of the window.
 
@@ -332,7 +331,7 @@ Book each appointment when you feel ready, ideally after you have completed the 
 
 ## Persistent Skills
 
-A handful of skills are **in scope at every check-in window**, not just their home cluster. These are foundational habits that need to remain sharp as the course grows more complex, not just skills you demonstrate once and forget.
+A handful of skills are **in scope at every check-in window**, not just their home cluster. These are foundational habits that need to remain sharp as the course grows more complex.
 
 ```{=html}
 <div class="flush-table" style="margin:1rem 0;border:1px solid var(--bs-border-color);border-radius:.5rem;overflow:hidden;font-size:.875rem;">
@@ -372,7 +371,7 @@ A handful of skills are **in scope at every check-in window**, not just their ho
 </div>
 ```
 
-A persistent skill appearing at a later window can be upgraded (N → M or D → M) or downgraded if regression is observed (M → D). The goal is **habit formation**, not a one-time demonstration.
+A persistent skill appearing at a later window can be upgraded (N → M or D → M) or downgraded if regression is observed (M → D).
 
 ---
 
@@ -385,7 +384,7 @@ A persistent skill appearing at a later window can be upgraded (N → M or D →
 | Skill not demonstrated | Skill stays **N** (Not yet) |
 | A prior **M** cannot be demonstrated | Skill → **D**; instructor follows up |
 
-The last row is not a trap. If you genuinely engaged with the work but had a rough day, the instructor will schedule a follow-up. The goal is an honest picture of what you know, not to catch you out.
+If you genuinely engaged with the work but had a rough day, the instructor will schedule a follow-up. The goal is an honest picture of what you know.
 
 ---
 
@@ -523,5 +522,5 @@ The codes on the right of each row show where that skill is built, an assignment
 ---
 
 ::: {.callout-tip}
-**How to prepare:** do the assignments with genuine understanding, not just until the tests go green. Every question is drawn from the territory those assignments cover, so a student who worked through them honestly has already seen the ideas, just not the exact question. There is nothing to memorise and no trick waiting for you.
+**How to prepare:** do the assignments with genuine understanding, not just until the tests go green. Every question is drawn from the territory those assignments cover, so a student who worked through them honestly has already seen the ideas, just not the exact question. There is nothing to memorize and no trick waiting for you.
 :::

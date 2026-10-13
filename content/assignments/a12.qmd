@@ -1,6 +1,5 @@
 ---
-title: "Assignment 12: Three Ways Through a Maze"
-subtitle: "One algorithm, two containers, and then no container at all"
+title: "Assignment 12: Recursion"
 ---
 
 ```{=html}
@@ -17,7 +16,7 @@ Your own private GitHub repository is waiting for you (see
 [Getting the code](#getting-the-code) below), clone it and open it in VS Code.
 
 **Plan to set aside about 2.5 to 3 hours.** TODO 3 is the big one; TODO 4 is
-about ten minutes once TODO 3 works, and that is the whole point of it. TODO 5
+about ten minutes once TODO 3 works. TODO 5
 needs Wednesday's lecture.
 :::
 
@@ -81,8 +80,7 @@ You are going to write three programs that get from `S` to `E`. Two of them
 will be **the same program**, differing by one word. The third will have no
 container in it at all.
 
-That is the assignment. Not "can you solve a maze", you can, and so can a
-five-year-old with a pencil. The question is what happens to an algorithm when
+The question is what happens to an algorithm when
 you change the thing that remembers where you have not been yet.
 
 | | remembers with | finds |
@@ -120,32 +118,28 @@ cd cs112-a12-YOURUSERNAME
 ```
 
 ::: {.callout-note}
-**Cannot find it? Ask GitHub what you have.**
+**Cannot find your repository?**
 
-If `gh repo clone` answers
-`Could not resolve to a Repository`, this lists every repository you can
-actually see, spelled exactly right:
+If `gh repo clone` answers `Could not resolve to a Repository`, list the
+repositories you can see:
 
 ```bash
 gh repo list 26fa-cs112
 ```
 
-If yours is in that list, you mistyped the name, copy it from the output and
-try again. Watch for usernames that already contain a hyphen or a number; the
-pattern is `cs112-<assignment>-<your username>`, so the two halves run together
-and it often looks wrong when it is right.
+If yours is in the list, you mistyped the name. Copy it from the output and try
+again. Usernames that already contain a hyphen or a number are the easy ones to
+get wrong, because the pattern is `cs112-<assignment>-<your username>`.
 
-**If the list is empty, or the command errors, that is mine to fix rather than
-yours to work around.** The usual causes are an organization invitation you have not accepted yet
-(check your email, including spam and the Promotions tab), or a username I
-mistyped when I built the roster. Either way, email me at
-[eric.araujo@calvin.edu](mailto:eric.araujo@calvin.edu) and I will sort it out
-the same day.
+**If the list is empty, or the command errors, email me.** The usual causes are
+an organization invitation you have not accepted yet (check your email,
+including spam and the Promotions tab), or a username I mistyped when I built
+the roster. Write to [eric.araujo@calvin.edu](mailto:eric.araujo@calvin.edu)
+and I will sort it out the same day.
 
 While you wait, **do not create a repository yourself and do not start the work
 somewhere else.** Only the repository I create for you is connected to grading,
-so anything written outside it has to be moved by hand later, and that is a
-worse afternoon than a short wait.
+and work done anywhere else has to be moved over by hand.
 :::
 
 Open the folder in VS Code, then build it and run it before you change anything:
@@ -175,7 +169,7 @@ reports **6 / 32**.
 | `mazes/` | no | seven mazes |
 | `checks.cpp` | no | the course's checks |
 
-### Two helpers worth knowing about
+### Two helpers you should use
 
 `Maze.h` ends with two functions that are given to you because they are fiddly
 and are not what this assignment is about:
@@ -197,7 +191,7 @@ nothing circular. They give nothing away about a10.
 If your own a10 containers work, copy your `Stack.h` and `Queue.h` over these
 and everything will keep compiling: same class, same methods, same exceptions.
 It is a good feeling to watch `Stack<Cell>` just work on a type you had never
-heard of when you wrote it. That is the ADT argument from week 9, cashed in.
+heard of when you wrote it.
 
 ::: {.callout-note}
 **Grading always uses the shipped containers, whatever you leave in those
@@ -224,8 +218,7 @@ Every recursive function is the same two questions:
 
 **TODO 1, `sumArray(values, n)`**, the sum of the first `n` elements.
 
-The base case is `n == 0`: the sum of no numbers is 0. That is a real answer,
-not a special case to apologize for.
+The base case is `n == 0`: the sum of no numbers is 0.
 
 Trace it for `{5, 3, 8}` before you write it:
 
@@ -259,8 +252,8 @@ array that is reversed almost everywhere.
 
 ## 5. The search, before either container {#the-search}
 
-All three solvers do the same three things. It is worth reading this once
-before writing any of them, because after this section TODO 3 is mostly typing.
+All three solvers do the same three things. Read this once before writing any
+of them. After this section TODO 3 is mostly typing.
 
 ### Two grids beside the maze
 
@@ -322,7 +315,7 @@ mark on the way IN                    mark on the way OUT
 
 Each cell going in exactly once is what makes a capacity of rows × cols the
 right size, and it is what makes the parent you record **the first way anybody
-found that cell**, which for breadth-first search is the whole ball game.
+found that cell**.
 
 ::: {.callout-important}
 **With the Stack, marking on the way out is merely wasteful.** Cells go in
@@ -425,8 +418,8 @@ The first time the end is discovered, it is discovered from the smallest ring
 that touches it. There is no shorter way in, because a shorter way would have
 been in an earlier ring, and the earlier rings are already done.
 
-**That is the guarantee, and it comes entirely from the order the container
-gives things back.** Neither search knows anything the other does not.
+That is the guarantee, and it comes entirely from the order the container
+gives things back. Neither search knows anything the other does not.
 
 ::: {.callout-warning}
 Breadth-first search cannot be *longer* than depth-first search. If `./a12`
@@ -461,8 +454,7 @@ return false
 ```
 
 ::: {.callout-important}
-**That second-to-last line is the whole difference between a path and a
-wandering.** When a branch turns out to be a dead end, the cells you walked down
+**Do not leave out that second-to-last line.** When a branch turns out to be a dead end, the cells you walked down
 it are not part of the answer and have to come back off. Leave them on and you
 get a "path" that teleports, and the checks will tell you so, because two cells
 in a row on it stop being next to each other.
@@ -492,9 +484,6 @@ run-time stack the program has, which is not something you control. On these
 mazes it is nowhere near a problem. On a maze of a million cells it would be,
 and TODO 3 would still work, because a `Stack<Cell>` lives in the heap, where
 there is room.
-
-Knowing which of those two you are spending is part of knowing what recursion
-costs.
 :::
 
 ---
@@ -574,7 +563,6 @@ for them to disagree about.
 Then run `mazes/room.txt` again, where there are thousands of routes and the
 three answers share almost no cells at all.
 
-The difference between those two runs is the whole assignment. When there is
-only one answer, the container you use does not matter. When there are many,
-the container **is** the algorithm.
+When there is only one answer, the container you use does not matter. When
+there are many, the container decides which one you get.
 :::

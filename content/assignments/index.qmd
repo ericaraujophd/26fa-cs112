@@ -172,7 +172,7 @@ Each assignment **opens on the Monday of its week**. You can see the whole term 
         <span class="asg-status asg-prelab">Setup</span>
       </div>
       <div class="asg-name">Getting Started</div>
-      <div class="asg-desc">The CS112 Oracle, set up your toolchain, compiler, and GitHub access before the first lab.</div>
+      <div class="asg-desc">Set up the compiler, VS Code and GitHub access before the first lab.</div>
       <div class="asg-note">not counted toward your grade</div>
     </a>
 
@@ -181,8 +181,8 @@ Each assignment **opens on the Monday of its week**. You can see the whole term 
         <span class="asg-id">a01</span>
         <span class="asg-status asg-live">Published</span>
       </div>
-      <div class="asg-name">RPG Character Creator</div>
-      <div class="asg-desc">Variables, memory, control structures, and functions, in C++.</div>
+      <div class="asg-name">Introduction to C++</div>
+      <div class="asg-desc">Variables, control structures and functions in C++.</div>
       <div class="asg-note">finish it at home during Week 00</div>
     </a>
   </div>
@@ -200,8 +200,8 @@ Each assignment **opens on the Monday of its week**. You can see the whole term 
         <span class="asg-id">a02</span>
         <span class="asg-status asg-live">Published</span>
       </div>
-      <div class="asg-name">Keystrokes</div>
-      <div class="asg-desc">A programmable calculator with five faults in its firmware. Find them, then finish the machine.</div>
+      <div class="asg-name">Functions and Parameter Passing</div>
+      <div class="asg-desc">Find and fix five faults in a calculator program, then finish it.</div>
     </a>
   </div>
 </section>
@@ -218,8 +218,8 @@ Each assignment **opens on the Monday of its week**. You can see the whole term 
         <span class="asg-id">a03</span>
         <span class="asg-status asg-live">Published</span>
       </div>
-      <div class="asg-name">Sandbox</div>
-      <div class="asg-desc">A falling-sand simulator, file I/O, exceptions, and 2D arrays.</div>
+      <div class="asg-name">File I/O, Exceptions and 2D Arrays</div>
+      <div class="asg-desc">A falling-sand simulator that reads its grid from a file.</div>
     </a>
   </div>
 </section>
@@ -236,8 +236,8 @@ Each assignment **opens on the Monday of its week**. You can see the whole term 
         <span class="asg-id">a04</span>
         <span class="asg-status asg-live">Published</span>
       </div>
-      <div class="asg-name">Qualifying</div>
-      <div class="asg-desc">Two classes, a leaderboard, and the operator that prints it.</div>
+      <div class="asg-name">Classes and Operator Overloading</div>
+      <div class="asg-desc">A qualifying leaderboard built from two classes and <code>operator&lt;&lt;</code>.</div>
     </a>
   </div>
 </section>
@@ -254,8 +254,8 @@ Each assignment **opens on the Monday of its week**. You can see the whole term 
         <span class="asg-id">a05</span>
         <span class="asg-status asg-live">Published</span>
       </div>
-      <div class="asg-name">Telemetry</div>
-      <div class="asg-desc">A container that owns its memory, and what that costs.</div>
+      <div class="asg-name">Dynamic Arrays</div>
+      <div class="asg-desc">A class that allocates, grows and frees its own array.</div>
     </a>
   </div>
 </section>
@@ -272,8 +272,8 @@ Each assignment **opens on the Monday of its week**. You can see the whole term 
         <span class="asg-id">a06</span>
         <span class="asg-status asg-live">Published</span>
       </div>
-      <div class="asg-name">Channels</div>
-      <div class="asg-desc">One container, three types, turning last week's class into a template.</div>
+      <div class="asg-name">Class Templates</div>
+      <div class="asg-desc">The a05 class converted to a template and used with three types.</div>
     </a>
 
     <a class="asg-card" data-opens="2026-10-07" href="a07.html">
@@ -281,8 +281,8 @@ Each assignment **opens on the Monday of its week**. You can see the whole term 
         <span class="asg-id">a07</span>
         <span class="asg-status asg-live">Published</span>
       </div>
-      <div class="asg-name">Race Data</div>
-      <div class="asg-desc">A season of results, and the container you did not have to write.</div>
+      <div class="asg-name">The STL vector</div>
+      <div class="asg-desc">A season of F1 results read into a vector and queried.</div>
     </a>
   </div>
 </section>
@@ -299,8 +299,8 @@ Each assignment **opens on the Monday of its week**. You can see the whole term 
         <span class="asg-id">a08</span>
         <span class="asg-status asg-live">Published</span>
       </div>
-      <div class="asg-name">Finish the List</div>
-      <div class="asg-desc">Four methods, a template, and a chain of Nodes that frees itself.</div>
+      <div class="asg-name">Linked Lists</div>
+      <div class="asg-desc">A linked list class, finished and converted to a template.</div>
     </a>
   </div>
 </section>
@@ -317,8 +317,8 @@ Each assignment **opens on the Monday of its week**. You can see the whole term 
         <span class="asg-id">a09</span>
         <span class="asg-status asg-live">Published</span>
       </div>
-      <div class="asg-name">Stopwatch</div>
-      <div class="asg-desc">Time eight operations at five sizes, and let the numbers name the growth class.</div>
+      <div class="asg-name">Algorithm Analysis</div>
+      <div class="asg-desc">Eight operations timed at five sizes, and their growth classified.</div>
     </a>
   </div>
 </section>
@@ -335,16 +335,16 @@ Each assignment **opens on the Monday of its week**. You can see the whole term 
         <span class="asg-id">a10</span>
         <span class="asg-status asg-live">Published</span>
       </div>
-      <div class="asg-name">Stack and Queue</div>
-      <div class="asg-desc">Two containers, nine TODOs, and one array bent into a circle.</div>
+      <div class="asg-name">Stacks and Queues</div>
+      <div class="asg-desc">A stack, and a queue stored in a circular array.</div>
     </a>
     <a class="asg-card" data-opens="2026-11-02" href="a11.html">
       <div class="asg-top">
         <span class="asg-id">a11</span>
         <span class="asg-status asg-live">Published</span>
       </div>
-      <div class="asg-name">HashTable</div>
-      <div class="asg-desc">Stop searching for the index, compute it, on seventy-three thousand words.</div>
+      <div class="asg-name">Hash Tables</div>
+      <div class="asg-desc">A hash table, tested on 73,000 words.</div>
     </a>
   </div>
 </section>
@@ -361,16 +361,16 @@ Each assignment **opens on the Monday of its week**. You can see the whole term 
         <span class="asg-id">a12</span>
         <span class="asg-status asg-live">Published</span>
       </div>
-      <div class="asg-name">Three Ways Through a Maze</div>
-      <div class="asg-desc">One algorithm, two containers, and then no container at all.</div>
+      <div class="asg-name">Recursion</div>
+      <div class="asg-desc">A maze solved with a stack, a queue, and recursion.</div>
     </a>
     <a class="asg-card" data-opens="2026-11-09" href="a13.html">
       <div class="asg-top">
         <span class="asg-id">a13</span>
         <span class="asg-status asg-live">Published</span>
       </div>
-      <div class="asg-name">Snake</div>
-      <div class="asg-desc">The snake is a queue. Not like a queue: a queue.</div>
+      <div class="asg-name">Queues</div>
+      <div class="asg-desc">A snake game whose body is a queue.</div>
     </a>
   </div>
 </section>
@@ -387,8 +387,8 @@ Each assignment **opens on the Monday of its week**. You can see the whole term 
         <span class="asg-id">a14</span>
         <span class="asg-status asg-live">Published</span>
       </div>
-      <div class="asg-name">Index</div>
-      <div class="asg-desc">A tree that keeps its promise, and a shape that does not.</div>
+      <div class="asg-name">Binary Search Trees</div>
+      <div class="asg-desc">A binary search tree, compared with <code>std::map</code>.</div>
     </a>
   </div>
 </section>
@@ -422,8 +422,8 @@ Each assignment **opens on the Monday of its week**. You can see the whole term 
         <span class="asg-id">a15</span>
         <span class="asg-status asg-soon">Coming soon</span>
       </div>
-      <div class="asg-name">Matrix Operations and OpenMP</div>
-      <div class="asg-desc">Parallelising a loop, and measuring whether it actually helped.</div>
+      <div class="asg-name">Parallelism with OpenMP</div>
+      <div class="asg-desc">Matrix operations parallelized with OpenMP, and timed.</div>
       <div class="asg-note">spans both weeks · outline available now</div>
     </a>
   </div>

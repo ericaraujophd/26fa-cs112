@@ -1,6 +1,5 @@
 ---
-title: "Assignment 06: Channels"
-subtitle: "One container, three types, turning last week's class into a template"
+title: "Assignment 06: Class Templates"
 ---
 
 ```{=html}
@@ -64,7 +63,7 @@ for it.
 
 Last week you built a `Trace`, an array of lap telemetry samples that owns its
 own memory, grows when it runs out of room, and copies itself properly. It works.
-You tested it. It is a genuinely useful class.
+You tested it.
 
 It can also only ever hold one kind of thing at a time.
 
@@ -87,8 +86,8 @@ Now here is a lap of telemetry, as the car actually logs it:
 | **gear** | which gear is selected, 1 to 8 | a whole number |
 | **DRS** | whether the rear-wing flap is open | on or off |
 
-Three channels. One lap. **Three different types, in the same program, at the
-same time.**
+Three channels. One lap. Three different types, in the same program, at the
+same time.
 
 ::: {.callout-important}
 **Before you read any further, answer this for yourself.**
@@ -97,7 +96,7 @@ With `typedef double Sample;` at the top of `Trace.h`, what exactly would you
 have to do to get a trace of `double`, a trace of `int` and a trace of `bool`
 into the same program?
 
-Think it through properly, not "it would be annoying" but the actual mechanics.
+Think through the actual mechanics.
 There is an answer, and it is bad enough to justify a whole week of syntax.
 :::
 
@@ -126,32 +125,28 @@ cd cs112-a06-YOURUSERNAME
 ```
 
 ::: {.callout-note}
-**Cannot find it? Ask GitHub what you have.**
+**Cannot find your repository?**
 
-If `gh repo clone` answers
-`Could not resolve to a Repository`, this lists every repository you can
-actually see, spelled exactly right:
+If `gh repo clone` answers `Could not resolve to a Repository`, list the
+repositories you can see:
 
 ```bash
 gh repo list 26fa-cs112
 ```
 
-If yours is in that list, you mistyped the name, copy it from the output and
-try again. Watch for usernames that already contain a hyphen or a number; the
-pattern is `cs112-<assignment>-<your username>`, so the two halves run together
-and it often looks wrong when it is right.
+If yours is in the list, you mistyped the name. Copy it from the output and try
+again. Usernames that already contain a hyphen or a number are the easy ones to
+get wrong, because the pattern is `cs112-<assignment>-<your username>`.
 
-**If the list is empty, or the command errors, that is mine to fix rather than
-yours to work around.** The usual causes are an organization invitation you have not accepted yet
-(check your email, including spam and the Promotions tab), or a username I
-mistyped when I built the roster. Either way, email me at
-[eric.araujo@calvin.edu](mailto:eric.araujo@calvin.edu) and I will sort it out
-the same day.
+**If the list is empty, or the command errors, email me.** The usual causes are
+an organization invitation you have not accepted yet (check your email,
+including spam and the Promotions tab), or a username I mistyped when I built
+the roster. Write to [eric.araujo@calvin.edu](mailto:eric.araujo@calvin.edu)
+and I will sort it out the same day.
 
 While you wait, **do not create a repository yourself and do not start the work
 somewhere else.** Only the repository I create for you is connected to grading,
-so anything written outside it has to be moved by hand later, and that is a
-worse afternoon than a short wait.
+and work done anywhere else has to be moved over by hand.
 :::
 
 Open the folder in VS Code, then build it before you change anything:
@@ -161,7 +156,7 @@ make
 make test
 ```
 
-`make` succeeds and `make test` reports **1 / 51**. Both are correct: what you
+`make` succeeds and `make test` reports **1 / 51**. Both are correct. What you
 have been given is a complete, working, *un-converted* `Trace`, and the only
 check that passes is the one that says it compiles.
 
@@ -472,8 +467,7 @@ resized[i] = (i < mySize) ? mySamples[i] : Item();
 `double`, `0` for an `int`, `false` for a `bool`, `""` for a `string`. Nothing
 changes for the numeric types you already had.
 
-This is a small thing that makes a large point: a template is a promise that the
-code works for *any* type, and the compiler only checks that promise against the
+A template is a promise that the code works for *any* type, and the compiler only checks that promise against the
 types you actually use. `Trace<double>` would never have caught this.
 
 ---
@@ -570,7 +564,7 @@ methods had to move into `Trace.h`.
 ::: {.callout-warning}
 Use `channel[i]`, and note that `channel` is a **const reference**. That is what
 the `const` overload of `operator[]` is for, the one that felt redundant last
-week. This is where it earns its place.
+week.
 :::
 
 ::: {.callout-note}
@@ -618,9 +612,7 @@ make channels
 
 You should see 314 samples, three channel rows, and eighteen upshifts. Compare
 the change counts down the three rows: speed changes constantly, gear
-thirty-odd times, DRS three. That spread is the answer to §1's question made
-visible, three channels that behave nothing like each other, in one program,
-out of one class.
+thirty-odd times, DRS three.
 
 ---
 

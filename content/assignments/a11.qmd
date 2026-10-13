@@ -1,6 +1,5 @@
 ---
-title: "Assignment 11: HashTable"
-subtitle: "Stop searching for the index. Compute it."
+title: "Assignment 11: Hash Tables"
 ---
 
 ::: {.callout-note}
@@ -63,15 +62,13 @@ compare. For 73,419 words, that is up to 73,419 string comparisons for every
 question you ask, and every one of them for a word that turns out *not* to be
 there, since you only know it is absent once you have looked everywhere.
 
-A hash table answers the same question by looking in **one** place. Not by
-searching faster. By not searching.
+A hash table answers the same question by looking in **one** place.
 
 ::: {.callout-note}
-**Why string keys are the whole justification.**
+**An array subscript cannot take a string.**
 
 If your keys were numbers 0 to 99, you would not need any of this, you would
 use an array of 100 slots, put item 47 at index 47, and go straight there.
-That is what an array *is*.
 
 The trouble is that `myArray["gargoyle"]` is not a thing. A subscript has to be
 a number, and a word is not one. And you cannot make an array with one slot per
@@ -101,32 +98,28 @@ cd cs112-a11-YOURUSERNAME
 ```
 
 ::: {.callout-note}
-**Cannot find it? Ask GitHub what you have.**
+**Cannot find your repository?**
 
-If `gh repo clone` answers
-`Could not resolve to a Repository`, this lists every repository you can
-actually see, spelled exactly right:
+If `gh repo clone` answers `Could not resolve to a Repository`, list the
+repositories you can see:
 
 ```bash
 gh repo list 26fa-cs112
 ```
 
-If yours is in that list, you mistyped the name, copy it from the output and
-try again. Watch for usernames that already contain a hyphen or a number; the
-pattern is `cs112-<assignment>-<your username>`, so the two halves run together
-and it often looks wrong when it is right.
+If yours is in the list, you mistyped the name. Copy it from the output and try
+again. Usernames that already contain a hyphen or a number are the easy ones to
+get wrong, because the pattern is `cs112-<assignment>-<your username>`.
 
-**If the list is empty, or the command errors, that is mine to fix rather than
-yours to work around.** The usual causes are an organization invitation you have not accepted yet
-(check your email, including spam and the Promotions tab), or a username I
-mistyped when I built the roster. Either way, email me at
-[eric.araujo@calvin.edu](mailto:eric.araujo@calvin.edu) and I will sort it out
-the same day.
+**If the list is empty, or the command errors, email me.** The usual causes are
+an organization invitation you have not accepted yet (check your email,
+including spam and the Promotions tab), or a username I mistyped when I built
+the roster. Write to [eric.araujo@calvin.edu](mailto:eric.araujo@calvin.edu)
+and I will sort it out the same day.
 
 While you wait, **do not create a repository yourself and do not start the work
 somewhere else.** Only the repository I create for you is connected to grading,
-so anything written outside it has to be moved by hand later, and that is a
-worse afternoon than a short wait.
+and work done anywhere else has to be moved over by hand.
 :::
 
 Open the folder in VS Code, then build it and run it before you change anything:
@@ -191,9 +184,8 @@ collision is not an error:
 entries, and stops. It never looks at buckets 1, 2 or 3, and it would not look
 at bucket 500 either.
 
-So the cost of a lookup is **the length of one bucket**. Which is why the
-question "how evenly does my hash spread things out?" is not an aesthetic one.
-It is the only question that matters.
+So the cost of a lookup is **the length of one bucket**, and how evenly your
+hash spreads the words out decides how long the buckets get.
 
 ---
 
@@ -216,8 +208,7 @@ rather than letting it happen.
 **TODO 2, `hash`.** Write the **simplest** thing that obeys the three rules in
 the spec. The one from Friday's slides, add the first character to the last
 character, then `% TABLE_SIZE`, obeys all three. It is also a bad hash
-function, as you are about to measure, and that is exactly why you start with
-it.
+function, as you are about to measure.
 
 **TODO 3, `insert`.** Hash, `push_back` onto that bucket, increment `mySize`.
 You do **not** need to check whether the word is already there; the dictionary
@@ -251,7 +242,7 @@ average per bucket: 367.10
 eleven times what it should. A lookup that lands there compares against all
 4,233 of them.
 
-Here is why, and the reason is worth more than the fix.
+Here is why.
 
 A lowercase letter is a number between 97 and 122. So `word[0] + word[last]` is
 somewhere between 194 and 244, **fifty-one possible values, for every word in
@@ -266,9 +257,7 @@ reaches even fewer of them, because the range of values it produces did not
 change. A hash function that only produces fifty different answers can only ever
 use fifty buckets.
 
-That is the trap this section exists to spring. The problem is not the size of
-the table. The problem is that the hash function is throwing away almost all of
-the word.
+The hash function is throwing away almost all of the word.
 :::
 
 Notice what it throws away. `word[0]` and `word[last]`, everything in between
@@ -305,8 +294,6 @@ but it is what you are aiming at, and it is a much better target than "3".
 
 That cap is the exercise. With 73,419 words and 250 buckets you *cannot* avoid
 collisions, roughly three hundred words per bucket is the best anyone can do.
-A hash function that only looks good when there is room to spare has not solved
-anything; it has just been given enough space to hide in.
 :::
 
 ### Where to look
@@ -338,16 +325,16 @@ arithmetic, then take the remainder once, at the end.
 
 ::: {.callout-tip}
 **The two dials really do interact.** If your multiplier and your `TABLE_SIZE`
-share a factor, the multiplication stops mattering and the distribution collapses
-a table size of 217 with a multiplier of 31 is much worse than 216 or 218,
+share a factor, the multiplication stops mattering and the distribution collapses.
+A table size of 217 with a multiplier of 31 is much worse than 216 or 218,
 because 217 is 7 × 31. If a hash you believe in is producing a bad distribution,
 change `TABLE_SIZE` before you change the hash. A prime is a safe choice, and
 241 is prime.
 :::
 
 Finally, fill in the `MY HASH:` line inside `hash`, what your final algorithm
-is, and why you think it distributes well. That line is graded: not the prose,
-but that a real explanation is there.
+is, and why you think it distributes well. That line is graded on whether a
+real explanation is there.
 
 **Stop after an hour of tuning.** You are looking for a hash that is clearly
 good, not the best hash function in the world.
@@ -404,8 +391,8 @@ it is why real ones are fast.
 
 Your table is capped at 250 buckets so that you have to face the distribution
 problem instead of dodging it with space. Given the constraint, twenty-six times
-faster than searching is the honest answer, and it is worth knowing that the
-constraint, not your hash, is what is holding the number down.
+faster than searching is the honest answer, and the constraint, not your hash,
+is what is holding the number down.
 :::
 
 You are not asked to implement resizing, and `std::unordered_set` is there only
@@ -435,9 +422,8 @@ saw.
 :::
 
 The three sentences want at least twelve words each. Nobody is marking the
-prose. The third one, why an array indexed by the word itself is not an
-option, is the one worth thinking about, because it is the reason this whole
-data structure exists.
+prose. Think hardest about the third one, why an array indexed by the word
+itself is not an option.
 
 ---
 

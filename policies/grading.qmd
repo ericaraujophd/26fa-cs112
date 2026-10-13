@@ -2,13 +2,13 @@
 title: "Grading"
 ---
 
-There are no traditional tests or point-based scores in CS 112. Your grade reflects whether you have genuinely learned the material, not how many points you accumulated on exams. This page explains the system in full.
+There are no traditional tests or point-based scores in CS 112. Your grade reflects whether you have genuinely learned the material. This page explains the system in full.
 
 ---
 
 ## The Philosophy
 
-Most grading systems reward performance on high-stakes tests taken under pressure. This course does something different: it asks you to **demonstrate** mastery through a conversation about code you actually wrote, and it asks you to **stay engaged** consistently throughout the semester through daily quizzes and assignments.
+Most grading systems reward performance on high-stakes tests taken under pressure. This course asks you to **demonstrate** mastery through a conversation about code you actually wrote, and it asks you to **stay engaged** consistently throughout the semester through daily quizzes and assignments.
 
 The result is a grade that is hard to fake and hard to luck into. A student who does the work, comes prepared to check-ins, and shows up every day will almost always end up with a grade that accurately reflects what they know.
 
@@ -16,7 +16,7 @@ The result is a grade that is hard to fake and hard to luck into. A student who 
 
 ## The Three Components
 
-Your final grade is determined by three independent components. **All three must be satisfied**, the weakest of the three sets your ceiling. Every row of the grade table has four conditions, and you must meet all four at once: your M count, your M + D count, your quiz completion, and your assignment completion.
+Your final grade is determined by three independent components. **All three must be satisfied**, the weakest of the three sets your ceiling. Every row of the grade table has four conditions (your M count, your M + D count, your quiz completion, and your assignment completion), and you must meet all four at once.
 
 ---
 
@@ -54,11 +54,11 @@ At the appointment the instructor draws a question from each cluster in that win
 </div>
 ```
 
-So across the semester you collect **three marks**, one for each window. Those three marks are the backbone of your grade: how many you master sets how high you can reach, and how many you at least partly demonstrated fills in the rest.
+So across the semester you collect **three marks**, one for each window. How many you master sets how high you can reach, and how many you at least partly demonstrated fills in the rest.
 
 See the [Skills & Check-Ins](../content/checkins.html) page for the full skill list and check-in schedule.
 
-**One important detail:** marks can move in both directions. An **M** earned early can drop to **D** at a later check-in if a persistent skill is clearly no longer solid. This is not a trap, the instructor will follow up, and the Final Window exists to put it right.
+Marks can move in both directions. An **M** earned early can drop to **D** at a later check-in if a persistent skill is clearly no longer solid. The instructor will follow up, and the Final Window exists to put it right.
 
 ---
 
@@ -68,7 +68,7 @@ Short programming quizzes happen in class almost every day, including during lab
 
 The percentage of quizzes you complete decides where you land within a grade range. With two windows mastered and a third at Developing, for example, ≥ 80 % of quizzes earns B+, ≥ 75 % earns B, and ≥ 70 % earns B−.
 
-**Why quizzes matter:** The quizzes are the course's measure of daily engagement. A student who attends and tries every day builds skills gradually; a student who shows up only for check-ins does not.
+The quizzes are the course's measure of daily engagement. A student who attends and tries every day builds skills gradually; a student who shows up only for check-ins does not.
 
 ---
 
@@ -76,15 +76,15 @@ The percentage of quizzes you complete decides where you land within a grade ran
 
 Assignments **a01 through a15** are programming tasks you work on during class and finish on your own time. (Getting Started, `a00`, is setup, it is not one of the fourteen and does not affect your percentage.)
 
-Your repository is checked automatically when you push, and the tests tell you how you are doing. **That score does not set your grade.** Assignments are not graded for points: submitting reasonable work counts as complete, whether or not every test is green.
+Your repository is checked automatically when you push, and the tests tell you how you are doing. **That score does not set your grade.** Assignments are not graded for points. Submitting reasonable work counts as complete, whether or not every test is green.
 
 **Assignments do not have individual due dates.** You may submit any assignment at any time before the last day of classes. What matters is your cumulative completion percentage at the end of the semester.
 
-**Nothing blocks a booking.** There is no minimum number of assignments you must submit before booking a window's appointment. But every question comes straight out of the territory those assignments cover, booking a window before you have worked through its clusters means spending a slot you are not ready to use. See the [Skills & Check-Ins](../content/checkins.html) page for which assignments build which cluster.
+There is no minimum number of assignments you must submit before booking a window's appointment. But every question comes straight out of the territory those assignments cover, booking a window before you have worked through its clusters means spending a slot you are not ready to use. See the [Skills & Check-Ins](../content/checkins.html) page for which assignments build which cluster.
 
 Assignment completion works exactly like quiz completion, it appears as its own column in the grade table, and both percentages must clear a row's threshold for that row to apply.
 
-**Why assignments matter:** The assignments are the primary way you build the skills that check-ins assess. Consistent submission is a proxy for whether you did the practice that mastery requires.
+The assignments are the primary way you build the skills that check-ins assess. Consistent submission is a proxy for whether you did the practice that mastery requires.
 
 ---
 
@@ -279,7 +279,7 @@ Marks are **M M M**. Quizzes 92 %, assignments 91 %. The A row asks for 3 M, M +
 **Example 2, Strong check-ins, patchy engagement**
 Marks are **M M M** again, but quizzes are 78 % and assignments 84 %. Both A rows fail on percentage, and so does B+. The B row asks for at least 2 M (you have 3 ✓), M + D of at least 3 (you have 3 ✓), and ≥ 75 % on both ✓. **Final grade: B.**
 
-> This is the case worth understanding: mastering all three windows does **not** guarantee an A. Skipping the day-to-day work still pulls the grade down.
+> Mastering all three windows does **not** guarantee an A. Skipping the day-to-day work still pulls the grade down.
 
 **Example 3, One window short, but you showed up for it**
 Marks are **M M D**. Quizzes 91 %, assignments 90 %. The A rows need 3 M, you have 2. B+ asks for at least 2 M ✓, M + D of at least 3 (2 + 1 = 3 ✓), and ≥ 80 % ✓. **Final grade: B+.**
@@ -290,7 +290,7 @@ Marks are **M M N**. Same 91 % / 90 %. B+ and B both want M + D of 3, but yours 
 > Compare with Example 3. Identical effort on the assignments, identical M count, the only difference is turning up for the third window and showing partial understanding rather than none. That is one full step of grade.
 
 **Example 5, Excellent engagement, thin check-ins**
-Quizzes 94 %, assignments 95 %, above every threshold on the page. But the marks are **M D D**: one window mastered, M + D of 3. The A and B rows need at least 2 M. C+ asks for 1 M ✓ and M + D of 3 ✓. **Final grade: C+.**
+Quizzes 94 %, assignments 95 %, above every threshold on the page. But the marks are **M D D**, one window mastered and M + D of 3. The A and B rows need at least 2 M. C+ asks for 1 M ✓ and M + D of 3 ✓. **Final grade: C+.**
 
 > Completion percentages can lift you inside a range, but they cannot replace the check-ins. This is the mirror image of Example 2.
 
@@ -305,7 +305,7 @@ One date governs everything: **the last day of classes, Wednesday Dec 9.**
 
 **Work**, no assignment or quiz is accepted after Dec 9. Until then you may submit any assignment at any time, in any order.
 
-**Check-in bookings**, every appointment you intend to have must be **booked** by Dec 9, including any in the Final Window. The appointment itself may fall later: Final Window sessions run Dec 12–17, during exam week. What closes on Dec 9 is the ability to request one, so that the exam-week schedule can be set.
+**Check-in bookings**, every appointment you intend to have must be **booked** by Dec 9, including any in the Final Window. The appointment itself may fall later. Final Window sessions run Dec 12–17, during exam week. What closes on Dec 9 is the ability to request one, so that the exam-week schedule can be set.
 
 ::: {.callout-important}
 Booking closes **before** the appointment happens. If you wait until exam week to ask for a Final Window slot, there will be nothing to ask for, the list closed on Dec 9.
@@ -319,7 +319,7 @@ During exam week (Dec 12–17) there is one last check-in opportunity. It is opt
 
 A window upgraded in the Final Window counts exactly the same as one mastered back in October, there is no penalty for late improvement. As Example 6 above shows, a single upgrade can move a grade by more than one step, because it lifts both your M count and your M + D count at once.
 
-The Final Window is not a replacement for regular check-ins. Use it to close specific gaps, not to cover a whole semester you have not engaged with.
+Use the Final Window to close specific gaps, not to cover a whole semester you have not engaged with.
 
 ::: {.callout-warning}
 **Bookings for the Final Window close on Dec 9**, the last day of classes, and slots are limited all semester. If you leave your check-ins to the end you may find nothing open, and after Dec 9 you cannot book at all. Book each window's appointment as soon as you are ready.
@@ -329,7 +329,7 @@ The Final Window is not a replacement for regular check-ins. Use it to close spe
 
 ## Tracking Your Progress
 
-Moodle shows you everything you need throughout the semester: your quiz completion %, your assignment completion %, and your **N/D/M mark for each of the three windows**. At any point you can count your Ms, count your Ms and Ds together, and read straight down the grade table to see exactly where you stand, and what would move you up.
+Throughout the semester Moodle shows your quiz completion %, your assignment completion %, and your **N/D/M mark for each of the three windows**. At any point you can count your Ms, count your Ms and Ds together, and read straight down the grade table to see exactly where you stand, and what would move you up.
 
 ---
 
@@ -364,5 +364,5 @@ If you believe a check-in mark was recorded incorrectly, raise it with the instr
 ---
 
 ::: {.callout-tip}
-**The clearest path to a good grade** is consistent engagement: do the assignments, show up and complete the quizzes, and come prepared to check-ins. Students who do all three rarely find themselves surprised at grade time.
+The clearest path to a good grade is to do the assignments, show up and complete the quizzes, and come prepared to check-ins.
 :::

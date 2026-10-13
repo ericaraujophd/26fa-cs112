@@ -24,8 +24,8 @@ error: no match for 'operator+' (operand types are 'Fraction' and 'Fraction')
 ```
 
 **Operator overloading** is how you teach it. You write a function whose name
-is `operator+`, and from then on `a + b` calls it. That is the whole idea. What
-follows is every operator worth overloading, one at a time, with the exact
+is `operator+`, and from then on `a + b` calls it. What
+follows takes the operators one at a time, with the exact
 signature to copy, the way it looks in a `.h` and a `.cpp`, and the mistake
 people make with each one.
 
@@ -58,9 +58,8 @@ a.operator+(b)   // spelling 1: a METHOD of a's class
 operator+(a, b)  // spelling 2: a FREE FUNCTION taking both
 ```
 
-That is the entire mechanism, and it explains every rule below. A method gets
-the left operand as `*this` and the right operand as its parameter. A free
-function gets both as parameters. Nothing else is different.
+A method gets the left operand as `*this` and the right operand as its
+parameter. A free function gets both as parameters. Nothing else is different.
 
 ---
 
@@ -78,7 +77,7 @@ Most operators can be written either way. Some cannot.
 
 : {tbl-colwidths="[28,24,48]"}
 
-One more thing you cannot do: invent new operators, or change the precedence
+You also cannot invent new operators, or change the precedence
 of existing ones. `a + b * c` multiplies first whether or not you wrote them.
 
 ::: {.callout-tip}
@@ -292,7 +291,7 @@ Fraction one = half + half;      // error: passing 'const Fraction'
 
 A `const` object may only call `const` methods. Since `+` does not change
 the left operand, it should have been `const` from the start. (This is the
-mistake in a well-known online cheatsheet. Now you know why it is a mistake.)
+mistake in a well-known online cheatsheet.)
 :::
 
 ::: {.callout-warning}
@@ -431,7 +430,7 @@ working.
 ## 6. Increment and decrement: `++f` and `f++`
 
 Two operators that look identical. C++ tells them apart with a **dummy `int`
-parameter** that is never used: the version with the `int` is postfix.
+parameter** that is never used. The version with the `int` is postfix.
 
 ```cpp
 Fraction& Fraction::operator++() {         // ++f, prefix
@@ -569,7 +568,7 @@ class. Write both.
 ## 9. Assignment: `a = b`
 
 This is the one operator the compiler writes **for you** if you do not, and
-for `Fraction` that default is fine: it copies each member, which is all a
+for `Fraction` that default is fine. It copies each member, which is all a
 `Fraction` needs. Notice `Fraction.h` does not declare an `operator=` at all.
 
 For `Bag` the default is a bug. It would copy the **pointer**, so two `Bag`s
@@ -602,7 +601,7 @@ b = b;                           // harmless, thanks to the guard
 ## The rule of three
 
 If a class needs any one of a **destructor**, a **copy constructor**, or a
-**copy assignment operator**, it needs all three, and for the same reason: it
+**copy assignment operator**, it needs all three, because it
 owns something. `Bag` has all three. `Fraction` has none of them. If you find
 yourself writing just one, stop and ask what the other two would do.
 :::
@@ -622,8 +621,8 @@ deleted. `b = b` looks silly written out, but `bags[i] = bags[j]` with
 
 Overloading `()` makes an object **callable like a function**. An object that
 does this is called a **functor**. It must be a method, it can take any
-parameters you like, and it is how you hand behaviour plus state to something
-that expects a function, which is exactly what the STL's sort and search
+parameters you like, and it is how you hand behavior plus state to something
+that expects a function, which the STL's sort and search
 functions will want from you later.
 
 ```cpp
@@ -669,8 +668,7 @@ ostream& operator<<(ostream& out, const Bag& bag) {
 }
 ```
 
-`bag` is a `const Bag&`, so `bag[i]` picks the `const` subscript. That is the
-payoff for writing it twice.
+`bag` is a `const Bag&`, so `bag[i]` picks the `const` subscript.
 
 ---
 

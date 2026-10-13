@@ -10,7 +10,7 @@ It does not count toward your grade. It exists so that you walk into that lab wi
 
 It is still submitted and checked like every other CS112 assignment, so you will see a score once you push. That score is practice, not part of your final grade.
 
-**Plan to set aside about 1.5 to 2 hours.** Most of that time goes to the one-time setup steps: Coder, VS Code, and GitHub. Once those are done, they're done for the whole semester. The actual coding at the end is short.
+**Plan to set aside about 1.5 to 2 hours.** Most of that time goes to the one-time setup of Coder, VS Code, and GitHub. Once those are done, they're done for the whole semester. The actual coding at the end is short.
 :::
 
 ## Objectives
@@ -22,7 +22,7 @@ By the end of this assignment, you will be able to:
 - Set up your GitHub account and get your first CS112 repository.
 - Clone your repository and open it in VS Code.
 - Compile and run a C++ program with `make`, and explain what compiling does.
-- Write basic C++ statements: variables, keyboard input, screen output, and a function call.
+- Write basic C++ statements with variables, keyboard input, screen output, and a function call.
 - Push your completed work to GitHub.
 
 ## 1. Introduction
@@ -31,11 +31,11 @@ By the end of this assignment, you will be able to:
 
 You arrive in this course from different places. Some of you took CS108 and wrote Python. Some of you took AP Computer Science and wrote Java. Some of you have written a bit of everything. C++ will be new to most of you, and that is fine, because we start from the beginning.
 
-The one thing C++ asks of you that a Python course did not is **compiling**. Before a C++ program can run, it must be translated from the source code you write into machine instructions the CPU executes directly. That extra step is what buys you the thing this whole course is about: direct control over memory, and the speed that comes with it. If you have written Java, this idea is already familiar.
+The one thing C++ asks of you that a Python course did not is **compiling**. Before a C++ program can run, it must be translated from the source code you write into machine instructions the CPU executes directly. That extra step buys you direct control over memory, and the speed that comes with it. This course is about that control. If you have written Java, this idea is already familiar.
 
 In this course, we will write C++ using **Visual Studio Code** (VS Code) as our editor, but we will run and compile our programs on **Calvin's Linux servers** through a service called **Coder**. This means your editor lives on your laptop, but the C++ compiler and your files live on the server.
 
-Four things about C++ are worth knowing before you write a line of it:
+Four things about C++ before you write a line of it:
 
 | | C++ |
 |---|---|
@@ -147,17 +147,17 @@ it has to wait on me.
 
 ## 3. Using Linux
 
-All your CS112 work will run on a **Linux** server, and you will drive it from a **terminal**: a window where you type commands instead of clicking.
+All your CS112 work will run on a **Linux** server, and you will drive it from a **terminal**, a window where you type commands instead of clicking.
 
-If that sounds like a step backwards, consider where Linux actually runs. Almost every web server on the internet. The machines that build and test code at every company you might intern for. Research clusters, supercomputers, the Mars helicopter, and the phone in your pocket if it is an Android. Most of those machines have no screen and no mouse attached, so typing commands is not the old-fashioned way to use them, it is the only way.
+If that sounds like a step backwards, consider where Linux actually runs. Almost every web server on the internet. The machines that build and test code at every company you might intern for. Research clusters, supercomputers, the Mars helicopter, and the phone in your pocket if it is an Android. Most of those machines have no screen and no mouse attached, so typing commands is the only way to use them.
 
-The practical version, for you, this semester: your compiler lives on that server. Every time you build a program, run it, or submit it, you will type a command. By December it will be muscle memory, and you will have a skill that transfers to every machine you touch for the rest of your career.
+For you, this semester, that means your compiler lives on that server. Every time you build a program, run it, or submit it, you will type a command. By December it will be muscle memory, and you will have a skill that transfers to every machine you touch for the rest of your career.
 
 Here is what one looks like, and what the pieces of it mean:
 
 ![A terminal session on the Coder server. The prompt tells you who you are and where you are; you type after the `$`.](../../figures/terminal-anatomy.svg){#fig-terminal fig-alt="A terminal window titled coder.cs.calvin.edu. Each line starts with a prompt reading jcalvin@cs112, a colon, the current folder, and a dollar sign. The session runs pwd, which prints /home/jcalvin, then mkdir cs112, then cd cs112, after which the folder in the prompt changes to ~/cs112 and pwd prints /home/jcalvin/cs112. Labels identify the username, the folder you are in, the place where you type, and the output a command prints back."}
 
-The line you type on is called the **prompt**. It is telling you two useful things before you type anything: who you are, and which folder you are currently sitting in. When you move to a different folder, the prompt changes with you.
+The line you type on is called the **prompt**. Before you type anything, it tells you who you are and which folder you are currently sitting in. When you move to a different folder, the prompt changes with you.
 
 You do not need to memorize anything yet. **Step 6 walks you through each of these commands as you type it**, once you have a terminal open.
 
@@ -197,8 +197,7 @@ few seconds, and you are back exactly where you left off.
 
 **Your files are safe.** Your home folder on the server survives stops,
 restarts, and the entire semester. Stopping a workspace is like closing a laptop
-lid, not like erasing a disk. Nothing you have written disappears because the
-workspace went to sleep.
+lid, not like erasing a disk.
 
 Once you reach Step 13 you get a second layer of safety: anything you have
 pushed to GitHub also exists there, independently of Coder.
@@ -234,7 +233,7 @@ the leftmost, and hovering over it shows **Open VSCode**.
 8. Open a terminal inside VS Code: **Terminal menu → New Terminal**. A terminal appears at the bottom of the window.
 
 Your home folder is where everything you do this semester lives, so opening it
-now means the file list on the left shows your work rather than nothing, and any
+now means the file list on the left shows your work, and any
 terminal you open starts in the right place. In the next step you will make a
 folder inside it for this course.
 
@@ -254,15 +253,13 @@ inside VS Code, because your editor and your commands are then in one window.
 You will have many assignments in CS112, so let us make one folder to keep them all in. You will learn the commands by using them.
 
 ::: {.callout-note}
-**Two different things, and it is worth keeping them straight.**
+**`class-cs112` and `cs112` are two different things.**
 
 `class-cs112` is your **workspace**: the Linux computer itself, the one you
 start and stop from the Coder dashboard.
 
 `cs112` is a **folder** on that computer, which you are about to create. It is
 where your coursework will live.
-
-The workspace is the machine. The folder is a drawer inside it.
 :::
 
 Use the terminal you just opened inside VS Code. Click in it, and it is waiting for you to type.
@@ -286,7 +283,7 @@ not `Is`, and that the `$` at the start of a line in a book is the prompt, not
 part of the command. Those are the mistakes that eat an afternoon, and typing is
 how you stop making them.
 
-You will get things wrong. That is the point: an error message you caused is the
+You will get things wrong. An error message you caused is the
 cheapest lesson available, and the terminal is patient. Press the Up arrow, fix
 the typo, press Enter.
 
@@ -302,10 +299,10 @@ in Step 9 is another. Everything short enough to type, type.
 pwd
 ```
 
-`pwd` stands for **p**rint **w**orking **d**irectory. It answers the only question that matters when you are lost: where am I right now? You should see `/home/` followed by your username, for example `/home/jcalvin`.
+`pwd` stands for **p**rint **w**orking **d**irectory. It tells you where you are right now, and it is the first thing to type when you are lost. You should see `/home/` followed by your username, for example `/home/jcalvin`.
 
 ::: {.callout-tip}
-**That is your username on the server**, and it is worth noting down, because
+**That is your username on the server.** Note it down, because
 this page asks for it twice more. It is also the first thing in your prompt, the
 part before the `@`. If your prompt reads `jcalvin@class-cs112:~$`, your username
 is `jcalvin` and your home folder is `/home/jcalvin`.
@@ -389,7 +386,7 @@ You have now used five commands. Here is the full set for the semester, so you h
 | `command > file` | Send output into `file` instead of to the screen |
 | `rm file` | **R**e**m**ove a file. See the warning below |
 
-`cd` on its own is the one worth remembering from that list: however lost you
+Remember `cd` on its own. However lost you
 get, typing `cd` and pressing Enter puts you back at `/home/<username>`, and you
 can start again from there.
 
@@ -406,7 +403,7 @@ echo "hello from CS112" > scratch.txt
 ```
 
 On its own, `echo` would print that sentence straight back at you. The `>`
-redirects it into a file instead, which is why nothing appears on screen. Read it
+redirects it into a file instead, so nothing appears on screen. Read it
 back:
 
 ```bash
@@ -421,13 +418,12 @@ in your folder. Now delete it:
 rm scratch.txt
 ```
 
-Run `ls` once more. It is gone, and there is nowhere to go looking for it. That
-is the whole lesson: `rm` is immediate and final. Better to learn it on a file
-called `scratch.txt` than on your assignment.
+Run `ls` once more. It is gone, and there is nowhere to go looking for it.
+Better to learn that on a file called `scratch.txt` than on your assignment.
 
 ### Hidden files
 
-A file whose name begins with a dot is **hidden**: `ls` will not show it. This is a convention, not a security feature, and it exists to keep configuration files out of your way.
+A file whose name begins with a dot is **hidden**, and `ls` will not show it. This is a convention, not a security feature, and it exists to keep configuration files out of your way.
 
 Your assignment repository will contain several of them, including `.gitignore` (which tells Git which files to leave alone) and a `.git` folder (where Git keeps your entire history). To see them:
 
@@ -435,7 +431,7 @@ Your assignment repository will contain several of them, including `.gitignore` 
 ls -a
 ```
 
-Worth knowing now, because sooner or later you will be certain a file exists, `ls` will disagree with you, and `ls -a` will settle the argument.
+Sooner or later you will be certain a file exists, `ls` will disagree with you, and `ls -a` will settle the argument.
 
 ### Finish by opening your folder in VS Code
 
@@ -457,9 +453,7 @@ terminal are both pointed at the same folder, your environment is finished, and
 everything from here on happens inside it.
 
 ::: {.callout-important}
-**Commands act on the folder you are standing in.** This is the single most
-useful idea in this section, and the one that costs the most time when it is
-forgotten.
+**Commands act on the folder you are standing in.**
 
 `make`, which you will use to compile, looks for a file called `makefile` in the
 current folder and nowhere else. Run it one level too high and you get:
@@ -471,12 +465,11 @@ make: *** No targets specified and no makefile found.  Stop.
 That message means "you are in the wrong folder", not "your code is broken",
 but it does not say so, and it looks alarming the first time. Later in the
 semester, when you have several assignments side by side, the wrong folder is
-worse than an error: `make` finds a perfectly good makefile and cheerfully
+worse than an error. `make` finds a perfectly good makefile and cheerfully
 builds the *other* assignment, and you spend ten minutes wondering why your
 changes have no effect.
 
-**When anything surprises you, type `pwd` before you type anything else.** It
-answers the question you actually have.
+**When anything surprises you, type `pwd` before you type anything else.**
 :::
 
 ## 7. Set Up VS Code for C++
@@ -487,7 +480,7 @@ A few one-time settings will make your life much easier all semester.
 
 This is what gives you C++ syntax coloring, code formatting, and the squiggly underlines that flag mistakes as you type. Open the **Extensions** panel (left sidebar), search for `C/C++ Extension Pack`, and click **Install**.
 
-You have no C++ files yet, so install it directly rather than waiting for VS Code to offer it when you open one.
+You have no C++ files yet, so install it directly. VS Code will not offer it until you open one.
 
 **Configure Auto Save:**
 
@@ -501,15 +494,15 @@ In the same Settings tab, search for `editor.tabSize` and set it to **4**.
 
 **Set C++ Formatting Style:**
 
-A **formatter** tidies your code for you: consistent indentation, consistent
-spacing, line breaks in sensible places. You write it however it comes out, then
+A **formatter** tidies your code for you, giving it consistent indentation, consistent
+spacing, and line breaks in sensible places. You write it however it comes out, then
 press a key and it straightens up. Setting the same style now means your code and
 mine and your classmates' all look alike, which makes code far easier to read
 together, and it means you never argue with yourself about indentation again.
 
 Under **Extensions → C/C++ → Formatting**, find `C_Cpp: Clang_format_style`.
 Use the copy button in the corner of the box below, then paste it into the
-setting. It has to go in as **one line**, so copy it rather than retyping it:
+setting. It has to go in as **one line**, so paste it whole:
 
 ```default
 { BasedOnStyle: Google, IndentWidth: 4, AccessModifierOffset: -4, AllowShortFunctionsOnASingleLine: InlineOnly }
@@ -623,7 +616,7 @@ username, and you have **accepted the emailed invitation** to the
 
 Until you accept that invitation, your repository exists but is invisible to
 you, [github.com/26fa-cs112](https://github.com/26fa-cs112){target="_blank" rel="noopener"}
-will show you a *"page not found"* rather than telling you anything useful.
+will show you a *"page not found"*.
 That is the single most common thing that goes wrong here.
 
 If you have been waiting more than a day, email me.
@@ -638,7 +631,7 @@ https://github.com/26fa-cs112/cs112-a00-YOURUSERNAME
 ```
 
 Put your own username in place of `YOURUSERNAME` and that address opens in a
-browser. Worth keeping to hand, it is how you check that what you pushed
+browser. Keep it to hand. It is how you check that what you pushed
 actually arrived.
 
 Every assignment follows the same pattern:
@@ -688,9 +681,9 @@ text."* That is expected on a server like Coder, which has no keychain to store
 them in. Your home directory on Coder is yours alone.
 :::
 
-The `✓ Configured git protocol` line is the one doing the quiet work: signing in
-also teaches Git itself to use this login. That is why pushing your code later
-just works, and why you will never need an SSH key in this course.
+The `✓ Configured git protocol` line says that signing in
+also taught Git itself to use this login. So pushing your code later
+just works, and you will never need an SSH key in this course.
 
 ### Tell Git how to combine my work with yours, once
 
@@ -742,7 +735,7 @@ gh repo clone 26fa-cs112/cs112-a00-YOURUSERNAME
 ::: {.callout-note}
 **This is one of the exceptions to typing everything.** The repository address
 is long, you will type it once in your life, and a single wrong letter gets you
-`Could not resolve to a Repository` rather than anything instructive. Copy the
+`Could not resolve to a Repository`. Copy the
 line, then replace `YOURUSERNAME` with your own before pressing Enter.
 
 The `cd` below is not an exception, but do not type all of it either: type
@@ -783,7 +776,7 @@ command does not show up until the C/C++ extension has something to work on. You
 have a C++ file now.
 
 1. In the VS Code file list, click **`main.cpp`** to open it. This wakes up the
-   C/C++ extension, which is why the command below did not appear in Step 7.
+   C/C++ extension.
 2. Press **Ctrl+Shift+P** (**Cmd+Shift+P** on a Mac).
 3. Search for `C/C++: Select IntelliSense Configuration`.
 4. A list of the compilers found on the machine appears. Choose the **g++** entry.
@@ -818,13 +811,13 @@ yet: **`fortune.h`**. Files ending in `.h` are **headers**, and they exist
 because of how Stage 1 works.
 
 When the compiler translates `main.cpp`, it looks at that file **and nothing
-else**. So when it reaches your call to `getFortune(...)`, it has a problem: the
+else**. So when it reaches your call to `getFortune(...)`, it has a problem. The
 function is written in `fortune.cpp`, which it is not reading. It has no idea
 whether `getFortune` exists, what arguments it takes, or what it gives back.
 
 A header is how you tell it. `fortune.h` contains the *promise*, one line
 saying "there is a function called `getFortune`, it takes two `int`s, and it
-returns a `string`", with no code behind it. That is why `main.cpp` starts
+returns a `string`", with no code behind it. So `main.cpp` starts
 with:
 
 ```cpp
@@ -859,7 +852,7 @@ CXX      = g++
 CXXFLAGS = -Wall -std=c++17
 ```
 
-These are **variables**. `CXX` is the compiler name. `CXXFLAGS` are the options we always pass to it: `-Wall` turns on all warnings (helpful!), `-std=c++17` selects the C++17 standard.
+These are **variables**. `CXX` is the compiler name. `CXXFLAGS` are the options we always pass to it. `-Wall` turns on all warnings (helpful!), and `-std=c++17` selects the C++17 standard.
 
 ```makefile
 a00: main.o fortune.o
@@ -880,7 +873,7 @@ main.o: main.cpp fortune.h
 	$(CXX) $(CXXFLAGS) -c main.cpp
 ```
 
-This rule says: to build `main.o`, compile `main.cpp` (the `-c` flag means "compile only, don't link yet"). It depends on `fortune.h` too: if the header changes, `main.o` needs to be rebuilt.
+This rule says: to build `main.o`, compile `main.cpp` (the `-c` flag means "compile only, don't link yet"). It depends on `fortune.h` too. If the header changes, `main.o` needs to be rebuilt.
 
 ```makefile
 fortune.o: fortune.cpp fortune.h
@@ -898,7 +891,7 @@ clean:
 
 ### `make` is smart about what to rebuild
 
-One of `make`'s best features: it only recompiles files that have changed since the last build. If you only edit `fortune.cpp`, `make` will recompile `fortune.o` and re-link `a00`, but it will *not* recompile `main.cpp`, because `main.cpp` has not changed. This saves time on larger projects.
+`make` only recompiles files that have changed since the last build. If you only edit `fortune.cpp`, `make` will recompile `fortune.o` and re-link `a00`, but it will *not* recompile `main.cpp`, because `main.cpp` has not changed. This saves time on larger projects.
 
 ## 11. Compile and Run the Starter Code
 
@@ -928,7 +921,7 @@ Type `ls`. You should now see `a00` in the directory. Run it:
 
 The `./` means "run this file in the current directory."
 
-You will see the Oracle's banner and the line about consulting the ancient data structures, and then the program ends without ever asking you anything. That is expected: `main.cpp` still has empty placeholders where the questions and the fortune belong. Filling them in is your task in the next section.
+You will see the Oracle's banner and the line about consulting the ancient data structures, and then the program ends without ever asking you anything. That is expected. `main.cpp` still has empty placeholders where the questions and the fortune belong. Filling them in is your task in the next section.
 
 ## 12. Your Coding Task: Complete `main.cpp`
 
@@ -960,8 +953,7 @@ int birthMonth;
 
 Add these three declarations where TODO 1 is.
 
-**Now run `make`, before you write anything else.** It takes two seconds, and it
-is the single habit that separates a pleasant afternoon from a miserable one.
+**Now run `make`, before you write anything else.** It takes two seconds.
 
 You will see this:
 
@@ -974,9 +966,9 @@ main.cpp:27:9: warning: unused variable 'birthMonth' [-Wunused-variable]
 ```
 
 ::: {.callout-note}
-**Warnings are not errors, and the difference matters.**
+**Warnings are not errors.**
 
-An **error** means the compiler gave up: there is no program at the end. A
+An **error** means the compiler gave up. There is no program at the end. A
 **warning** means it built your program but noticed something suspicious.
 
 These two are correct and expected. You have declared `stressLevel` and
@@ -984,7 +976,7 @@ These two are correct and expected. You have declared `stressLevel` and
 turns on all warnings, is telling you so. They will disappear on their own when
 TODO 2 starts using the variables.
 
-Warnings are worth reading rather than ignoring. Over the semester, `-Wall` will
+Read your warnings. Over the semester, `-Wall` will
 catch real mistakes for you long before they become a debugging session.
 :::
 
@@ -1018,11 +1010,11 @@ what it is. The banner at the top of `main.cpp` is full of lines like:
 cout << "        Welcome to the CS112 Oracle!" << endl;
 ```
 
-`endl` **ends the line.** Everything printed after it starts on a fresh line:
-it is the equivalent of pressing Enter. You can chain as many things onto one
+`endl` **ends the line.** Everything printed after it starts on a fresh line.
+It is the equivalent of pressing Enter. You can chain as many things onto one
 `cout` as you like, and `endl` is simply the last of them.
 
-Now look again at the prompt above: there is **no** `endl` on it, and that is
+Now look again at the prompt above. There is no `endl` on it, and that is
 deliberate. Without one, the cursor stays put at the end of the text, so the
 user types their answer right after the question instead of on the line below:
 
@@ -1065,8 +1057,7 @@ about. Two TODOs done is a good place to stop and check.
 #### Now save your work to GitHub
 
 Everything you have written so far exists in exactly one place: a folder on the
-Coder server. That is one disk, one account, and one bad afternoon away from
-gone. Push it and there are two copies, one of them somewhere you cannot break.
+Coder server. Push it and there are two copies, one of them somewhere you cannot break.
 
 In VS Code, click the **Source Control** icon in the left sidebar, it looks
 like a branch, and it will have a small badge showing how many files you have
@@ -1080,8 +1071,8 @@ changed.
 4. Click **Sync Changes** to send it to GitHub.
 
 ::: {.callout-tip}
-**The same thing in the terminal.** Every button above is a command underneath,
-and it is worth seeing them side by side once, you will meet them in every
+**The same thing in the terminal.** Every button above is a command underneath.
+You will meet these commands in every
 programming job you ever have, and on machines with no editor at all:
 
 ```bash
@@ -1106,7 +1097,7 @@ when all four TODOs are done and `make test` passes.
 You do not have to wait until an assignment is finished to push, and you should
 not. **Commit and push whenever something works.** It costs ten seconds, it
 means a broken laptop or a lost workspace costs you nothing, and later in the
-semester it gives you something far more useful: a working version to go back to
+semester it gives you a working version to go back to
 when an experiment goes wrong.
 
 ---
