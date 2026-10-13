@@ -445,6 +445,43 @@ summary code:not(.sourceCode) {
 }
 
 
+/* Catch-all for inline code the two lists above still miss. The assignment
+   cards on the assignments index are <div>s, so `operator<<` (a04) and
+   `std::map` (a11) sat white-on-#f8f9fa in dark mode, 1.04:1. Any inline code
+   that is not inside a <pre> now gets the same chip, wherever it is written. */
+:not(pre) > code:not(.sourceCode) {
+  background-color: rgba(233, 236, 239, 0.65);
+}
+.quarto-dark :not(pre) > code:not(.sourceCode) {
+  background-color: rgba(67, 67, 67, 0.65);
+  color: #f2efe8;
+}
+
+/* Buttons that are links. `.quarto-dark a` turns every link gold, and it
+   outranks `.btn`, so the Getting Started button was gold on blue, 2.73:1.
+   Buttons keep their own text color. */
+.quarto-dark a.btn { color: var(--bs-btn-color); }
+.quarto-dark a.btn:hover { color: var(--bs-btn-hover-color); }
+
+/* The light theme's outline-secondary text is #adb5bd on white, 2.07:1
+   ("Book a check-in", "Window 2 opens ..."), and darkly's is #444 on #222,
+   1.61:1. Same gray family, readable in both. */
+.quarto-light .btn-outline-secondary {
+  --bs-btn-color: #5c636a;
+  --bs-btn-border-color: #8a9299;
+}
+.quarto-dark .btn-outline-secondary {
+  --bs-btn-color: #c3c8cd;
+  --bs-btn-border-color: #6c757d;
+}
+
+/* Code comments in dark mode. The github highlight style is a light-mode
+   palette, and its comment gray #6a737d on the dark code block is 2.46:1.
+   Lighter gray, 5:1. The TODO marker (span.al) is #ff5555 on the light code
+   block, 2.82:1; a deeper red, 5:1. */
+.quarto-dark code span.co { color: #a0aab4; }
+.quarto-light code span.al { color: #c62828; }
+
 /* ── Terminal output ──────────────────────────────────────────────────────
    Blocks marked ```{.terminal} are things the SCREEN said, not things the
    student types. Two reasons they need their own treatment:
