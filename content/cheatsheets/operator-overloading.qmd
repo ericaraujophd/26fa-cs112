@@ -1,6 +1,5 @@
 ---
 title: "Operator Overloading in C++"
-subtitle: "Every operator you can teach a class, in the style we write in CS112"
 ---
 
 <!--

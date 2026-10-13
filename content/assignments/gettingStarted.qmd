@@ -1,6 +1,5 @@
 ---
 title: "Getting Started"
-subtitle: "a00 · The CS112 Oracle"
 ---
 
 ::: {.callout-note}
