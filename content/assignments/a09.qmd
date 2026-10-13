@@ -1,6 +1,5 @@
 ---
-title: "Assignment 09: Stopwatch"
-subtitle: "Measure it, and let the program tell you the shape"
+title: "Assignment 09: Algorithm Analysis"
 ---
 
 ```{=html}
@@ -84,12 +83,9 @@ against it. Here the numbers are different on every machine, at every moment,
 and on a laptop with a browser open they will be different from one minute to
 the next.
 
-So the numbers are not what is graded. What is graded is the **reasoning that
-turns numbers into a class**, and that is the same everywhere. §5 is the code
+So what is graded is the reasoning that
+turns numbers into a class, and that is the same everywhere. §5 is the code
 version of it. §8 is the sentence version.
-
-That gap, between the measurement, which is local and noisy, and the
-conclusion, which is not, is most of what empirical computer science is.
 :::
 
 ---
@@ -109,32 +105,28 @@ cd cs112-a09-YOURUSERNAME
 ```
 
 ::: {.callout-note}
-**Cannot find it? Ask GitHub what you have.**
+**Cannot find your repository?**
 
-If `gh repo clone` answers
-`Could not resolve to a Repository`, this lists every repository you can
-actually see, spelled exactly right:
+If `gh repo clone` answers `Could not resolve to a Repository`, list the
+repositories you can see:
 
 ```bash
 gh repo list 26fa-cs112
 ```
 
-If yours is in that list, you mistyped the name, copy it from the output and
-try again. Watch for usernames that already contain a hyphen or a number; the
-pattern is `cs112-<assignment>-<your username>`, so the two halves run together
-and it often looks wrong when it is right.
+If yours is in the list, you mistyped the name. Copy it from the output and try
+again. Usernames that already contain a hyphen or a number are the easy ones to
+get wrong, because the pattern is `cs112-<assignment>-<your username>`.
 
-**If the list is empty, or the command errors, that is mine to fix rather than
-yours to work around.** The usual causes are an organization invitation you have not accepted yet
-(check your email, including spam and the Promotions tab), or a username I
-mistyped when I built the roster. Either way, email me at
-[eric.araujo@calvin.edu](mailto:eric.araujo@calvin.edu) and I will sort it out
-the same day.
+**If the list is empty, or the command errors, email me.** The usual causes are
+an organization invitation you have not accepted yet (check your email,
+including spam and the Promotions tab), or a username I mistyped when I built
+the roster. Write to [eric.araujo@calvin.edu](mailto:eric.araujo@calvin.edu)
+and I will sort it out the same day.
 
 While you wait, **do not create a repository yourself and do not start the work
 somewhere else.** Only the repository I create for you is connected to grading,
-so anything written outside it has to be moved by hand later, and that is a
-worse afternoon than a short wait.
+and work done anywhere else has to be moved over by hand.
 :::
 
 Open the folder in VS Code, then build it and run it before you change anything:
@@ -178,8 +170,7 @@ all three before you write anything.
 `-g` and no optimisation, which is right when you are debugging and wrong when
 you are measuring, an unoptimised build spends most of its time on bookkeeping
 that a real build would not do, and that bookkeeping is the same size at every
-n, so it flattens exactly the differences you are looking for. Nobody benchmarks
-a debug build.
+n, so it flattens exactly the differences you are looking for.
 
 The price is that the optimiser will delete a loop whose result nobody uses.
 That is what the `volatile` variables in the worked examples are for.
@@ -210,8 +201,8 @@ fewer at large n, so the total work stays level instead of exploding at a
 million.
 
 **Take the minimum, not the mean.** `measure()` runs each timing function five
-times and keeps the *smallest* answer. That looks like cheating and is not, and
-the reason is worth understanding:
+times and keeps the *smallest* answer. That looks like cheating and is not. Here
+is why:
 
 ::: {.callout-note}
 Noise on a shared machine is **one-sided**. The operating system scheduling
@@ -225,10 +216,10 @@ interference there was in the quietest run, and with enough runs, one of them
 lands in a quiet moment. The minimum converges on the truth from above; the mean
 does not converge on it at all.
 
-This is standard practice in real benchmarking, for exactly this reason.
+This is standard practice in real benchmarking.
 :::
 
-There is a third trick, in `buildVector` in `given.cpp`, and it is worth reading
+There is a third trick, in `buildVector` in `given.cpp`. Read
 the comment there. A four-megabyte vector is not really *yours* until you write
 to it, the operating system hands over the pages lazily. Without a warm-up, the
 first appends after building a million-element vector get charged for that, and
@@ -239,7 +230,7 @@ hour to find.
 
 ## 5. TODO 1, `classifyGrowth`
 
-This is the heart of the assignment, and you can write and fully test it before
+You can write and fully test this before
 timing anything.
 
 You are given the times at five sizes, where **each size is ten times the one
@@ -371,8 +362,7 @@ a real answer to a different question.
 :::
 
 ::: {.callout-tip}
-**`vector` has no `push_front`.** That is not an oversight, it is the API
-telling you something. Putting an element at the front of a vector means moving
+**`vector` has no `push_front`.** Putting an element at the front of a vector means moving
 every other element up one place, and the library declines to give that a
 convenient name. `insert(v.begin(), value)` will do it, and the measurement will
 show you why nobody wanted to make it easy.
@@ -483,7 +473,7 @@ average over many is constant.
 
 ::: {.callout-warning}
 **Do not just copy the last column of the table across.** Your `classifyGrowth`
-reports what it measured, and for six of the eight rows that is the whole story.
+reports what it measured, and for six of the eight rows that is the right answer.
 For the other two it is not:
 
 - **One row measures the same operation as another row, in a different way, and
@@ -494,8 +484,8 @@ For the other two it is not:
 
 - **Two rows are the same class as each other**, and at a million one of them is
   visibly two or three times slower than the other. Both are `O(n)`. Big-Oh does
-  not describe constant factors, and the reason for the difference, where the
-  elements physically are in memory, is worth your sentence.
+  not describe constant factors. Put the reason for the difference, where the
+  elements physically are in memory, in your sentence.
 :::
 
 ### What is graded here
@@ -508,7 +498,7 @@ For the other two it is not:
 
 If a class you measured disagrees with the class you can argue for from first
 principles, write down the one you can argue for, and then work out why the
-measurement disagreed. That investigation is the assignment.
+measurement disagreed.
 
 ---
 
@@ -539,7 +529,7 @@ constant ones visibly not. Everything else is checked against things that are
 the same on every computer.
 :::
 
-Every failure comes with a hint. §5 is worth finishing first, sixteen of the
+Every failure comes with a hint. Finish §5 first. Sixteen of the
 thirty-six pass without any timing code at all.
 
 ::: {.callout-tip}
@@ -602,7 +592,6 @@ is O(n²) instead of O(n log n) does not just make somebody wait, at scale it
 burns more electricity, needs more machines, and puts more carbon in the air to
 compute the same answer.
 
-You now have a stopwatch and a method. When you next reach for the convenient
-container instead of the right one, you will know what it costs, and you will be
-able to measure it.
+When you next reach for the convenient
+container instead of the right one, you will be able to measure what it costs.
 :::

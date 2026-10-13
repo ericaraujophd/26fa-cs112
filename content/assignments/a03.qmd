@@ -1,6 +1,5 @@
 ---
-title: "Assignment 03: Sandbox"
-subtitle: "A falling-sand simulator, file I/O, exceptions, and 2D arrays"
+title: "Assignment 03: File I/O, Exceptions and 2D Arrays"
 ---
 
 ```{=html}
@@ -71,32 +70,28 @@ cd cs112-a03-YOURUSERNAME
 ```
 
 ::: {.callout-note}
-**Cannot find it? Ask GitHub what you have.**
+**Cannot find your repository?**
 
-If `gh repo clone` answers
-`Could not resolve to a Repository`, this lists every repository you can
-actually see, spelled exactly right:
+If `gh repo clone` answers `Could not resolve to a Repository`, list the
+repositories you can see:
 
 ```bash
 gh repo list 26fa-cs112
 ```
 
-If yours is in that list, you mistyped the name, copy it from the output and
-try again. Watch for usernames that already contain a hyphen or a number; the
-pattern is `cs112-<assignment>-<your username>`, so the two halves run together
-and it often looks wrong when it is right.
+If yours is in the list, you mistyped the name. Copy it from the output and try
+again. Usernames that already contain a hyphen or a number are the easy ones to
+get wrong, because the pattern is `cs112-<assignment>-<your username>`.
 
-**If the list is empty, or the command errors, that is mine to fix rather than
-yours to work around.** The usual causes are an organization invitation you have not accepted yet
-(check your email, including spam and the Promotions tab), or a username I
-mistyped when I built the roster. Either way, email me at
-[eric.araujo@calvin.edu](mailto:eric.araujo@calvin.edu) and I will sort it out
-the same day.
+**If the list is empty, or the command errors, email me.** The usual causes are
+an organization invitation you have not accepted yet (check your email,
+including spam and the Promotions tab), or a username I mistyped when I built
+the roster. Write to [eric.araujo@calvin.edu](mailto:eric.araujo@calvin.edu)
+and I will sort it out the same day.
 
 While you wait, **do not create a repository yourself and do not start the work
 somewhere else.** Only the repository I create for you is connected to grading,
-so anything written outside it has to be moved by hand later, and that is a
-worse afternoon than a short wait.
+and work done anywhere else has to be moved over by hand.
 :::
 
 Open the folder in VS Code, then build it before you change anything:
@@ -138,7 +133,7 @@ You will write four functions:
 - `step()`, advance the simulation by one tick
 - `saveReplay()`, write every frame into an HTML file you can play back
 
-Everything else, the color drawing, the animation, the emitter loop, the argument parsing, the HTML and JavaScript for the replay player, is written for you. None of it is what this week is about and you shouldn't be concerned with it.
+Everything else, the color drawing, the animation, the emitter loop, the argument parsing, the HTML and JavaScript for the replay player, is written for you. None of it is what this week is about.
 
 ::: {.callout-tip}
 **See where this is going first, and do it now.** The repository you just cloned
@@ -167,7 +162,7 @@ the reference for what your own `replay.html` should look like when TODO 4 works
 | `makefile`, `test.py` | Build and check |
 
 ::: {.callout-important}
-**Open `sandbox.h` and read the whole thing before you write a line.** It is
+**Open `sandbox.h` and read all of it before you write a line.** It is
 short, and it is the contract for the entire program. Three things live there
 that this page does not repeat:
 
@@ -180,9 +175,9 @@ that this page does not repeat:
 - **Every prototype you must match, exactly.** What you write in `sandbox.cpp`
   has to agree with the header down to the `const` and the `&`.
 
-This is a habit worth forming now, not just an instruction for this week. The
+Make it a habit from now on. The
 comments in `sandbox.h`, `main.cpp` and `tests.cpp` are written for you to read,
-and where a page and the code ever disagree, **the code is the one that runs**.
+and where a page and the code ever disagree, the code is the one that runs.
 :::
 
 Running it:
@@ -294,7 +289,7 @@ Line by line:
 What comes out the other side is a `char` array with two indices. Line `r` of
 the grid becomes `grid[r]`, and character `c` of that line becomes `grid[r][c]`.
 
-![What `loadWorld` turns a file into. The two emitters are the things on the left that do *not* become characters in the grid: each is three values spread across three parallel arrays, and the cells they name are still `EMPTY` when loading finishes.](../../figures/world-file-to-grid.svg){#fig-world fig-alt="A small world file at the top, an arrow labeled loadWorld pointing down, and the grid it produces below. The file has eight lines: 4 6, then 2, then 0 2 sand, then 2 5 water, then four rows of six characters, dot dot dot dot dot dot, dot dot hash dot dot dot, dot dot dot dot dot dot, and six hashes. Labels mark the first line as rows and cols, the second as how many emitters follow, the next two as each giving a row, a column and an element, and the last four as rows lines of cols characters. The grid is four rows by six columns with column numbers zero to five along the top and row numbers zero to three down the left, each cell holding the character from the matching position in the file. The cell at row one column two holds a tinted hash. The cells at row zero column two and row two column five are still dots but each carries a dashed maroon ring; a note says the two rings are the emitters and are not cells, that each drops one grain per step, sand at grid zero two and water at grid two five, and that both cells load EMPTY. A legend gives dot as EMPTY, hash as WALL, o as SAND and tilde as WATER. Below, a card headed what loadWorld fills in gives rows equals 4, cols equals 6, emitCount equals 2 and grid one two equals WALL, then a table captioned three arrays, one column per emitter: the rows are labeled emitRow, emitCol and emitElem, the columns are headed bracket zero and bracket one, and each column is outlined, holding 0, 2, SAND in the first and 2, 5, WATER in the second. A note says an emitter is a column, not an array, that its row, column and element are held together by nothing except the index they share, and that emitCount says how many columns are in use while the rest of each array is untouched. A final card, headed capacity is not size, shows a large dashed rectangle with a small tinted rectangle in its corner, labeled as the whole box being char grid 64 by 128 always reserved and the tinted corner being rows by cols, the part in play, not to scale, with the reminder that every loop stops at rows and cols rather than at the maximum."}
+![What `loadWorld` turns a file into. The two emitters are the things on the left that do *not* become characters in the grid. Each is three values spread across three parallel arrays, and the cells they name are still `EMPTY` when loading finishes.](../../figures/world-file-to-grid.svg){#fig-world fig-alt="A small world file at the top, an arrow labeled loadWorld pointing down, and the grid it produces below. The file has eight lines: 4 6, then 2, then 0 2 sand, then 2 5 water, then four rows of six characters, dot dot dot dot dot dot, dot dot hash dot dot dot, dot dot dot dot dot dot, and six hashes. Labels mark the first line as rows and cols, the second as how many emitters follow, the next two as each giving a row, a column and an element, and the last four as rows lines of cols characters. The grid is four rows by six columns with column numbers zero to five along the top and row numbers zero to three down the left, each cell holding the character from the matching position in the file. The cell at row one column two holds a tinted hash. The cells at row zero column two and row two column five are still dots but each carries a dashed maroon ring; a note says the two rings are the emitters and are not cells, that each drops one grain per step, sand at grid zero two and water at grid two five, and that both cells load EMPTY. A legend gives dot as EMPTY, hash as WALL, o as SAND and tilde as WATER. Below, a card headed what loadWorld fills in gives rows equals 4, cols equals 6, emitCount equals 2 and grid one two equals WALL, then a table captioned three arrays, one column per emitter: the rows are labeled emitRow, emitCol and emitElem, the columns are headed bracket zero and bracket one, and each column is outlined, holding 0, 2, SAND in the first and 2, 5, WATER in the second. A note says an emitter is a column, not an array, that its row, column and element are held together by nothing except the index they share, and that emitCount says how many columns are in use while the rest of each array is untouched. A final card, headed capacity is not size, shows a large dashed rectangle with a small tinted rectangle in its corner, labeled as the whole box being char grid 64 by 128 always reserved and the tinted corner being rows by cols, the part in play, not to scale, with the reminder that every loop stops at rows and cols rather than at the maximum."}
 
 You will need to use `>>` for the numbers and the element words, `getline` for the grid rows (which contain `.`
 and `#` and must be read whole), and an honest end-of-file condition when the grid runs out.
@@ -332,8 +327,7 @@ first, and keep it open beside you while you write.
 
 This section is the *why*. It explains what the parameters are doing, what
 `throw` is and where it goes, and how to test the result. The two are meant to
-be read together, and the same is true of TODO 2, 3 and 4: the page explains,
-the code instructs.
+be read together, and the same is true of TODO 2, 3 and 4.
 :::
 
 ```cpp
@@ -347,8 +341,7 @@ whoever called it. The `int&` parameters are references, the same out parameters
 you used in week 1. Arrays are already passed by reference in C++, so `grid` and
 the three emitter arrays need no `&`.
 
-**The three emitter arrays are one array of emitters, taken apart.** This catches
-people, so it is worth a paragraph. An emitter is three things: a row, a column,
+**The three emitter arrays are one array of emitters, taken apart.** An emitter is three things: a row, a column,
 and which element it drops. There is no type in this program that holds all
 three, so they are stored in three separate arrays, and emitter number `i` is
 whatever sits at index `i` in each of them:
@@ -370,7 +363,7 @@ wrong element in the wrong place, with no error anywhere.
 of all three is uninitialized, exactly like the part of `grid` past `rows` and
 `cols`.
 
-Look at @fig-world again with this in mind: the emitter table in the lower card
+Look at @fig-world again with this in mind. The emitter table in the lower card
 is three arrays drawn as three rows, and each emitter is one *column* through
 all three.
 
@@ -384,7 +377,7 @@ in week 0, with one more dimension on top.
 
 Eight parameters is a lot to carry around, and you are about to feel it. So is
 splitting one emitter across three arrays. If both of those feel clumsy, that is
-the correct reaction, and they are the same complaint: there is no type here
+the correct reaction, and they are the same complaint. There is no type here
 that holds several values together as one thing. Next week you will meet
 **classes**, which exist in large part to solve exactly that. An emitter becomes
 one value you can pass, copy and keep in a single array, and the signature above
@@ -393,8 +386,8 @@ gets shorter.
 
 ### Throwing when the file is wrong
 
-Look at the signature again: `loadWorld` returns `void`. It has **no way to tell
-you it failed**. If the file is missing, or the grid runs out halfway, the
+Look at the signature again. `loadWorld` returns `void`. It has no way to tell
+you it failed. If the file is missing, or the grid runs out halfway, the
 function reaches its closing brace with `rows`, `cols` and `grid` half filled
 in, and `main()` carries on simulating garbage.
 
@@ -434,9 +427,7 @@ if (rows < 1 || rows > MAX_ROWS || cols < 1 || cols > MAX_COLS) {
 }
 ```
 
-Read a value, test it, throw if it is wrong. Then the rest of the function can
-be written as though it is right, because if it were not, execution would never
-have got there.
+Read a value, test it, throw if it is wrong.
 
 Do not expect exactly four `throw` lines, though. `bad dimensions` covers both
 the grid size and the emitter count. `unknown character` covers both an
@@ -447,8 +438,8 @@ just been read, and the count takes care of itself.
 
 These are the four things that must be caught, and the words your message must
 carry when you catch them. The autograder looks for the quoted words somewhere
-in the message; the rest of it is yours to write, and a helpful one is worth
-writing, because it is what a student reads when their own world file is wrong.
+in the message; the rest of it is yours to write. Make it helpful, because it
+is what a student reads when their own world file is wrong.
 
 | When | Your message must contain |
 |---|---|
@@ -471,14 +462,13 @@ catch (const runtime_error& e) {
 
 Note `const runtime_error&`, **caught by reference**. Catching by value would
 copy the exception object, and with a hierarchy of exception types it would slice
-off everything the derived type added. Catch exceptions by reference. Always.
+off everything the derived type added. Always catch exceptions by reference.
 
 ::: {.callout-tip}
 Notice what the `try` block in `main()` wraps: the load, the whole simulation,
 *and* the saves. A throw anywhere in there unwinds the stack straight down to that
 one `catch`. You do not have to check a return value at every level, and there is
-no way to accidentally continue with a broken world. That is the argument for
-exceptions in one paragraph.
+no way to accidentally continue with a broken world.
 :::
 
 Try it against the three broken worlds you were given, plus one that is not
@@ -517,8 +507,7 @@ write those. Ignore them while you are on TODO 1.
 
 The line that matters is the first one. `Simulated 0 steps` means the program
 *accepted* a file you know is broken and carried on. That case is not handled
-yet. The whole point of the check is that this line should never appear for any
-of the four.
+yet. This line should never appear for any of the four.
 
 Without `--quiet` it is worse: an unhandled broken file loads as some plausible
 size and animates, so you get forty lines of blocks scrolling past before those
@@ -542,8 +531,7 @@ then       rows lines of cols characters
 ```
 
 Line 2 is the same field `loadWorld` reads on line 2 of a world file, and you
-always write `0` there. Not because the world had no emitters, but because you
-are saving the **finished** grid. The sand has already fallen. An emitter is an
+always write `0` there. You are saving the **finished** grid. The sand has already fallen. An emitter is an
 instruction to keep producing more of it, and `out.txt` is a photograph, not a
 scenario. Reload it and you should get the picture back, not a world that starts
 filling up again.
@@ -615,15 +603,15 @@ cells are not grains and do nothing.
 6. Otherwise → stay put.
 
 Sand gets lower or stays. Water gets lower if it can, and if it cannot, it
-spreads out, which is the entire difference between a pile and a puddle.
+spreads out.
 
 ::: {.callout-important}
 **Left is always tried before right.** Every one of these lists is in strict
-priority order, and ties never go to chance. That matters more than it looks: the
+priority order, and ties never go to chance. The
 version of this project that ran last spring picked left or right *at random*,
 which meant no two runs of the same world ever agreed, and nothing about it could
 be checked automatically. A fixed tie-break costs you a little realism, water
-leans left rather than levelling perfectly, and buys you a simulation you can
+leans left rather than leveling perfectly, and buys you a simulation you can
 test.
 :::
 
@@ -640,7 +628,7 @@ you do and then behave strangely about.
 void step(char grid[][MAX_COLS], int rows, int cols);
 ```
 
-Visit every cell. Apply the rules. That is the whole function.
+Visit every cell. Apply the rules.
 
 Write it now, with two nested loops, and **pick whichever loop direction seems
 natural to you**. Do not think about it too hard. Then go straight to §9, which
@@ -717,17 +705,15 @@ entire height of the column.
 
 **Nothing in your rules says that.** Rule 1 moves a grain down by one cell. Read
 your `step()` again, it is not wrong. Reading it more carefully will not help,
-which is exactly why this is the right moment to stop reading and start
-debugging.
+so stop reading and start debugging.
 
 ### Find it with the debugger
 
 So far, when you wanted to know what your program was doing, you added a `cout`.
-That works, but it makes you guess in advance what is worth printing. A
-**debugger** does something better: it stops your program mid-run and lets you
-look at everything.
+That works, but it makes you guess in advance what to print. A
+**debugger** stops your program mid-run and lets you look at everything.
 
-This is the moment it earns its keep. Take fifteen minutes to learn it here and
+Take fifteen minutes to learn it here and
 you will use it for the rest of the course.
 
 ::: {.callout-note}
@@ -749,7 +735,7 @@ choose **Debug one unit test**. That builds the project and runs
 grain, one step, nothing else happening anywhere.
 
 **3. Read the screen.** Your program stops on the red dot, and a yellow arrow
-marks it. Three things are now worth looking at:
+marks it. Look at three things:
 
 | Where | What it shows |
 |---|---|
@@ -784,7 +770,7 @@ grain, and you move it down into row `r + 1`.
 Then your loop moves on to row `r + 1`, and finds the same grain there, sitting
 in a cell you have not visited yet this pass. Nothing marks it as having already
 moved. So it moves again. And again, once per row, all the way down, in a single
-step. The grain does not fall fast; it gets **carried** by your own loop.
+step. The grain gets **carried** by your own loop.
 
 The fix is to visit rows in the order that makes a moved grain land somewhere you
 have already been:
@@ -792,18 +778,17 @@ have already been:
 ::: {.callout-important}
 **Scan from the bottom row upward.** Start at `rows - 1` and count down to `0`. A
 grain that moves down lands in a row this pass has already finished with, so it
-cannot be picked up a second time. One grain, one move, one step.
+cannot be picked up a second time.
 :::
 
 Change the outer loop, rebuild, and run the experiment again. The grain moves one
 row.
 
-Two things worth taking away from this:
+Remember two things from this:
 
 - **This bug is invisible in the source.** Every individual line was right. Only
   the *order in which the loop visits cells* was wrong, and the only way to see
-  it was to watch the program run. That is what a debugger is for, and it is why
-  "read your code again" is not always the answer.
+  it was to watch the program run.
 - **There is a second way to fix it:** keep two grids, read from one and write to
   the other, and swap them at the end of the step. Then nothing you write during
   a pass can affect what you read during that pass. You do not need it here, but
@@ -817,7 +802,7 @@ only ever moves **down** into an already-finished row. Water rule 5 moves it
 moment later it arrives there, finds the same grain, and gives it a second turn
 in the same step.
 
-The fix is the same idea in one line: after moving water right, step the column
+The fix is the same idea, in one line. After moving water right, step the column
 counter past it.
 
 ```cpp
@@ -826,7 +811,7 @@ grid[r][c + 1] = WATER;
 c++;              // this grain already moved; do not visit it again
 ```
 
-Now run something worth watching:
+Now run these and watch:
 
 ```bash
 ./sandbox worlds/hourglass.txt 300
@@ -867,8 +852,6 @@ that the *two* rightmost sizes are in the parameter type now, for the same reaso
 `MAX_COLS` was there before: the compiler needs both to do the arithmetic.
 
 So this is the nested loop from `saveWorld` with one more loop wrapped around it.
-That is genuinely all it is, and the payoff is a color animation you can send
-to somebody.
 
 ::: {.callout-warning}
 Nothing else goes in the file. No separators between frames, no blank lines, no
@@ -898,14 +881,14 @@ The reason is a rule that surprises most people the first time they meet it.
 
 **A `const` at file scope is private to its own `.cpp` file.** Every source
 file that includes `sandbox.h` gets its *own* `EMPTY`, its own `MAX_ROWS`, and
-nobody minds: a one-byte constant the compiler folds into the instruction that
+nobody minds. A one-byte constant the compiler folds into the instruction that
 uses it costs nothing to duplicate, and four private copies can never disagree.
 (Anything *not* const behaves the opposite way and is shared by default, which
 is the part that makes this feel backwards.)
 
 Now try the same thing with the replay page. `REPLAY_HEAD` is several kilobytes
 of HTML and JavaScript, and it is a `std::string`, so it is not folded into
-anything: it is a real object that has to be built at run time before `main`
+anything. It is a real object that has to be built at run time before `main`
 starts. Four private copies means four constructions of the same large string
 and four times the memory, for one program.
 
@@ -922,7 +905,7 @@ One object, built once, and every `.cpp` that includes the header refers to
 that same one.
 
 One detail that bites later, because it fails at *link* time rather than
-compile time: the definition in `render.cpp` does not repeat the word `extern`,
+compile time. The definition in `render.cpp` does not repeat the word `extern`,
 and does not need to, because `render.cpp` includes `sandbox.h` on its first
 line. The `extern` declaration is already visible, so the definition inherits
 it. Remove that `#include` and the definition quietly goes back to being
@@ -971,13 +954,12 @@ Twenty-nine checks, in eight groups:
 
 Groups 6 to 8 build their world files on the fly rather than reading `worlds/`,
 so they check the same requirements on inputs you have not seen. Nothing in them
-is new: if your code genuinely works, they pass.
+is new. If your code works, they pass.
 
 The scenario checks compare a **fingerprint** of your `out.txt` rather than the
 file itself, so a failure can tell you that something is wrong without telling you
 what the right answer looks like. When one fails, that is the moment to run the
-same world *without* `--quiet` and watch where it goes wrong. That is what the
-color is for.
+same world *without* `--quiet` and watch where it goes wrong.
 
 Every failure comes with a hint. Work through them one at a time, the four
 functions are independent enough that you can get partial credit for each as you
@@ -1012,11 +994,11 @@ verbally, in class, on Friday, when we run the good ones on the projector.
 ```
 
 ::: {.callout-tip}
-Two things worth knowing while you build one. `rows` and `cols` must be within
+Two things to know while you build one. `rows` and `cols` must be within
 `MAX_ROWS` (64) and `MAX_COLS` (128), and no grid line may be **shorter** than
 `cols`, a short line is the `grid ended early` error you spent §5 implementing,
 and it is by far the most common mistake here. And an emitter is much more
-interesting than a grid full of sand: one emitter running for three hundred steps gives you a
+interesting than a grid full of sand. One emitter running for three hundred steps gives you a
 stream, not a lump.
 :::
 

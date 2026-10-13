@@ -1,6 +1,5 @@
 ---
-title: "Assignment 10: Stack and Queue"
-subtitle: "Two containers, nine TODOs, and one array bent into a circle"
+title: "Assignment 10: Stacks and Queues"
 ---
 
 ```{=html}
@@ -66,11 +65,11 @@ an array that grows. In week 6 you built `List`, which is a chain of nodes. Both
 of them let you put things anywhere and take things from anywhere.
 
 This week you build two containers that are deliberately *less* capable than
-that, and the restriction is the whole point.
+that.
 
 A **Stack** only lets you touch the item that arrived most recently. A **Queue**
 only lets you touch the item that arrived first. Neither will let you reach into
-the middle. That sounds like a downgrade until you notice what it buys: because
+the middle. That sounds like a downgrade until you notice what it buys. Because
 there is only one place anything can happen, everything can happen in constant
 time, no matter how much is in there.
 
@@ -92,17 +91,16 @@ You already use both of these every day:
 An ADT is a set of operations and a promise about what they do, and *nothing
 else*. "A Stack is something you can push onto, peek at, and pop from, where pop
 gives you back the most recent push." That is the entire definition. It says
-nothing about arrays, nothing about nodes, nothing about memory.
+nothing about arrays, nodes or memory.
 
 That silence is deliberate. You could build this week's Stack on top of your
 `Vec`, or on top of your `List`, or on a raw array, and every one of them would
-be a Stack, because a Stack is defined by what it promises and not by what it is
-made of. You have now built both possible underneaths, so this is a real choice
+be a Stack. You have now built both possible underneaths, so this is a real choice
 rather than a hypothetical one.
 
 We use a raw array here, for two reasons: it is the version where the O(1)
 requirement is visible in the code you write, and it is the version that forces
-you to meet the circular array, which is the idea this week is really about.
+you to meet the circular array.
 :::
 
 ---
@@ -122,32 +120,28 @@ cd cs112-a10-YOURUSERNAME
 ```
 
 ::: {.callout-note}
-**Cannot find it? Ask GitHub what you have.**
+**Cannot find your repository?**
 
-If `gh repo clone` answers
-`Could not resolve to a Repository`, this lists every repository you can
-actually see, spelled exactly right:
+If `gh repo clone` answers `Could not resolve to a Repository`, list the
+repositories you can see:
 
 ```bash
 gh repo list 26fa-cs112
 ```
 
-If yours is in that list, you mistyped the name, copy it from the output and
-try again. Watch for usernames that already contain a hyphen or a number; the
-pattern is `cs112-<assignment>-<your username>`, so the two halves run together
-and it often looks wrong when it is right.
+If yours is in the list, you mistyped the name. Copy it from the output and try
+again. Usernames that already contain a hyphen or a number are the easy ones to
+get wrong, because the pattern is `cs112-<assignment>-<your username>`.
 
-**If the list is empty, or the command errors, that is mine to fix rather than
-yours to work around.** The usual causes are an organization invitation you have not accepted yet
-(check your email, including spam and the Promotions tab), or a username I
-mistyped when I built the roster. Either way, email me at
-[eric.araujo@calvin.edu](mailto:eric.araujo@calvin.edu) and I will sort it out
-the same day.
+**If the list is empty, or the command errors, email me.** The usual causes are
+an organization invitation you have not accepted yet (check your email,
+including spam and the Promotions tab), or a username I mistyped when I built
+the roster. Write to [eric.araujo@calvin.edu](mailto:eric.araujo@calvin.edu)
+and I will sort it out the same day.
 
 While you wait, **do not create a repository yourself and do not start the work
 somewhere else.** Only the repository I create for you is connected to grading,
-so anything written outside it has to be moved by hand later, and that is a
-worse afternoon than a short wait.
+and work done anywhere else has to be moved over by hand.
 :::
 
 Open the folder in VS Code, then build it and run it before you change anything:
@@ -180,9 +174,9 @@ constant-time checks, which an empty function passes for free.
 | `catch.hpp`, `catchmain.cpp`, `makefile`, `test.py` | no | framework, build, grader |
 
 ::: {.callout-note}
-**There is no `Stack.cpp` and no `Queue.cpp`, and that is not an oversight.**
+**There is no `Stack.cpp` and no `Queue.cpp`.**
 
-Both classes are templates. A template is not code, it is a recipe for making
+Both classes are templates. A template is a recipe for making
 code, and the compiler cannot bake it until some file says `Stack<int>` and
 tells it what an `Item` is. That happens in whatever `.cpp` uses the class, and
 the compiler has to be able to see the recipe *from there*. So the definitions
@@ -225,9 +219,9 @@ myArray:  │  A  │  B  │  C  │  ?  │  ?  │  ?  │
 it as an *index*: it points at the first slot that is free.
 
 **`mySize` means two things at once, and they are both true.** It is how many
-items you are holding, and it is the index where the next item goes. That is not
-a coincidence, it is what counting from zero does for you, and it is the whole
-reason a stack's push and pop are one line each.
+items you are holding, and it is the index where the next item goes. That is
+what counting from zero does for you, and it is why a stack's push and pop are
+one line each.
 
 Read the picture again with that in mind:
 
@@ -296,14 +290,14 @@ after     │  A  │  B  │  C  │  D  │  ?  │  ?  │   mySize = 3
                               ▲ D is still sitting there
 ```
 
-Notice what the picture does **not** show: nothing was erased. `pop` does not
+Notice what the picture does not show. Nothing was erased. `pop` does not
 have to clear the slot, zero it, or move anything. "Removing" an item from an
 array-backed stack means nothing more than agreeing to stop counting it. The
 bytes are still there, but nothing will ever read them again, because the next
 `push` writes over that slot.
 
-That is exactly why `pop` is O(1), it moves no data at all, and it is the same
-insight that the Queue will need in a much less obvious form.
+So `pop` is O(1). It moves no data at all, and the Queue will need the same
+insight in a much less obvious form.
 
 ::: {.callout-tip}
 If you decrement `mySize` first, the item you want is at `myArray[mySize]`. If
@@ -383,16 +377,14 @@ remaining item. A queue of ten thousand jobs does ten thousand moves to serve
 one of them, and the second one does 9,999 more.
 
 ::: {.callout-important}
-**Both of a Queue's operations have to be O(1). That is the requirement, and
-this design fails it.** A queue that shifts is not a slightly-worse queue; it is
-a different data structure with the same interface.
+**Both of a Queue's operations have to be O(1), and this design fails it.** A
+queue that shifts is a different data structure with the same interface.
 
 Four of the thirty-six checks read `Stack.h` and `Queue.h` as text and fail you
 if there is a loop inside `push`, `pop`, `enqueue`, `dequeue`, `peekTop`,
 `peekFront`, `getSize`, `isEmpty` or `isFull`. A shifting queue gives every
 right answer, so no behavioral check could ever catch it, and timing it on a
-shared grading machine would not be trustworthy. Reading the source is the only
-honest way to hold you to the thing this assignment is actually about.
+shared grading machine would not be trustworthy.
 :::
 
 So: **do not move the data. Move the ends.**
@@ -429,7 +421,7 @@ Four free slots and the queue says it is full. That is the problem §7 solves.
 
 ## 7. Going in a circle {#going-in-a-circle}
 
-This is the idea of the week. Take your time with it.
+Take your time with this section.
 
 ### The trick, in one operator
 
@@ -552,10 +544,10 @@ after four of them in a 4-slot array, `B` has gone all the way round and landed
 back where it started.
 
 This is not an edge case you can code around. The two indices simply do not
-carry enough information to distinguish those two states: two numbers in the
-range 0..3 can describe 16 situations, and there are 17 things a 4-slot queue
-can be doing (empty, 1 item, 2, 3, 4, at each of 4 rotations, minus the ones
-that coincide). You need one more bit of information from *somewhere*.
+carry enough information to distinguish those two states. Two numbers in the
+range 0..3 can describe 16 situations, and a 4-slot queue can be in 20: empty,
+or holding 1, 2, 3 or 4 items, with the front at any of 4 positions. You need
+one more bit of information from *somewhere*.
 
 There are exactly two standard places to get it, and this is the decision
 **TODO 5** asks you to make.
@@ -590,10 +582,10 @@ capacity 3, array of 4, the fullest this is ever allowed to get:
 | unused member | `myCount` |
 
 Read the "full" row out loud: *the queue is full when adding one more would make
-back equal front.* Which is exactly the collision we are refusing to allow.
+back equal front.*
 
 ::: {.callout-warning}
-**The size formula has a `+ mySlots` in it, and it is not decoration.**
+**The size formula has a `+ mySlots` in it.**
 
 `myBack` is often at a *lower* index than `myFront`, that is what wrapping
 means. So `myBack - myFront` goes negative. These members are `unsigned`, and
@@ -601,7 +593,7 @@ unsigned arithmetic does not have negative numbers: `1u - 2u` is not `-1`, it is
 4,294,967,295. Taking `% mySlots` of that gives you an answer that is confidently
 wrong rather than obviously wrong, which is worse.
 
-Adding `mySlots` first pushes the whole thing back above zero without changing
+Adding `mySlots` first pushes the difference back above zero without changing
 the remainder. `(myBack + mySlots - myFront) % mySlots` is always right.
 :::
 
@@ -637,7 +629,7 @@ capacity 3, array of 3, holding all three:
 ### Which one should you pick?
 
 Either. They are both standard, both correct, and both O(1), and real libraries
-ship both. The trade is small and real:
+ship both. The trade is small:
 
 | | wasted slot | separate count |
 |---|---|---|
@@ -657,7 +649,7 @@ six words in it.
 this file comes from writing half of one technique and half of the other, a
 `myCount` that gets incremented next to an `isFull` that compares indices. That
 does not happen to people who wrote down which one they were doing before they
-started. The comment is not busywork; it is the fix.
+started.
 :::
 
 ---
@@ -677,7 +669,7 @@ unsigned myBack;       // index of the next free slot, WASTED-SLOT technique
 ```
 
 Note that `myCapacity` and `mySlots` are different numbers, and the difference is
-the entire wasted-slot technique. `getCapacity()` reports `myCapacity`, what the
+the wasted slot. `getCapacity()` reports `myCapacity`, what the
 caller asked for. Every `%` uses `mySlots`, how long the array really is.
 
 **TODO 5**, write the `MY CHOICE` line, then make `mySlots` agree with it. It
@@ -716,7 +708,7 @@ make test         # all 36 checks
 ::: {.callout-important}
 **There are no hidden tests.** What you run with `make test` is exactly what the
 grader runs, all 36 checks, every one of them in a file in your repository.
-Read `checks.cpp`: it is the specification, written out.
+Read `checks.cpp`. It is the specification, written out.
 :::
 
 The 36 break down like this:
@@ -793,8 +785,6 @@ deadline on this assignment beyond the last day of classes.
 
 ::: {.callout-note}
 ## You are going to use these again
-
-Not as an exercise, as tools.
 
 In **a12** you will solve a maze twice with the same code, once using a Stack and
 once using a Queue, and watch the two containers produce depth-first and

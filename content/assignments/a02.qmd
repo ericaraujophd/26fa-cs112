@@ -1,6 +1,5 @@
 ---
-title: "Assignment 02: Keystrokes"
-subtitle: "Repairing the firmware of a programmable calculator"
+title: "Assignment 02: Functions and Parameter Passing"
 ---
 
 ```{=html}
@@ -33,7 +32,7 @@ By the end of this assignment, you will be able to:
 - Find a fault in working code by comparing what it does against what it should do
 - Use `switch` with `break` to dispatch on a value, and say what happens without the `break`
 - Write a loop whose counter moves backwards through an array
-- Recognize unsigned underflow as a cause rather than as a curiosity
+- Recognize unsigned underflow when it is the cause of a fault
 - Pass an array to a function, and explain why its length has to travel separately
 - Describe how a stored program, a stack and a program counter make a computer
 
@@ -41,8 +40,7 @@ By the end of this assignment, you will be able to:
 
 These objectives map to course skills **A2**, **A3**, and **A4**, all in
 cluster **A, C++ Foundations**, which you demonstrate at check-in window
-**W1**. This is the assignment where A4 is genuinely tested rather than
-introduced.
+**W1**. This is the assignment where A4 is tested.
 
 | Skill | | Where it shows up here |
 |---|---|---|
@@ -52,8 +50,7 @@ introduced.
 
 ::: {.callout-note}
 **A4 is the one to watch.** It is marked *persistent* in the course plan, which
-means it keeps being assessed after this week rather than being ticked off and
-forgotten. Everything from a03 onward assumes you can decide, without being
+means it keeps being assessed after this week. Everything from a03 onward assumes you can decide, without being
 told, whether a parameter should be passed by value, by reference, or by
 `const` reference. Fault 4 in this assignment is what that decision looks like
 when it goes wrong.
@@ -70,8 +67,7 @@ single button. The HP-12C, launched in 1981, is still sold today.
 
 ![Hewlett-Packard announcing the HP-12C to its user community, in *HP Key Notes*, September--December 1981. "You have been asking for this type of product, and now it is here---*just in time for Christmas*."](../../figures/hp-key-notes-1981.jpg){#fig-hp12c fig-alt="The front page of the Hewlett-Packard newsletter HP Key Notes, volume 5 number 3, September to December 1981. The lead article, New Slim-Line Calculators Introduced, announces that on September 16, 1981 Hewlett-Packard released the HP-11C Programmable Scientific Calculator and the HP-12C Programmable Financial Calculator. A photograph at the bottom shows the two flat calculators lying beside a pen, one display reading 177-42.21.11 and the other 12,345,678.12." width="70%"}
 
-What makes that possible is a small idea with large consequences. The
-calculator does not store a formula. It stores **the keystrokes themselves**, as
+The calculator does not store a formula. It stores the keystrokes themselves, as
 a list of numbers, and then presses them for you.
 
 You are repairing the firmware of one of these: the **CS112 Model 112**. The
@@ -109,9 +105,9 @@ And here is the pile after each line:
 | `PRINT` | *(empty)* | took 36 off and printed it |
 | `HALT` | | stop |
 
-![The same program again, with the whole stack drawn at each step. `ADD` and `MUL` are where the pile gets *shorter*: each takes two numbers off and puts one back.](../../figures/stack-filmstrip.svg){#fig-filmstrip fig-alt="Seven frames left to right, one per instruction of prog3, each showing the whole stack at that moment. After PUSH 7 the stack holds 7 and top is 1. After PUSH 5 it holds 7 and 5 and top is 2. After ADD it holds 12 and top is 1. After PUSH 3 it holds 12 and 3 and top is 2. After MUL it holds 36 and top is 1. After PRINT the stack is empty, top is 0, and 36 has been printed. After HALT the stack is still empty."}
+![The same program again, with the whole stack drawn at each step. `ADD` and `MUL` are where the pile gets *shorter*. Each takes two numbers off and puts one back.](../../figures/stack-filmstrip.svg){#fig-filmstrip fig-alt="Seven frames left to right, one per instruction of prog3, each showing the whole stack at that moment. After PUSH 7 the stack holds 7 and top is 1. After PUSH 5 it holds 7 and 5 and top is 2. After ADD it holds 12 and top is 1. After PUSH 3 it holds 12 and 3 and top is 2. After MUL it holds 36 and top is 1. After PRINT the stack is empty, top is 0, and 36 has been printed. After HALT the stack is still empty."}
 
-That is not an analogy for how a calculator works. It is how one works. Every
+That is how a calculator works. Every
 row of this table is a real key:
 
 | On the keypad | In the machine |
@@ -123,16 +119,13 @@ row of this table is a real key:
 | the `x≠0?` conditional skip | `JNZ` |
 
 The last row is doing more work than the others. Every key above it does one
-fixed job and moves on to the next keystroke. `x≠0?` instead **looks at a
-number and decides what to run next**, which is how a saved sequence can go
-back and repeat a step rather than only running down the list to the end.
-That is the whole difference between a calculator that replays keystrokes and
-one that computes, and in the Model 112 it is the instruction called `JNZ`.
+fixed job and moves on to the next keystroke. `x≠0?` instead looks at a
+number and decides what to run next, which is how a saved sequence can go
+back and repeat a step. In the Model 112 that key is the instruction called `JNZ`.
 You will write it yourself in Task 3.
 
 ::: {.callout-tip}
-**This is called reverse Polish notation**, or RPN, and it is worth ten minutes
-of your curiosity. You write `7 5 +` instead of `7 + 5`, and in exchange you
+**This is called reverse Polish notation**, or RPN. You write `7 5 +` instead of `7 + 5`, and in exchange you
 never need a bracket. Whole languages are built this way: Forth, PostScript,
 and the bytecode inside the Java and Python you have already run.
 :::
@@ -153,23 +146,28 @@ cd cs112-a02-YOURUSERNAME
 ```
 
 ::: {.callout-note}
-**Cannot find it? Ask GitHub what you have.**
+**Cannot find your repository?**
 
-If `gh repo clone` answers `Could not resolve to a Repository`, this lists
-every repository you can actually see, spelled exactly right:
+If `gh repo clone` answers `Could not resolve to a Repository`, list the
+repositories you can see:
 
 ```bash
 gh repo list 26fa-cs112
 ```
 
-If yours is in that list, you mistyped the name, copy it from the output and
-try again.
+If yours is in the list, you mistyped the name. Copy it from the output and try
+again. Usernames that already contain a hyphen or a number are the easy ones to
+get wrong, because the pattern is `cs112-<assignment>-<your username>`.
 
-**If the list is empty, or the command errors, that is mine to fix rather than
-yours to work around.** Email me at
-[eric.araujo@calvin.edu](mailto:eric.araujo@calvin.edu) and I will sort it out
-the same day. While you wait, do not create a repository yourself: only the one
-I create for you is connected to grading.
+**If the list is empty, or the command errors, email me.** The usual causes are
+an organization invitation you have not accepted yet (check your email,
+including spam and the Promotions tab), or a username I mistyped when I built
+the roster. Write to [eric.araujo@calvin.edu](mailto:eric.araujo@calvin.edu)
+and I will sort it out the same day.
+
+While you wait, **do not create a repository yourself and do not start the work
+somewhere else.** Only the repository I create for you is connected to grading,
+and work done anywhere else has to be moved over by hand.
 :::
 
 ### What is in it
@@ -232,7 +230,7 @@ numbers, which is why its `switch` dispatches on an `int`, and why one it does
 not recognize can only be reported as `ERR_OPCODE`.
 :::
 
-Two things about it are worth slowing down for, because both come back later.
+Two things about it come back later.
 
 **The comment on each line is a step number, and they are not consecutive.**
 `PUSH` occupies two steps: the instruction, and then the value to push. Every
@@ -260,7 +258,7 @@ slot.
 Read that twice. It is the sort of thing an off-by-one hides in. Here is the
 same sentence as a picture:
 
-![`top` counts the values; it does not point at the last one. Everything the machine does depends on that staying true.](../../figures/stack-top.svg){#fig-top fig-alt="A column of five stack slots labeled stack[0] at the bottom through stack[4] at the top. The bottom three hold 7, 5 and 3; the top two are empty and drawn dashed. A maroon tag reading top = 3 points at the first empty slot, stack[3], captioned the next free slot, while stack[2] is labeled stack[top minus 1], the top value. Cards to the right state that the top value is stack[top - 1] and stack[top] is where the next push goes; that push writes at stack[top] then increments top, while pop decrements top then reads stack[top]; and that because top is unsigned, popping an empty stack makes top - 1 wrap to 4294967295 rather than becoming -1."}
+![`top` counts the values; it does not point at the last one.](../../figures/stack-top.svg){#fig-top fig-alt="A column of five stack slots labeled stack[0] at the bottom through stack[4] at the top. The bottom three hold 7, 5 and 3; the top two are empty and drawn dashed. A maroon tag reading top = 3 points at the first empty slot, stack[3], captioned the next free slot, while stack[2] is labeled stack[top minus 1], the top value. Cards to the right state that the top value is stack[top - 1] and stack[top] is where the next push goes; that push writes at stack[top] then increments top, while pop decrements top then reads stack[top]; and that because top is unsigned, popping an empty stack makes top - 1 wrap to 4294967295 rather than becoming -1."}
 
 ---
 
@@ -270,7 +268,7 @@ Create a new file called `machine.h` in the same folder, and declare the six
 functions that `machine.cpp` defines.
 
 You have seen a header before, in a01, and there is a complete one sitting in
-your repository right now: open `calc.h` and copy its shape. It has an include
+your repository right now. Open `calc.h` and copy its shape. It has an include
 guard, it has a comment saying what it is for, and it ends with `#endif`.
 
 ::: {.callout-note}
@@ -312,7 +310,7 @@ exactly as it appears inside the brackets above.
 | `const int stack[]` | the caller's array, read-only | it reads an array (`dump`, `run`) |
 | `int stack[]` | the caller's array, writable | it writes into an array (`push`, `mine`) |
 
-Arrays are the odd ones out: they are never copied, so a function always has the
+Arrays are the odd ones out. They are never copied, so a function always has the
 caller's real array and `const` is the only way to promise you will not write to
 it. An array also arrives as a bare address that does not know its own size,
 which is why `run` takes `unsigned length` beside `program`.
@@ -321,9 +319,8 @@ Once `machine.h` exists, `make` should succeed and `./a02 prog1` should run.
 It will print the wrong answer. That is the next task.
 
 ::: {.callout-important}
-**Commit `machine.h` as soon as it works.** It is a file you created rather than
-one that arrived with the repository, so git is not tracking it until you add
-it. In VS Code's **Source Control** panel it appears under **Changes** with a
+**Commit `machine.h` as soon as it works.** You created it yourself, so git is
+not tracking it until you add it. In VS Code's **Source Control** panel it appears under **Changes** with a
 **U** beside it, for untracked. Stage it with the **+**, commit, and sync.
 
 In the terminal that is `git add machine.h`, then commit and push as usual. A
@@ -408,20 +405,20 @@ The code is what is not. Several of the five are visible the moment you hold
 one against the other and ask "does it, though?"
 
 **Start with the smallest program that goes wrong.** `prog1` has nowhere for a
-fault to hide. `prog7` runs a loop and touches almost everything, so it is the
-worst possible place to begin and a good place to finish.
+fault to hide. `prog7` runs a loop and touches almost everything, so leave it
+for last.
 
 **Fix one thing, rebuild, run again.** Changing three things at once and
 getting a different wrong answer teaches you nothing about which change did
 what.
 
 **Say what you expect out loud before you press Enter.** If you cannot predict
-what the machine is about to print, you are guessing rather than debugging, and
-guessing on a five-fault program takes a very long time.
+what the machine is about to print, you are guessing, and guessing on a
+five-fault program takes a very long time.
 
 ::: {.callout-tip}
 **Two of the five are about `top`, the number that says how deep the stack
-is.** Everything the machine does depends on it being right. When a program
+is.** When a program
 prints something bizarre, ask what `top` was at that moment, and which function
 last had a chance to change it.
 :::
@@ -457,7 +454,7 @@ so it is the only one that can overflow.
 Exchange the top two values, so a stack of `10 3` becomes `3 10`.
 
 The neatest way is two pops and two pushes. Work out on paper which order the
-two pushes go in before you write them: getting it backwards leaves the stack
+two pushes go in before you write them. Getting it backwards leaves the stack
 exactly as it was, and the check will tell you nothing more useful than "wrong
 answer".
 
@@ -469,7 +466,7 @@ answer".
 step after it. Call it `n`. It is the step to jump **to**, and it is fixed in
 the program.
 
-What `JNZ` *tests* is something else entirely: the value on top of the stack,
+What `JNZ` *tests* is the value on top of the stack,
 which it pops. If that value is not zero, jump to step `n`. If it is zero, carry
 on with the step after the operand.
 
@@ -516,7 +513,7 @@ or the jump is happening when it should not.
 ::: {.callout-warning}
 **If a program never stops**, press <kbd>Ctrl</kbd>+<kbd>C</kbd> in the
 terminal. `make test` gives every program five seconds and then gives up, so an
-infinite loop shows as a failed check rather than a hung machine.
+infinite loop shows as a failed check.
 :::
 
 ---
@@ -532,8 +529,7 @@ Write it the way `prog1` to `prog10` are written in `main.cpp`.
 Two rules, both checked:
 
 - **Use the names, not the numbers.** `PUSH, 7` and not `1, 7`. A program
-  written as bare numbers is unreadable, which is the entire reason `calc.h`
-  gives them names.
+  written as bare numbers is unreadable.
 - **The machine has to do the arithmetic.** Storing `PUSH, 36, PRINT, HALT`
   prints the right answer and proves nothing, so the checks require an `ADD`
   and a `MUL`, and refuse any `PUSH` of a value larger than 9.
@@ -566,7 +562,7 @@ repository that will not compile, because there is nothing to run. Almost
 always the cause is `machine.h`: a missing `&`, a `const` in the wrong place, or
 a name spelled differently from the definition in `machine.cpp`.
 
-The good news is that this can never surprise you. `make test` builds exactly
+`make test` builds exactly
 the way grading builds, so if it compiles for you it compiles for the grader.
 Run it before every push.
 :::
@@ -634,15 +630,13 @@ git pull
 
 ::: {.callout-important}
 **Commit your own work before you pull.** Git will refuse to pull on top of
-uncommitted edits to a file it needs to replace, and the refusal is the polite
-outcome. Commit first and your work is recorded and impossible to lose in the
+uncommitted edits to a file it needs to replace. Commit first and your work is recorded and impossible to lose in the
 process.
 
 **Then pull, and let it merge.** Once I have pushed, there is no way to send
 your work up until you have brought mine down. `git push` on its own will be
 rejected with *"the remote contains work that you do not have locally"*, and
-that is not an error you fix by trying harder: it is Git telling you to pull
-first. Pull, which merges the two lines of history, and then push.
+that is Git telling you to pull first. Pull, which merges the two lines of history, and then push.
 :::
 
 ::: {.callout-tip}
@@ -667,5 +661,5 @@ this is the same setting, for a new machine or a session where you skipped it.
 a01 explains what a merge is and what to do if one reports a conflict. The
 short version: your `main` and GitHub's `origin/main` both grew from the same
 point, `git pull` joins them with a single new commit that has two parents, and
-that is normal rather than a sign of trouble. If it does report a conflict, the
+that is normal. If it does report a conflict, the
 file will be one you were told not to edit, and my version is the one to keep.

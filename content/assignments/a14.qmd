@@ -1,6 +1,5 @@
 ---
-title: "Assignment 14: Index"
-subtitle: "A tree that keeps its promise, and a shape that does not"
+title: "Assignment 14: Binary Search Trees"
 ---
 
 ```{=html}
@@ -17,8 +16,7 @@ Your own private GitHub repository is waiting for you (see
 [Getting the code](#getting-the-code) below), clone it and open it in VS Code.
 
 **Plan to set aside about 3 hours.** The tree (§4) is the bulk of it; parts 2,
-3 and 4 are short once it works. `findings.txt` (§8) is worth taking seriously
-it is where the assignment actually happens.
+3 and 4 are short once it works. Do not rush `findings.txt` (§8).
 :::
 
 ## Objectives
@@ -32,7 +30,7 @@ By the end of this assignment, you will be able to:
   sorting code
 - Use `std::map` for the same job, and say what it gives you that your tree
   does not
-- **Measure** the height of trees you built yourself, and compare that with
+- Measure the height of trees you built yourself, and compare that with
   `lg(N)`
 - Put a number on the constant that Big-Oh throws away
 
@@ -43,7 +41,7 @@ and **G1**/**G2** (use the STL containers), from clusters **F** and **G**.
 
 ::: {.callout-important}
 **Window 2's reference date is Friday of this week, Nov 20.** You are preparing
-for a check-in in the same week you do this, which is why this assignment is
+for a check-in in the same week you do this, so this assignment is
 deliberately moderate. Do not let it crowd out your preparation.
 :::
 
@@ -57,7 +55,7 @@ and the comment in the file tells you what you need, so do not wait for it if
 you are ready.
 
 **There is no `remove` in this assignment.** Wednesday's lecture codes that one
-live, on the board, together.
+live, together.
 :::
 
 ---
@@ -78,8 +76,7 @@ A tree promises something none of them do:
 > **everything smaller is on one side, everything larger is on the other, and
 > that is true at every node, all the way down.**
 
-That is the **binary search tree property**, and one rule kept everywhere is
-the whole of it. It buys two things that look unrelated and are not:
+That is the **binary search tree property**. It buys two things that look unrelated and are not:
 
 - **Searching is cheap.** At each node you learn which half of what remains you
   can stop caring about. Half, then half of that, then half of that again.
@@ -87,9 +84,8 @@ the whole of it. It buys two things that look unrelated and are not:
   the items come out sorted, with no sorting code anywhere.
 
 You will use both. And then you will measure the thing nobody tells you at
-first, which is that **the promise is only as good as the shape, and the shape
-is not a property of the tree.** It is a property of the order the data
-arrived in.
+first, which is that the promise is only as good as the shape, and the shape
+depends on the order the data arrived in.
 
 ---
 
@@ -109,32 +105,28 @@ make test
 ```
 
 ::: {.callout-note}
-**Cannot find it? Ask GitHub what you have.**
+**Cannot find your repository?**
 
-If `gh repo clone` answers
-`Could not resolve to a Repository`, this lists every repository you can
-actually see, spelled exactly right:
+If `gh repo clone` answers `Could not resolve to a Repository`, list the
+repositories you can see:
 
 ```bash
 gh repo list 26fa-cs112
 ```
 
-If yours is in that list, you mistyped the name, copy it from the output and
-try again. Watch for usernames that already contain a hyphen or a number; the
-pattern is `cs112-<assignment>-<your username>`, so the two halves run together
-and it often looks wrong when it is right.
+If yours is in the list, you mistyped the name. Copy it from the output and try
+again. Usernames that already contain a hyphen or a number are the easy ones to
+get wrong, because the pattern is `cs112-<assignment>-<your username>`.
 
-**If the list is empty, or the command errors, that is mine to fix rather than
-yours to work around.** The usual causes are an organization invitation you have not accepted yet
-(check your email, including spam and the Promotions tab), or a username I
-mistyped when I built the roster. Either way, email me at
-[eric.araujo@calvin.edu](mailto:eric.araujo@calvin.edu) and I will sort it out
-the same day.
+**If the list is empty, or the command errors, email me.** The usual causes are
+an organization invitation you have not accepted yet (check your email,
+including spam and the Promotions tab), or a username I mistyped when I built
+the roster. Write to [eric.araujo@calvin.edu](mailto:eric.araujo@calvin.edu)
+and I will sort it out the same day.
 
 While you wait, **do not create a repository yourself and do not start the work
 somewhere else.** Only the repository I create for you is connected to grading,
-so anything written outside it has to be moved by hand later, and that is a
-worse afternoon than a short wait.
+and work done anywhere else has to be moved over by hand.
 :::
 
 `make` succeeds, `./a14` stops and tells you to do TODO 1, and `make test`
@@ -198,7 +190,7 @@ information the caller wants.
 
 And this caller wants it very much. Counting how often `insert` refuses is how
 §5's index counts repeated words and how §7's experiment counts duplicate
-draws. The refusal is not an error condition; it is a measurement.
+draws.
 
 ```cpp
 try {
@@ -232,7 +224,7 @@ The recursive definition is one line: *a node's height is one more than the
 taller of its two subtrees*. The interesting part is the base case, and it is
 more interesting than it looks, you can either say outright that a childless
 node has height 1, or decide that a missing subtree has height 0 and let it
-fall out of the arithmetic. The second is shorter and worth working out.
+fall out of the arithmetic. The second is shorter. Work it out.
 
 **Everything in §7 rests on this method.** Check it against a tree you have
 drawn on paper before you trust it.
@@ -278,14 +270,13 @@ Your `BST<string>` is a **set**. It remembers *which* words appeared, and
 catching the exception is the only way to learn that one appeared twice.
 
 A `map` is a set with a **value attached to every key**, so it can hold the
-count itself. That is the whole difference between `std::set` and `std::map`,
+count itself. That is the difference between `std::set` and `std::map`,
 and it is Friday's lecture, which you will have had by the time you read this,
 or will have shortly.
 
 A `map` also walks in key order, for exactly the same reason your in-order
-traversal does: it is a balanced binary search tree underneath. You are not
-using a different idea. You are using a better-built version of the one you
-just wrote.
+traversal does: it is a balanced binary search tree underneath. You are using
+a better-built version of the one you just wrote.
 :::
 
 ---
@@ -320,8 +311,7 @@ typical run:
    lg(N) for N = 17516 is 14.10
 ```
 
-Seventeen and a half thousand words, in a tree **thirty-three** deep. That is
-what `O(lg N)` looks like when you measure it rather than assert it.
+Seventeen and a half thousand words, in a tree **thirty-three** deep.
 
 ::: {.callout-note}
 **Why the experiment gives the same answer on every machine.** The sampler in
@@ -344,8 +334,7 @@ order they already sit in `words.txt`, which is alphabetical.
 ```
 
 **Five thousand.** Every word is greater than the one before it, so every word
-goes right, and a tree that only ever goes right is a linked list that has
-forgotten what it is.
+goes right, and a tree that only ever goes right is a linked list.
 
 Look up a word in each:
 
@@ -357,16 +346,13 @@ Look up a word in each:
 
 ::: {.callout-important}
 **Nothing went wrong.** The code is correct. Every node still keeps the BST
-property. The structure is still a binary search tree by every definition in
-Monday's lecture.
+property.
 
-It is simply useless, because usefulness was never a property of the
-definition. It was a property of the **shape**, and the shape is a property of
-the **order the data arrived in**, which is not something the tree controls or
-even knows about.
+It is simply useless because of its shape, and the shape is a property of the
+order the data arrived in, which is not something the tree controls or even
+knows about.
 
-Sorted input is not an exotic case, either. It is one of the commonest ways
-data arrives.
+Sorted input is one of the commonest ways data arrives.
 :::
 
 ::: {.callout-note}
@@ -375,22 +361,19 @@ data arrives.
 There are two honest responses to what you just measured.
 
 The first is to **watch**, to measure the height of the trees you actually
-build, on the data you actually have. That is this assignment, and it is a
-skill.
+build, on the data you actually have. That is this assignment.
 
 The second is to make the structure **defend itself**, so that no order of
 arrival can ruin it. That is a *rotation*, and it is what next week is for.
 
-You are meeting the problem a week before you meet the solution, on purpose. A
-solution to a problem you have watched happen is a very different thing from a
-solution to a problem you were told about.
+You are meeting the problem a week before you meet the solution, on purpose.
 :::
 
 ::: {.callout-warning}
 **Why 5,000 and not all 73,419.** Inserting the whole sorted dictionary into an
 unbalanced tree is about 2.7 billion comparisons, and it would hang. The
 collapse is exactly as visible at 5,000, and it already takes noticeably
-longer than the shuffled case, which is itself the point.
+longer than the shuffled case.
 :::
 
 ---
@@ -416,8 +399,6 @@ Big-Oh deliberately throws the constant away. It tells you the height is
 measured it: you know `lg(N)`, and you know the height you actually got.
 Dividing one by the other puts the constant back, as a number you obtained
 rather than one you were given.
-
-That is what a09 was building towards, and this is where it pays off.
 :::
 
 Two of the four are graded on a factual point rather than on prose: **answer 1
@@ -453,8 +434,7 @@ a fact about the data and the order it arrived in, the same on every machine.
 Your timings are a fact about your laptop at that moment. Same rule as a09.
 
 The check named *"Trial: a sorted sample collapses to a height equal to its
-size"* is the one this whole assignment is built around, and it is exact: N
-sorted items must give a tree of height N, for several values of N.
+size"* is exact: N sorted items must give a tree of height N, for several values of N.
 
 ---
 
@@ -480,14 +460,12 @@ deadline beyond the last day of classes.
 ::: {.callout-note}
 ## The last container you will build by hand
 
-That is thirteen assignments and eight containers: a growing array, a linked
-list, a stack, a queue, a hash table, and now a search tree, plus every STL
-container you have reached for along the way.
+You have now built six containers by hand: a growing array, a linked list, a
+stack, a queue, a hash table, and a search tree, plus every STL container you
+have reached for along the way.
 
-Not one of them is fast at everything. There is no such container and there
-never will be, which is why the course is a tour rather than an answer.
-Choosing well is the whole job, and measuring is how you find out whether you
-chose well.
+Not one of them is fast at everything. Measuring is how you find out whether
+you chose well.
 
 Next week the tree learns to defend its own shape. After that, the last
 assignment is not about containers at all.

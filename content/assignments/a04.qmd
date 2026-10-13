@@ -1,6 +1,5 @@
 ---
-title: "Assignment 04: Qualifying"
-subtitle: "Two classes, a leaderboard, and the operator that prints it"
+title: "Assignment 04: Classes and Operator Overloading"
 ---
 
 ```{=html}
@@ -29,8 +28,8 @@ down.
 Ayrton Senna (1960--1994) was a Brazilian driver, three times Formula 1 World
 Champion, and the reason this assignment is about *qualifying* rather than about
 races. He took 65 pole positions in 161 starts, a record that stood until 2006,
-and his qualifying lap at Monaco in 1988 --- one and a half seconds faster than
-his own teammate, in the same car --- is still the one people reach for when they
+and his qualifying lap at Monaco in 1988, one and a half seconds faster than
+his own teammate in the same car, is still the one people reach for when they
 argue about the fastest single lap ever driven. He was killed in a crash at Imola
 in 1994. The leaderboard you are about to build is the screen he spent his career
 at the top of.
@@ -76,10 +75,8 @@ detail that makes it much more interesting to build.
 
 **Only the top ten go through.** Q2 ends with the ten fastest drivers advancing
 to Q3 and everyone else eliminated. So a board that holds exactly ten laps and
-throws away the eleventh is not a rule somebody invented to make the assignment
-harder, it is the sport. When a driver sets a lap quick enough for P4, everyone
-below shuffles down one, and whoever was P10 is out. That shuffle is the heart of
-this assignment.
+throws away the eleventh is the sport's own rule. When a driver sets a lap quick enough for P4, everyone
+below shuffles down one, and whoever was P10 is out.
 
 You will build two classes:
 
@@ -98,7 +95,7 @@ laps; the fastest lap wins, so a *smaller* number is *better*. Qualifying runs i
 knockout rounds, and only the ten fastest drivers make the final round. If a
 driver puts a wheel outside the white lines, the stewards delete that lap.
 
-That is the whole sport, for our purposes. You do not need to follow it, and no
+You do not need to follow it, and no
 check anywhere depends on knowing anything else.
 :::
 
@@ -124,7 +121,7 @@ Here is the Python you already know, next to the C++ you are about to write:
 | Printing | `def __str__(self):` | `ostream& operator<<(...)` |
 | Method that reads only | *(no equivalent)* | `string getDriver() const;` |
 
-The last three rows are the ones worth staring at. Python asks you nicely not to
+Look at the last three rows. Python asks you nicely not to
 touch `_driver`. C++ makes it a compile error. And `const` is a promise the
 compiler holds you to.
 
@@ -160,32 +157,28 @@ cd cs112-a04-YOURUSERNAME
 ```
 
 ::: {.callout-note}
-**Cannot find it? Ask GitHub what you have.**
+**Cannot find your repository?**
 
-If `gh repo clone` answers
-`Could not resolve to a Repository`, this lists every repository you can
-actually see, spelled exactly right:
+If `gh repo clone` answers `Could not resolve to a Repository`, list the
+repositories you can see:
 
 ```bash
 gh repo list 26fa-cs112
 ```
 
-If yours is in that list, you mistyped the name, copy it from the output and
-try again. Watch for usernames that already contain a hyphen or a number; the
-pattern is `cs112-<assignment>-<your username>`, so the two halves run together
-and it often looks wrong when it is right.
+If yours is in the list, you mistyped the name. Copy it from the output and try
+again. Usernames that already contain a hyphen or a number are the easy ones to
+get wrong, because the pattern is `cs112-<assignment>-<your username>`.
 
-**If the list is empty, or the command errors, that is mine to fix rather than
-yours to work around.** The usual causes are an organization invitation you have not accepted yet
-(check your email, including spam and the Promotions tab), or a username I
-mistyped when I built the roster. Either way, email me at
-[eric.araujo@calvin.edu](mailto:eric.araujo@calvin.edu) and I will sort it out
-the same day.
+**If the list is empty, or the command errors, email me.** The usual causes are
+an organization invitation you have not accepted yet (check your email,
+including spam and the Promotions tab), or a username I mistyped when I built
+the roster. Write to [eric.araujo@calvin.edu](mailto:eric.araujo@calvin.edu)
+and I will sort it out the same day.
 
 While you wait, **do not create a repository yourself and do not start the work
 somewhere else.** Only the repository I create for you is connected to grading,
-so anything written outside it has to be moved by hand later, and that is a
-worse afternoon than a short wait.
+and work done anywhere else has to be moved over by hand.
 :::
 
 Open the folder in VS Code, then build it before you change anything:
@@ -247,7 +240,7 @@ minutes, and it tells you precisely what `Lap` has to do, in a form the compiler
 can verify, which is more than any paragraph of English on this page can manage.
 
 It is also the best model you have for §11, where you write tests of your own.
-Notice three habits worth stealing:
+Copy three of its habits:
 
 - **one `SECTION` per behavior**, named so that a failure tells you what broke
 - **the boundary cases, not just the easy one**, `setTime(0)` and `setTime(-1)`,
@@ -272,10 +265,9 @@ Two of those get setters and two do not.
 
 A lap was set by one driver, for one team. Nothing that happens later changes
 that, not a new time, not a deletion, not a pit stop. So there is no
-`setDriver`, and its absence *is* the design. In C++ you do not need a keyword to
+`setDriver`. In C++ you do not need a keyword to
 make a member immutable; you make it private and then decline to write a way to
-change it. Anyone who wants a different driver has to make a different `Lap`,
-which is exactly right.
+change it. Anyone who wants a different driver has to make a different `Lap`.
 
 The time, though, changes constantly during a session, a driver sets one lap,
 then a better one. And the stewards can delete a lap minutes after it was set.
@@ -284,13 +276,13 @@ Those two get setters.
 ::: {.callout-note}
 **`myDeleted` is track limits.** F1 cars have to keep four wheels inside the white
 lines; run wide and the stewards strike the lap off. It is a real mutable
-`bool`, not a flag invented to give you a `bool` to practice on.
+`bool`.
 
 In this assignment, deleting a lap changes **only how it prints**. The lap keeps
 its position on the board, ranked on its time exactly as if nothing had happened,
 and the only difference is that `operator<<` adds the word `DELETED` after it. A
 deleted lap can sit in P1. Resist the urge to make `setDeleted` drop the lap off
-the board or push it to the bottom: that is a bigger design than this assignment needs,
+the board or push it to the bottom. That is a bigger design than this assignment needs,
 and no check asks for it.
 :::
 
@@ -329,7 +321,7 @@ Lap b("Leclerc", "Ferrari");    // calls the second
 ```
 
 Defaults: empty driver, empty team, time `0.0`, not deleted. A `Lap` exists
-before a time has been set for it, that is why the explicit-value constructor
+before a time has been set for it, so the explicit-value constructor
 takes only two arguments.
 
 ### TODO 4, the getters, and `const`
@@ -356,8 +348,7 @@ Write it now so you don't need to think about it again.
 
 `setDeleted` is a one-liner.
 
-`setTime` has a decision to make first. A lap time of zero or less is not a slow
-lap, it is nonsense, and a class that quietly stores nonsense is worse than one
+`setTime` has a decision to make first. A lap time of zero or less is nonsense, and a class that quietly stores nonsense is worse than one
 that refuses:
 
 ```cpp
@@ -417,7 +408,7 @@ string Lap::formatTime() const {
 
 Both of those `#include` lines are **already at the top of your `Lap.cpp`**, so
 you do not have to add them. They are shown here so you know where
-`ostringstream` and the manipulators come from: if you ever write this method in
+`ostringstream` and the manipulators come from. If you ever write this method in
 a file of your own, those two lines are what make it compile.
 
 Get the minutes with integer division, then subtract them off to find the
@@ -455,7 +446,7 @@ out << fixed << setprecision(3) << 59.9;     // 59.900
 ```
 
 Now all three have three decimals. `5.004` came out unchanged, because it
-already had three, and that is worth noticing: a manipulator that appears to do
+already had three. A manipulator that appears to do
 nothing on one value is still doing the work on the others.
 
 **Job two: never fewer than two digits before the point.**
@@ -471,7 +462,7 @@ out << setw(6) << fixed << setprecision(3) << 59.9;   // 59.900
 `5.000` was five characters, so `setw(6)` put one space in front. `59.900` was
 already six, so nothing happened.
 
-That is the whole idea: `setw(n)` is a **minimum**, not a maximum. Ask for less
+`setw(n)` is a **minimum**, not a maximum. Ask for less
 room than the value needs and you simply get the value:
 
 ```cpp
@@ -508,8 +499,7 @@ out << 2 << ":" << setw(6) << setfill('0')
 That is the pattern. What TODO 6 asks you to add is the part that is not in that
 line: working out the `2` and the `5.004` from `myTime`, instead of typing them.
 
-The other three rows of the table go the same way, and they are worth checking
-against by hand:
+The other three rows of the table go the same way. Check them by hand:
 
 ```cpp
 // 83.456   ->  minutes 1, seconds 23.456  ->  1:23.456
@@ -519,7 +509,7 @@ against by hand:
 
 Look at the last two. `5.004` is the one that needed `setfill`, and `0.0` is the
 one that needed `setprecision`. No single lap time needs all three manipulators,
-which is exactly why the method needs all three.
+but the method does.
 
 ::: {.callout-warning}
 **Two things about manipulators that catch people out.**
@@ -537,8 +527,8 @@ why.
 
 Run `make test`. With TODOs 1 to 6 done and nothing else, you should see
 **10 of 40**. The only `Lap` checks still red are the two printing ones, which
-belong to §12, so `Lap` itself is finished. **That is a natural place to
-pause**, and §7 onward is the second half.
+belong to §12, so `Lap` itself is finished. That is a natural place to
+pause, and §7 onward is the second half.
 
 ---
 
@@ -551,7 +541,7 @@ and it goes in this order:
 |---|---|
 | §7 the private half of the session, §8 the makefile | the board exists and compiles |
 | §9, §10 the constructor and the sorting | laps arrive, and land in the right place |
-| §11 your own tests | you decide what else is worth checking |
+| §11 your own tests | you decide what else to check |
 | §12 both `operator<<`s | the board prints itself |
 
 §12 is the only one that needs operator overloading. If that is still new,
@@ -593,7 +583,7 @@ shuffling the board by hand, the only thing the outside world gets to do is
 `addLap`, and the class decides what that means.
 
 ::: {.callout-tip}
-Splitting `addLap` into two helpers is not busywork. Each one is a loop small
+Splitting `addLap` into two helpers gives you two loops, each small
 enough to hold in your head and reason about alone, and `addLap` itself becomes
 about five lines that read like the rule they implement. When it goes wrong,
 and it will, you will be debugging one loop, not three tangled together.
@@ -612,7 +602,7 @@ CHECKS  = checks_lap.cpp tests.cpp
 ```
 
 `make` does not go looking for source files. It compiles what these lines name
-and nothing else, which is why `QualifyingSession.cpp` and `checks_session.cpp`
+and nothing else, so `QualifyingSession.cpp` and `checks_session.cpp`
 are, at this moment, just text sitting on disk.
 
 Add them. Space separated, and do not remove what is already there:
@@ -638,8 +628,8 @@ undefined reference to `QualifyingSession::addLap(Lap)'
 
 That is the **linker**, not the compiler, and it means something called a
 function that was never built, not that you wrote it wrong. When you see
-"undefined reference", check the makefile before you touch your code. This is
-worth learning now; it is the single most confusing C++ error message for
+"undefined reference", check the makefile before you touch your code. It is
+the single most confusing C++ error message for
 beginners, and it almost always means a missing file rather than a missing
 brain cell.
 :::
@@ -676,8 +666,8 @@ this one is eliminated: return `-1`.
 ::: {.callout-important}
 **The board sorts ASCENDING.** The fastest lap is the *smallest* number and lives
 at index `0`. Everything about this assignment runs the opposite way round from a
-high-score table, and it is worth saying out loud once, because your instinct
-will be wrong all week: **"faster" means "less than".**
+high-score table, and your instinct
+will be wrong all week. **"Faster" means "less than".**
 :::
 
 ::: {.callout-important}
@@ -686,7 +676,7 @@ cannot be left to chance. Real F1 gives the position to whoever set the time
 **first**. So a new lap goes above an existing one only when it is *strictly*
 faster.
 
-That is a single character: compare with `<`, not `<=`. There is a check for it.
+That is a single character. Compare with `<`, not `<=`. There is a check for it.
 :::
 
 ---
@@ -748,7 +738,7 @@ They also have to **pass**. A failing test of your own costs a check, the same a
 any other, either the code is wrong or the test is, and finding out which is the
 job.
 
-**What makes a test worth writing** is not "does the code run". A test earns its
+A test earns its
 place by being able to fail for a reason you can name. Before writing one, finish
 this sentence: *"this fails if I got ______ wrong."* If you cannot finish it, the
 test is not telling you anything.
@@ -764,10 +754,10 @@ Places to look, none of which the course checks cover:
 ::: {.callout-tip}
 **Write the test before the code.** It feels backwards for about ten minutes.
 
-The reason it is worth it: a test written *afterwards* tends to describe what you
+A test written *afterwards* tends to describe what you
 built, while a test written *first* describes what you meant to build, and only
-the second kind can tell you that you built the wrong thing. That is the whole
-argument for test-driven development, and this is the week you try it.
+the second kind can tell you that you built the wrong thing. This is the week
+you try test-driven development.
 :::
 
 ---
@@ -788,7 +778,7 @@ out << left << setw(14) << lap.getDriver()
 
 The exact widths are yours; the checks look for the pieces, not the padding.
 
-Two things about the signature, and they are the whole reason it looks odd:
+Two things make the signature look odd.
 
 **It is a free function, not a method.** There is no `Lap::` in front of it. The
 left operand of `cout << lap` is the *stream*, not the lap, and a method's left
@@ -811,7 +801,7 @@ the moment anyone chains it. There is a check for exactly that.
 A reference, not a copy, because streams cannot be copied.
 
 Because it is not a method, it has no special access to private members, it goes
-through the getters. Which is why the getters exist.
+through the getters.
 
 ::: {.callout-tip}
 `reference/Pair.cpp` has a worked `operator<<` at the bottom. It is four lines.
@@ -862,7 +852,7 @@ make qualifying
 Read `main.cpp` afterwards. It is about thirty lines and it never sorts anything,
 never compares two times, never touches an array. It hands laps over one at a
 time and asks the session to print itself. Everything that makes the board
-correct lives inside your class, and that is what a class is for.
+correct lives inside your class.
 
 ---
 
@@ -889,14 +879,14 @@ The 20 checks in the two `checks_*.cpp` files, the **Lap** and
 **QualifyingSession** groups above, do not run through the `./tester` your
 makefile builds.
 `make test` compiles `checks_lap.cpp` and `checks_session.cpp` itself, straight
-against your `Lap.cpp` and `QualifyingSession.cpp`. Your `./tester` is yours,
-you decide what goes in it, and you should, which is exactly why it cannot be
+against your `Lap.cpp` and `QualifyingSession.cpp`. Your `./tester` is yours and
+you decide what goes in it, so it cannot be
 the thing that decides whether your classes are right. One check does look at
 your `./tester`, and it is the one about your makefile.
 :::
 
 That last group exists so that code which genuinely works passes and code tuned
-to the examples on this page does not. It is not hidden, it is printed in
+to the examples on this page does not. It is printed in
 `test.py` where you can read it.
 
 Every failure comes with a hint. Work through them in order; the four TODO groups

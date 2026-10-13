@@ -38,7 +38,7 @@ is given to algorithm analysis (Big-O notation) and object-oriented design in C+
 ## Prerequisites
 
 - CS 108 (Introduction to Computing) or equivalent
-- Familiarity with basic programming constructs: variables, loops, conditionals, functions
+- Familiarity with basic programming constructs (variables, loops, conditionals, functions)
 - No prior C++ experience required, we will learn it together
 
 ---
@@ -49,7 +49,7 @@ By the end of this course, students will be able to:
 
 1. Read, write, compile, and debug C++ programs using proper development tools.
 2. Apply object-oriented principles, classes, constructors, destructors, operator overloading, in C++.
-3. Implement fundamental data structures: dynamic arrays, linked lists, stacks, queues, binary search trees, AVL trees, hash tables.
+3. Implement fundamental data structures (dynamic arrays, linked lists, stacks, queues, binary search trees, AVL trees, hash tables).
 4. Analyze the time and space complexity of algorithms using Big-O notation.
 5. Select the appropriate data structure for a given problem and justify the choice.
 6. Apply recursion as a problem-solving strategy.
@@ -66,8 +66,8 @@ check-ins are on the [Skills and Check-Ins](content/checkins.qmd) page.
 
 Each week follows the same rhythm:
 
-- **Monday, Wednesday, Friday** — lecture, SB 382, 12:15–1:20 PM
-- **Tuesday** — lab, SB 372 (Lab A 8:00–9:40 AM, Lab B 10:20 AM–12:00 PM)
+- **Monday, Wednesday, Friday**: lecture, SB 382, 12:15–1:20 PM
+- **Tuesday**: lab, SB 372 (Lab A 8:00–9:40 AM, Lab B 10:20 AM–12:00 PM)
 
 There is no separate lab and project split. Each week has **one assignment**,
 which you begin during the Tuesday lab and finish on your own time.

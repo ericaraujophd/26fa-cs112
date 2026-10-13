@@ -1,6 +1,5 @@
 ---
-title: "Assignment 05: Telemetry"
-subtitle: "A container that owns its memory, and what that costs"
+title: "Assignment 05: Dynamic Arrays"
 ---
 
 ```{=html}
@@ -18,8 +17,7 @@ Your own private GitHub repository is waiting for you (see
 
 **Plan to set aside about 3.75 to 4.25 hours.** `append` (§7) and the copy
 constructor (§10) are the two long sections. §9 is an experiment rather than a
-task, it takes about twenty minutes and it is the most important twenty minutes
-of the week.
+task, and it takes about twenty minutes.
 :::
 
 ## Objectives
@@ -55,8 +53,7 @@ Wednesday's lecture covers growing an array and the destructor, which is §7 and
 §8. Friday's covers copying, which is §10 onward.
 
 **§9 is deliberately placed between Wednesday and Friday.** You will hit a
-problem there that Friday's lecture is the answer to. That is not a mistake in
-the ordering; it is the ordering.
+problem there that Friday's lecture is the answer to.
 :::
 
 ---
@@ -71,8 +68,8 @@ the bottom of a broadcast: **the delta**.
 
 You are going to build the container that holds one lap of it.
 
-Here is the problem, and it is the whole reason this week exists. **Nobody knows
-how many samples a lap has until the file has been read.** A short street circuit
+Here is the problem. Nobody knows
+how many samples a lap has until the file has been read. A short street circuit
 and a long one differ by a factor of three. A different logging rate changes it
 again. And every array you have written so far in this course has had its size
 fixed when the program was *compiled*:
@@ -133,32 +130,28 @@ cd cs112-a05-YOURUSERNAME
 ```
 
 ::: {.callout-note}
-**Cannot find it? Ask GitHub what you have.**
+**Cannot find your repository?**
 
-If `gh repo clone` answers
-`Could not resolve to a Repository`, this lists every repository you can
-actually see, spelled exactly right:
+If `gh repo clone` answers `Could not resolve to a Repository`, list the
+repositories you can see:
 
 ```bash
 gh repo list 26fa-cs112
 ```
 
-If yours is in that list, you mistyped the name, copy it from the output and
-try again. Watch for usernames that already contain a hyphen or a number; the
-pattern is `cs112-<assignment>-<your username>`, so the two halves run together
-and it often looks wrong when it is right.
+If yours is in the list, you mistyped the name. Copy it from the output and try
+again. Usernames that already contain a hyphen or a number are the easy ones to
+get wrong, because the pattern is `cs112-<assignment>-<your username>`.
 
-**If the list is empty, or the command errors, that is mine to fix rather than
-yours to work around.** The usual causes are an organization invitation you have not accepted yet
-(check your email, including spam and the Promotions tab), or a username I
-mistyped when I built the roster. Either way, email me at
-[eric.araujo@calvin.edu](mailto:eric.araujo@calvin.edu) and I will sort it out
-the same day.
+**If the list is empty, or the command errors, email me.** The usual causes are
+an organization invitation you have not accepted yet (check your email,
+including spam and the Promotions tab), or a username I mistyped when I built
+the roster. Write to [eric.araujo@calvin.edu](mailto:eric.araujo@calvin.edu)
+and I will sort it out the same day.
 
 While you wait, **do not create a repository yourself and do not start the work
 somewhere else.** Only the repository I create for you is connected to grading,
-so anything written outside it has to be moved by hand later, and that is a
-worse afternoon than a short wait.
+and work done anywhere else has to be moved over by hand.
 :::
 
 Open the folder in VS Code, then build it before you change anything:
@@ -183,7 +176,7 @@ between them, in the order they appear in the files.
 |---|:--:|---|
 | **`Trace.cpp`** | ✎ | TODOs 1–11. The container. |
 | **`Delta.cpp`** | ✎ | TODOs 12–13. The application logic. |
-| `Trace.h` | | The class. **Read this first**, it is the whole design in one page. |
+| `Trace.h` | | The class. **Read this first.** |
 | `Delta.h` | | What the three application functions promise |
 | `checks.cpp` | | The course's checks. Read them; they are the specification. |
 | `main.cpp` | | The application, reads `laps.txt`, prints the delta |
@@ -192,7 +185,7 @@ between them, in the order they appear in the files.
 | `makefile`, `test.py` | | Build and check |
 
 Two methods, `setSize` and `operator==`, are **written for you** in the middle of
-`Trace.cpp`. `setSize` is not there to save you time, it is there to be read.
+`Trace.cpp`. `setSize` is there to be read.
 It is the same allocate-copy-delete pattern you are about to write in `append`,
 worked out in full, with the mistake that costs most people a mark called out in
 a comment.
@@ -237,7 +230,7 @@ laps. Here the object is three small numbers, one of which is a signpost.
 Because growing is expensive. Growing means allocating a bigger array, copying
 everything across, and freeing the old one, the cost of which is proportional to
 how much is already there. If the array were always exactly as big as the number
-of samples in it, **every single `append` would do all of that**.
+of samples in it, every single `append` would do all of that.
 
 So `Trace` keeps slack. `myCapacity` is how big the array is; `mySize` is how
 much of it is in use. Most appends just write into a slot that is already there
@@ -286,8 +279,8 @@ if (n > 0) {
 ```
 
 `new Sample[n]` asks the operating system for room for `n` Samples and hands back
-the address of the first one. **`n` does not have to be known when the program is
-compiled**, which is the entire reason this class can exist.
+the address of the first one. `n` does not have to be known when the program is
+compiled.
 
 ::: {.callout-warning}
 Every `new[]` is half of a promise. The other half is `delete[]`, and you write it
@@ -321,13 +314,13 @@ if (i >= mySize) {
 ```
 
 ::: {.callout-warning}
-**`i` is `unsigned`, and that is a trap rather than a convenience.** An unsigned
+**`i` is `unsigned`, and that is a trap.** An unsigned
 number can never be negative, so if a caller passes `-1`, it does not arrive as
 `-1`. It arrives as `4294967295`, which sails straight past any `i < 0` test you
 might write and then indexes four billion elements past the end of your array.
 
 A single `i >= mySize` catches both a negative argument and a too-large one,
-which is why that is the only test you need. If you write `i < 0` as well and
+so that is the only test you need. If you write `i < 0` as well and
 compile with `-Wextra`, the compiler will tell you it is always false, and it
 will be right.
 :::
@@ -370,9 +363,7 @@ then, either way:
 **Steps 3 and 4 are in that order for a reason.** Delete the old array before
 you have copied out of it and you are copying from memory that is no longer
 yours. It will often appear to work, the bytes are usually still sitting there
-untouched, right up until the moment something else has reused them. Bugs that
-work by luck are the worst kind, because they pass your tests and fail in a
-demo.
+untouched, right up until the moment something else has reused them.
 :::
 
 ### TODO 6, the destructor
@@ -440,7 +431,7 @@ cout << frozen[2];                  // needs the const version
 
 Only `const` methods can be called on a `const` object. Your own `operator+` and
 `operator<<` both take `const Trace&`, so without this overload they cannot read
-the trace they were handed. The two are not duplicates, they are the read-write
+the trace they were handed. They are the read-write
 door and the read-only door, and a class needs both.
 
 ### TODO 8, `operator+` and `operator-`
@@ -519,8 +510,8 @@ Aborted
 ```
 
 **Nothing in your code is wrong.** Read `operator+` again, it is correct. Read
-`append`, it is correct. This is not a bug you can find by reading, which is
-exactly why you are being asked to find it another way.
+`append`, it is correct. You cannot find this bug by reading, so you will
+find it another way.
 
 ### What just happened
 
@@ -547,12 +538,9 @@ memory that has been given back to the system. Reading it prints whatever has
 landed there since. Destroying `sum` at the end of `main` frees the same block a
 second time, and *that* is the `double free` the program aborted on.
 
-Two objects. One array. Two destructors.
-
 ### See it happen
 
-Do this, it takes five minutes and it is the difference between believing the
-paragraph above and knowing it.
+Do this. It takes five minutes.
 
 1. Put a breakpoint on the `delete[]` line in your destructor.
 2. Press **F5** and choose **Debug the §9 experiment**.
@@ -561,8 +549,7 @@ paragraph above and knowing it.
 4. Press **F5** to continue. It will stop in the destructor again, and again,
    as `a`, `b` and `sum` are destroyed at the end of `main`.
 
-**Compare the addresses.** One of them appears twice. That is the whole bug, in
-one number.
+**Compare the addresses.** One of them appears twice.
 
 ::: {.callout-tip}
 **Why did none of your other tests catch this?** Make a scratch copy of
@@ -579,11 +566,10 @@ skips the copy entirely, since C++17 it is required to, not merely allowed, so
 there is no second object, no second destructor, and no bug. It is called copy
 elision.
 
-This is worth knowing for a reason beyond passing the check: **the bug was
-always there, and one perfectly reasonable way of writing the test hid it.** The
+The bug was
+always there, and one perfectly reasonable way of writing the test hid it. The
 version in `checks.cpp` is deliberately written as two statements to make sure
-the copy really happens. Tests that appear to pass are not the same as code that
-works.
+the copy really happens.
 :::
 
 ---
@@ -669,8 +655,7 @@ disposed of, and the compiler's versions of all three are fine right up until th
 class owns something, at which point leaving any of them to the compiler leaves
 a hole.
 
-Your `Trace` needed a destructor the moment it called `new[]`. Everything since
-§9 has been the consequence.
+Your `Trace` needed a destructor the moment it called `new[]`.
 :::
 
 ### The three situations that copy
@@ -733,7 +718,7 @@ Open **`Delta.cpp`**.
 This lap minus the best lap, in that order. A negative delta means this lap was
 faster through that segment.
 
-It is one line, and that is the point of it. You already wrote elementwise
+It is one line. You already wrote elementwise
 subtraction, and you already made it refuse laps of different lengths. All this
 function does is give the operation a name that the rest of the program can read.
 
@@ -753,7 +738,7 @@ Three details the checks look at:
 - **Ties go to the earlier segment.** Use a strict comparison and the first one
   you met wins by default.
 - An **empty** delta has no answer, so `throw invalid_argument` rather than
-  inventing one. There is no best of nothing.
+  inventing one.
 
 A lap that was slower everywhere still has a biggest gain, it is just the least
 bad segment. Do not special-case it.
@@ -782,8 +767,7 @@ make telemetry
 
 Read `main.cpp` afterwards. It never allocates anything, never counts anything,
 never asks how long a lap is. It reads a line, hands it to `readFrom`, and lets
-the `Trace` be whatever size it needs to be. That is the payoff for the whole
-week.
+the `Trace` be whatever size it needs to be.
 
 ---
 
@@ -800,7 +784,7 @@ Thirty-six checks, in nine groups:
 | **Construction** (4) | TODOs 1–2 |
 | **Element access** (4) | TODOs 4 and 7 |
 | **Growth** (4) | TODO 5, and the given `setSize` |
-| **Copying** (5) | TODOs 9–10, the point of the week |
+| **Copying** (5) | TODOs 9–10 |
 | **Arithmetic** (4) | TODO 8, and the given `operator==` |
 | **Streams** (3) | TODO 11 |
 | **The delta application** (6) | TODOs 12–13, and the program end to end |
@@ -814,9 +798,7 @@ sanitizer. That catches two things ordinary tests miss: freeing the same block
 twice, and never freeing it at all.
 
 A leak does not make a test fail on its own, the program still produces the
-right answers, right up until it runs out of memory. That is precisely why the
-destructor and the copy constructor have to be *reasoned about* rather than
-guessed at, and why this group exists.
+right answers, right up until it runs out of memory.
 :::
 
 Every failure comes with a hint. Work the groups in order; they follow the TODOs.
