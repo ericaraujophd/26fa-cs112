@@ -49,12 +49,6 @@ assignment needs, there is no new syntax here, only measurement and reasoning.
 
 §5 needs nothing but the Big-Oh lecture, and you can finish and fully test it
 before you have timed anything at all. That is a good place to start.
-
-**Prof. Norman is teaching all four sessions this week**, including both lab
-sections. This page is written to be self-contained: everything you need to
-decide is decided here, and every rule the grader applies is written down below.
-If something genuinely does not make sense, say so in lab, but you should not
-need to wait for an answer to keep going.
 :::
 
 ---
