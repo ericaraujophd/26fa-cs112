@@ -99,9 +99,9 @@ You book **one 25-minute appointment per window**, three across the semester, pl
 instructor's calendar is real, and this semester it is unusually tight right
 after each window's reference date:
 
-- **Window 1 (ref. Oct 23)**, Fall Break runs Oct 16–21 and the instructor is
-  away Oct 24–30. Everything for clusters A and B is taught by Oct 3, so you are
-  ready three weeks early. **Book in the first half of October.**
+- **Window 1 (ref. Oct 23)**, Fall Break runs Oct 16–21. Everything for
+  clusters A and B is taught by Oct 3, so you are ready now. **If you have not
+  booked yet, book this week or next.**
 - **Window 2 (ref. Nov 20)**, the instructor is away Nov 21–24 and Thanksgiving
   follows. There are no slots between Nov 21 and Nov 29. **Book on or before
   Nov 20.**
@@ -192,7 +192,7 @@ collide with your own classes.
 - **The link stays open until Dec 9**, so Window 1 is not a deadline that
   forces you early. The calendar is a different matter. Window 2 opens in
   November and Window 3 in December, into the same set of hours, and Fall
-  Break plus a conference take most of the second half of October out. A
+  Break takes a week of the second half of October out. A
   Window 1 appointment in December means three check-ins in the last fortnight
   of the semester.
 :::
