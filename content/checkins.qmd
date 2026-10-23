@@ -197,6 +197,15 @@ collide with your own classes.
   of the semester.
 :::
 
+::: {.callout-warning}
+**If you cannot make your appointment, cancel it before it starts**, from your
+booking confirmation email or by emailing the instructor, and book another
+time. If you do not show up without notice, that appointment counts as your
+attempt at that window: it is marked N and you cannot take that window a second
+time, neither as a follow-up nor in the Final Window. See
+[Missing a Check-In](../policies/grading.qmd#missing-a-check-in).
+:::
+
 ```{=html}
 <style>
 .ci-timeline-wrap { margin: 1.5rem 0 2rem; }
