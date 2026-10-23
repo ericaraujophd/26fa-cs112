@@ -37,15 +37,16 @@ By the end of this assignment, you will be able to:
 - Defend a complexity claim from evidence rather than from memory
 
 This assignment covers course skills **D1** (classify the Big-O of a code
-snippet), **D2** (draw and compare growth curves) and **D3** (best, worst and
-amortized), from cluster **D**, assessed at **Window 2** on Nov 20. It is also
-where the linked-list-versus-dynamic-array comparison from week 6 gets settled,
-with numbers.
+snippet: here the snippets are the eight timing loops, and `findings.txt` is
+where you classify them), **D2** (draw and compare growth curves) and **D3**
+(best, worst and amortized), from cluster **D**, assessed at **Window 2** on
+Nov 20. It is also where the linked-list-versus-dynamic-array comparison from
+week 6 gets settled, with numbers.
 
 ::: {.callout-note}
 **Lab and homework.** You start this in lab on Tuesday Oct 27. By then you will
-have had Friday's POGIL and Monday's lecture on Big-Oh, which is everything this
-assignment needs, there is no new syntax here, only measurement and reasoning.
+have had Monday's lecture on Big-Oh, which is everything this assignment needs.
+There is no new syntax here, only measurement and reasoning.
 
 §5 needs nothing but the Big-Oh lecture, and you can finish and fully test it
 before you have timed anything at all. That is a good place to start.
@@ -55,20 +56,16 @@ before you have timed anything at all. That is a good place to start.
 
 ## 1. Introduction
 
-You have spent seven weeks being told what things cost.
+Since week 5 we have been saying what operations cost. A `vector` subscript
+is O(1). Prepending to a vector is O(n). A linked list prepends in O(1), but
+reaching its middle means walking there. Appending to a dynamic array is
+amortized constant, O(1\*), because doubling makes the expensive append rare.
 
-`vector` subscript is O(1). Prepending to a vector is O(n). A linked list
-prepends in constant time and pays for it on every traversal. Appending to a
-dynamic array is amortized O(1) because doubling makes the expensive case rare.
+So far you have taken those on our word. In this assignment you measure them.
 
-Every one of those is a claim about the physical world, and you have taken all
-of them on trust.
-
-This week you check.
-
-The instrument is a stopwatch, the one in `Timer.h`, which does nothing more
-than write down the time before and after. Point it at eight operations, at five
-container sizes each, and the shapes fall out of the numbers.
+The tool is the stopwatch in `Timer.h`, which writes down the time before and
+after. You time eight experiments at five container sizes each, and the growth
+class of each one shows in how its times change from size to size.
 
 ::: {.callout-note}
 **What is different about this assignment.** Everywhere else this semester there
@@ -174,8 +171,8 @@ That is what the `volatile` variables in the worked examples are for.
 
 ## 4. Why You Cannot Just Time One Operation
 
-A `vector` subscript takes somewhere around one nanosecond. Asking the clock
-what time it is takes rather more than that. So this:
+A `vector` subscript takes less than a nanosecond. Asking the clock what time
+it is takes far longer than that. So this:
 
 ```cpp
 t.start();
@@ -187,38 +184,32 @@ measures the stopwatch, not the subscript.
 
 Two techniques fix it, and both are already in the code you were given.
 
-**Repeat, then divide.** Do the operation a few thousand times between one
-`start()` and one `elapsed()`, and divide by the count. The clock is consulted
-twice in total rather than twice per operation, and its cost disappears into the
-average. `repsFor(n)` in `given.cpp` decides how many times, more at small n,
-fewer at large n, so the total work stays level instead of exploding at a
-million.
+**Repeat, then divide.** Do the operation thousands of times between one
+`start()` and one `elapsed()`, and divide by the count. The clock is read twice
+in total rather than twice per operation. `repsFor(n)` in `given.cpp` gives the
+count, twenty thousand at every size. It has to be the same at every size: the
+clock's own cost gets divided by the count too, and a count that changed with n
+would make that cost look like growth.
 
 **Take the minimum, not the mean.** `measure()` runs each timing function five
-times and keeps the *smallest* answer. That looks like cheating and is not. Here
-is why:
+times and keeps the *smallest* answer, for this reason:
 
 ::: {.callout-note}
 Noise on a shared machine is **one-sided**. The operating system scheduling
 something else, another student's compile starting up, a cache line being
-evicted, every one of those makes a measurement take **longer**. Nothing in the
-universe makes your code run faster than it actually does.
+evicted: each of those makes a measurement take **longer**. None of them makes
+it shorter.
 
 So the average of several runs is the true cost *plus* however much interference
-there happened to be. The minimum is the true cost plus however much
-interference there was in the quietest run, and with enough runs, one of them
-lands in a quiet moment. The minimum converges on the truth from above; the mean
-does not converge on it at all.
-
-This is standard practice in real benchmarking.
+there happened to be. The minimum is the true cost plus the interference in the
+quietest run, and with enough runs, one of them lands in a quiet moment.
 :::
 
-There is a third trick, in `buildVector` in `given.cpp`. Read
-the comment there. A four-megabyte vector is not really *yours* until you write
-to it, the operating system hands over the pages lazily. Without a warm-up, the
-first appends after building a million-element vector get charged for that, and
-an O(1) operation measures as something else entirely. That one cost about an
-hour to find.
+There is one more fix, in `buildVector` in `given.cpp`; the comment there
+explains it. The operating system hands over the memory of a large vector
+lazily, the first time each part of it is written. Without a warm-up, the first
+appends after building a million-element vector are charged for that, and an
+O(1) operation measures as something else.
 
 ---
 
@@ -230,17 +221,13 @@ timing anything.
 You are given the times at five sizes, where **each size is ten times the one
 before**. The question is what shape they imply.
 
-Think about what you would do by eye. You would look at whether the time went up
-when n went up, and by how much. If n grows tenfold and the time does not
-change, that is constant. If the time also grows tenfold, that is linear. If it
-grows a hundredfold, the cost is going up much faster than n is, quadratic.
-
-Written down:
+By eye, you would look at whether the time went up when n went up, and by how
+much. If n grows tenfold and the time does not change, that is constant. If the
+time also grows tenfold, that is linear. If it grows a hundredfold, quadratic.
 
 | the time grows by, per tenfold step | the class |
 |---|---|
 | about 1×, it barely moves | `O(1)` |
-| clearly more than 1 but far less than 10 | `O(log n)` |
 | about 10× | `O(n)` |
 | about 100× | `O(n²)` |
 
@@ -262,12 +249,12 @@ Written down:
    double growth = pow(product, 1.0 / (count - 1));
    ```
 
-4. Read the class off that number:
+4. Read the class off that number, by whichever of 1, 10 and 100 it is
+   nearest to:
 
    ```
-   growth <  1.3   ->  CONSTANT
-   growth <  4.5   ->  LOGARITHMIC
-   growth < 40.0   ->  LINEAR
+   growth <  3.16  ->  CONSTANT
+   growth < 31.6   ->  LINEAR
    otherwise       ->  QUADRATIC
    ```
 
@@ -275,35 +262,47 @@ Written down:
 **`count` measurements have `count - 1` ratios**, so the root is the
 `(count-1)`-th. Five measurements are four steps apart. Taking the fifth root
 instead of the fourth is the single most common way to get this wrong, and it
-does not fail loudly, it just quietly reclassifies your quadratic series as
-linear.
+does not fail loudly. It reclassifies a quadratic series as linear without
+any error.
 :::
 
 ### Why the geometric mean
 
-Suppose a measurement is unlucky and comes out three times too slow, and the
-next one is normal. The ratios are 3 and 1/3.
+Suppose a measurement is unlucky and comes out ten times too slow, and the
+next one is normal. The ratios are 10 and 1/10.
 
-The ordinary average of 3 and 1/3 is **1.67**, which says the time is growing.
-It is not; it went up and came straight back down. The geometric mean of 3 and
-1/3 is `sqrt(3 × 1/3)` = **exactly 1**, which is the truth.
+The ordinary average of 10 and 1/10 is **5.05**, which says the time is growing
+about linearly. It is not; it went up and came straight back down. The
+geometric mean of 10 and 1/10 is `sqrt(10 × 1/10)` = **exactly 1**, which is
+the truth.
 
-That is what ratios are like. Doubling and halving should cancel, and only the
-geometric mean makes them. One of the checks is a series that jumps up and back
-down four times, and it is there precisely to catch an implementation that adds
-the ratios up and divides.
+Going up tenfold and coming back down tenfold should cancel, and only the
+geometric mean makes them cancel. One of the checks is a series that jumps up
+and back down four times, to catch an implementation that adds the ratios up and
+divides.
 
 The same property is what makes the rule survive real noise. A single
 measurement that comes out 30% high moves the geometric mean of four ratios by
 about 7%, nowhere near enough to cross a boundary.
 
 ::: {.callout-note}
-**Why the boundaries are 1.3, 4.5 and 40 rather than 1, 10 and 100.** A perfect
-O(n) series would give exactly 10.0. Real machines have caches, an operating
-system, and other people on them. The bands are set wide enough to absorb that
-and still separate classes that are a factor of ten apart. You will see measured
-values around 10.4 and 1.05 and they will land in the right places with room to
-spare.
+**Where 3.16 and 31.6 come from.** A perfect O(1) series gives exactly 1, a
+perfect O(n) series exactly 10, and a perfect O(n²) series exactly 100. Real
+measurements never land exactly on any of them, so each goes to the nearest.
+Because these are ratios, "nearest" means fewer times bigger or smaller:
+3.16 is 3.16 times 1, and 10 is 3.16 times 3.16, so 3.16 sits halfway between
+1 and 10. 31.6 sits halfway between 10 and 100 the same way. Real measured
+values come out around 1.05 and 10.4, nowhere near a boundary.
+:::
+
+::: {.callout-note}
+**Where is O(log n)?** Not in the rule, and not in any of the eight experiments.
+From n = 100 to n = 1,000,000, log n goes from about 2 to 6. It triples while n
+grows ten-thousandfold, about 1.3 times per tenfold step. That is nearer 1 than
+10, so the rule calls it constant, and no stopwatch on a shared machine could do
+better: noise alone moves a measurement more than that. This is the reason an
+O(log n) operation, like binary search, feels as fast as a constant one in
+practice.
 :::
 
 **Test it now**, before you write any timing code:
@@ -331,6 +330,12 @@ follow the same five steps:
 
 The five you write are the same shape with a different operation in the middle.
 
+Three of them use `list`, the standard library's linked list, from
+`#include <list>`. It is the same idea as the `List` we wrote in class, with
+`push_back`, `push_front` and iterators that work the way they do on a
+`vector`. It has no `[]`, for the reason we saw in class: reaching the middle of
+a list means walking there.
+
 | TODO | Function | The operation |
 |---|---|---|
 | 2 | `timeListAppend` | `l.push_back(1)` |
@@ -356,10 +361,10 @@ a real answer to a different question.
 :::
 
 ::: {.callout-tip}
-**`vector` has no `push_front`.** Putting an element at the front of a vector means moving
-every other element up one place, and the library declines to give that a
-convenient name. `insert(v.begin(), value)` will do it, and the measurement will
-show you why nobody wanted to make it easy.
+**`vector` has no `push_front`.** Putting an element at the front of a vector
+means moving every other element up one place, so the library does not offer it
+as a one-word operation. `insert(v.begin(), value)` does it, and your
+measurement shows what it costs.
 :::
 
 Now run it:
@@ -370,8 +375,8 @@ make
 ```
 
 Eight rows, five columns, and a class in the last column worked out by your own
-`classifyGrowth`. Look at the table for a minute before moving on, three of the
-eight rows should surprise you slightly, and §8 is where you say why.
+`classifyGrowth`. Look at the table before moving on. Some rows deserve a
+second look, and §8 is where you say why.
 
 ---
 
@@ -443,8 +448,8 @@ law is a straight line, and the slope is the exponent**:
 - `O(n²)` climbs at **twice** that
 - `O(log n)` climbs, but **bends over**, it is the one line that is not straight
 
-That is the same fact `classifyGrowth` computes. The number it returns is ten
-raised to the slope.
+That is the same fact `classifyGrowth` computes. Its growth number is ten
+raised to the slope, and the rule rounds the slope to 0, 1 or 2.
 
 ---
 
@@ -457,29 +462,29 @@ sentence saying why.
 vector-subscript   O(1)   the index is arithmetic, size never enters in
 ```
 
-The accepted spellings are `O(1)`, `O(logn)`, `O(n)`, `O(n^2)` and `O(1)*`,
-none of them with a space inside. Lines starting with `#` are ignored, so the
-instructions in the file can stay where they are.
+The accepted spellings are `O(1)`, `O(1*)`, `O(logn)`, `O(n)` and `O(n^2)`,
+none of them with a space inside. `O(1)*` and `O(lgn)` are accepted too. Lines
+starting with `#` are ignored, so the instructions in the file can stay where
+they are.
 
-**Exactly one of the eight deserves the asterisk.** `O(1)*` means *amortized*
-constant: most operations are cheap, one in a while is expensive, and the
-average over many is constant.
+**Two of the eight deserve the asterisk.** `O(1*)` means *amortized* constant:
+most operations are cheap, one in a while is expensive, and the average over
+many is constant.
 
 ::: {.callout-warning}
 **Do not just copy the last column of the table across.** Your `classifyGrowth`
-reports what it measured, and for six of the eight rows that is the right answer.
-For the other two it is not:
+reports what it measured, and a measurement cannot tell everything:
 
-- **One row measures the same operation as another row, in a different way, and
-  deserves a different kind of answer.** Both come out constant. Only one of
-  them is constant *because the expensive case is rare*, and that is the one
-  with the asterisk. Read `timeRepeatedVectorAppend` again and look at what its
-  numbers do as n grows.
+- **The asterisk does not show up on a stopwatch.** Every append row comes out
+  O(1) in your table. Which of them are amortized depends on what happens on the
+  rare append that finds no room, and you have to know that from how the
+  container works. Read `timeVectorAppend` and `timeRepeatedVectorAppend`
+  again, and ask whether a `list` ever has to copy anything when it grows.
 
 - **Two rows are the same class as each other**, and at a million one of them is
-  visibly two or three times slower than the other. Both are `O(n)`. Big-Oh does
-  not describe constant factors. Put the reason for the difference, where the
-  elements physically are in memory, in your sentence.
+  several times slower than the other. Both are `O(n)`. Big-Oh does not describe
+  constant factors. Put the reason for the difference, where the elements
+  physically are in memory, in your sentence.
 :::
 
 ### What is graded here
@@ -487,8 +492,8 @@ For the other two it is not:
 1. All eight lines present, names spelled as the skeleton has them.
 2. **The class on each line is right.** These are facts about the algorithms,
    not about your laptop, a fixed answer key, unaffected by hardware.
-3. A reason of at least six words on each line. Nobody marks the prose; the
-   reasoning is the point.
+3. A reason of at least six words on each line. The wording is not marked, but
+   a line without a reason fails.
 
 If a class you measured disagrees with the class you can argue for from first
 principles, write down the one you can argue for, and then work out why the
@@ -579,13 +584,10 @@ you like; the most recent submission is the one that counts.
 ---
 
 ::: {.callout-note}
-## One last thing, for Friday
+## Friday
 
-Friday's session closes the week on what all this is for. A sorting routine that
-is O(n²) instead of O(n log n) does not just make somebody wait, at scale it
-burns more electricity, needs more machines, and puts more carbon in the air to
-compute the same answer.
-
-When you next reach for the convenient
-container instead of the right one, you will be able to measure what it costs.
+Friday puts linear search and binary search side by side on a million items.
+Linear search makes up to a million comparisons and binary search about twenty,
+and a computer doing a million comparisons uses more electricity than one doing
+twenty.
 :::
