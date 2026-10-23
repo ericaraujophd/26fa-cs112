@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
   padding: .45rem 1.1rem;
   border-radius: .375rem;
   text-decoration: none !important;
-  border: none;
+  border: 1.5px solid transparent;   /* same height as the ghost buttons */
 }
 .hero-btn:hover { background: #f0f0f0; color: #6E1C2E !important; }
 .hero-btn-ghost {
@@ -70,9 +70,13 @@ document.addEventListener('DOMContentLoaded', function () {
   border-radius: .375rem;
   text-decoration: none !important;
   border: 1.5px solid rgba(255,255,255,.6);
-  margin-left: .6rem;
 }
 .hero-btn-ghost:hover { background: rgba(255,255,255,.12); color: #fff !important; }
+/* The hero's buttons: one flex row with a single gap. When the window is narrow
+   they wrap, and every line starts flush left with the same spacing between
+   lines. (Before, each ghost button carried its own margin-left, so a wrapped
+   one started indented and lines touched.) */
+.hero-btns { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; }
 
 /* ── Schedule cards ────────────────────────────────────────── */
 .sched-cards {
@@ -294,9 +298,11 @@ document.addEventListener('DOMContentLoaded', function () {
     <span>🗓️ Aug 31 – Dec 9</span>
   </div>
   <div style="font-size:.75rem;opacity:.6;margin-bottom:1.2rem;" id="hero-last-updated"></div>
-  <a href="content/schedule.html" class="hero-btn">View schedule →</a>
-  <a href="content/checkins.html" class="hero-btn-ghost">Skills &amp; Check-Ins</a>
-  <a href="policies/grading.html" class="hero-btn-ghost">Course policies</a>
+  <div class="hero-btns">
+    <a href="content/schedule.html" class="hero-btn">View schedule →</a>
+    <a href="content/checkins.html" class="hero-btn-ghost">Skills &amp; Check-Ins</a>
+    <a href="policies/grading.html" class="hero-btn-ghost">Course policies</a>
+  </div>
 </div>
 
 <!-- ── Practice game panel ─────────────────────────────────
