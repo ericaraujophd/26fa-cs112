@@ -335,9 +335,9 @@ Use the Final Window to close specific gaps, not to cover a whole semester you h
 
 ## Missing a Check-In
 
-If you cannot make an appointment, cancel it before it starts, from your booking confirmation email or by emailing the instructor. You can then book that window again.
+If you cannot make an appointment, cancel it **at least one hour before it starts**, from your booking confirmation email or by emailing the instructor. You can then book that window again.
 
-**If you do not show up and did not cancel or let the instructor know, that appointment counts as your attempt at that window.** The window is marked N, and you cannot take it a second time, neither as a follow-up appointment nor in the Final Window. Your other windows are not affected.
+**If you do not show up, or cancel less than an hour before, that appointment counts as your attempt at that window.** The window is marked N, and you cannot book a second regular appointment or a follow-up for it. The Final Window is still open to you for that window, as it is for any window marked N or D. Your other windows are not affected.
 
 ---
 
@@ -350,10 +350,10 @@ Throughout the semester Moodle shows your quiz completion %, your assignment com
 ## Common Questions
 
 **Can I improve a D to an M after the window has passed?**
-Yes, the Final Window exists for exactly this. You can also request a follow-up appointment within reason. The one exception is a window whose appointment you missed without notice, see [Missing a Check-In](#missing-a-check-in).
+Yes, the Final Window exists for exactly this. You can also request a follow-up appointment within reason. The one exception is a window whose appointment you missed without notice: no follow-up for that one, only the Final Window. See [Missing a Check-In](#missing-a-check-in).
 
 **What if I cannot make my appointment?**
-Cancel it before it starts and book another time. Missing it without notice means you cannot take that window again.
+Cancel it at least one hour before it starts and book another time. Missing it without notice means that window gets no second regular appointment, only the Final Window.
 
 **Why does a D count for anything? I did not master it.**
 Because showing partial understanding is genuinely different from showing none, and the M + D column is where that shows up. Two Ms and a D is a full step above two Ms and an N.
