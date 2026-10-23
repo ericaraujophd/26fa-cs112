@@ -526,6 +526,12 @@ learning objectives are there too, folded away until you want them.
 
         <div class="res-label">🖥️ Slides</div>
         <div class="res-val"><a href="../slides/week06.html?fs=1" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week06.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week06-bw.pdf">print version</a></div>
+
+        <!-- One outline per class meeting: what we did that day, in order.
+             "read" is the plain version, four pages front to back. "booklet"
+             is the same four pages imposed onto one sheet to be folded once. -->
+        <div class="res-label">🗒️ Outlines</div>
+        <div class="res-val">Wed 14 Oct <a href="../outlines/CS112-outline-2026-10-14.pdf">read</a><span class="res-sep">·</span><a href="../outlines/CS112-outline-2026-10-14-booklet.pdf">booklet</a></div>
       </div>
       <details class="slo-details">
         <summary class="slo-summary">Learning objectives <span class="slo-count">6</span></summary>
@@ -592,6 +598,12 @@ learning objectives are there too, folded away until you want them.
 
         <div class="res-label">🖥️ Slides</div>
         <div class="res-val"><a href="../slides/week08.html?fs=1" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week08.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week08-bw.pdf">print version</a></div>
+
+        <!-- One outline per class meeting: what we did that day, in order.
+             "read" is the plain version, four pages front to back. "booklet"
+             is the same four pages imposed onto one sheet to be folded once. -->
+        <div class="res-label">🗒️ Outlines</div>
+        <div class="res-val">Fri 23 Oct <a href="../outlines/CS112-outline-2026-10-23.pdf">read</a><span class="res-sep">·</span><a href="../outlines/CS112-outline-2026-10-23-booklet.pdf">booklet</a></div>
       </div>
       <details class="slo-details">
         <summary class="slo-summary">Learning objectives <span class="slo-count">6</span></summary>
