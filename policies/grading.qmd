@@ -350,7 +350,7 @@ Throughout the semester Moodle shows your quiz completion %, your assignment com
 ## Common Questions
 
 **Can I improve a D to an M after the window has passed?**
-Yes, the Final Window exists for exactly this. You can also request a follow-up appointment within reason. The one exception is a window whose appointment you missed without notice: no follow-up for that one, only the Final Window. See [Missing a Check-In](#missing-a-check-in).
+Yes, the Final Window exists for exactly this. You can also request a follow-up appointment within reason. The one exception is a window whose appointment you missed without notice. That window gets no follow-up, only the Final Window. See [Missing a Check-In](#missing-a-check-in).
 
 **What if I cannot make my appointment?**
 Cancel it at least one hour before it starts and book another time. Missing it without notice means that window gets no second regular appointment, only the Final Window.
