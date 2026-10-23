@@ -74,23 +74,6 @@ document.addEventListener('DOMContentLoaded', function () {
 }
 .hero-btn-ghost:hover { background: rgba(255,255,255,.12); color: #fff !important; }
 
-/* The practice game (The Knight of 112, launched Fri 23 Oct 2026). Gold, so it
-   stands apart from the course-document buttons beside it: it is a different
-   site, opened in a new tab. Dark text on gold measures well above 4.5:1. */
-.hero-btn-game {
-  display: inline-block;
-  background: #C49A2C;
-  color: #1B2030 !important;
-  font-size: .875rem;
-  font-weight: 700;
-  padding: .45rem 1.1rem;
-  border-radius: .375rem;
-  text-decoration: none !important;
-  margin-left: .6rem;
-  margin-top: .5rem;   /* room above it when it wraps onto its own line */
-}
-.hero-btn-game:hover { background: #d8ae3e; color: #1B2030 !important; }
-
 /* ── Schedule cards ────────────────────────────────────────── */
 .sched-cards {
   display: grid;
@@ -314,7 +297,77 @@ document.addEventListener('DOMContentLoaded', function () {
   <a href="content/schedule.html" class="hero-btn">View schedule →</a>
   <a href="content/checkins.html" class="hero-btn-ghost">Skills &amp; Check-Ins</a>
   <a href="policies/grading.html" class="hero-btn-ghost">Course policies</a>
-  <a href="https://cs112-game.cs.calvin.edu" class="hero-btn-game" target="_blank" rel="noopener">&#9876; Practice game: The Knight of 112</a>
+</div>
+
+<!-- ── Practice game panel ─────────────────────────────────
+     The Knight of 112, the course's practice game (launched Fri 23 Oct 2026).
+     Its own panel under the hero, in the game's colours (night blue and gold)
+     so it reads as a separate place you visit, not another course document.
+     Everything is centred. The crest is a copy of the game's logo
+     (cs112-game/site/art/logo.png) kept in figures/, so the panel does not
+     depend on the game's server being up to look right.
+     The colours are fixed, not theme variables, on purpose: the panel is dark
+     in both the light and the dark theme. White on #1B2030 measures 16:1 and
+     #1B2030 on the gold button 7:1, so both pass AA in either theme. -->
+<style>
+.game-panel {
+  background: #1B2030;
+  border: 2px solid #C49A2C;
+  border-radius: var(--bs-border-radius-lg, .5rem);
+  padding: 1.6rem 1.5rem 1.8rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: #fff;
+}
+.game-panel img {
+  width: 96px;
+  height: 96px;
+  image-rendering: pixelated;   /* pixel art: stay crisp, never blur */
+  display: block;
+  margin: 0 auto .8rem;
+}
+.game-eyebrow {
+  font-size: .72rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #C49A2C;
+  font-weight: 700;
+  margin-bottom: .25rem;
+}
+.game-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: .45rem;
+  color: #fff;
+}
+.game-text {
+  font-size: .92rem;
+  color: #d8dbe6;
+  max-width: 34rem;
+  margin: 0 auto 1.2rem;
+  line-height: 1.5;
+}
+.game-btn {
+  display: inline-block;
+  background: #C49A2C;
+  color: #1B2030 !important;
+  font-weight: 700;
+  font-size: .95rem;
+  padding: .6rem 1.5rem;
+  border-radius: .4rem;
+  text-decoration: none !important;
+}
+.game-btn:hover { background: #d8ae3e; color: #1B2030 !important; }
+.game-note { font-size: .75rem; color: #9aa0b4; margin-top: .8rem; }
+</style>
+<div class="game-panel">
+  <img src="figures/knight-112.png" alt="The Knight of 112 crest">
+  <div class="game-eyebrow">Practice game</div>
+  <div class="game-title">The Knight of 112</div>
+  <div class="game-text">An RPG where every enemy is a C++ bug. Travel the map, win battles by reading, fixing and writing real C++, and get ready for your check-ins.</div>
+  <a href="https://cs112-game.cs.calvin.edu" class="game-btn" target="_blank" rel="noopener">&#9876; Play now</a>
+  <div class="game-note">Sign in with GitHub &middot; never graded</div>
 </div>
 
 <!-- THISWEEK:START -->
