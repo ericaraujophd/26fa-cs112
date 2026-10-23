@@ -74,6 +74,23 @@ document.addEventListener('DOMContentLoaded', function () {
 }
 .hero-btn-ghost:hover { background: rgba(255,255,255,.12); color: #fff !important; }
 
+/* The practice game (The Knight of 112, launched Fri 23 Oct 2026). Gold, so it
+   stands apart from the course-document buttons beside it: it is a different
+   site, opened in a new tab. Dark text on gold measures well above 4.5:1. */
+.hero-btn-game {
+  display: inline-block;
+  background: #C49A2C;
+  color: #1B2030 !important;
+  font-size: .875rem;
+  font-weight: 700;
+  padding: .45rem 1.1rem;
+  border-radius: .375rem;
+  text-decoration: none !important;
+  margin-left: .6rem;
+  margin-top: .5rem;   /* room above it when it wraps onto its own line */
+}
+.hero-btn-game:hover { background: #d8ae3e; color: #1B2030 !important; }
+
 /* ── Schedule cards ────────────────────────────────────────── */
 .sched-cards {
   display: grid;
@@ -297,6 +314,7 @@ document.addEventListener('DOMContentLoaded', function () {
   <a href="content/schedule.html" class="hero-btn">View schedule →</a>
   <a href="content/checkins.html" class="hero-btn-ghost">Skills &amp; Check-Ins</a>
   <a href="policies/grading.html" class="hero-btn-ghost">Course policies</a>
+  <a href="https://cs112-game.cs.calvin.edu" class="hero-btn-game" target="_blank" rel="noopener">&#9876; Practice game: The Knight of 112</a>
 </div>
 
 <!-- THISWEEK:START -->
