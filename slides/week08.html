@@ -90,87 +90,1454 @@
 <section>
   <h2>This Week</h2>
   <ul class="agenda-list">
-    <li><div class="agenda-num">1</div> Counting operations</li>
-    <li><div class="agenda-num">2</div> From counts to classes</li>
-    <li><div class="agenda-num">3</div> Big-Oh notation</li>
-    <li><div class="agenda-num">4</div> Why constants drop out</li>
-    <li><div class="agenda-num">5</div> The curves that matter <span class='badge'>KEY</span></li>
-    <li><div class="agenda-num">6</div> Reading complexity off code</li>
-    <li><div class="agenda-num">7</div> Best, worst, and amortized</li>
+    <li><div class="agenda-num">1</div> How long does each operation take?</li>
+    <li><div class="agenda-num">2</div> Big-Oh notation</li>
+    <li><div class="agenda-num">3</div> The operations, in Big-Oh <span class='badge'>KEY</span></li>
+    <li><div class="agenda-num">4</div> <em>a</em> &middot; f(n) + <em>b</em></li>
+    <li><div class="agenda-num">5</div> Reading it off the code</li>
+    <li><div class="agenda-num">6</div> Why it matters: electricity</li>
+    <li><div class="agenda-num">7</div> <code>operator&lt;&lt;</code> for a container</li>
   </ul>
 </section>
 
 <section>
-  <h2>How Long Does This Take?</h2>
-  <pre style="font-size:0.6em"><code class="language-cpp" data-trim>
-v[i]                    // 3 operations, always
-
-v.push_back(it)         // 5 operations if there's room
-                        // ~3n + 5 if it must grow
-
-list.push_front(it)     // 4 operations, always
+  <h2>Vector Subscript</h2>
+  <pre style="font-size:0.62em"><code class="language-cpp" data-trim>
+v[i]    →    *(v.myArray + i * sizeof(Item))
   </code></pre>
-  <div class="callout">Counting exact operations is honest but useless for comparing algorithms, the number depends on the compiler, the machine, the mood of the cache. What we actually care about is <strong>how the cost changes as <em>n</em> grows</strong>.</div>
+  <div class="callout">3 operations, whatever <em>i</em> is and however big
+    the vector is: <strong>constant time</strong>.</div>
 </section>
 
 <section>
-  <h2>Two Things We Don't Care About</h2>
+  <h2>Vector Append</h2>
   <div class="two-col">
     <div>
-      <h3>Constant factors</h3>
+      <h3>Room left</h3>
       <pre style="font-size:0.46em"><code class="language-cpp" data-trim>
-3n + 5
-100n + 2000
+myArray[mySize] = it;
+++mySize;
       </code></pre>
-      <p style="font-size:0.56em">Both grow <em>proportionally to n</em>. Double n, double the work.</p>
+      <p style="font-size:0.56em">a few operations: <strong>constant</strong></p>
     </div>
     <div>
-      <h3>Lower-order terms</h3>
+      <h3>Full</h3>
       <pre style="font-size:0.46em"><code class="language-cpp" data-trim>
-n² + 50n + 700
+new Item[2 * mySize]
+copy n items
+delete [] old
       </code></pre>
-      <p style="font-size:0.56em">At n = 1000, the n² term is 20× everything else combined.</p>
+      <p style="font-size:0.56em">about 3<em>n</em> + 5: <strong>linear</strong></p>
     </div>
   </div>
-  <div class="callout callout-maroon">So we throw both away and keep only the term that dominates. What's left is the <strong>order of growth</strong>.</div>
+</section>
+
+<!--CS112-SCREEN-ONLY-->
+<section>
+  <h2>Vector Append, on Average</h2>
+  <svg class="step-anim" viewBox="0 0 1020 420" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A bar chart of the work each append costs, with the copying spread over the appends that follow it">
+  <style>
+  .am-axis  { stroke: #b5b0a6; stroke-width: 2; fill: none; }
+  .am-grid  { stroke: #ece7df; stroke-width: 1; fill: none; }
+  .am-tick  { font: 12px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
+  .am-lab   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #8a857c;
+              letter-spacing: 0.06em; }
+  .am-note  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #6E1C2E; }
+  .am-gone  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .am-cap   { font: 12px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .am-sum   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .am-brk   { stroke: #c9c4bb; stroke-width: 1.6; fill: none; }
+</style>
+  <defs>
+    <marker id="amArrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
+  </defs>
+  <path class="am-grid" d="M160,290 H814"/>
+  <text class="am-tick" x="152" y="294" text-anchor="end">2</text>
+  <path class="am-grid" d="M160,240 H814"/>
+  <text class="am-tick" x="152" y="244" text-anchor="end">4</text>
+  <path class="am-grid" d="M160,190 H814"/>
+  <text class="am-tick" x="152" y="194" text-anchor="end">6</text>
+  <path class="am-grid" d="M160,140 H814"/>
+  <text class="am-tick" x="152" y="144" text-anchor="end">8</text>
+  <path class="am-grid" d="M160,90 H814"/>
+  <text class="am-tick" x="152" y="94" text-anchor="end">10</text>
+  <path class="am-axis" d="M160,79 V318 H818"/>
+  <text class="am-tick" x="187.0" y="336" text-anchor="middle">1</text>
+  <text class="am-tick" x="227.0" y="336" text-anchor="middle">2</text>
+  <text class="am-tick" x="267.0" y="336" text-anchor="middle">3</text>
+  <text class="am-tick" x="307.0" y="336" text-anchor="middle">4</text>
+  <text class="am-tick" x="347.0" y="336" text-anchor="middle">5</text>
+  <text class="am-tick" x="387.0" y="336" text-anchor="middle">6</text>
+  <text class="am-tick" x="427.0" y="336" text-anchor="middle">7</text>
+  <text class="am-tick" x="467.0" y="336" text-anchor="middle">8</text>
+  <text class="am-tick" x="507.0" y="336" text-anchor="middle">9</text>
+  <text class="am-tick" x="547.0" y="336" text-anchor="middle">10</text>
+  <text class="am-tick" x="587.0" y="336" text-anchor="middle">11</text>
+  <text class="am-tick" x="627.0" y="336" text-anchor="middle">12</text>
+  <text class="am-tick" x="667.0" y="336" text-anchor="middle">13</text>
+  <text class="am-tick" x="707.0" y="336" text-anchor="middle">14</text>
+  <text class="am-tick" x="747.0" y="336" text-anchor="middle">15</text>
+  <text class="am-tick" x="787.0" y="336" text-anchor="middle">16</text>
+  <text class="am-lab" x="487.0" y="404" text-anchor="middle">THE n-TH APPEND</text>
+  <text class="am-lab" x="136" y="193" text-anchor="middle" transform="rotate(-90 136 193)">BLOCKS OF WORK</text>
+  <rect x="504" y="44" width="20" height="14" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+    <text class="am-cap" x="531" y="56">storing the item</text>
+  <rect x="654" y="44" width="20" height="14" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <text class="am-cap" x="681" y="56">copying an item</text>
+  <g class="fragment fade-in" data-fragment-index="0">
+    <rect x="170" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="1">
+    <rect x="210" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="1">
+    <g class="fragment fade-out" data-fragment-index="17">
+    <rect x="210" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    </g>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="2">
+    <rect x="250" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="2">
+    <g class="fragment fade-out" data-fragment-index="17">
+    <rect x="250" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="250" y="243" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    </g>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="3">
+    <rect x="290" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="4">
+    <rect x="330" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="4">
+    <g class="fragment fade-out" data-fragment-index="17">
+    <rect x="330" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="330" y="243" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="330" y="218" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="330" y="193" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    </g>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="5">
+    <rect x="370" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="6">
+    <rect x="410" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="7">
+    <rect x="450" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="8">
+    <rect x="490" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="8">
+    <g class="fragment fade-out" data-fragment-index="17">
+    <rect x="490" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="243" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="218" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="193" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="168" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="143" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="118" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="93" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    </g>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="9">
+    <rect x="530" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="10">
+    <rect x="570" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="11">
+    <rect x="610" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="12">
+    <rect x="650" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="13">
+    <rect x="690" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="14">
+    <rect x="730" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="15">
+    <rect x="770" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="0">
+    <path class="am-brk" d="M170,348 V354 H204 V348"/>
+    <text class="am-cap" x="187.0" y="370" text-anchor="middle">1</text>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="1">
+    <path class="am-brk" d="M210,348 V354 H244 V348"/>
+    <text class="am-cap" x="227.0" y="370" text-anchor="middle">2</text>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="2">
+    <path class="am-brk" d="M250,348 V354 H324 V348"/>
+    <text class="am-cap" x="287.0" y="370" text-anchor="middle">capacity 4</text>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="4">
+    <path class="am-brk" d="M330,348 V354 H484 V348"/>
+    <text class="am-cap" x="407.0" y="370" text-anchor="middle">capacity 8</text>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="8">
+    <path class="am-brk" d="M490,348 V354 H804 V348"/>
+    <text class="am-cap" x="647.0" y="370" text-anchor="middle">capacity 16</text>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="16">
+    <g class="fragment fade-out" data-fragment-index="17">
+    <path d="M284,245 Q295.5,215 307.0,235" fill="none" stroke="#6E1C2E" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#amArrow)"/>
+    <path d="M364,195 Q395.5,165 427.0,235" fill="none" stroke="#6E1C2E" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#amArrow)"/>
+    <path d="M524,95 Q595.5,65 667.0,235" fill="none" stroke="#6E1C2E" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#amArrow)"/>
+    <text class="am-note" x="170" y="71">15 copies, paid off by the appends after them</text>
+    </g>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="17">
+    <rect x="170" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="210" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="250" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="290" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="330" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="370" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="410" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="450" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="530" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="570" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="610" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="650" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="690" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="730" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="18">
+    <path d="M160,268 H818" stroke="#6E1C2E" stroke-width="2.2" stroke-dasharray="7 5"/>
+    <text class="am-sum" x="170" y="71">31 blocks / 16 appends = 1.94 each</text>
+    <text class="am-gone" x="170" y="91">extend the table and it stays under 2</text>
+  </g>
+  </svg>
+  <div class="callout"><strong>Amortized constant time.</strong></div>
+</section>
+<!--/CS112-SCREEN-ONLY-->
+<!--CS112-PRINT-STEPS
+<section>
+  <h2>Vector Append, on Average</h2>
+  <p class="step-cap"><span class="step-n">1</span>Append 1: there is room, so it just stores the item.</p>
+  <svg class="step-anim step-still" viewBox="0 0 1020 420" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A bar chart of the work each append costs, with the copying spread over the appends that follow it">
+  <style>
+  .am-axis  { stroke: #b5b0a6; stroke-width: 2; fill: none; }
+  .am-grid  { stroke: #ece7df; stroke-width: 1; fill: none; }
+  .am-tick  { font: 12px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
+  .am-lab   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #8a857c;
+              letter-spacing: 0.06em; }
+  .am-note  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #6E1C2E; }
+  .am-gone  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .am-cap   { font: 12px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .am-sum   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .am-brk   { stroke: #c9c4bb; stroke-width: 1.6; fill: none; }
+</style>
+  <defs>
+    <marker id="amArrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
+  </defs>
+  <path class="am-grid" d="M160,290 H814"/>
+  <text class="am-tick" x="152" y="294" text-anchor="end">2</text>
+  <path class="am-grid" d="M160,240 H814"/>
+  <text class="am-tick" x="152" y="244" text-anchor="end">4</text>
+  <path class="am-grid" d="M160,190 H814"/>
+  <text class="am-tick" x="152" y="194" text-anchor="end">6</text>
+  <path class="am-grid" d="M160,140 H814"/>
+  <text class="am-tick" x="152" y="144" text-anchor="end">8</text>
+  <path class="am-grid" d="M160,90 H814"/>
+  <text class="am-tick" x="152" y="94" text-anchor="end">10</text>
+  <path class="am-axis" d="M160,79 V318 H818"/>
+  <text class="am-tick" x="187.0" y="336" text-anchor="middle">1</text>
+  <text class="am-tick" x="227.0" y="336" text-anchor="middle">2</text>
+  <text class="am-tick" x="267.0" y="336" text-anchor="middle">3</text>
+  <text class="am-tick" x="307.0" y="336" text-anchor="middle">4</text>
+  <text class="am-tick" x="347.0" y="336" text-anchor="middle">5</text>
+  <text class="am-tick" x="387.0" y="336" text-anchor="middle">6</text>
+  <text class="am-tick" x="427.0" y="336" text-anchor="middle">7</text>
+  <text class="am-tick" x="467.0" y="336" text-anchor="middle">8</text>
+  <text class="am-tick" x="507.0" y="336" text-anchor="middle">9</text>
+  <text class="am-tick" x="547.0" y="336" text-anchor="middle">10</text>
+  <text class="am-tick" x="587.0" y="336" text-anchor="middle">11</text>
+  <text class="am-tick" x="627.0" y="336" text-anchor="middle">12</text>
+  <text class="am-tick" x="667.0" y="336" text-anchor="middle">13</text>
+  <text class="am-tick" x="707.0" y="336" text-anchor="middle">14</text>
+  <text class="am-tick" x="747.0" y="336" text-anchor="middle">15</text>
+  <text class="am-tick" x="787.0" y="336" text-anchor="middle">16</text>
+  <text class="am-lab" x="487.0" y="404" text-anchor="middle">THE n-TH APPEND</text>
+  <text class="am-lab" x="136" y="193" text-anchor="middle" transform="rotate(-90 136 193)">BLOCKS OF WORK</text>
+  <rect x="504" y="44" width="20" height="14" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+    <text class="am-cap" x="531" y="56">storing the item</text>
+  <rect x="654" y="44" width="20" height="14" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <text class="am-cap" x="681" y="56">copying an item</text>
+  <rect x="170" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <path class="am-brk" d="M170,348 V354 H204 V348"/>
+    <text class="am-cap" x="187.0" y="370" text-anchor="middle">1</text>
+  </svg>
+</section>
+
+<section>
+  <h2>Vector Append, on Average</h2>
+  <p class="step-cap"><span class="step-n">2</span>Append 3: the array is full, so it copies 2 items first.</p>
+  <svg class="step-anim step-still" viewBox="0 0 1020 420" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A bar chart of the work each append costs, with the copying spread over the appends that follow it">
+  <style>
+  .am-axis  { stroke: #b5b0a6; stroke-width: 2; fill: none; }
+  .am-grid  { stroke: #ece7df; stroke-width: 1; fill: none; }
+  .am-tick  { font: 12px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
+  .am-lab   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #8a857c;
+              letter-spacing: 0.06em; }
+  .am-note  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #6E1C2E; }
+  .am-gone  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .am-cap   { font: 12px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .am-sum   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .am-brk   { stroke: #c9c4bb; stroke-width: 1.6; fill: none; }
+</style>
+  <defs>
+    <marker id="amArrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
+  </defs>
+  <path class="am-grid" d="M160,290 H814"/>
+  <text class="am-tick" x="152" y="294" text-anchor="end">2</text>
+  <path class="am-grid" d="M160,240 H814"/>
+  <text class="am-tick" x="152" y="244" text-anchor="end">4</text>
+  <path class="am-grid" d="M160,190 H814"/>
+  <text class="am-tick" x="152" y="194" text-anchor="end">6</text>
+  <path class="am-grid" d="M160,140 H814"/>
+  <text class="am-tick" x="152" y="144" text-anchor="end">8</text>
+  <path class="am-grid" d="M160,90 H814"/>
+  <text class="am-tick" x="152" y="94" text-anchor="end">10</text>
+  <path class="am-axis" d="M160,79 V318 H818"/>
+  <text class="am-tick" x="187.0" y="336" text-anchor="middle">1</text>
+  <text class="am-tick" x="227.0" y="336" text-anchor="middle">2</text>
+  <text class="am-tick" x="267.0" y="336" text-anchor="middle">3</text>
+  <text class="am-tick" x="307.0" y="336" text-anchor="middle">4</text>
+  <text class="am-tick" x="347.0" y="336" text-anchor="middle">5</text>
+  <text class="am-tick" x="387.0" y="336" text-anchor="middle">6</text>
+  <text class="am-tick" x="427.0" y="336" text-anchor="middle">7</text>
+  <text class="am-tick" x="467.0" y="336" text-anchor="middle">8</text>
+  <text class="am-tick" x="507.0" y="336" text-anchor="middle">9</text>
+  <text class="am-tick" x="547.0" y="336" text-anchor="middle">10</text>
+  <text class="am-tick" x="587.0" y="336" text-anchor="middle">11</text>
+  <text class="am-tick" x="627.0" y="336" text-anchor="middle">12</text>
+  <text class="am-tick" x="667.0" y="336" text-anchor="middle">13</text>
+  <text class="am-tick" x="707.0" y="336" text-anchor="middle">14</text>
+  <text class="am-tick" x="747.0" y="336" text-anchor="middle">15</text>
+  <text class="am-tick" x="787.0" y="336" text-anchor="middle">16</text>
+  <text class="am-lab" x="487.0" y="404" text-anchor="middle">THE n-TH APPEND</text>
+  <text class="am-lab" x="136" y="193" text-anchor="middle" transform="rotate(-90 136 193)">BLOCKS OF WORK</text>
+  <rect x="504" y="44" width="20" height="14" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+    <text class="am-cap" x="531" y="56">storing the item</text>
+  <rect x="654" y="44" width="20" height="14" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <text class="am-cap" x="681" y="56">copying an item</text>
+  <rect x="170" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="210" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="210" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+  <rect x="250" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="250" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="250" y="243" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+  <path class="am-brk" d="M170,348 V354 H204 V348"/>
+    <text class="am-cap" x="187.0" y="370" text-anchor="middle">1</text>
+  <path class="am-brk" d="M210,348 V354 H244 V348"/>
+    <text class="am-cap" x="227.0" y="370" text-anchor="middle">2</text>
+  <path class="am-brk" d="M250,348 V354 H324 V348"/>
+    <text class="am-cap" x="287.0" y="370" text-anchor="middle">capacity 4</text>
+  </svg>
+</section>
+
+<section>
+  <h2>Vector Append, on Average</h2>
+  <p class="step-cap"><span class="step-n">3</span>Append 5: the array is full, so it copies 4 items first.</p>
+  <svg class="step-anim step-still" viewBox="0 0 1020 420" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A bar chart of the work each append costs, with the copying spread over the appends that follow it">
+  <style>
+  .am-axis  { stroke: #b5b0a6; stroke-width: 2; fill: none; }
+  .am-grid  { stroke: #ece7df; stroke-width: 1; fill: none; }
+  .am-tick  { font: 12px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
+  .am-lab   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #8a857c;
+              letter-spacing: 0.06em; }
+  .am-note  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #6E1C2E; }
+  .am-gone  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .am-cap   { font: 12px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .am-sum   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .am-brk   { stroke: #c9c4bb; stroke-width: 1.6; fill: none; }
+</style>
+  <defs>
+    <marker id="amArrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
+  </defs>
+  <path class="am-grid" d="M160,290 H814"/>
+  <text class="am-tick" x="152" y="294" text-anchor="end">2</text>
+  <path class="am-grid" d="M160,240 H814"/>
+  <text class="am-tick" x="152" y="244" text-anchor="end">4</text>
+  <path class="am-grid" d="M160,190 H814"/>
+  <text class="am-tick" x="152" y="194" text-anchor="end">6</text>
+  <path class="am-grid" d="M160,140 H814"/>
+  <text class="am-tick" x="152" y="144" text-anchor="end">8</text>
+  <path class="am-grid" d="M160,90 H814"/>
+  <text class="am-tick" x="152" y="94" text-anchor="end">10</text>
+  <path class="am-axis" d="M160,79 V318 H818"/>
+  <text class="am-tick" x="187.0" y="336" text-anchor="middle">1</text>
+  <text class="am-tick" x="227.0" y="336" text-anchor="middle">2</text>
+  <text class="am-tick" x="267.0" y="336" text-anchor="middle">3</text>
+  <text class="am-tick" x="307.0" y="336" text-anchor="middle">4</text>
+  <text class="am-tick" x="347.0" y="336" text-anchor="middle">5</text>
+  <text class="am-tick" x="387.0" y="336" text-anchor="middle">6</text>
+  <text class="am-tick" x="427.0" y="336" text-anchor="middle">7</text>
+  <text class="am-tick" x="467.0" y="336" text-anchor="middle">8</text>
+  <text class="am-tick" x="507.0" y="336" text-anchor="middle">9</text>
+  <text class="am-tick" x="547.0" y="336" text-anchor="middle">10</text>
+  <text class="am-tick" x="587.0" y="336" text-anchor="middle">11</text>
+  <text class="am-tick" x="627.0" y="336" text-anchor="middle">12</text>
+  <text class="am-tick" x="667.0" y="336" text-anchor="middle">13</text>
+  <text class="am-tick" x="707.0" y="336" text-anchor="middle">14</text>
+  <text class="am-tick" x="747.0" y="336" text-anchor="middle">15</text>
+  <text class="am-tick" x="787.0" y="336" text-anchor="middle">16</text>
+  <text class="am-lab" x="487.0" y="404" text-anchor="middle">THE n-TH APPEND</text>
+  <text class="am-lab" x="136" y="193" text-anchor="middle" transform="rotate(-90 136 193)">BLOCKS OF WORK</text>
+  <rect x="504" y="44" width="20" height="14" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+    <text class="am-cap" x="531" y="56">storing the item</text>
+  <rect x="654" y="44" width="20" height="14" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <text class="am-cap" x="681" y="56">copying an item</text>
+  <rect x="170" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="210" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="210" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+  <rect x="250" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="250" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="250" y="243" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+  <rect x="290" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="330" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="330" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="330" y="243" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="330" y="218" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="330" y="193" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+  <path class="am-brk" d="M170,348 V354 H204 V348"/>
+    <text class="am-cap" x="187.0" y="370" text-anchor="middle">1</text>
+  <path class="am-brk" d="M210,348 V354 H244 V348"/>
+    <text class="am-cap" x="227.0" y="370" text-anchor="middle">2</text>
+  <path class="am-brk" d="M250,348 V354 H324 V348"/>
+    <text class="am-cap" x="287.0" y="370" text-anchor="middle">capacity 4</text>
+  <path class="am-brk" d="M330,348 V354 H484 V348"/>
+    <text class="am-cap" x="407.0" y="370" text-anchor="middle">capacity 8</text>
+  </svg>
+</section>
+
+<section>
+  <h2>Vector Append, on Average</h2>
+  <p class="step-cap"><span class="step-n">4</span>Append 9: the array is full, so it copies 8 items first.</p>
+  <svg class="step-anim step-still" viewBox="0 0 1020 420" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A bar chart of the work each append costs, with the copying spread over the appends that follow it">
+  <style>
+  .am-axis  { stroke: #b5b0a6; stroke-width: 2; fill: none; }
+  .am-grid  { stroke: #ece7df; stroke-width: 1; fill: none; }
+  .am-tick  { font: 12px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
+  .am-lab   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #8a857c;
+              letter-spacing: 0.06em; }
+  .am-note  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #6E1C2E; }
+  .am-gone  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .am-cap   { font: 12px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .am-sum   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .am-brk   { stroke: #c9c4bb; stroke-width: 1.6; fill: none; }
+</style>
+  <defs>
+    <marker id="amArrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
+  </defs>
+  <path class="am-grid" d="M160,290 H814"/>
+  <text class="am-tick" x="152" y="294" text-anchor="end">2</text>
+  <path class="am-grid" d="M160,240 H814"/>
+  <text class="am-tick" x="152" y="244" text-anchor="end">4</text>
+  <path class="am-grid" d="M160,190 H814"/>
+  <text class="am-tick" x="152" y="194" text-anchor="end">6</text>
+  <path class="am-grid" d="M160,140 H814"/>
+  <text class="am-tick" x="152" y="144" text-anchor="end">8</text>
+  <path class="am-grid" d="M160,90 H814"/>
+  <text class="am-tick" x="152" y="94" text-anchor="end">10</text>
+  <path class="am-axis" d="M160,79 V318 H818"/>
+  <text class="am-tick" x="187.0" y="336" text-anchor="middle">1</text>
+  <text class="am-tick" x="227.0" y="336" text-anchor="middle">2</text>
+  <text class="am-tick" x="267.0" y="336" text-anchor="middle">3</text>
+  <text class="am-tick" x="307.0" y="336" text-anchor="middle">4</text>
+  <text class="am-tick" x="347.0" y="336" text-anchor="middle">5</text>
+  <text class="am-tick" x="387.0" y="336" text-anchor="middle">6</text>
+  <text class="am-tick" x="427.0" y="336" text-anchor="middle">7</text>
+  <text class="am-tick" x="467.0" y="336" text-anchor="middle">8</text>
+  <text class="am-tick" x="507.0" y="336" text-anchor="middle">9</text>
+  <text class="am-tick" x="547.0" y="336" text-anchor="middle">10</text>
+  <text class="am-tick" x="587.0" y="336" text-anchor="middle">11</text>
+  <text class="am-tick" x="627.0" y="336" text-anchor="middle">12</text>
+  <text class="am-tick" x="667.0" y="336" text-anchor="middle">13</text>
+  <text class="am-tick" x="707.0" y="336" text-anchor="middle">14</text>
+  <text class="am-tick" x="747.0" y="336" text-anchor="middle">15</text>
+  <text class="am-tick" x="787.0" y="336" text-anchor="middle">16</text>
+  <text class="am-lab" x="487.0" y="404" text-anchor="middle">THE n-TH APPEND</text>
+  <text class="am-lab" x="136" y="193" text-anchor="middle" transform="rotate(-90 136 193)">BLOCKS OF WORK</text>
+  <rect x="504" y="44" width="20" height="14" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+    <text class="am-cap" x="531" y="56">storing the item</text>
+  <rect x="654" y="44" width="20" height="14" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <text class="am-cap" x="681" y="56">copying an item</text>
+  <rect x="170" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="210" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="210" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+  <rect x="250" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="250" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="250" y="243" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+  <rect x="290" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="330" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="330" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="330" y="243" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="330" y="218" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="330" y="193" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+  <rect x="370" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="410" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="450" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="490" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="490" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="243" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="218" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="193" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="168" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="143" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="118" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="93" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+  <path class="am-brk" d="M170,348 V354 H204 V348"/>
+    <text class="am-cap" x="187.0" y="370" text-anchor="middle">1</text>
+  <path class="am-brk" d="M210,348 V354 H244 V348"/>
+    <text class="am-cap" x="227.0" y="370" text-anchor="middle">2</text>
+  <path class="am-brk" d="M250,348 V354 H324 V348"/>
+    <text class="am-cap" x="287.0" y="370" text-anchor="middle">capacity 4</text>
+  <path class="am-brk" d="M330,348 V354 H484 V348"/>
+    <text class="am-cap" x="407.0" y="370" text-anchor="middle">capacity 8</text>
+  <path class="am-brk" d="M490,348 V354 H804 V348"/>
+    <text class="am-cap" x="647.0" y="370" text-anchor="middle">capacity 16</text>
+  </svg>
+</section>
+
+<section>
+  <h2>Vector Append, on Average</h2>
+  <p class="step-cap"><span class="step-n">5</span>Append 16: there is room, so it just stores the item.</p>
+  <svg class="step-anim step-still" viewBox="0 0 1020 420" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A bar chart of the work each append costs, with the copying spread over the appends that follow it">
+  <style>
+  .am-axis  { stroke: #b5b0a6; stroke-width: 2; fill: none; }
+  .am-grid  { stroke: #ece7df; stroke-width: 1; fill: none; }
+  .am-tick  { font: 12px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
+  .am-lab   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #8a857c;
+              letter-spacing: 0.06em; }
+  .am-note  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #6E1C2E; }
+  .am-gone  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .am-cap   { font: 12px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .am-sum   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .am-brk   { stroke: #c9c4bb; stroke-width: 1.6; fill: none; }
+</style>
+  <defs>
+    <marker id="amArrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
+  </defs>
+  <path class="am-grid" d="M160,290 H814"/>
+  <text class="am-tick" x="152" y="294" text-anchor="end">2</text>
+  <path class="am-grid" d="M160,240 H814"/>
+  <text class="am-tick" x="152" y="244" text-anchor="end">4</text>
+  <path class="am-grid" d="M160,190 H814"/>
+  <text class="am-tick" x="152" y="194" text-anchor="end">6</text>
+  <path class="am-grid" d="M160,140 H814"/>
+  <text class="am-tick" x="152" y="144" text-anchor="end">8</text>
+  <path class="am-grid" d="M160,90 H814"/>
+  <text class="am-tick" x="152" y="94" text-anchor="end">10</text>
+  <path class="am-axis" d="M160,79 V318 H818"/>
+  <text class="am-tick" x="187.0" y="336" text-anchor="middle">1</text>
+  <text class="am-tick" x="227.0" y="336" text-anchor="middle">2</text>
+  <text class="am-tick" x="267.0" y="336" text-anchor="middle">3</text>
+  <text class="am-tick" x="307.0" y="336" text-anchor="middle">4</text>
+  <text class="am-tick" x="347.0" y="336" text-anchor="middle">5</text>
+  <text class="am-tick" x="387.0" y="336" text-anchor="middle">6</text>
+  <text class="am-tick" x="427.0" y="336" text-anchor="middle">7</text>
+  <text class="am-tick" x="467.0" y="336" text-anchor="middle">8</text>
+  <text class="am-tick" x="507.0" y="336" text-anchor="middle">9</text>
+  <text class="am-tick" x="547.0" y="336" text-anchor="middle">10</text>
+  <text class="am-tick" x="587.0" y="336" text-anchor="middle">11</text>
+  <text class="am-tick" x="627.0" y="336" text-anchor="middle">12</text>
+  <text class="am-tick" x="667.0" y="336" text-anchor="middle">13</text>
+  <text class="am-tick" x="707.0" y="336" text-anchor="middle">14</text>
+  <text class="am-tick" x="747.0" y="336" text-anchor="middle">15</text>
+  <text class="am-tick" x="787.0" y="336" text-anchor="middle">16</text>
+  <text class="am-lab" x="487.0" y="404" text-anchor="middle">THE n-TH APPEND</text>
+  <text class="am-lab" x="136" y="193" text-anchor="middle" transform="rotate(-90 136 193)">BLOCKS OF WORK</text>
+  <rect x="504" y="44" width="20" height="14" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+    <text class="am-cap" x="531" y="56">storing the item</text>
+  <rect x="654" y="44" width="20" height="14" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <text class="am-cap" x="681" y="56">copying an item</text>
+  <rect x="170" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="210" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="210" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+  <rect x="250" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="250" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="250" y="243" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+  <rect x="290" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="330" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="330" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="330" y="243" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="330" y="218" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="330" y="193" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+  <rect x="370" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="410" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="450" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="490" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="490" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="243" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="218" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="193" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="168" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="143" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="118" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="93" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+  <rect x="530" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="570" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="610" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="650" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="690" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="730" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="770" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <path class="am-brk" d="M170,348 V354 H204 V348"/>
+    <text class="am-cap" x="187.0" y="370" text-anchor="middle">1</text>
+  <path class="am-brk" d="M210,348 V354 H244 V348"/>
+    <text class="am-cap" x="227.0" y="370" text-anchor="middle">2</text>
+  <path class="am-brk" d="M250,348 V354 H324 V348"/>
+    <text class="am-cap" x="287.0" y="370" text-anchor="middle">capacity 4</text>
+  <path class="am-brk" d="M330,348 V354 H484 V348"/>
+    <text class="am-cap" x="407.0" y="370" text-anchor="middle">capacity 8</text>
+  <path class="am-brk" d="M490,348 V354 H804 V348"/>
+    <text class="am-cap" x="647.0" y="370" text-anchor="middle">capacity 16</text>
+  </svg>
+</section>
+
+<section>
+  <h2>Vector Append, on Average</h2>
+  <p class="step-cap"><span class="step-n">6</span>Each spike is paid for by the appends that follow it.</p>
+  <svg class="step-anim step-still" viewBox="0 0 1020 420" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A bar chart of the work each append costs, with the copying spread over the appends that follow it">
+  <style>
+  .am-axis  { stroke: #b5b0a6; stroke-width: 2; fill: none; }
+  .am-grid  { stroke: #ece7df; stroke-width: 1; fill: none; }
+  .am-tick  { font: 12px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
+  .am-lab   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #8a857c;
+              letter-spacing: 0.06em; }
+  .am-note  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #6E1C2E; }
+  .am-gone  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .am-cap   { font: 12px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .am-sum   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .am-brk   { stroke: #c9c4bb; stroke-width: 1.6; fill: none; }
+</style>
+  <defs>
+    <marker id="amArrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
+  </defs>
+  <path class="am-grid" d="M160,290 H814"/>
+  <text class="am-tick" x="152" y="294" text-anchor="end">2</text>
+  <path class="am-grid" d="M160,240 H814"/>
+  <text class="am-tick" x="152" y="244" text-anchor="end">4</text>
+  <path class="am-grid" d="M160,190 H814"/>
+  <text class="am-tick" x="152" y="194" text-anchor="end">6</text>
+  <path class="am-grid" d="M160,140 H814"/>
+  <text class="am-tick" x="152" y="144" text-anchor="end">8</text>
+  <path class="am-grid" d="M160,90 H814"/>
+  <text class="am-tick" x="152" y="94" text-anchor="end">10</text>
+  <path class="am-axis" d="M160,79 V318 H818"/>
+  <text class="am-tick" x="187.0" y="336" text-anchor="middle">1</text>
+  <text class="am-tick" x="227.0" y="336" text-anchor="middle">2</text>
+  <text class="am-tick" x="267.0" y="336" text-anchor="middle">3</text>
+  <text class="am-tick" x="307.0" y="336" text-anchor="middle">4</text>
+  <text class="am-tick" x="347.0" y="336" text-anchor="middle">5</text>
+  <text class="am-tick" x="387.0" y="336" text-anchor="middle">6</text>
+  <text class="am-tick" x="427.0" y="336" text-anchor="middle">7</text>
+  <text class="am-tick" x="467.0" y="336" text-anchor="middle">8</text>
+  <text class="am-tick" x="507.0" y="336" text-anchor="middle">9</text>
+  <text class="am-tick" x="547.0" y="336" text-anchor="middle">10</text>
+  <text class="am-tick" x="587.0" y="336" text-anchor="middle">11</text>
+  <text class="am-tick" x="627.0" y="336" text-anchor="middle">12</text>
+  <text class="am-tick" x="667.0" y="336" text-anchor="middle">13</text>
+  <text class="am-tick" x="707.0" y="336" text-anchor="middle">14</text>
+  <text class="am-tick" x="747.0" y="336" text-anchor="middle">15</text>
+  <text class="am-tick" x="787.0" y="336" text-anchor="middle">16</text>
+  <text class="am-lab" x="487.0" y="404" text-anchor="middle">THE n-TH APPEND</text>
+  <text class="am-lab" x="136" y="193" text-anchor="middle" transform="rotate(-90 136 193)">BLOCKS OF WORK</text>
+  <rect x="504" y="44" width="20" height="14" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+    <text class="am-cap" x="531" y="56">storing the item</text>
+  <rect x="654" y="44" width="20" height="14" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <text class="am-cap" x="681" y="56">copying an item</text>
+  <rect x="170" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="210" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="210" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+  <rect x="250" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="250" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="250" y="243" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+  <rect x="290" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="330" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="330" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="330" y="243" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="330" y="218" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="330" y="193" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+  <rect x="370" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="410" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="450" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="490" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="490" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="243" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="218" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="193" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="168" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="143" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="118" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="93" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+  <rect x="530" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="570" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="610" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="650" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="690" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="730" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="770" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <path class="am-brk" d="M170,348 V354 H204 V348"/>
+    <text class="am-cap" x="187.0" y="370" text-anchor="middle">1</text>
+  <path class="am-brk" d="M210,348 V354 H244 V348"/>
+    <text class="am-cap" x="227.0" y="370" text-anchor="middle">2</text>
+  <path class="am-brk" d="M250,348 V354 H324 V348"/>
+    <text class="am-cap" x="287.0" y="370" text-anchor="middle">capacity 4</text>
+  <path class="am-brk" d="M330,348 V354 H484 V348"/>
+    <text class="am-cap" x="407.0" y="370" text-anchor="middle">capacity 8</text>
+  <path class="am-brk" d="M490,348 V354 H804 V348"/>
+    <text class="am-cap" x="647.0" y="370" text-anchor="middle">capacity 16</text>
+  <path d="M284,245 Q295.5,215 307.0,235" fill="none" stroke="#6E1C2E" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#amArrow)"/>
+    <path d="M364,195 Q395.5,165 427.0,235" fill="none" stroke="#6E1C2E" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#amArrow)"/>
+    <path d="M524,95 Q595.5,65 667.0,235" fill="none" stroke="#6E1C2E" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#amArrow)"/>
+    <text class="am-note" x="170" y="71">15 copies, paid off by the appends after them</text>
+  </svg>
+</section>
+
+<section>
+  <h2>Vector Append, on Average</h2>
+  <p class="step-cap"><span class="step-n">7</span>The same blocks, laid flat. Nothing was added or removed.</p>
+  <svg class="step-anim step-still" viewBox="0 0 1020 420" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A bar chart of the work each append costs, with the copying spread over the appends that follow it">
+  <style>
+  .am-axis  { stroke: #b5b0a6; stroke-width: 2; fill: none; }
+  .am-grid  { stroke: #ece7df; stroke-width: 1; fill: none; }
+  .am-tick  { font: 12px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
+  .am-lab   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #8a857c;
+              letter-spacing: 0.06em; }
+  .am-note  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #6E1C2E; }
+  .am-gone  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .am-cap   { font: 12px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .am-sum   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .am-brk   { stroke: #c9c4bb; stroke-width: 1.6; fill: none; }
+</style>
+  <defs>
+    <marker id="amArrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
+  </defs>
+  <path class="am-grid" d="M160,290 H814"/>
+  <text class="am-tick" x="152" y="294" text-anchor="end">2</text>
+  <path class="am-grid" d="M160,240 H814"/>
+  <text class="am-tick" x="152" y="244" text-anchor="end">4</text>
+  <path class="am-grid" d="M160,190 H814"/>
+  <text class="am-tick" x="152" y="194" text-anchor="end">6</text>
+  <path class="am-grid" d="M160,140 H814"/>
+  <text class="am-tick" x="152" y="144" text-anchor="end">8</text>
+  <path class="am-grid" d="M160,90 H814"/>
+  <text class="am-tick" x="152" y="94" text-anchor="end">10</text>
+  <path class="am-axis" d="M160,79 V318 H818"/>
+  <text class="am-tick" x="187.0" y="336" text-anchor="middle">1</text>
+  <text class="am-tick" x="227.0" y="336" text-anchor="middle">2</text>
+  <text class="am-tick" x="267.0" y="336" text-anchor="middle">3</text>
+  <text class="am-tick" x="307.0" y="336" text-anchor="middle">4</text>
+  <text class="am-tick" x="347.0" y="336" text-anchor="middle">5</text>
+  <text class="am-tick" x="387.0" y="336" text-anchor="middle">6</text>
+  <text class="am-tick" x="427.0" y="336" text-anchor="middle">7</text>
+  <text class="am-tick" x="467.0" y="336" text-anchor="middle">8</text>
+  <text class="am-tick" x="507.0" y="336" text-anchor="middle">9</text>
+  <text class="am-tick" x="547.0" y="336" text-anchor="middle">10</text>
+  <text class="am-tick" x="587.0" y="336" text-anchor="middle">11</text>
+  <text class="am-tick" x="627.0" y="336" text-anchor="middle">12</text>
+  <text class="am-tick" x="667.0" y="336" text-anchor="middle">13</text>
+  <text class="am-tick" x="707.0" y="336" text-anchor="middle">14</text>
+  <text class="am-tick" x="747.0" y="336" text-anchor="middle">15</text>
+  <text class="am-tick" x="787.0" y="336" text-anchor="middle">16</text>
+  <text class="am-lab" x="487.0" y="404" text-anchor="middle">THE n-TH APPEND</text>
+  <text class="am-lab" x="136" y="193" text-anchor="middle" transform="rotate(-90 136 193)">BLOCKS OF WORK</text>
+  <rect x="504" y="44" width="20" height="14" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+    <text class="am-cap" x="531" y="56">storing the item</text>
+  <rect x="654" y="44" width="20" height="14" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <text class="am-cap" x="681" y="56">copying an item</text>
+  <rect x="170" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="210" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="250" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="290" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="330" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="370" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="410" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="450" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="490" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="530" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="570" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="610" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="650" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="690" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="730" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="770" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <path class="am-brk" d="M170,348 V354 H204 V348"/>
+    <text class="am-cap" x="187.0" y="370" text-anchor="middle">1</text>
+  <path class="am-brk" d="M210,348 V354 H244 V348"/>
+    <text class="am-cap" x="227.0" y="370" text-anchor="middle">2</text>
+  <path class="am-brk" d="M250,348 V354 H324 V348"/>
+    <text class="am-cap" x="287.0" y="370" text-anchor="middle">capacity 4</text>
+  <path class="am-brk" d="M330,348 V354 H484 V348"/>
+    <text class="am-cap" x="407.0" y="370" text-anchor="middle">capacity 8</text>
+  <path class="am-brk" d="M490,348 V354 H804 V348"/>
+    <text class="am-cap" x="647.0" y="370" text-anchor="middle">capacity 16</text>
+  <rect x="170" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="210" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="250" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="290" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="330" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="370" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="410" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="450" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="530" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="570" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="610" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="650" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="690" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="730" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+  </svg>
+</section>
+
+<section>
+  <h2>Vector Append, on Average</h2>
+  <p class="step-cap"><span class="step-n">8</span>31 blocks over 16 appends, and the average does not grow with n.</p>
+  <svg class="step-anim step-still" viewBox="0 0 1020 420" style="width:96%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A bar chart of the work each append costs, with the copying spread over the appends that follow it">
+  <style>
+  .am-axis  { stroke: #b5b0a6; stroke-width: 2; fill: none; }
+  .am-grid  { stroke: #ece7df; stroke-width: 1; fill: none; }
+  .am-tick  { font: 12px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
+  .am-lab   { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #8a857c;
+              letter-spacing: 0.06em; }
+  .am-note  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #6E1C2E; }
+  .am-gone  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .am-cap   { font: 12px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .am-sum   { font: 700 15px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .am-brk   { stroke: #c9c4bb; stroke-width: 1.6; fill: none; }
+</style>
+  <defs>
+    <marker id="amArrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker>
+  </defs>
+  <path class="am-grid" d="M160,290 H814"/>
+  <text class="am-tick" x="152" y="294" text-anchor="end">2</text>
+  <path class="am-grid" d="M160,240 H814"/>
+  <text class="am-tick" x="152" y="244" text-anchor="end">4</text>
+  <path class="am-grid" d="M160,190 H814"/>
+  <text class="am-tick" x="152" y="194" text-anchor="end">6</text>
+  <path class="am-grid" d="M160,140 H814"/>
+  <text class="am-tick" x="152" y="144" text-anchor="end">8</text>
+  <path class="am-grid" d="M160,90 H814"/>
+  <text class="am-tick" x="152" y="94" text-anchor="end">10</text>
+  <path class="am-axis" d="M160,79 V318 H818"/>
+  <text class="am-tick" x="187.0" y="336" text-anchor="middle">1</text>
+  <text class="am-tick" x="227.0" y="336" text-anchor="middle">2</text>
+  <text class="am-tick" x="267.0" y="336" text-anchor="middle">3</text>
+  <text class="am-tick" x="307.0" y="336" text-anchor="middle">4</text>
+  <text class="am-tick" x="347.0" y="336" text-anchor="middle">5</text>
+  <text class="am-tick" x="387.0" y="336" text-anchor="middle">6</text>
+  <text class="am-tick" x="427.0" y="336" text-anchor="middle">7</text>
+  <text class="am-tick" x="467.0" y="336" text-anchor="middle">8</text>
+  <text class="am-tick" x="507.0" y="336" text-anchor="middle">9</text>
+  <text class="am-tick" x="547.0" y="336" text-anchor="middle">10</text>
+  <text class="am-tick" x="587.0" y="336" text-anchor="middle">11</text>
+  <text class="am-tick" x="627.0" y="336" text-anchor="middle">12</text>
+  <text class="am-tick" x="667.0" y="336" text-anchor="middle">13</text>
+  <text class="am-tick" x="707.0" y="336" text-anchor="middle">14</text>
+  <text class="am-tick" x="747.0" y="336" text-anchor="middle">15</text>
+  <text class="am-tick" x="787.0" y="336" text-anchor="middle">16</text>
+  <text class="am-lab" x="487.0" y="404" text-anchor="middle">THE n-TH APPEND</text>
+  <text class="am-lab" x="136" y="193" text-anchor="middle" transform="rotate(-90 136 193)">BLOCKS OF WORK</text>
+  <rect x="504" y="44" width="20" height="14" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+    <text class="am-cap" x="531" y="56">storing the item</text>
+  <rect x="654" y="44" width="20" height="14" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <text class="am-cap" x="681" y="56">copying an item</text>
+  <rect x="170" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="210" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="250" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="290" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="330" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="370" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="410" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="450" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="490" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="530" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="570" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="610" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="650" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="690" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="730" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <rect x="770" y="293" width="34" height="22" rx="3" fill="#ffffff" stroke="#6FA3D6" stroke-width="1.8"/>
+  <path class="am-brk" d="M170,348 V354 H204 V348"/>
+    <text class="am-cap" x="187.0" y="370" text-anchor="middle">1</text>
+  <path class="am-brk" d="M210,348 V354 H244 V348"/>
+    <text class="am-cap" x="227.0" y="370" text-anchor="middle">2</text>
+  <path class="am-brk" d="M250,348 V354 H324 V348"/>
+    <text class="am-cap" x="287.0" y="370" text-anchor="middle">capacity 4</text>
+  <path class="am-brk" d="M330,348 V354 H484 V348"/>
+    <text class="am-cap" x="407.0" y="370" text-anchor="middle">capacity 8</text>
+  <path class="am-brk" d="M490,348 V354 H804 V348"/>
+    <text class="am-cap" x="647.0" y="370" text-anchor="middle">capacity 16</text>
+  <rect x="170" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="210" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="250" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="290" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="330" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="370" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="410" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="450" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="490" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="530" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="570" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="610" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="650" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="690" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+    <rect x="730" y="268" width="34" height="22" rx="3" fill="#F0DDE1" stroke="#6E1C2E" stroke-width="1.8"/>
+  <path d="M160,268 H818" stroke="#6E1C2E" stroke-width="2.2" stroke-dasharray="7 5"/>
+    <text class="am-sum" x="170" y="71">31 blocks / 16 appends = 1.94 each</text>
+    <text class="am-gone" x="170" y="91">extend the table and it stays under 2</text>
+  </svg>
+  <div class="callout"><strong>Amortized constant time.</strong></div>
+</section>
+/CS112-PRINT-STEPS-->
+
+<section>
+  <h2>List Append</h2>
+  <svg class="ll-svg" viewBox="0 0 760 150" xmlns="http://www.w3.org/2000/svg">
+  <defs><marker id="llarrow1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#C49A2C"/></marker></defs>
+  <rect class="ll-node" x="137.0" y="60" width="108" height="54" rx="6"/>
+  <line class="ll-split" x1="203.95999999999998" y1="60" x2="203.95999999999998" y2="114"/>
+  <text class="ll-val" x="170.48" y="93.0" text-anchor="middle">11</text>
+  <circle class="ll-dot" cx="224.48000000000002" cy="87.0" r="3.5"/>
+  <line class="ll-link" x1="224.48000000000002" y1="87.0" x2="283.0" y2="87.0" marker-end="url(#llarrow1)"/>
+  <rect class="ll-node" x="291.0" y="60" width="108" height="54" rx="6"/>
+  <line class="ll-split" x1="357.96" y1="60" x2="357.96" y2="114"/>
+  <text class="ll-val" x="324.48" y="93.0" text-anchor="middle">22</text>
+  <circle class="ll-dot" cx="378.48" cy="87.0" r="3.5"/>
+  <line class="ll-link" x1="378.48" y1="87.0" x2="437.0" y2="87.0" marker-end="url(#llarrow1)"/>
+  <rect class="ll-node" x="445.0" y="60" width="108" height="54" rx="6"/>
+  <line class="ll-split" x1="511.96" y1="60" x2="511.96" y2="114"/>
+  <text class="ll-val" x="478.48" y="93.0" text-anchor="middle">33</text>
+  <circle class="ll-dot" cx="532.48" cy="87.0" r="3.5"/>
+  <line class="ll-link" x1="532.48" y1="87.0" x2="587.0" y2="87.0" marker-end="url(#llarrow1)"/>
+  <text class="ll-null" x="597.0" y="92.0">nullptr</text>
+  <text class="ll-lbl" x="170.48" y="30" text-anchor="middle">myFirst</text>
+  <line class="ll-link" x1="170.48" y1="36" x2="170.48" y2="57" marker-end="url(#llarrow1)"/>
+  <text class="ll-lbl" x="478.48" y="30" text-anchor="middle">myLast</text>
+  <line class="ll-link" x1="478.48" y1="36" x2="478.48" y2="57" marker-end="url(#llarrow1)"/>
+  </svg>
+  <pre style="font-size:0.5em"><code class="language-cpp" data-trim>
+Node* n = new Node(it, nullptr);
+if (mySize == 0) myFirst = n;
+else             myLast->myNext = n;
+myLast = n;
+++mySize;
+  </code></pre>
+  <div class="callout">About 6 operations, empty list or not:
+    <strong>constant</strong>.</div>
+</section>
+
+<section>
+  <h2>List Prepend</h2>
+  <svg class="ll-svg" viewBox="0 0 760 150" xmlns="http://www.w3.org/2000/svg">
+  <defs><marker id="llarrow2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#C49A2C"/></marker></defs>
+  <rect class="ll-node" x="137.0" y="60" width="108" height="54" rx="6"/>
+  <line class="ll-split" x1="203.95999999999998" y1="60" x2="203.95999999999998" y2="114"/>
+  <text class="ll-val" x="170.48" y="93.0" text-anchor="middle">99</text>
+  <circle class="ll-dot" cx="224.48000000000002" cy="87.0" r="3.5"/>
+  <line class="ll-link" x1="224.48000000000002" y1="87.0" x2="283.0" y2="87.0" marker-end="url(#llarrow2)"/>
+  <rect class="ll-node" x="291.0" y="60" width="108" height="54" rx="6"/>
+  <line class="ll-split" x1="357.96" y1="60" x2="357.96" y2="114"/>
+  <text class="ll-val" x="324.48" y="93.0" text-anchor="middle">11</text>
+  <circle class="ll-dot" cx="378.48" cy="87.0" r="3.5"/>
+  <line class="ll-link" x1="378.48" y1="87.0" x2="437.0" y2="87.0" marker-end="url(#llarrow2)"/>
+  <rect class="ll-node" x="445.0" y="60" width="108" height="54" rx="6"/>
+  <line class="ll-split" x1="511.96" y1="60" x2="511.96" y2="114"/>
+  <text class="ll-val" x="478.48" y="93.0" text-anchor="middle">22</text>
+  <circle class="ll-dot" cx="532.48" cy="87.0" r="3.5"/>
+  <line class="ll-link" x1="532.48" y1="87.0" x2="587.0" y2="87.0" marker-end="url(#llarrow2)"/>
+  <text class="ll-null" x="597.0" y="92.0">nullptr</text>
+  <text class="ll-lbl" x="170.48" y="30" text-anchor="middle">myFirst</text>
+  <line class="ll-link" x1="170.48" y1="36" x2="170.48" y2="57" marker-end="url(#llarrow2)"/>
+  <text class="ll-lbl" x="478.48" y="30" text-anchor="middle">myLast</text>
+  <line class="ll-link" x1="478.48" y1="36" x2="478.48" y2="57" marker-end="url(#llarrow2)"/>
+  </svg>
+  <pre style="font-size:0.5em"><code class="language-cpp" data-trim>
+myFirst = new Node(it, myFirst);
+if (mySize == 0) myLast = myFirst;
+++mySize;
+  </code></pre>
+  <div class="callout">About 5 operations, empty list or not:
+    <strong>constant</strong>.</div>
+</section>
+
+<section>
+  <h2>Vector Prepend</h2>
+  <svg viewBox="0 0 980 230" style="width:92%;height:auto;display:block;margin:0.3em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Inserting at the front of an array: every element already there moves up one slot first">
+  <style>
+  .if-val   { font: 700 22px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .if-new   { font: 700 22px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .if-idx   { font: 12px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
+  .if-note  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #6E1C2E; }
+  .if-gone  { font: italic 15px 'Segoe UI', system-ui, sans-serif; fill: #8a857c; }
+  .if-code  { font: 700 16px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+</style>
+  <defs><marker id="ifArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker></defs>
+  <rect x="150" y="96" width="92" height="56" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+  <text class="if-idx" x="196.0" y="84" text-anchor="middle">[0]</text>
+  <text class="if-val" x="196.0" y="133" text-anchor="middle">3</text>
+  <rect x="250" y="96" width="92" height="56" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+  <text class="if-idx" x="296.0" y="84" text-anchor="middle">[1]</text>
+  <text class="if-val" x="296.0" y="133" text-anchor="middle">7</text>
+  <rect x="350" y="96" width="92" height="56" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+  <text class="if-idx" x="396.0" y="84" text-anchor="middle">[2]</text>
+  <text class="if-val" x="396.0" y="133" text-anchor="middle">11</text>
+  <rect x="450" y="96" width="92" height="56" rx="5" fill="#ffffff" stroke="#6FA3D6" stroke-width="2.2"/>
+  <text class="if-idx" x="496.0" y="84" text-anchor="middle">[3]</text>
+  <text class="if-val" x="496.0" y="133" text-anchor="middle">5</text>
+  <rect x="550" y="96" width="92" height="56" rx="5" fill="#F7F7F5" stroke="#C9C4BB" stroke-width="2.2" stroke-dasharray="6 5"/>
+  <text class="if-idx" x="596.0" y="84" text-anchor="middle">[4]</text>
+  <path d="M510.0,170 H582.0" fill="none" stroke="#6E1C2E" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#ifArrow)"/>
+  <path d="M410.0,170 H482.0" fill="none" stroke="#6E1C2E" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#ifArrow)"/>
+  <path d="M310.0,170 H382.0" fill="none" stroke="#6E1C2E" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#ifArrow)"/>
+  <path d="M210.0,170 H282.0" fill="none" stroke="#6E1C2E" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#ifArrow)"/>
+  <text class="if-code" x="150" y="36">insert 9 at the front</text>
+  <text class="if-new" x="54" y="132.0" text-anchor="middle">9</text>
+  <path d="M76,124.0 H142" fill="none" stroke="#6E1C2E" stroke-width="2.4" marker-end="url(#ifArrow)"/>
+  <text class="if-note" x="660" y="176">4 moves before the new value fits</text>
+  <text class="if-gone" x="660" y="196">and the last one moves first</text>
+  </svg>
+  <div class="callout">Every item shifts first: <strong>linear</strong>. So
+    <code>vector</code> has no <code>push_front</code>.</div>
+</section>
+
+<!--CS112-SCREEN-ONLY-->
+<section>
+  <h2>List Subscript</h2>
+  <svg class="step-anim" viewBox="0 0 980 420" style="width:94%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Indexing a linked list: a pointer walks from the first node, one hop per index, to reach item 3">
+  <style>
+  .sf-src { font: 17px 'Fira Code','Consolas',monospace; fill: #e8e6e0; }
+  .sf-kw  { fill: #f07178; }
+  .sf-ty  { fill: #a6e22e; }
+  .sf-cm  { font: italic 15px 'Fira Code','Consolas',monospace; fill: #8f8a80; }
+  .sf-cap { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
+            letter-spacing: 0.06em; }
+
+  .li-node { fill: #ffffff; stroke: #6FA3D6; stroke-width: 2.2; }
+  .li-hit  { fill: #F6E7C8; stroke: #C49A2C; stroke-width: 3; }
+  .li-val  { font: 700 22px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .li-idx  { font: 13px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
+  .li-lbl  { font: 700 17px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .li-null { font: 14px 'Fira Code','Consolas',monospace; fill: #8a857c; }
+  .li-link { stroke: #C49A2C; stroke-width: 2.4; fill: none; }
+  .li-ptr  { stroke: #6E1C2E; stroke-width: 2.6; fill: none; }
+</style>
+  <defs><marker id="liLink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#C49A2C"/></marker><marker id="liPtr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker></defs>
+  <rect class="li-node" x="130" y="58" width="112" height="56" rx="6"/><line x1="199.44" y1="58" x2="199.44" y2="114" stroke="#6FA3D6" stroke-width="1.6"/><text class="li-val" x="164.72" y="94.0" text-anchor="middle">11</text><circle cx="220.72" cy="86.0" r="4" fill="#C49A2C"/>
+  <text class="li-idx" x="164.72" y="46" text-anchor="middle">[0]</text>
+  <line class="li-link" x1="220.72" y1="86.0" x2="280" y2="86.0" marker-end="url(#liLink)"/>
+  <rect class="li-node" x="286" y="58" width="112" height="56" rx="6"/><line x1="355.44" y1="58" x2="355.44" y2="114" stroke="#6FA3D6" stroke-width="1.6"/><text class="li-val" x="320.72" y="94.0" text-anchor="middle">22</text><circle cx="376.72" cy="86.0" r="4" fill="#C49A2C"/>
+  <text class="li-idx" x="320.72" y="46" text-anchor="middle">[1]</text>
+  <line class="li-link" x1="376.72" y1="86.0" x2="436" y2="86.0" marker-end="url(#liLink)"/>
+  <rect class="li-node" x="442" y="58" width="112" height="56" rx="6"/><line x1="511.44" y1="58" x2="511.44" y2="114" stroke="#6FA3D6" stroke-width="1.6"/><text class="li-val" x="476.72" y="94.0" text-anchor="middle">33</text><circle cx="532.72" cy="86.0" r="4" fill="#C49A2C"/>
+  <text class="li-idx" x="476.72" y="46" text-anchor="middle">[2]</text>
+  <line class="li-link" x1="532.72" y1="86.0" x2="592" y2="86.0" marker-end="url(#liLink)"/>
+  <rect class="li-node" x="598" y="58" width="112" height="56" rx="6"/><line x1="667.44" y1="58" x2="667.44" y2="114" stroke="#6FA3D6" stroke-width="1.6"/><text class="li-val" x="632.72" y="94.0" text-anchor="middle">44</text><circle cx="688.72" cy="86.0" r="4" fill="#C49A2C"/>
+  <text class="li-idx" x="632.72" y="46" text-anchor="middle">[3]</text>
+  <line class="li-link" x1="688.72" y1="86.0" x2="748" y2="86.0" marker-end="url(#liLink)"/>
+  <rect class="li-node" x="754" y="58" width="112" height="56" rx="6"/><line x1="823.44" y1="58" x2="823.44" y2="114" stroke="#6FA3D6" stroke-width="1.6"/><text class="li-val" x="788.72" y="94.0" text-anchor="middle">55</text><circle cx="844.72" cy="86.0" r="4" fill="#C49A2C"/>
+  <text class="li-idx" x="788.72" y="46" text-anchor="middle">[4]</text>
+  <line class="li-link" x1="844.72" y1="86.0" x2="896" y2="86.0" marker-end="url(#liLink)"/><text class="li-null" x="902" y="91.0">nullptr</text>
+  <text class="li-lbl" x="8" y="92.0">myFirst</text><line class="li-ptr" x1="86" y1="86.0" x2="124" y2="86.0" marker-end="url(#liPtr)"/>
+  <g class="fragment fade-in" data-fragment-index="4">
+    <rect class="li-hit" x="598" y="58" width="112" height="56" rx="6"/><line x1="667.44" y1="58" x2="667.44" y2="114" stroke="#6FA3D6" stroke-width="1.6"/><text class="li-val" x="632.72" y="94.0" text-anchor="middle">44</text><circle cx="688.72" cy="86.0" r="4" fill="#C49A2C"/>
+  </g>
+  <rect x="130" y="186" width="640" height="209" rx="9" fill="#272822"/>
+  <g class="fragment fade-in" data-fragment-index="0">
+    <g class="fragment fade-out" data-fragment-index="1">
+    <rect x="138" y="232" width="624" height="27" rx="5" fill="#6E1C2E" opacity="0.30"/>
+    </g>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="1">
+    <g class="fragment fade-out" data-fragment-index="4">
+    <rect x="138" y="261" width="624" height="56" rx="5" fill="#6E1C2E" opacity="0.30"/>
+    </g>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="4">
+    <rect x="138" y="319" width="624" height="27" rx="5" fill="#6E1C2E" opacity="0.30"/>
+  </g>
+  <text class="sf-src" x="150" y="223" font-size="18"><tspan class="sf-ty">Item&amp;</tspan> List::getIndex(unsigned ix) {</text>
+    <text class="sf-src" x="172" y="252" font-size="18"><tspan class="sf-ty">Node*</tspan> nPtr = myFirst;</text>
+    <text class="sf-src" x="172" y="281" font-size="18"><tspan class="sf-kw">for</tspan> (unsigned i = 0; i &lt; ix; i++)</text>
+    <text class="sf-src" x="194" y="310" font-size="18">nPtr = nPtr-&gt;myNext;</text>
+    <text class="sf-src" x="172" y="339" font-size="18"><tspan class="sf-kw">return</tspan> nPtr-&gt;myItem;</text>
+    <text class="sf-src" x="150" y="368" font-size="18">}</text>
+  <g class="fragment fade-out" data-fragment-index="1">
+    <text class="li-lbl" x="164.72" y="180" text-anchor="middle">nPtr</text><line class="li-ptr" x1="164.72" y1="160" x2="164.72" y2="120" marker-end="url(#liPtr)"/>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="1">
+    <g class="fragment fade-out" data-fragment-index="2">
+    <text class="li-lbl" x="320.72" y="180" text-anchor="middle">nPtr</text><line class="li-ptr" x1="320.72" y1="160" x2="320.72" y2="120" marker-end="url(#liPtr)"/>
+    </g>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="2">
+    <g class="fragment fade-out" data-fragment-index="3">
+    <text class="li-lbl" x="476.72" y="180" text-anchor="middle">nPtr</text><line class="li-ptr" x1="476.72" y1="160" x2="476.72" y2="120" marker-end="url(#liPtr)"/>
+    </g>
+  </g>
+  <g class="fragment fade-in" data-fragment-index="3">
+    <text class="li-lbl" x="632.72" y="180" text-anchor="middle">nPtr</text><line class="li-ptr" x1="632.72" y1="160" x2="632.72" y2="120" marker-end="url(#liPtr)"/>
+  </g>
+  </svg>
+  <div class="callout">About <em>n</em>/2 hops on average: <strong>linear</strong>. So STL's <code>list</code> has no <code>[]</code>.</div>
+</section>
+<!--/CS112-SCREEN-ONLY-->
+<!--CS112-PRINT-STEPS
+<section>
+  <h2>List Subscript</h2>
+  <p class="step-cap"><span class="step-n">1</span>l[3] starts where every walk starts: nPtr = myFirst.</p>
+  <svg class="step-anim step-still" viewBox="0 0 980 420" style="width:94%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Indexing a linked list: a pointer walks from the first node, one hop per index, to reach item 3">
+  <style>
+  .sf-src { font: 17px 'Fira Code','Consolas',monospace; fill: #e8e6e0; }
+  .sf-kw  { fill: #f07178; }
+  .sf-ty  { fill: #a6e22e; }
+  .sf-cm  { font: italic 15px 'Fira Code','Consolas',monospace; fill: #8f8a80; }
+  .sf-cap { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
+            letter-spacing: 0.06em; }
+
+  .li-node { fill: #ffffff; stroke: #6FA3D6; stroke-width: 2.2; }
+  .li-hit  { fill: #F6E7C8; stroke: #C49A2C; stroke-width: 3; }
+  .li-val  { font: 700 22px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .li-idx  { font: 13px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
+  .li-lbl  { font: 700 17px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .li-null { font: 14px 'Fira Code','Consolas',monospace; fill: #8a857c; }
+  .li-link { stroke: #C49A2C; stroke-width: 2.4; fill: none; }
+  .li-ptr  { stroke: #6E1C2E; stroke-width: 2.6; fill: none; }
+</style>
+  <defs><marker id="liLink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#C49A2C"/></marker><marker id="liPtr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker></defs>
+  <rect class="li-node" x="130" y="58" width="112" height="56" rx="6"/><line x1="199.44" y1="58" x2="199.44" y2="114" stroke="#6FA3D6" stroke-width="1.6"/><text class="li-val" x="164.72" y="94.0" text-anchor="middle">11</text><circle cx="220.72" cy="86.0" r="4" fill="#C49A2C"/>
+  <text class="li-idx" x="164.72" y="46" text-anchor="middle">[0]</text>
+  <line class="li-link" x1="220.72" y1="86.0" x2="280" y2="86.0" marker-end="url(#liLink)"/>
+  <rect class="li-node" x="286" y="58" width="112" height="56" rx="6"/><line x1="355.44" y1="58" x2="355.44" y2="114" stroke="#6FA3D6" stroke-width="1.6"/><text class="li-val" x="320.72" y="94.0" text-anchor="middle">22</text><circle cx="376.72" cy="86.0" r="4" fill="#C49A2C"/>
+  <text class="li-idx" x="320.72" y="46" text-anchor="middle">[1]</text>
+  <line class="li-link" x1="376.72" y1="86.0" x2="436" y2="86.0" marker-end="url(#liLink)"/>
+  <rect class="li-node" x="442" y="58" width="112" height="56" rx="6"/><line x1="511.44" y1="58" x2="511.44" y2="114" stroke="#6FA3D6" stroke-width="1.6"/><text class="li-val" x="476.72" y="94.0" text-anchor="middle">33</text><circle cx="532.72" cy="86.0" r="4" fill="#C49A2C"/>
+  <text class="li-idx" x="476.72" y="46" text-anchor="middle">[2]</text>
+  <line class="li-link" x1="532.72" y1="86.0" x2="592" y2="86.0" marker-end="url(#liLink)"/>
+  <rect class="li-node" x="598" y="58" width="112" height="56" rx="6"/><line x1="667.44" y1="58" x2="667.44" y2="114" stroke="#6FA3D6" stroke-width="1.6"/><text class="li-val" x="632.72" y="94.0" text-anchor="middle">44</text><circle cx="688.72" cy="86.0" r="4" fill="#C49A2C"/>
+  <text class="li-idx" x="632.72" y="46" text-anchor="middle">[3]</text>
+  <line class="li-link" x1="688.72" y1="86.0" x2="748" y2="86.0" marker-end="url(#liLink)"/>
+  <rect class="li-node" x="754" y="58" width="112" height="56" rx="6"/><line x1="823.44" y1="58" x2="823.44" y2="114" stroke="#6FA3D6" stroke-width="1.6"/><text class="li-val" x="788.72" y="94.0" text-anchor="middle">55</text><circle cx="844.72" cy="86.0" r="4" fill="#C49A2C"/>
+  <text class="li-idx" x="788.72" y="46" text-anchor="middle">[4]</text>
+  <line class="li-link" x1="844.72" y1="86.0" x2="896" y2="86.0" marker-end="url(#liLink)"/><text class="li-null" x="902" y="91.0">nullptr</text>
+  <text class="li-lbl" x="8" y="92.0">myFirst</text><line class="li-ptr" x1="86" y1="86.0" x2="124" y2="86.0" marker-end="url(#liPtr)"/>
+  <rect x="130" y="186" width="640" height="209" rx="9" fill="#272822"/>
+  <rect x="138" y="232" width="624" height="27" rx="5" fill="#6E1C2E" opacity="0.30"/>
+  <text class="sf-src" x="150" y="223" font-size="18"><tspan class="sf-ty">Item&amp;</tspan> List::getIndex(unsigned ix) {</text>
+    <text class="sf-src" x="172" y="252" font-size="18"><tspan class="sf-ty">Node*</tspan> nPtr = myFirst;</text>
+    <text class="sf-src" x="172" y="281" font-size="18"><tspan class="sf-kw">for</tspan> (unsigned i = 0; i &lt; ix; i++)</text>
+    <text class="sf-src" x="194" y="310" font-size="18">nPtr = nPtr-&gt;myNext;</text>
+    <text class="sf-src" x="172" y="339" font-size="18"><tspan class="sf-kw">return</tspan> nPtr-&gt;myItem;</text>
+    <text class="sf-src" x="150" y="368" font-size="18">}</text>
+  <text class="li-lbl" x="164.72" y="180" text-anchor="middle">nPtr</text><line class="li-ptr" x1="164.72" y1="160" x2="164.72" y2="120" marker-end="url(#liPtr)"/>
+  </svg>
+</section>
+
+<section>
+  <h2>List Subscript</h2>
+  <p class="step-cap"><span class="step-n">2</span>One pass of the loop, one hop: nPtr = nPtr->myNext.</p>
+  <svg class="step-anim step-still" viewBox="0 0 980 420" style="width:94%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Indexing a linked list: a pointer walks from the first node, one hop per index, to reach item 3">
+  <style>
+  .sf-src { font: 17px 'Fira Code','Consolas',monospace; fill: #e8e6e0; }
+  .sf-kw  { fill: #f07178; }
+  .sf-ty  { fill: #a6e22e; }
+  .sf-cm  { font: italic 15px 'Fira Code','Consolas',monospace; fill: #8f8a80; }
+  .sf-cap { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
+            letter-spacing: 0.06em; }
+
+  .li-node { fill: #ffffff; stroke: #6FA3D6; stroke-width: 2.2; }
+  .li-hit  { fill: #F6E7C8; stroke: #C49A2C; stroke-width: 3; }
+  .li-val  { font: 700 22px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .li-idx  { font: 13px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
+  .li-lbl  { font: 700 17px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .li-null { font: 14px 'Fira Code','Consolas',monospace; fill: #8a857c; }
+  .li-link { stroke: #C49A2C; stroke-width: 2.4; fill: none; }
+  .li-ptr  { stroke: #6E1C2E; stroke-width: 2.6; fill: none; }
+</style>
+  <defs><marker id="liLink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#C49A2C"/></marker><marker id="liPtr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker></defs>
+  <rect class="li-node" x="130" y="58" width="112" height="56" rx="6"/><line x1="199.44" y1="58" x2="199.44" y2="114" stroke="#6FA3D6" stroke-width="1.6"/><text class="li-val" x="164.72" y="94.0" text-anchor="middle">11</text><circle cx="220.72" cy="86.0" r="4" fill="#C49A2C"/>
+  <text class="li-idx" x="164.72" y="46" text-anchor="middle">[0]</text>
+  <line class="li-link" x1="220.72" y1="86.0" x2="280" y2="86.0" marker-end="url(#liLink)"/>
+  <rect class="li-node" x="286" y="58" width="112" height="56" rx="6"/><line x1="355.44" y1="58" x2="355.44" y2="114" stroke="#6FA3D6" stroke-width="1.6"/><text class="li-val" x="320.72" y="94.0" text-anchor="middle">22</text><circle cx="376.72" cy="86.0" r="4" fill="#C49A2C"/>
+  <text class="li-idx" x="320.72" y="46" text-anchor="middle">[1]</text>
+  <line class="li-link" x1="376.72" y1="86.0" x2="436" y2="86.0" marker-end="url(#liLink)"/>
+  <rect class="li-node" x="442" y="58" width="112" height="56" rx="6"/><line x1="511.44" y1="58" x2="511.44" y2="114" stroke="#6FA3D6" stroke-width="1.6"/><text class="li-val" x="476.72" y="94.0" text-anchor="middle">33</text><circle cx="532.72" cy="86.0" r="4" fill="#C49A2C"/>
+  <text class="li-idx" x="476.72" y="46" text-anchor="middle">[2]</text>
+  <line class="li-link" x1="532.72" y1="86.0" x2="592" y2="86.0" marker-end="url(#liLink)"/>
+  <rect class="li-node" x="598" y="58" width="112" height="56" rx="6"/><line x1="667.44" y1="58" x2="667.44" y2="114" stroke="#6FA3D6" stroke-width="1.6"/><text class="li-val" x="632.72" y="94.0" text-anchor="middle">44</text><circle cx="688.72" cy="86.0" r="4" fill="#C49A2C"/>
+  <text class="li-idx" x="632.72" y="46" text-anchor="middle">[3]</text>
+  <line class="li-link" x1="688.72" y1="86.0" x2="748" y2="86.0" marker-end="url(#liLink)"/>
+  <rect class="li-node" x="754" y="58" width="112" height="56" rx="6"/><line x1="823.44" y1="58" x2="823.44" y2="114" stroke="#6FA3D6" stroke-width="1.6"/><text class="li-val" x="788.72" y="94.0" text-anchor="middle">55</text><circle cx="844.72" cy="86.0" r="4" fill="#C49A2C"/>
+  <text class="li-idx" x="788.72" y="46" text-anchor="middle">[4]</text>
+  <line class="li-link" x1="844.72" y1="86.0" x2="896" y2="86.0" marker-end="url(#liLink)"/><text class="li-null" x="902" y="91.0">nullptr</text>
+  <text class="li-lbl" x="8" y="92.0">myFirst</text><line class="li-ptr" x1="86" y1="86.0" x2="124" y2="86.0" marker-end="url(#liPtr)"/>
+  <rect x="130" y="186" width="640" height="209" rx="9" fill="#272822"/>
+  <rect x="138" y="261" width="624" height="56" rx="5" fill="#6E1C2E" opacity="0.30"/>
+  <text class="sf-src" x="150" y="223" font-size="18"><tspan class="sf-ty">Item&amp;</tspan> List::getIndex(unsigned ix) {</text>
+    <text class="sf-src" x="172" y="252" font-size="18"><tspan class="sf-ty">Node*</tspan> nPtr = myFirst;</text>
+    <text class="sf-src" x="172" y="281" font-size="18"><tspan class="sf-kw">for</tspan> (unsigned i = 0; i &lt; ix; i++)</text>
+    <text class="sf-src" x="194" y="310" font-size="18">nPtr = nPtr-&gt;myNext;</text>
+    <text class="sf-src" x="172" y="339" font-size="18"><tspan class="sf-kw">return</tspan> nPtr-&gt;myItem;</text>
+    <text class="sf-src" x="150" y="368" font-size="18">}</text>
+  <text class="li-lbl" x="320.72" y="180" text-anchor="middle">nPtr</text><line class="li-ptr" x1="320.72" y1="160" x2="320.72" y2="120" marker-end="url(#liPtr)"/>
+  </svg>
+</section>
+
+<section>
+  <h2>List Subscript</h2>
+  <p class="step-cap"><span class="step-n">3</span>Another hop. There is no way to jump ahead.</p>
+  <svg class="step-anim step-still" viewBox="0 0 980 420" style="width:94%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Indexing a linked list: a pointer walks from the first node, one hop per index, to reach item 3">
+  <style>
+  .sf-src { font: 17px 'Fira Code','Consolas',monospace; fill: #e8e6e0; }
+  .sf-kw  { fill: #f07178; }
+  .sf-ty  { fill: #a6e22e; }
+  .sf-cm  { font: italic 15px 'Fira Code','Consolas',monospace; fill: #8f8a80; }
+  .sf-cap { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
+            letter-spacing: 0.06em; }
+
+  .li-node { fill: #ffffff; stroke: #6FA3D6; stroke-width: 2.2; }
+  .li-hit  { fill: #F6E7C8; stroke: #C49A2C; stroke-width: 3; }
+  .li-val  { font: 700 22px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .li-idx  { font: 13px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
+  .li-lbl  { font: 700 17px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .li-null { font: 14px 'Fira Code','Consolas',monospace; fill: #8a857c; }
+  .li-link { stroke: #C49A2C; stroke-width: 2.4; fill: none; }
+  .li-ptr  { stroke: #6E1C2E; stroke-width: 2.6; fill: none; }
+</style>
+  <defs><marker id="liLink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#C49A2C"/></marker><marker id="liPtr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker></defs>
+  <rect class="li-node" x="130" y="58" width="112" height="56" rx="6"/><line x1="199.44" y1="58" x2="199.44" y2="114" stroke="#6FA3D6" stroke-width="1.6"/><text class="li-val" x="164.72" y="94.0" text-anchor="middle">11</text><circle cx="220.72" cy="86.0" r="4" fill="#C49A2C"/>
+  <text class="li-idx" x="164.72" y="46" text-anchor="middle">[0]</text>
+  <line class="li-link" x1="220.72" y1="86.0" x2="280" y2="86.0" marker-end="url(#liLink)"/>
+  <rect class="li-node" x="286" y="58" width="112" height="56" rx="6"/><line x1="355.44" y1="58" x2="355.44" y2="114" stroke="#6FA3D6" stroke-width="1.6"/><text class="li-val" x="320.72" y="94.0" text-anchor="middle">22</text><circle cx="376.72" cy="86.0" r="4" fill="#C49A2C"/>
+  <text class="li-idx" x="320.72" y="46" text-anchor="middle">[1]</text>
+  <line class="li-link" x1="376.72" y1="86.0" x2="436" y2="86.0" marker-end="url(#liLink)"/>
+  <rect class="li-node" x="442" y="58" width="112" height="56" rx="6"/><line x1="511.44" y1="58" x2="511.44" y2="114" stroke="#6FA3D6" stroke-width="1.6"/><text class="li-val" x="476.72" y="94.0" text-anchor="middle">33</text><circle cx="532.72" cy="86.0" r="4" fill="#C49A2C"/>
+  <text class="li-idx" x="476.72" y="46" text-anchor="middle">[2]</text>
+  <line class="li-link" x1="532.72" y1="86.0" x2="592" y2="86.0" marker-end="url(#liLink)"/>
+  <rect class="li-node" x="598" y="58" width="112" height="56" rx="6"/><line x1="667.44" y1="58" x2="667.44" y2="114" stroke="#6FA3D6" stroke-width="1.6"/><text class="li-val" x="632.72" y="94.0" text-anchor="middle">44</text><circle cx="688.72" cy="86.0" r="4" fill="#C49A2C"/>
+  <text class="li-idx" x="632.72" y="46" text-anchor="middle">[3]</text>
+  <line class="li-link" x1="688.72" y1="86.0" x2="748" y2="86.0" marker-end="url(#liLink)"/>
+  <rect class="li-node" x="754" y="58" width="112" height="56" rx="6"/><line x1="823.44" y1="58" x2="823.44" y2="114" stroke="#6FA3D6" stroke-width="1.6"/><text class="li-val" x="788.72" y="94.0" text-anchor="middle">55</text><circle cx="844.72" cy="86.0" r="4" fill="#C49A2C"/>
+  <text class="li-idx" x="788.72" y="46" text-anchor="middle">[4]</text>
+  <line class="li-link" x1="844.72" y1="86.0" x2="896" y2="86.0" marker-end="url(#liLink)"/><text class="li-null" x="902" y="91.0">nullptr</text>
+  <text class="li-lbl" x="8" y="92.0">myFirst</text><line class="li-ptr" x1="86" y1="86.0" x2="124" y2="86.0" marker-end="url(#liPtr)"/>
+  <rect x="130" y="186" width="640" height="209" rx="9" fill="#272822"/>
+  <rect x="138" y="261" width="624" height="56" rx="5" fill="#6E1C2E" opacity="0.30"/>
+  <text class="sf-src" x="150" y="223" font-size="18"><tspan class="sf-ty">Item&amp;</tspan> List::getIndex(unsigned ix) {</text>
+    <text class="sf-src" x="172" y="252" font-size="18"><tspan class="sf-ty">Node*</tspan> nPtr = myFirst;</text>
+    <text class="sf-src" x="172" y="281" font-size="18"><tspan class="sf-kw">for</tspan> (unsigned i = 0; i &lt; ix; i++)</text>
+    <text class="sf-src" x="194" y="310" font-size="18">nPtr = nPtr-&gt;myNext;</text>
+    <text class="sf-src" x="172" y="339" font-size="18"><tspan class="sf-kw">return</tspan> nPtr-&gt;myItem;</text>
+    <text class="sf-src" x="150" y="368" font-size="18">}</text>
+  <text class="li-lbl" x="476.72" y="180" text-anchor="middle">nPtr</text><line class="li-ptr" x1="476.72" y1="160" x2="476.72" y2="120" marker-end="url(#liPtr)"/>
+  </svg>
+</section>
+
+<section>
+  <h2>List Subscript</h2>
+  <p class="step-cap"><span class="step-n">4</span>The third hop reaches item 3, and i == 3 ends the loop.</p>
+  <svg class="step-anim step-still" viewBox="0 0 980 420" style="width:94%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Indexing a linked list: a pointer walks from the first node, one hop per index, to reach item 3">
+  <style>
+  .sf-src { font: 17px 'Fira Code','Consolas',monospace; fill: #e8e6e0; }
+  .sf-kw  { fill: #f07178; }
+  .sf-ty  { fill: #a6e22e; }
+  .sf-cm  { font: italic 15px 'Fira Code','Consolas',monospace; fill: #8f8a80; }
+  .sf-cap { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
+            letter-spacing: 0.06em; }
+
+  .li-node { fill: #ffffff; stroke: #6FA3D6; stroke-width: 2.2; }
+  .li-hit  { fill: #F6E7C8; stroke: #C49A2C; stroke-width: 3; }
+  .li-val  { font: 700 22px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .li-idx  { font: 13px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
+  .li-lbl  { font: 700 17px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .li-null { font: 14px 'Fira Code','Consolas',monospace; fill: #8a857c; }
+  .li-link { stroke: #C49A2C; stroke-width: 2.4; fill: none; }
+  .li-ptr  { stroke: #6E1C2E; stroke-width: 2.6; fill: none; }
+</style>
+  <defs><marker id="liLink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#C49A2C"/></marker><marker id="liPtr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker></defs>
+  <rect class="li-node" x="130" y="58" width="112" height="56" rx="6"/><line x1="199.44" y1="58" x2="199.44" y2="114" stroke="#6FA3D6" stroke-width="1.6"/><text class="li-val" x="164.72" y="94.0" text-anchor="middle">11</text><circle cx="220.72" cy="86.0" r="4" fill="#C49A2C"/>
+  <text class="li-idx" x="164.72" y="46" text-anchor="middle">[0]</text>
+  <line class="li-link" x1="220.72" y1="86.0" x2="280" y2="86.0" marker-end="url(#liLink)"/>
+  <rect class="li-node" x="286" y="58" width="112" height="56" rx="6"/><line x1="355.44" y1="58" x2="355.44" y2="114" stroke="#6FA3D6" stroke-width="1.6"/><text class="li-val" x="320.72" y="94.0" text-anchor="middle">22</text><circle cx="376.72" cy="86.0" r="4" fill="#C49A2C"/>
+  <text class="li-idx" x="320.72" y="46" text-anchor="middle">[1]</text>
+  <line class="li-link" x1="376.72" y1="86.0" x2="436" y2="86.0" marker-end="url(#liLink)"/>
+  <rect class="li-node" x="442" y="58" width="112" height="56" rx="6"/><line x1="511.44" y1="58" x2="511.44" y2="114" stroke="#6FA3D6" stroke-width="1.6"/><text class="li-val" x="476.72" y="94.0" text-anchor="middle">33</text><circle cx="532.72" cy="86.0" r="4" fill="#C49A2C"/>
+  <text class="li-idx" x="476.72" y="46" text-anchor="middle">[2]</text>
+  <line class="li-link" x1="532.72" y1="86.0" x2="592" y2="86.0" marker-end="url(#liLink)"/>
+  <rect class="li-node" x="598" y="58" width="112" height="56" rx="6"/><line x1="667.44" y1="58" x2="667.44" y2="114" stroke="#6FA3D6" stroke-width="1.6"/><text class="li-val" x="632.72" y="94.0" text-anchor="middle">44</text><circle cx="688.72" cy="86.0" r="4" fill="#C49A2C"/>
+  <text class="li-idx" x="632.72" y="46" text-anchor="middle">[3]</text>
+  <line class="li-link" x1="688.72" y1="86.0" x2="748" y2="86.0" marker-end="url(#liLink)"/>
+  <rect class="li-node" x="754" y="58" width="112" height="56" rx="6"/><line x1="823.44" y1="58" x2="823.44" y2="114" stroke="#6FA3D6" stroke-width="1.6"/><text class="li-val" x="788.72" y="94.0" text-anchor="middle">55</text><circle cx="844.72" cy="86.0" r="4" fill="#C49A2C"/>
+  <text class="li-idx" x="788.72" y="46" text-anchor="middle">[4]</text>
+  <line class="li-link" x1="844.72" y1="86.0" x2="896" y2="86.0" marker-end="url(#liLink)"/><text class="li-null" x="902" y="91.0">nullptr</text>
+  <text class="li-lbl" x="8" y="92.0">myFirst</text><line class="li-ptr" x1="86" y1="86.0" x2="124" y2="86.0" marker-end="url(#liPtr)"/>
+  <rect x="130" y="186" width="640" height="209" rx="9" fill="#272822"/>
+  <rect x="138" y="261" width="624" height="56" rx="5" fill="#6E1C2E" opacity="0.30"/>
+  <text class="sf-src" x="150" y="223" font-size="18"><tspan class="sf-ty">Item&amp;</tspan> List::getIndex(unsigned ix) {</text>
+    <text class="sf-src" x="172" y="252" font-size="18"><tspan class="sf-ty">Node*</tspan> nPtr = myFirst;</text>
+    <text class="sf-src" x="172" y="281" font-size="18"><tspan class="sf-kw">for</tspan> (unsigned i = 0; i &lt; ix; i++)</text>
+    <text class="sf-src" x="194" y="310" font-size="18">nPtr = nPtr-&gt;myNext;</text>
+    <text class="sf-src" x="172" y="339" font-size="18"><tspan class="sf-kw">return</tspan> nPtr-&gt;myItem;</text>
+    <text class="sf-src" x="150" y="368" font-size="18">}</text>
+  <text class="li-lbl" x="632.72" y="180" text-anchor="middle">nPtr</text><line class="li-ptr" x1="632.72" y1="160" x2="632.72" y2="120" marker-end="url(#liPtr)"/>
+  </svg>
+</section>
+
+<section>
+  <h2>List Subscript</h2>
+  <p class="step-cap"><span class="step-n">5</span>Three hops for index 3. The last item takes n - 1, so on average the loop runs about n/2 times: linear.</p>
+  <svg class="step-anim step-still" viewBox="0 0 980 420" style="width:94%;height:auto;display:block;margin:0.2em auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Indexing a linked list: a pointer walks from the first node, one hop per index, to reach item 3">
+  <style>
+  .sf-src { font: 17px 'Fira Code','Consolas',monospace; fill: #e8e6e0; }
+  .sf-kw  { fill: #f07178; }
+  .sf-ty  { fill: #a6e22e; }
+  .sf-cm  { font: italic 15px 'Fira Code','Consolas',monospace; fill: #8f8a80; }
+  .sf-cap { font: 700 13px 'Segoe UI', system-ui, sans-serif; fill: #a8a49b;
+            letter-spacing: 0.06em; }
+
+  .li-node { fill: #ffffff; stroke: #6FA3D6; stroke-width: 2.2; }
+  .li-hit  { fill: #F6E7C8; stroke: #C49A2C; stroke-width: 3; }
+  .li-val  { font: 700 22px 'Fira Code','Consolas',monospace; fill: #3a3630; }
+  .li-idx  { font: 13px 'Fira Code','Consolas',monospace; fill: #a8a49b; }
+  .li-lbl  { font: 700 17px 'Fira Code','Consolas',monospace; fill: #6E1C2E; }
+  .li-null { font: 14px 'Fira Code','Consolas',monospace; fill: #8a857c; }
+  .li-link { stroke: #C49A2C; stroke-width: 2.4; fill: none; }
+  .li-ptr  { stroke: #6E1C2E; stroke-width: 2.6; fill: none; }
+</style>
+  <defs><marker id="liLink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#C49A2C"/></marker><marker id="liPtr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6E1C2E"/></marker></defs>
+  <rect class="li-node" x="130" y="58" width="112" height="56" rx="6"/><line x1="199.44" y1="58" x2="199.44" y2="114" stroke="#6FA3D6" stroke-width="1.6"/><text class="li-val" x="164.72" y="94.0" text-anchor="middle">11</text><circle cx="220.72" cy="86.0" r="4" fill="#C49A2C"/>
+  <text class="li-idx" x="164.72" y="46" text-anchor="middle">[0]</text>
+  <line class="li-link" x1="220.72" y1="86.0" x2="280" y2="86.0" marker-end="url(#liLink)"/>
+  <rect class="li-node" x="286" y="58" width="112" height="56" rx="6"/><line x1="355.44" y1="58" x2="355.44" y2="114" stroke="#6FA3D6" stroke-width="1.6"/><text class="li-val" x="320.72" y="94.0" text-anchor="middle">22</text><circle cx="376.72" cy="86.0" r="4" fill="#C49A2C"/>
+  <text class="li-idx" x="320.72" y="46" text-anchor="middle">[1]</text>
+  <line class="li-link" x1="376.72" y1="86.0" x2="436" y2="86.0" marker-end="url(#liLink)"/>
+  <rect class="li-node" x="442" y="58" width="112" height="56" rx="6"/><line x1="511.44" y1="58" x2="511.44" y2="114" stroke="#6FA3D6" stroke-width="1.6"/><text class="li-val" x="476.72" y="94.0" text-anchor="middle">33</text><circle cx="532.72" cy="86.0" r="4" fill="#C49A2C"/>
+  <text class="li-idx" x="476.72" y="46" text-anchor="middle">[2]</text>
+  <line class="li-link" x1="532.72" y1="86.0" x2="592" y2="86.0" marker-end="url(#liLink)"/>
+  <rect class="li-node" x="598" y="58" width="112" height="56" rx="6"/><line x1="667.44" y1="58" x2="667.44" y2="114" stroke="#6FA3D6" stroke-width="1.6"/><text class="li-val" x="632.72" y="94.0" text-anchor="middle">44</text><circle cx="688.72" cy="86.0" r="4" fill="#C49A2C"/>
+  <text class="li-idx" x="632.72" y="46" text-anchor="middle">[3]</text>
+  <line class="li-link" x1="688.72" y1="86.0" x2="748" y2="86.0" marker-end="url(#liLink)"/>
+  <rect class="li-node" x="754" y="58" width="112" height="56" rx="6"/><line x1="823.44" y1="58" x2="823.44" y2="114" stroke="#6FA3D6" stroke-width="1.6"/><text class="li-val" x="788.72" y="94.0" text-anchor="middle">55</text><circle cx="844.72" cy="86.0" r="4" fill="#C49A2C"/>
+  <text class="li-idx" x="788.72" y="46" text-anchor="middle">[4]</text>
+  <line class="li-link" x1="844.72" y1="86.0" x2="896" y2="86.0" marker-end="url(#liLink)"/><text class="li-null" x="902" y="91.0">nullptr</text>
+  <text class="li-lbl" x="8" y="92.0">myFirst</text><line class="li-ptr" x1="86" y1="86.0" x2="124" y2="86.0" marker-end="url(#liPtr)"/>
+  <rect class="li-hit" x="598" y="58" width="112" height="56" rx="6"/><line x1="667.44" y1="58" x2="667.44" y2="114" stroke="#6FA3D6" stroke-width="1.6"/><text class="li-val" x="632.72" y="94.0" text-anchor="middle">44</text><circle cx="688.72" cy="86.0" r="4" fill="#C49A2C"/>
+  <rect x="130" y="186" width="640" height="209" rx="9" fill="#272822"/>
+  <rect x="138" y="319" width="624" height="27" rx="5" fill="#6E1C2E" opacity="0.30"/>
+  <text class="sf-src" x="150" y="223" font-size="18"><tspan class="sf-ty">Item&amp;</tspan> List::getIndex(unsigned ix) {</text>
+    <text class="sf-src" x="172" y="252" font-size="18"><tspan class="sf-ty">Node*</tspan> nPtr = myFirst;</text>
+    <text class="sf-src" x="172" y="281" font-size="18"><tspan class="sf-kw">for</tspan> (unsigned i = 0; i &lt; ix; i++)</text>
+    <text class="sf-src" x="194" y="310" font-size="18">nPtr = nPtr-&gt;myNext;</text>
+    <text class="sf-src" x="172" y="339" font-size="18"><tspan class="sf-kw">return</tspan> nPtr-&gt;myItem;</text>
+    <text class="sf-src" x="150" y="368" font-size="18">}</text>
+  <text class="li-lbl" x="632.72" y="180" text-anchor="middle">nPtr</text><line class="li-ptr" x1="632.72" y1="160" x2="632.72" y2="120" marker-end="url(#liPtr)"/>
+  </svg>
+  <div class="callout">About <em>n</em>/2 hops on average: <strong>linear</strong>. So STL's <code>list</code> has no <code>[]</code>.</div>
+</section>
+/CS112-PRINT-STEPS-->
+
+<section>
+  <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
+  <div class="pi-question">
+    <strong>Which of these is <strong>linear</strong>?</strong>
+  </div>
+  <ul class="pi-choices pi-compact">
+    <li><span class="letter">A.</span> <code>v[500]</code> on a vector of 1000</li>
+    <li><span class="letter">B.</span> <code>push_front</code> on a list of 1000</li>
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">C.</span> inserting at the front of a vector of 1000</li>
+    <li><span class="letter">D.</span> <code>push_back</code> on a list of 1000</li>
+  </ul>
+  <div class="answer-box fragment" data-fragment-index="1">
+    <div class="ans-label">&#10003; Answer</div>
+    <strong>C.</strong> All 1000 items move up one slot first. The other three do the same handful of operations at any size.
+  </div>
 </section>
 
 <section>
   <h2>Big-Oh Notation</h2>
-  <p style="font-size:0.72em">We write <strong>O( f(n) )</strong>: "on the order of f of n".</p>
-  <table style="font-size:0.56em">
-    <thead><tr><th>Exact count</th><th>Big-Oh</th><th>Name</th></tr></thead>
+  <table style="font-size:0.62em">
+    <thead><tr><th>Complexity</th><th>Big-Oh</th><th></th></tr></thead>
     <tbody>
-      <tr><td>3</td><td>O(1)</td><td>constant</td></tr>
-      <tr><td>log₂ n + 4</td><td>O(lg n)</td><td>logarithmic</td></tr>
-      <tr><td>3n + 5</td><td>O(n)</td><td>linear</td></tr>
-      <tr><td>2n lg n + n</td><td>O(n lg n)</td><td>linearithmic</td></tr>
-      <tr><td>n² + 50n + 700</td><td>O(n²)</td><td>quadratic</td></tr>
-      <tr><td>2ⁿ</td><td>O(2ⁿ)</td><td>exponential</td></tr>
+      <tr><td>constant</td><td>O(1)</td><td rowspan="5">polynomial</td></tr>
+      <tr><td>logarithmic</td><td>O(lg n)</td></tr>
+      <tr><td>linear</td><td>O(n)</td></tr>
+      <tr><td>quadratic</td><td>O(n²)</td></tr>
+      <tr><td>cubic</td><td>O(n³)</td></tr>
+      <tr style="border-top:2px dashed #6E1C2E"><td>exponential</td><td>O(2ⁿ)</td><td rowspan="2"><strong>non-polynomial</strong></td></tr>
+      <tr><td>factorial</td><td>O(n!)</td></tr>
     </tbody>
   </table>
-  <div class="callout">Big-Oh is an <em>upper bound on the shape of the growth</em>, not a promise about seconds.</div>
+  <div class="callout">Better at the top, worse at the bottom.</div>
 </section>
 
 <section>
-  <h2>The Curves That Matter</h2>
-  <svg class="growth-svg" viewBox="0 0 760 280" xmlns="http://www.w3.org/2000/svg">
-  <line class="axis" x1="58" y1="240" x2="643" y2="240"/>
-  <line class="axis" x1="58" y1="240" x2="58" y2="38"/>
-  <text class="axis-lbl" x="350" y="272" text-anchor="middle">input size n →</text>
-  <text class="axis-lbl" transform="translate(18,139) rotate(-90)" text-anchor="middle">work →</text>
-  <polyline class="curve c1" points="58.0,238.0 63.9,238.0 69.7,238.0 75.5,238.0 81.4,238.0 87.2,238.0 93.1,238.0 98.9,238.0 104.8,238.0 110.7,238.0 116.5,238.0 122.4,238.0 128.2,238.0 134.1,238.0 139.9,238.0 145.8,238.0 151.6,238.0 157.4,238.0 163.3,238.0 169.2,238.0 175.0,238.0 180.9,238.0 186.7,238.0 192.5,238.0 198.4,238.0 204.2,238.0 210.1,238.0 216.0,238.0 221.8,238.0 227.6,238.0 233.5,238.0 239.3,238.0 245.2,238.0 251.0,238.0 256.9,238.0 262.8,238.0 268.6,238.0 274.4,238.0 280.3,238.0 286.1,238.0 292.0,238.0 297.9,238.0 303.7,238.0 309.5,238.0 315.4,238.0 321.2,238.0 327.1,238.0 332.9,238.0 338.8,238.0 344.7,238.0 350.5,238.0 356.4,238.0 362.2,238.0 368.1,238.0 373.9,238.0 379.8,238.0 385.6,238.0 391.5,238.0 397.3,238.0 403.2,238.0 409.0,238.0 414.8,238.0 420.7,238.0 426.6,238.0 432.4,238.0 438.2,238.0 444.1,238.0 450.0,238.0 455.8,238.0 461.7,238.0 467.5,238.0 473.3,238.0 479.2,238.0 485.1,238.0 490.9,238.0 496.8,238.0 502.6,238.0 508.4,238.0 514.3,238.0 520.2,238.0 526.0,238.0 531.8,238.0 537.7,238.0 543.6,238.0 549.4,238.0 555.2,238.0 561.1,238.0 566.9,238.0 572.8,238.0 578.6,238.0 584.5,238.0 590.3,238.0 596.2,238.0 602.1,238.0 607.9,238.0 613.8,238.0 619.6,238.0 625.4,238.0 631.3,238.0 637.1,238.0 643.0,238.0"/>
-  <polyline class="curve c2" points="58.0,240.0 63.9,239.7 69.7,239.5 75.5,239.2 81.4,239.0 87.2,238.8 93.1,238.6 98.9,238.5 104.8,238.3 110.7,238.1 116.5,238.0 122.4,237.8 128.2,237.7 134.1,237.6 139.9,237.4 145.8,237.3 151.6,237.2 157.4,237.1 163.3,237.0 169.2,236.9 175.0,236.8 180.9,236.7 186.7,236.6 192.5,236.5 198.4,236.4 204.2,236.3 210.1,236.3 216.0,236.2 221.8,236.1 227.6,236.0 233.5,236.0 239.3,235.9 245.2,235.8 251.0,235.7 256.9,235.7 262.8,235.6 268.6,235.6 274.4,235.5 280.3,235.4 286.1,235.4 292.0,235.3 297.9,235.3 303.7,235.2 309.5,235.1 315.4,235.1 321.2,235.0 327.1,235.0 332.9,234.9 338.8,234.9 344.7,234.8 350.5,234.8 356.4,234.7 362.2,234.7 368.1,234.6 373.9,234.6 379.8,234.5 385.6,234.5 391.5,234.5 397.3,234.4 403.2,234.4 409.0,234.3 414.8,234.3 420.7,234.2 426.6,234.2 432.4,234.2 438.2,234.1 444.1,234.1 450.0,234.1 455.8,234.0 461.7,234.0 467.5,233.9 473.3,233.9 479.2,233.9 485.1,233.8 490.9,233.8 496.8,233.8 502.6,233.7 508.4,233.7 514.3,233.7 520.2,233.6 526.0,233.6 531.8,233.6 537.7,233.5 543.6,233.5 549.4,233.5 555.2,233.4 561.1,233.4 566.9,233.4 572.8,233.3 578.6,233.3 584.5,233.3 590.3,233.3 596.2,233.2 602.1,233.2 607.9,233.2 613.8,233.1 619.6,233.1 625.4,233.1 631.3,233.1 637.1,233.0 643.0,233.0"/>
-  <polyline class="curve c3" points="58.0,240.0 63.9,239.8 69.7,239.6 75.5,239.4 81.4,239.2 87.2,239.0 93.1,238.8 98.9,238.6 104.8,238.4 110.7,238.2 116.5,238.0 122.4,237.8 128.2,237.6 134.1,237.4 139.9,237.2 145.8,237.0 151.6,236.8 157.4,236.6 163.3,236.4 169.2,236.2 175.0,236.0 180.9,235.8 186.7,235.6 192.5,235.4 198.4,235.2 204.2,234.9 210.1,234.7 216.0,234.5 221.8,234.3 227.6,234.1 233.5,233.9 239.3,233.7 245.2,233.5 251.0,233.3 256.9,233.1 262.8,232.9 268.6,232.7 274.4,232.5 280.3,232.3 286.1,232.1 292.0,231.9 297.9,231.7 303.7,231.5 309.5,231.3 315.4,231.1 321.2,230.9 327.1,230.7 332.9,230.5 338.8,230.3 344.7,230.1 350.5,229.9 356.4,229.7 362.2,229.5 368.1,229.3 373.9,229.1 379.8,228.9 385.6,228.7 391.5,228.5 397.3,228.3 403.2,228.1 409.0,227.9 414.8,227.7 420.7,227.5 426.6,227.3 432.4,227.1 438.2,226.9 444.1,226.7 450.0,226.5 455.8,226.3 461.7,226.1 467.5,225.9 473.3,225.7 479.2,225.5 485.1,225.3 490.9,225.1 496.8,224.8 502.6,224.6 508.4,224.4 514.3,224.2 520.2,224.0 526.0,223.8 531.8,223.6 537.7,223.4 543.6,223.2 549.4,223.0 555.2,222.8 561.1,222.6 566.9,222.4 572.8,222.2 578.6,222.0 584.5,221.8 590.3,221.6 596.2,221.4 602.1,221.2 607.9,221.0 613.8,220.8 619.6,220.6 625.4,220.4 631.3,220.2 637.1,220.0 643.0,219.8"/>
-  <polyline class="curve c4" points="58.0,240.0 63.9,240.0 69.7,239.9 75.5,239.8 81.4,239.6 87.2,239.4 93.1,239.2 98.9,238.9 104.8,238.6 110.7,238.3 116.5,238.0 122.4,237.6 128.2,237.2 134.1,236.8 139.9,236.4 145.8,236.0 151.6,235.5 157.4,235.1 163.3,234.6 169.2,234.1 175.0,233.6 180.9,233.1 186.7,232.5 192.5,232.0 198.4,231.4 204.2,230.9 210.1,230.3 216.0,229.7 221.8,229.1 227.6,228.5 233.5,227.9 239.3,227.3 245.2,226.6 251.0,226.0 256.9,225.3 262.8,224.7 268.6,224.0 274.4,223.3 280.3,222.6 286.1,221.9 292.0,221.2 297.9,220.5 303.7,219.8 309.5,219.1 315.4,218.4 321.2,217.6 327.1,216.9 332.9,216.2 338.8,215.4 344.7,214.7 350.5,213.9 356.4,213.1 362.2,212.4 368.1,211.6 373.9,210.8 379.8,210.0 385.6,209.2 391.5,208.4 397.3,207.6 403.2,206.8 409.0,206.0 414.8,205.2 420.7,204.3 426.6,203.5 432.4,202.7 438.2,201.8 444.1,201.0 450.0,200.1 455.8,199.3 461.7,198.4 467.5,197.6 473.3,196.7 479.2,195.8 485.1,195.0 490.9,194.1 496.8,193.2 502.6,192.3 508.4,191.5 514.3,190.6 520.2,189.7 526.0,188.8 531.8,187.9 537.7,187.0 543.6,186.1 549.4,185.1 555.2,184.2 561.1,183.3 566.9,182.4 572.8,181.5 578.6,180.5 584.5,179.6 590.3,178.7 596.2,177.7 602.1,176.8 607.9,175.8 613.8,174.9 619.6,174.0 625.4,173.0 631.3,172.0 637.1,171.1 643.0,170.1"/>
-  <polyline class="curve c5" points="58.0,240.0 63.9,240.0 69.7,239.9 75.5,239.8 81.4,239.7 87.2,239.5 93.1,239.3 98.9,239.0 104.8,238.7 110.7,238.4 116.5,238.0 122.4,237.6 128.2,237.1 134.1,236.6 139.9,236.0 145.8,235.5 151.6,234.8 157.4,234.2 163.3,233.5 169.2,232.7 175.0,231.9 180.9,231.1 186.7,230.2 192.5,229.3 198.4,228.4 204.2,227.4 210.1,226.3 216.0,225.3 221.8,224.2 227.6,223.0 233.5,221.8 239.3,220.6 245.2,219.3 251.0,218.0 256.9,216.6 262.8,215.3 268.6,213.8 274.4,212.3 280.3,210.8 286.1,209.3 292.0,207.7 297.9,206.0 303.7,204.4 309.5,202.7 315.4,200.9 321.2,199.1 327.1,197.3 332.9,195.4 338.8,193.5 344.7,191.5 350.5,189.5 356.4,187.5 362.2,185.4 368.1,183.3 373.9,181.1 379.8,178.9 385.6,176.7 391.5,174.4 397.3,172.0 403.2,169.7 409.0,167.3 414.8,164.8 420.7,162.4 426.6,159.8 432.4,157.3 438.2,154.7 444.1,152.0 450.0,149.3 455.8,146.6 461.7,143.8 467.5,141.0 473.3,138.2 479.2,135.3 485.1,132.4 490.9,129.4 496.8,126.4 502.6,123.3 508.4,120.2 514.3,117.1 520.2,113.9 526.0,110.7 531.8,107.5 537.7,104.2 543.6,100.8 549.4,97.5 555.2,94.1 561.1,90.6 566.9,87.1 572.8,83.6 578.6,80.0 584.5,76.4 590.3,72.7 596.2,69.0 602.1,65.3 607.9,61.5 613.8,57.7 619.6,53.8 625.4,49.9 631.3,46.0 637.1,42.0 643.0,38.0"/>
-  <text class="curve-lbl c5-t" x="651" y="38">O(n²)</text>
-  <text class="curve-lbl c4-t" x="651" y="170">O(n lg n)</text>
-  <text class="curve-lbl c3-t" x="651" y="219">O(n)</text>
-  <text class="curve-lbl c2-t" x="651" y="236">O(lg n)</text>
-  <text class="curve-lbl c1-t" x="651" y="253">O(1)</text>
-  </svg>
-  <div class="callout">Near the origin the differences look academic. That is exactly why they surprise people in production, the gap only opens up once the data gets big.</div>
+  <h2>The Operations, in Big-Oh</h2>
+  <table style="font-size:0.56em">
+    <thead><tr><th>Operation</th><th>Complexity</th><th>Big-Oh</th></tr></thead>
+    <tbody>
+      <tr><td>vector subscript</td><td>constant</td><td>O(1)</td></tr>
+      <tr><td>vector append</td><td>amortized constant</td><td><strong>O(1*)</strong></td></tr>
+      <tr><td>vector prepend</td><td>linear</td><td>O(n)</td></tr>
+      <tr><td>list append</td><td>constant</td><td>O(1)</td></tr>
+      <tr><td>list prepend</td><td>constant</td><td>O(1)</td></tr>
+      <tr><td>list subscript</td><td>linear</td><td>O(n)</td></tr>
+      <tr><td>shallow copy</td><td>constant</td><td>O(1)</td></tr>
+      <tr><td>deep copy, assignment</td><td>linear</td><td>O(n)</td></tr>
+      <tr><td>input or output</td><td>linear</td><td>O(n)</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">Need an operation the container doesn't have? Choose a
+    different container.</div>
+</section>
+
+<section>
+  <h2>What O( f(n) ) Means</h2>
+  <p style="font-size:0.9em;text-align:center;margin:0.8em 0">
+    exact cost = <em>a</em> &middot; f(n) + <em>b</em></p>
+  <div class="callout">As <em>n</em> grows, f(n) dominates. Nobody cares
+    about <em>a</em> and <em>b</em>.</div>
+</section>
+
+<section>
+  <h2>At a Million Items</h2>
+  <table style="font-size:0.6em">
+    <thead><tr><th>Operation</th><th>Exact cost</th><th>At n = 1,000,000</th><th>Big-Oh</th></tr></thead>
+    <tbody>
+      <tr><td>vector subscript</td><td>3</td><td>3</td><td>O(1)</td></tr>
+      <tr><td>list append</td><td>5</td><td>5</td><td>O(1)</td></tr>
+      <tr><td>vector prepend</td><td>3<em>n</em> + 2</td><td>3,000,002</td><td>O(n)</td></tr>
+      <tr><td>list subscript</td><td>0.5<em>n</em> + 2</td><td>500,002</td><td>O(n)</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">3 and 5 are both "about 1" next to a million.
+    3,000,002 and 500,002 are both "about a million".</div>
 </section>
 
 <section>
@@ -186,7 +1553,7 @@ n² + 50n + 700
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>B. O(n).</strong> Constant multipliers and added constants both drop out. <code>4n + 200</code>, <code>n</code>, and <code>1000n + 5</code> are all O(n): double the input, roughly double the work.
+    <strong>B. O(n).</strong> <em>a</em> = 4 and <em>b</em> = 200, and both drop out.
   </div>
 </section>
 
@@ -199,7 +1566,7 @@ for (int i = 0; i &lt; n; ++i) {
   total += a[i];
 }
       </code></pre>
-      <p style="font-size:0.55em">One loop over n → <strong>O(n)</strong></p>
+      <p style="font-size:0.55em">one loop over n: <strong>O(n)</strong></p>
     </div>
     <div>
       <pre style="font-size:0.44em"><code class="language-cpp" data-trim>
@@ -209,10 +1576,11 @@ for (int i = 0; i &lt; n; ++i) {
   }
 }
       </code></pre>
-      <p style="font-size:0.55em">Loop inside a loop → <strong>O(n²)</strong></p>
+      <p style="font-size:0.55em">a loop inside a loop: <strong>O(n²)</strong></p>
     </div>
   </div>
-  <div class="callout">Rule of thumb: loops <em>in sequence</em> add (keep the biggest), loops <em>nested</em> multiply. Halving the problem each pass gives you a lg n.</div>
+  <div class="callout">Loops one after another add, keep the biggest. Nested
+    loops multiply.</div>
 </section>
 
 <section>
@@ -233,99 +1601,125 @@ for (int i = 1; i &lt; n; i = i * 2) {
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>C. O(lg n).</strong> <code>i</code> doubles every pass, so it reaches n after about log₂ n steps. Any loop that <em>multiplies or divides</em> its counter is logarithmic: this is why binary search is so fast.
+    <strong>C. O(lg n).</strong> <code>i</code> doubles each pass, so it reaches n after about lg n passes.
   </div>
 </section>
 
 <section>
-  <h2>What We've Built So Far</h2>
-  <table>
-    <thead><tr><th>Operation</th><th>Dynamic array</th><th>Linked list</th></tr></thead>
+  <h2>Searching a Million Items</h2>
+  <table style="font-size:0.6em">
+    <thead><tr><th>Search</th><th>Big-Oh</th><th>Comparisons</th></tr></thead>
     <tbody>
-      <tr><td>index <code>v[i]</code></td><td>O(1)</td><td>O(n)</td></tr>
-      <tr><td>append</td><td>O(1) amortized</td><td>O(1)</td></tr>
-      <tr><td>prepend</td><td>O(n)</td><td>O(1)</td></tr>
-      <tr><td>insert / remove at position</td><td>O(n)</td><td>O(n)</td></tr>
-      <tr><td>search (unsorted)</td><td>O(n)</td><td>O(n)</td></tr>
-      <tr><td>traverse everything</td><td>O(n)</td><td>O(n)</td></tr>
+      <tr><td>linear search, any vector</td><td>O(n)</td><td>up to 1,000,000</td></tr>
+      <tr><td>binary search, sorted vector</td><td>O(lg n)</td><td>about 20</td></tr>
     </tbody>
   </table>
-  <div class="callout">The same table you filled in by counting, now in the language everyone uses.</div>
+  <div class="callout">Computers run on electricity. Fewer comparisons, less
+    electricity, less carbon.</div>
+  <aside class="notes">
+    The source's slide 16. Search once: linear search is fine, sorting first
+    (n lg n) costs more than it saves. Search many times: sort once, then
+    binary search every time.
+  </aside>
 </section>
 
 <section>
-  <h2>Why This Matters: Searching</h2>
-  <p style="font-size:0.68em">One million items, and you need to find one.</p>
-  <table style="font-size:0.58em">
-    <thead><tr><th>Approach</th><th>Complexity</th><th>Comparisons</th></tr></thead>
+  <h2>Sorting a Million Items</h2>
+  <table style="font-size:0.6em">
+    <thead><tr><th>Sort</th><th>Big-Oh</th><th>Steps, roughly</th></tr></thead>
     <tbody>
-      <tr><td>Linear search</td><td>O(n)</td><td>up to 1,000,000</td></tr>
-      <tr><td>Binary search (sorted)</td><td>O(lg n)</td><td>about <strong>20</strong></td></tr>
+      <tr><td>bubble sort</td><td>O(n²)</td><td>1,000,000,000,000</td></tr>
+      <tr><td>quicksort</td><td>O(n lg n)</td><td>20,000,000</td></tr>
     </tbody>
   </table>
-  <div class="callout callout-maroon">Fifty thousand times less work, from the same data, just organized differently. That is the entire argument for this course.</div>
+  <div class="callout callout-maroon">Big-Oh lets us estimate an algorithm's
+    <strong>carbon footprint</strong>.</div>
 </section>
 
-<section class="demo-slide" data-background-color="#6E1C2E">
-  <h1>Demo</h1>
-  <div class="demo-rule"></div>
-  <svg class="demo-art" viewBox="0 -34 320 246" xmlns="http://www.w3.org/2000/svg">
-    <path d="M254,12 C250,0 260,-6 256,-20 C270,-11 267,1 261,12 Z" fill="#E8873A"/>
-    <path d="M266,12 C264,4 270,0 268,-10 C277,-3 275,5 271,12 Z" fill="#F2CD00"/>
-    <path d="M243,12 C241,5 246,2 244,-6 C251,-1 250,6 247,12 Z" fill="#E8873A" opacity=".75"/>
-    <rect x="40" y="10" width="240" height="150" rx="9" fill="#1e1f1a" stroke="#C49A2C" stroke-width="3"/>
-    <text x="58" y="46" font-family="'Fira Code',Consolas,monospace" font-size="15.0" fill="#9be36b">$ ./bench 100000</text>
-    <text x="58" y="76" font-family="'Fira Code',Consolas,monospace" font-size="13.0" fill="#ff7b72">linear:     0.004 s</text>
-    <text x="58" y="96" font-family="'Fira Code',Consolas,monospace" font-size="13.0" fill="#ff7b72">quadratic: 41.882 s</text>
-    <text x="58" y="134" font-family="'Fira Code',Consolas,monospace" font-size="15" fill="#9be36b">$</text>
-    <rect x="72" y="122" width="9" height="15" fill="#9be36b"/>
-    <path d="M22,168 L298,168 L314,196 L6,196 Z" fill="#eceae3" stroke="#8d8d86" stroke-width="2.5" stroke-linejoin="round"/>
-    <rect x="140" y="174" width="40" height="6" rx="3" fill="#cfcdc6"/>
+<section>
+  <h2>Visualizing Big-Oh</h2>
+  <svg class="growth-svg" viewBox="0 0 760 280" xmlns="http://www.w3.org/2000/svg">
+  <line class="axis" x1="58" y1="240" x2="643" y2="240"/>
+  <line class="axis" x1="58" y1="240" x2="58" y2="38"/>
+  <text class="axis-lbl" x="350" y="272" text-anchor="middle">input size n →</text>
+  <text class="axis-lbl" transform="translate(18,139) rotate(-90)" text-anchor="middle">work →</text>
+  <polyline class="curve c1" points="58.0,238.0 63.9,238.0 69.7,238.0 75.5,238.0 81.4,238.0 87.2,238.0 93.1,238.0 98.9,238.0 104.8,238.0 110.7,238.0 116.5,238.0 122.4,238.0 128.2,238.0 134.1,238.0 139.9,238.0 145.8,238.0 151.6,238.0 157.4,238.0 163.3,238.0 169.2,238.0 175.0,238.0 180.9,238.0 186.7,238.0 192.5,238.0 198.4,238.0 204.2,238.0 210.1,238.0 216.0,238.0 221.8,238.0 227.6,238.0 233.5,238.0 239.3,238.0 245.2,238.0 251.0,238.0 256.9,238.0 262.8,238.0 268.6,238.0 274.4,238.0 280.3,238.0 286.1,238.0 292.0,238.0 297.9,238.0 303.7,238.0 309.5,238.0 315.4,238.0 321.2,238.0 327.1,238.0 332.9,238.0 338.8,238.0 344.7,238.0 350.5,238.0 356.4,238.0 362.2,238.0 368.1,238.0 373.9,238.0 379.8,238.0 385.6,238.0 391.5,238.0 397.3,238.0 403.2,238.0 409.0,238.0 414.8,238.0 420.7,238.0 426.6,238.0 432.4,238.0 438.2,238.0 444.1,238.0 450.0,238.0 455.8,238.0 461.7,238.0 467.5,238.0 473.3,238.0 479.2,238.0 485.1,238.0 490.9,238.0 496.8,238.0 502.6,238.0 508.4,238.0 514.3,238.0 520.2,238.0 526.0,238.0 531.8,238.0 537.7,238.0 543.6,238.0 549.4,238.0 555.2,238.0 561.1,238.0 566.9,238.0 572.8,238.0 578.6,238.0 584.5,238.0 590.3,238.0 596.2,238.0 602.1,238.0 607.9,238.0 613.8,238.0 619.6,238.0 625.4,238.0 631.3,238.0 637.1,238.0 643.0,238.0"/>
+  <polyline class="curve c2" points="58.0,240.0 63.9,239.7 69.7,239.5 75.5,239.2 81.4,239.0 87.2,238.8 93.1,238.6 98.9,238.5 104.8,238.3 110.7,238.1 116.5,238.0 122.4,237.8 128.2,237.7 134.1,237.6 139.9,237.4 145.8,237.3 151.6,237.2 157.4,237.1 163.3,237.0 169.2,236.9 175.0,236.8 180.9,236.7 186.7,236.6 192.5,236.5 198.4,236.4 204.2,236.3 210.1,236.3 216.0,236.2 221.8,236.1 227.6,236.0 233.5,236.0 239.3,235.9 245.2,235.8 251.0,235.7 256.9,235.7 262.8,235.6 268.6,235.6 274.4,235.5 280.3,235.4 286.1,235.4 292.0,235.3 297.9,235.3 303.7,235.2 309.5,235.1 315.4,235.1 321.2,235.0 327.1,235.0 332.9,234.9 338.8,234.9 344.7,234.8 350.5,234.8 356.4,234.7 362.2,234.7 368.1,234.6 373.9,234.6 379.8,234.5 385.6,234.5 391.5,234.5 397.3,234.4 403.2,234.4 409.0,234.3 414.8,234.3 420.7,234.2 426.6,234.2 432.4,234.2 438.2,234.1 444.1,234.1 450.0,234.1 455.8,234.0 461.7,234.0 467.5,233.9 473.3,233.9 479.2,233.9 485.1,233.8 490.9,233.8 496.8,233.8 502.6,233.7 508.4,233.7 514.3,233.7 520.2,233.6 526.0,233.6 531.8,233.6 537.7,233.5 543.6,233.5 549.4,233.5 555.2,233.4 561.1,233.4 566.9,233.4 572.8,233.3 578.6,233.3 584.5,233.3 590.3,233.3 596.2,233.2 602.1,233.2 607.9,233.2 613.8,233.1 619.6,233.1 625.4,233.1 631.3,233.1 637.1,233.0 643.0,233.0"/>
+  <polyline class="curve c3" points="58.0,240.0 63.9,239.8 69.7,239.6 75.5,239.4 81.4,239.2 87.2,239.0 93.1,238.8 98.9,238.6 104.8,238.4 110.7,238.2 116.5,238.0 122.4,237.8 128.2,237.6 134.1,237.4 139.9,237.2 145.8,237.0 151.6,236.8 157.4,236.6 163.3,236.4 169.2,236.2 175.0,236.0 180.9,235.8 186.7,235.6 192.5,235.4 198.4,235.2 204.2,234.9 210.1,234.7 216.0,234.5 221.8,234.3 227.6,234.1 233.5,233.9 239.3,233.7 245.2,233.5 251.0,233.3 256.9,233.1 262.8,232.9 268.6,232.7 274.4,232.5 280.3,232.3 286.1,232.1 292.0,231.9 297.9,231.7 303.7,231.5 309.5,231.3 315.4,231.1 321.2,230.9 327.1,230.7 332.9,230.5 338.8,230.3 344.7,230.1 350.5,229.9 356.4,229.7 362.2,229.5 368.1,229.3 373.9,229.1 379.8,228.9 385.6,228.7 391.5,228.5 397.3,228.3 403.2,228.1 409.0,227.9 414.8,227.7 420.7,227.5 426.6,227.3 432.4,227.1 438.2,226.9 444.1,226.7 450.0,226.5 455.8,226.3 461.7,226.1 467.5,225.9 473.3,225.7 479.2,225.5 485.1,225.3 490.9,225.1 496.8,224.8 502.6,224.6 508.4,224.4 514.3,224.2 520.2,224.0 526.0,223.8 531.8,223.6 537.7,223.4 543.6,223.2 549.4,223.0 555.2,222.8 561.1,222.6 566.9,222.4 572.8,222.2 578.6,222.0 584.5,221.8 590.3,221.6 596.2,221.4 602.1,221.2 607.9,221.0 613.8,220.8 619.6,220.6 625.4,220.4 631.3,220.2 637.1,220.0 643.0,219.8"/>
+  <polyline class="curve c4" points="58.0,240.0 63.9,240.0 69.7,239.9 75.5,239.8 81.4,239.6 87.2,239.4 93.1,239.2 98.9,238.9 104.8,238.6 110.7,238.3 116.5,238.0 122.4,237.6 128.2,237.2 134.1,236.8 139.9,236.4 145.8,236.0 151.6,235.5 157.4,235.1 163.3,234.6 169.2,234.1 175.0,233.6 180.9,233.1 186.7,232.5 192.5,232.0 198.4,231.4 204.2,230.9 210.1,230.3 216.0,229.7 221.8,229.1 227.6,228.5 233.5,227.9 239.3,227.3 245.2,226.6 251.0,226.0 256.9,225.3 262.8,224.7 268.6,224.0 274.4,223.3 280.3,222.6 286.1,221.9 292.0,221.2 297.9,220.5 303.7,219.8 309.5,219.1 315.4,218.4 321.2,217.6 327.1,216.9 332.9,216.2 338.8,215.4 344.7,214.7 350.5,213.9 356.4,213.1 362.2,212.4 368.1,211.6 373.9,210.8 379.8,210.0 385.6,209.2 391.5,208.4 397.3,207.6 403.2,206.8 409.0,206.0 414.8,205.2 420.7,204.3 426.6,203.5 432.4,202.7 438.2,201.8 444.1,201.0 450.0,200.1 455.8,199.3 461.7,198.4 467.5,197.6 473.3,196.7 479.2,195.8 485.1,195.0 490.9,194.1 496.8,193.2 502.6,192.3 508.4,191.5 514.3,190.6 520.2,189.7 526.0,188.8 531.8,187.9 537.7,187.0 543.6,186.1 549.4,185.1 555.2,184.2 561.1,183.3 566.9,182.4 572.8,181.5 578.6,180.5 584.5,179.6 590.3,178.7 596.2,177.7 602.1,176.8 607.9,175.8 613.8,174.9 619.6,174.0 625.4,173.0 631.3,172.0 637.1,171.1 643.0,170.1"/>
+  <polyline class="curve c5" points="58.0,240.0 63.9,240.0 69.7,239.9 75.5,239.8 81.4,239.7 87.2,239.5 93.1,239.3 98.9,239.0 104.8,238.7 110.7,238.4 116.5,238.0 122.4,237.6 128.2,237.1 134.1,236.6 139.9,236.0 145.8,235.5 151.6,234.8 157.4,234.2 163.3,233.5 169.2,232.7 175.0,231.9 180.9,231.1 186.7,230.2 192.5,229.3 198.4,228.4 204.2,227.4 210.1,226.3 216.0,225.3 221.8,224.2 227.6,223.0 233.5,221.8 239.3,220.6 245.2,219.3 251.0,218.0 256.9,216.6 262.8,215.3 268.6,213.8 274.4,212.3 280.3,210.8 286.1,209.3 292.0,207.7 297.9,206.0 303.7,204.4 309.5,202.7 315.4,200.9 321.2,199.1 327.1,197.3 332.9,195.4 338.8,193.5 344.7,191.5 350.5,189.5 356.4,187.5 362.2,185.4 368.1,183.3 373.9,181.1 379.8,178.9 385.6,176.7 391.5,174.4 397.3,172.0 403.2,169.7 409.0,167.3 414.8,164.8 420.7,162.4 426.6,159.8 432.4,157.3 438.2,154.7 444.1,152.0 450.0,149.3 455.8,146.6 461.7,143.8 467.5,141.0 473.3,138.2 479.2,135.3 485.1,132.4 490.9,129.4 496.8,126.4 502.6,123.3 508.4,120.2 514.3,117.1 520.2,113.9 526.0,110.7 531.8,107.5 537.7,104.2 543.6,100.8 549.4,97.5 555.2,94.1 561.1,90.6 566.9,87.1 572.8,83.6 578.6,80.0 584.5,76.4 590.3,72.7 596.2,69.0 602.1,65.3 607.9,61.5 613.8,57.7 619.6,53.8 625.4,49.9 631.3,46.0 637.1,42.0 643.0,38.0"/>
+  <text class="curve-lbl c5-t" x="651" y="38">O(n²)</text>
+  <text class="curve-lbl c4-t" x="651" y="170">O(n lg n)</text>
+  <text class="curve-lbl c3-t" x="651" y="219">O(n)</text>
+  <text class="curve-lbl c2-t" x="651" y="236">O(lg n)</text>
+  <text class="curve-lbl c1-t" x="651" y="253">O(1)</text>
   </svg>
-  <p class="demo-cap">Timing O(n) against O(n²) on real data.</p>
-  <p class="demo-sub">(same laptop, same data, wildly different patience)</p>
 </section>
 
 <section>
   <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
   <div class="pi-question">
-    <strong>Algorithm A is O(n²), algorithm B is O(n lg n). Which should you use?</strong>
+    <strong>A is O(n²), B is O(n lg n). Which should you use?</strong>
   </div>
   <ul class="pi-choices pi-compact">
-    <li><span class="letter">A.</span> Always B; it has the better complexity</li>
-    <li><span class="letter">B.</span> Always A, simpler code runs faster</li>
-    <li class="fragment correct" data-fragment-index="1"><span class="letter">C.</span> B for large n; for small n, A may well be faster</li>
+    <li><span class="letter">A.</span> Always B</li>
+    <li><span class="letter">B.</span> Always A</li>
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">C.</span> B for large n; for small n, A may be faster</li>
     <li><span class="letter">D.</span> Whichever is easier to write</li>
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>C.</strong> Big-Oh describes behavior as n grows. For small inputs the constants that we dropped can dominate: which is why real sort libraries switch to insertion sort for tiny sub-arrays. Know the asymptotics, then measure.
+    <strong>C.</strong> For small n the dropped <em>a</em> and <em>b</em> can win.
   </div>
 </section>
 
 <section>
-  <h2>Overloading <code>&lt;&lt;</code> for Your Container</h2>
-  <pre style="font-size:0.58em"><code class="language-cpp" data-trim>
-// in List.h
-ostream&amp; operator&lt;&lt;(ostream &amp;out, const List &amp;list);
+  <h2>operator&lt;&lt;</h2>
+  <pre style="font-size:0.6em"><code class="language-cpp" data-trim>
+cout &lt;&lt; aList &lt;&lt; endl;
 
-// in List.cpp
+// is really
+operator&lt;&lt;( operator&lt;&lt;(cout, aList), endl );
+  </code></pre>
+</section>
+
+<section>
+  <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
+  <div class="pi-question">
+    <strong>What should <code>operator&lt;&lt;(ostream&amp; out, const List&amp; list)</code> return?</strong>
+  </div>
+  <ul class="pi-choices pi-compact">
+    <li><span class="letter">A.</span> nothing, it is <code>void</code></li>
+    <li><span class="letter">B.</span> <code>list</code></li>
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">C.</span> <code>out</code></li>
+    <li><span class="letter">D.</span> <code>true</code></li>
+  </ul>
+  <div class="answer-box fragment" data-fragment-index="1">
+    <div class="ans-label">&#10003; Answer</div>
+    <strong>C.</strong> The outer call needs the stream back, to print <code>endl</code> on it.
+  </div>
+</section>
+
+<section>
+  <h2>operator&lt;&lt;</h2>
+  <pre style="font-size:0.6em"><code class="language-cpp" data-trim>
 ostream&amp; operator&lt;&lt;(ostream &amp;out, const List &amp;list) {
     list.writeTo(out);
     return out;
 }
   </code></pre>
-  <div class="callout">Week 3's rule again: a free function, taking the stream on the left, returning the stream so it chains. Traversing the whole list to print it is O(n), as you'd expect.</div>
+  <div class="callout"><code>out</code> is not <code>const</code>: writing to
+    it changes it.</div>
 </section>
 
 <section class="closing-slide" data-background-color="#6E1C2E">
   <h2>Week 08 Recap</h2>
   <ul style="font-size:0.72em; color:rgba(255,255,255,0.92)">
     <li>Big-Oh describes <strong>how work grows with n</strong>, not seconds on a clock</li>
-    <li>Drop constant factors and lower-order terms: keep the dominant one</li>
+    <li>exact cost = <em>a</em> &middot; f(n) + <em>b</em>; keep f(n)</li>
+    <li>Vector append is <code style='color:var(--gold)'>O(1*)</code>, amortized constant</li>
     <li>Nested loops multiply; halving the problem gives <code style='color:var(--gold)'>lg n</code></li>
-    <li>O(1) &lt; O(lg n) &lt; O(n) &lt; O(n lg n) &lt; O(n²) &lt; O(2ⁿ)</li>
-    <li>At a million items the difference is a second versus an afternoon</li>
+    <li>Better algorithms use less electricity</li>
   </ul>
   <div class="next">Next: a09 →</div>
   <p class="credit-line">
