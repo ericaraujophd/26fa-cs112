@@ -626,7 +626,7 @@ learning objectives are there too, folded away until you want them.
           </div>
         </div>
       </details>
-      <p style="font-size:.85em;opacity:.75;margin-top:.9rem">Friday Oct 23 is a <strong>POGIL</strong>, classifying the complexity of code snippets, in groups.</p>
+      <p style="font-size:.85em;opacity:.75;margin-top:.9rem">Monday Oct 26 is a <strong>POGIL</strong>, classifying the complexity of code snippets, in groups.</p>
 
     </div>
   </div>
