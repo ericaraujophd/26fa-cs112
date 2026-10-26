@@ -45,11 +45,11 @@ week 6 gets settled, with numbers.
 
 ::: {.callout-note}
 **Lab and homework.** You start this in lab on Tuesday Oct 27. By then you will
-have had Monday's lecture on Big-Oh, which is everything this assignment needs.
-There is no new syntax here, only measurement and reasoning.
+have done Monday's POGIL on how the work grows with n, which is everything you
+need to start. There is no new syntax here, only measurement and reasoning.
 
-§5 needs nothing but the Big-Oh lecture, and you can finish and fully test it
-before you have timed anything at all. That is a good place to start.
+§5 needs nothing but that, and you can finish and fully test it before you
+have timed anything at all. That is a good place to start.
 :::
 
 ---
