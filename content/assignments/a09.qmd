@@ -125,12 +125,23 @@ Open the folder in VS Code, then build it and run it before you change anything:
 ```bash
 make
 ./stopwatch
+./checks
 make test
 ```
 
-`make` succeeds, `./stopwatch` prints a table with three rows filled in and five
-rows of zeroes, and `make test` reports **9 / 36**. All three are correct: the
-harness works, three experiments are written for you, and nothing else is.
+`make` builds two programs, and you will use both all week:
+
+- **`./stopwatch`** runs the experiments and prints the table. Right now it has
+  three rows filled in and five rows of zeroes.
+- **`./checks`** runs the course's checks on your code, the same ones
+  `make test` grades. Right now it reports **4 of 16** test cases passing,
+  because `classifyGrowth` is not written yet.
+
+`make test` reports **9 / 36**. All of that is correct: the harness works, three
+experiments are written for you, and nothing else is.
+
+**Run `make` again after every change to `Stopwatch.cpp`.** It rebuilds both
+programs, so `./checks` always tests the code you just saved.
 
 
 ---
@@ -148,7 +159,7 @@ them.
 | `Timer.h` | no | the stopwatch |
 | `given.cpp` | no | sizes, repetition policy, `measure`, and the HTML page |
 | `main.cpp` | no | runs everything and prints the table |
-| `checks.cpp` | no | the course's checks |
+| `checks.cpp` | no | the course's checks, built into `./checks` |
 | `sample-results.html` | no | what the chart looks like, on made-up data |
 | `catch.hpp`, `catchmain.cpp`, `makefile`, `test.py` | no | framework, build, grader |
 
@@ -312,8 +323,7 @@ make
 ./checks
 ```
 
-`make` builds both `./stopwatch` and `./checks`, so run it after every change
-to `Stopwatch.cpp`. Sixteen of the thirty-six checks are `classifyGrowth` against series that were
+Sixteen of the thirty-six checks are `classifyGrowth` against series that were
 typed in by hand. They do not need `./stopwatch` to work at all.
 
 ---
