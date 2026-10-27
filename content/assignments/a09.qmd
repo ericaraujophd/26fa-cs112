@@ -308,11 +308,12 @@ practice.
 **Test it now**, before you write any timing code:
 
 ```bash
-make checks
+make
 ./checks
 ```
 
-Sixteen of the thirty-six checks are `classifyGrowth` against series that were
+`make` builds both `./stopwatch` and `./checks`, so run it after every change
+to `Stopwatch.cpp`. Sixteen of the thirty-six checks are `classifyGrowth` against series that were
 typed in by hand. They do not need `./stopwatch` to work at all.
 
 ---
@@ -535,7 +536,7 @@ thirty-six pass without any timing code at all.
 Focus on one check while you are fixing it:
 
 ```bash
-make checks
+make
 ./checks "Classify: a flat series is constant"
 ./checks "Classify: a series that jumps up and back down has no trend"
 ```
