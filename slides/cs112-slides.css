@@ -1025,6 +1025,10 @@
     .growth-svg .c3 { stroke: var(--gold); } .growth-svg .c3-t { fill: #9a7d2e; }
     .growth-svg .c4 { stroke: #b5652a; } .growth-svg .c4-t { fill: #b5652a; }
     .growth-svg .c5 { stroke: var(--maroon); } .growth-svg .c5-t { fill: var(--maroon); }
+    .growth-svg .c6 { stroke: #7a4e9c; } .growth-svg .c6-t { fill: #7a4e9c; }
+    .growth-svg .c7 { stroke: #c2185b; } .growth-svg .c7-t { fill: #c2185b; }
+    .growth-svg .nonpoly, .growth-svg .key { stroke-dasharray: 9 5; }
+    .growth-svg .key { stroke: #8a857b; stroke-width: 2.5; }
 
     /* ── Full-screen hint (see slides/fullscreen.js) ──
        Shown only on decks opened with ?fs=1, until the first gesture. ── */
