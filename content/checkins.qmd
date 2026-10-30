@@ -5,7 +5,7 @@ title: "Skills & Check-Ins"
 There are **no traditional tests** in CS 112. Instead, your grade reflects whether you can *demonstrate* the course skills in person, through three individual check-in appointments with the instructor, backed by the assignments you complete along the way.
 
 ::: {.callout-note}
-**The short version:** Do your assignments, they are how you learn, and your completion percentage affects your final grade. Then come in for each **check-in**: a 25-minute conversation where you work through a question drawn from each cluster in that window. Every student books one appointment per window, three across the semester.
+**The short version:** Do your assignments, they are how you learn, and your completion percentage affects your final grade. Then come in for each **check-in**: a 20-minute appointment where you fix and write code on your own laptop for 12 minutes, then talk it through with the instructor for 8. Every student books one appointment per window, three across the semester.
 :::
 
 ---
@@ -54,29 +54,29 @@ Both N and D can be improved later, so an early stumble is not permanent.
 
 ## What Happens at a Check-In
 
-Each appointment is **25 minutes** and covers **every cluster in that window**. It is a conversation, not a timed test.
+Each appointment is **20 minutes**, in the instructor's office, on **your own laptop**. You code first, then you talk about your code.
 
 ```{=html}
 <div style="margin:1.25rem 0;">
   <div style="border-radius:.5rem;overflow:hidden;border:1px solid var(--bs-border-color);font-size:.875rem;">
 
     <div style="display:flex;gap:0;">
-      <div style="flex:1;background:var(--calvin-maroon,#6E1C2E);color:#fff;padding:.9rem .8rem;">
+      <div style="flex:2;background:var(--calvin-maroon,#6E1C2E);color:#fff;padding:.9rem .8rem;">
         <div style="font-size:.7rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;opacity:.7;margin-bottom:.3rem;">0 – 2 min</div>
-        <div style="font-weight:600;margin-bottom:.25rem;">Settle in</div>
-        <div style="font-size:.8rem;opacity:.85;">The instructor confirms which clusters this window covers.</div>
+        <div style="font-weight:600;margin-bottom:.25rem;">Sign in</div>
+        <div style="font-size:.8rem;opacity:.85;">Open the check-in page, sign in with GitHub, share your entire screen.</div>
       </div>
 
-      <div style="flex:7;background:var(--bs-secondary-bg);padding:.9rem .8rem;">
-        <div style="font-size:.7rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--bs-secondary-color);margin-bottom:.3rem;">2 – 22 min</div>
-        <div style="font-weight:600;margin-bottom:.25rem;">One question per cluster</div>
-        <div style="font-size:.8rem;color:var(--bs-secondary-color);">Each question is <strong>drawn at random</strong> from that cluster. Some ask you to explain or trace something; some ask you to write a short piece of code on the spot. You can think aloud, and you can ask what a question means.</div>
+      <div style="flex:10;background:var(--bs-secondary-bg);padding:.9rem .8rem;">
+        <div style="font-size:.7rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--bs-secondary-color);margin-bottom:.3rem;">2 – 12 min</div>
+        <div style="font-weight:600;margin-bottom:.25rem;">Two coding questions</div>
+        <div style="font-size:.8rem;color:var(--bs-secondary-color);">Fix a piece of broken code, or write a short one, <strong>5 minutes each</strong>. Run the tests as often as you like: they show you what is still wrong.</div>
       </div>
 
-      <div style="flex:2;background:var(--bs-secondary-bg);padding:.9rem .8rem;border-left:1px solid var(--bs-border-color);">
-        <div style="font-size:.7rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--bs-secondary-color);margin-bottom:.3rem;">22 – 25 min</div>
-        <div style="font-weight:600;margin-bottom:.25rem;">Recorded</div>
-        <div style="font-size:.8rem;color:var(--bs-secondary-color);">Any last follow-ups, then one N / D / M mark for the window.</div>
+      <div style="flex:8;background:var(--bs-secondary-bg);padding:.9rem .8rem;border-left:1px solid var(--bs-border-color);">
+        <div style="font-size:.7rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--bs-secondary-color);margin-bottom:.3rem;">12 – 20 min</div>
+        <div style="font-weight:600;margin-bottom:.25rem;">Conversation</div>
+        <div style="font-size:.8rem;color:var(--bs-secondary-color);">Questions about your code first, then about the rest of the window's skills. Think aloud. One N / D / M mark for the window.</div>
       </div>
     </div>
 
@@ -84,7 +84,15 @@ Each appointment is **25 minutes** and covers **every cluster in that window**. 
 </div>
 ```
 
-**How long you get per question depends on the window.** Windows 1 and 3 cover two clusters, so each question gets roughly ten minutes. Window 2 covers three, so its questions run nearer seven minutes each. They are correspondingly shorter, you are not being asked to do more in less time.
+**Bring a charged laptop** that can open a web page and share its screen. While you code, your whole screen is shared with the instructor, and pasting from outside the check-in page is blocked and reported.
+
+**The check-in page is open to you only during your appointment.** It opens when the instructor starts your check-in and closes when he records your mark. Your mark and written feedback reach you in **Moodle**.
+
+The coding questions are **drawn at random**, never one you have had before, and the conversation covers whatever the coding did not. In Window 2, for example, the code comes from linked structures and recursion, and Big-Oh comes up in the conversation.
+
+::: {.callout-note}
+**Window 1 keeps its original format**: a 25-minute conversation with one question per cluster, and no laptop needed. The new format starts with Window 2.
+:::
 
 A single question may touch more than one skill, and often will. Removing a node from a linked list involves pointer manipulation *and* freeing memory. The session as a whole produces **one mark for the window**.
 
@@ -92,7 +100,7 @@ A single question may touch more than one skill, and often will. Removing a node
 
 ## Check-In Windows
 
-You book **one 25-minute appointment per window**, three across the semester, plus the Final Window. Each appointment covers every cluster in that window.
+You book **one 20-minute appointment per window** (25 minutes in Window 1), three across the semester, plus the Final Window. Each appointment covers every cluster in that window.
 
 ::: {.callout-important}
 **Book early, earlier than you think.** The windows are not deadlines, but the
@@ -313,12 +321,12 @@ is still open to you. See
     <div class="ci-card ci-2">
       <div class="ci-card-num">Window 2</div>
       <div class="ci-card-date">~ Nov 20</div>
-      <div class="ci-card-clusters">Clusters C, D, E<br>one 25-min appointment</div>
+      <div class="ci-card-clusters">Clusters C, D, E<br>one 20-min appointment</div>
     </div>
     <div class="ci-card ci-3">
       <div class="ci-card-num">Window 3</div>
       <div class="ci-card-date">~ Dec 2</div>
-      <div class="ci-card-clusters">Clusters F, G<br>one 25-min appointment</div>
+      <div class="ci-card-clusters">Clusters F, G<br>one 20-min appointment</div>
     </div>
     <div class="ci-card ci-f">
       <div class="ci-card-num">Final Window</div>
@@ -333,7 +341,7 @@ is still open to you. See
 
 ## Every Student Does Every Check-In
 
-Check-ins are **not optional and not selective**. Every student books a 25-minute appointment in every window, three across the semester. Completing the assignments is the preparation that makes the check-in go well. The check-in is where mastery is confirmed.
+Check-ins are **not optional and not selective**. Every student books an appointment in every window, three across the semester. Completing the assignments is the preparation that makes the check-in go well. The check-in is where mastery is confirmed.
 
 Book each appointment when you feel ready, ideally after you have completed the assignments for that window's clusters. You do not have to wait for the window's reference date. You also should not wait until the last week of the window.
 
