@@ -22,7 +22,7 @@ Your final grade is determined by three independent components. **All three must
 
 ### 1 · Window Mastery
 
-The course has 33 skills organized into 7 clusters (A through G). Those clusters are grouped into **three check-in windows**, and you book **one 25-minute appointment per window**:
+The course has 33 skills organized into 7 clusters (A through G). Those clusters are grouped into **three check-in windows**, and you book **one appointment per window** (20 minutes: 12 of coding, 8 of conversation; Window 1's are 25):
 
 | Window | Clusters covered |
 |---|---|
