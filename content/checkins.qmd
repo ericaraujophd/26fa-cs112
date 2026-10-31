@@ -122,7 +122,7 @@ most common way students end up unable to get an appointment at all.
 
 ## How to Book {#how-to-book}
 
-**Window 1 is open.** Bookings go through the instructor's calendar, so every
+**Windows 1 and 2 are open.** Bookings go through the instructor's calendar, so every
 time the page offers is a time he is actually free. Pick one that does not
 collide with your own classes.
 
@@ -133,7 +133,7 @@ collide with your own classes.
 // browser from the visitor's clock. Nothing here is decided at build time, so
 // the row stops being right only when checkin-windows.yml is wrong.
 (function () {
-  var WINDOWS = [{"n":1,"opens":"2026-09-29","reference":"2026-10-23","closes":"2026-12-09","opensLabel":"29 September","referenceLabel":"23 October","closesLabel":"9 December","url":"https://bookings.cloud.microsoft/book/AdvisingDays12@calvincollege.onmicrosoft.com/s/Tx-rOrayH0aWDoFY8HXavw2?ismsaljsauthenabled"},{"n":2,"opens":"2026-10-26","reference":"2026-11-20","closes":"2026-12-09","opensLabel":"26 October","referenceLabel":"20 November","closesLabel":"9 December","url":null},{"n":3,"opens":"2026-11-16","reference":"2026-12-02","closes":"2026-12-09","opensLabel":"16 November","referenceLabel":"2 December","closesLabel":"9 December","url":null}];
+  var WINDOWS = [{"n":1,"opens":"2026-09-29","reference":"2026-10-23","closes":"2026-12-09","opensLabel":"29 September","referenceLabel":"23 October","closesLabel":"9 December","url":"https://bookings.cloud.microsoft/book/AdvisingDays12@calvincollege.onmicrosoft.com/s/Tx-rOrayH0aWDoFY8HXavw2?ismsaljsauthenabled"},{"n":2,"opens":"2026-10-26","reference":"2026-11-20","closes":"2026-12-09","opensLabel":"26 October","referenceLabel":"20 November","closesLabel":"9 December","url":"https://bookings.cloud.microsoft/book/AdvisingDays12@calvincollege.onmicrosoft.com/s/L3379R65Jku52IJn63pEuw2?ismsaljsauthenabled"},{"n":3,"opens":"2026-11-16","reference":"2026-12-02","closes":"2026-12-09","opensLabel":"16 November","referenceLabel":"2 December","closesLabel":"9 December","url":null}];
 
   function todayISO() {
     var d = new Date();
@@ -479,7 +479,7 @@ Skills marked **†** are *persistent*, once taught, they can resurface in any l
 </div>
 
 <div class="wband" style="--wc:#8A6A14;--wcd:#E8C255">
-  <div class="whead"><span class="wname">Window 2</span><span class="wmeta">ref. Nov 20 · one 25-min appointment · 3 questions</span></div>
+  <div class="whead"><span class="wname">Window 2</span><span class="wmeta">ref. Nov 20 · one 20-min appointment · 3 questions</span></div>
   <div class="crow">
     <div class="ccard" style="--cc:#0a6e5e;--ccd:#4FC7AC">
       <div class="chead">C · Linear data structures <span class="ccount">7 skills</span></div>
@@ -510,7 +510,7 @@ Skills marked **†** are *persistent*, once taught, they can resurface in any l
 </div>
 
 <div class="wband" style="--wc:#5a3e7a;--wcd:#B49BDA">
-  <div class="whead"><span class="wname">Window 3</span><span class="wmeta">ref. Dec 2 · one 25-min appointment · 2 questions</span></div>
+  <div class="whead"><span class="wname">Window 3</span><span class="wmeta">ref. Dec 2 · one 20-min appointment · 2 questions</span></div>
   <div class="crow">
     <div class="ccard" style="--cc:#5a3e7a;--ccd:#B49BDA">
       <div class="chead">F · Trees <span class="ccount">5 skills</span></div>
