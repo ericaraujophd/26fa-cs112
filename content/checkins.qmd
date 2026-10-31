@@ -86,7 +86,7 @@ Each appointment is **20 minutes**, in the instructor's office, on **your own la
 
 **Bring a charged laptop** that can open a web page and share its screen. While you code, your whole screen is shared with the instructor, and pasting from outside the check-in page is blocked and reported.
 
-**The check-in page is open to you only during your appointment.** It opens when the instructor starts your check-in and closes when he records your mark. Your mark and written feedback reach you in **Moodle**.
+**The check-in page is open to you only during your appointment.** At your appointment the instructor gives you a code that opens it, once and only for you, and it closes when he records your mark. Your mark and written feedback reach you in **Moodle**.
 
 The coding questions are **drawn at random**, never one you have had before, and the conversation covers whatever the coding did not. In Window 2, for example, the code comes from linked structures and recursion, and Big-Oh comes up in the conversation.
 
