@@ -178,11 +178,12 @@
   <svg viewBox="0 0 220 130" aria-hidden="true" style="width:300px;height:auto;display:block;margin:0.6em auto 0;font-family:'Segoe UI',system-ui,sans-serif"><rect x="50" y="96" width="100" height="16" rx="6" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="3"/><rect x="50" y="76" width="100" height="16" rx="6" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="3"/><rect x="50" y="56" width="100" height="16" rx="6" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="3"/><rect x="50" y="36" width="100" height="16" rx="6" fill="#C49A2C"/></svg>
 </section>
 
-<section class="stackdemo">
+<section class="step-anim stackdemo">
   <h2>The Stack: Last In, First Out</h2>
 <style>
   .stackdemo .step{display:block;padding:2px 10px;border-radius:6px;opacity:1 !important;visibility:visible !important;transition:background .25s,color .25s}
   .stackdemo .step:not(.visible){color:#A8A8A8}
+  .print-pdf .stackdemo .step{color:inherit !important}
   .stackdemo .step.current-fragment{background:#6E1C2E;color:#FFFFFF}
   .stackdemo .step.current-fragment .cm{color:#F3D9A0}
   .stackdemo .cm{color:#8A8A8A}
@@ -206,7 +207,7 @@
   </div>
 </section>
 
-<section>
+<section class="step-anim">
   <h2>Stacks Are Everywhere</h2>
   <style>
     .stackgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:0.2em}
@@ -250,7 +251,7 @@ while (!s.isEmpty()) {
   </div>
 </section>
 
-<section>
+<section class="step-anim">
   <h2>What Goes Inside a Stack?</h2>
   <style>
     .implgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:0.4em}
@@ -284,11 +285,12 @@ while (!s.isEmpty()) {
   </div>
 </section>
 
-<section class="stackdemo">
+<section class="step-anim stackdemo">
   <h2>The Array Stack</h2>
 <style>
   .stackdemo .step{display:block;padding:2px 10px;border-radius:6px;opacity:1 !important;visibility:visible !important;transition:background .25s,color .25s}
   .stackdemo .step:not(.visible){color:#A8A8A8}
+  .print-pdf .stackdemo .step{color:inherit !important}
   .stackdemo .step.current-fragment{background:#6E1C2E;color:#FFFFFF}
   .stackdemo .step.current-fragment .cm{color:#F3D9A0}
   .stackdemo .cm{color:#8A8A8A}
@@ -319,7 +321,7 @@ while (!s.isEmpty()) {
   </div>
 </section>
 
-<section>
+<section class="step-anim">
   <h2>A Stack Built on Your <code>List</code></h2>
     <pre style="font-size:0.42em;width:fit-content;margin:0 auto"><code class="language-cpp" data-trim>
 template &lt;class Item&gt;
@@ -369,11 +371,12 @@ private:
   <svg viewBox="0 0 220 130" aria-hidden="true" style="width:300px;height:auto;display:block;margin:0.6em auto 0;font-family:'Segoe UI',system-ui,sans-serif"><circle cx="82" cy="64" r="14" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="3"/><circle cx="120" cy="64" r="14" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="3"/><circle cx="158" cy="64" r="14" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="3"/><circle cx="44" cy="64" r="14" fill="#C49A2C"/><path d="M30 100 L170 100" stroke="rgba(255,255,255,0.9)" stroke-width="2" stroke-dasharray="5 5"/><text x="44" y="122" text-anchor="middle" font-size="13" fill="rgba(255,255,255,0.9)">front</text><text x="158" y="122" text-anchor="middle" font-size="13" fill="rgba(255,255,255,0.9)">back</text></svg>
 </section>
 
-<section class="stackdemo">
+<section class="step-anim stackdemo">
   <h2>The Queue: First In, First Out</h2>
 <style>
   .stackdemo .step{display:block;padding:2px 10px;border-radius:6px;opacity:1 !important;visibility:visible !important;transition:background .25s,color .25s}
   .stackdemo .step:not(.visible){color:#A8A8A8}
+  .print-pdf .stackdemo .step{color:inherit !important}
   .stackdemo .step.current-fragment{background:#6E1C2E;color:#FFFFFF}
   .stackdemo .step.current-fragment .cm{color:#F3D9A0}
   .stackdemo .cm{color:#8A8A8A}
@@ -387,7 +390,7 @@ private:
   </div>
 </section>
 
-<section>
+<section class="step-anim">
   <h2>Queues Are Everywhere</h2>
   <style>
     .stackgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:0.3em}
@@ -454,11 +457,12 @@ cout &lt;&lt; s.peekTop() &lt;&lt; " " &lt;&lt; q.peekFirst();
   </div>
 </section>
 
-<section class="stackdemo">
+<section class="step-anim stackdemo">
   <h2>The Obvious Array Queue</h2>
 <style>
   .stackdemo .step{display:block;padding:2px 10px;border-radius:6px;opacity:1 !important;visibility:visible !important;transition:background .25s,color .25s}
   .stackdemo .step:not(.visible){color:#A8A8A8}
+  .print-pdf .stackdemo .step{color:inherit !important}
   .stackdemo .step.current-fragment{background:#6E1C2E;color:#FFFFFF}
   .stackdemo .step.current-fragment .cm{color:#F3D9A0}
   .stackdemo .cm{color:#8A8A8A}
@@ -473,11 +477,12 @@ cout &lt;&lt; s.peekTop() &lt;&lt; " " &lt;&lt; q.peekFirst();
   <p class="fragment" data-fragment-index="5" style="font-size:0.56em;margin-top:0.6em">Every remove moves every item: <strong>O(n)</strong>.</p>
 </section>
 
-<section class="stackdemo">
+<section class="step-anim stackdemo">
   <h2>Move the Front, Not the Items</h2>
 <style>
   .stackdemo .step{display:block;padding:2px 10px;border-radius:6px;opacity:1 !important;visibility:visible !important;transition:background .25s,color .25s}
   .stackdemo .step:not(.visible){color:#A8A8A8}
+  .print-pdf .stackdemo .step{color:inherit !important}
   .stackdemo .step.current-fragment{background:#6E1C2E;color:#FFFFFF}
   .stackdemo .step.current-fragment .cm{color:#F3D9A0}
   .stackdemo .cm{color:#8A8A8A}
@@ -491,7 +496,7 @@ cout &lt;&lt; s.peekTop() &lt;&lt; " " &lt;&lt; q.peekFirst();
   </div>
 </section>
 
-<section>
+<section class="step-anim">
   <h2>One Step Forward</h2>
   <pre style="font-size:0.56em;width:fit-content;margin:0.4em auto"><code class="language-cpp" data-trim>
 ++i;
@@ -533,7 +538,7 @@ i = (i + 1) % myCapacity;
   <svg viewBox="0 0 220 130" aria-hidden="true" style="width:300px;height:auto;display:block;margin:0.6em auto 0;font-family:'Segoe UI',system-ui,sans-serif"><text x="34" y="70" text-anchor="middle" font-size="20" font-family="monospace" fill="rgba(255,255,255,0.9)">"cat"</text><path d="M74 64 L98 64" stroke="#C49A2C" stroke-width="3.5"/><path d="M96 56 L110 64 L96 72 Z" fill="#C49A2C"/><rect x="120" y="14" width="64" height="20" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="2.5"/><text x="194" y="29" font-size="12" fill="rgba(255,255,255,0.9)" font-family="monospace">0</text><rect x="120" y="36" width="64" height="20" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="2.5"/><text x="194" y="51" font-size="12" fill="rgba(255,255,255,0.9)" font-family="monospace">1</text><rect x="120" y="58" width="64" height="20" fill="#C49A2C" stroke="rgba(255,255,255,0.9)" stroke-width="2.5"/><text x="194" y="73" font-size="12" fill="rgba(255,255,255,0.9)" font-family="monospace">2</text><rect x="120" y="80" width="64" height="20" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="2.5"/><text x="194" y="95" font-size="12" fill="rgba(255,255,255,0.9)" font-family="monospace">3</text><rect x="120" y="102" width="64" height="20" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="2.5"/><text x="194" y="117" font-size="12" fill="rgba(255,255,255,0.9)" font-family="monospace">4</text></svg>
 </section>
 
-<section>
+<section class="step-anim">
   <h2>Can We Beat O(lg n)?</h2>
   <table style="font-size:0.5em">
     <thead><tr><th>Structure</th><th>Insert</th><th>Remove</th><th>Search</th></tr></thead>
@@ -560,7 +565,7 @@ private:
   </div>
 </section>
 
-<section>
+<section class="step-anim">
   <h2>A Simple Hash Function</h2>
   <pre style="font-size:0.48em;width:fit-content;margin:0.2em auto"><code class="language-cpp" data-trim>
 unsigned HashTable::hash(const string&amp; word) const {
@@ -573,11 +578,12 @@ unsigned HashTable::hash(const string&amp; word) const {
   <span class="fragment" data-fragment-index="5">O(1): two characters and a <code>%</code>, however many words are in the table.</span></p>
 </section>
 
-<section class="stackdemo">
+<section class="step-anim stackdemo">
   <h2><code>insert</code>, Step by Step</h2>
 <style>
   .stackdemo .step{display:block;padding:2px 10px;border-radius:6px;opacity:1 !important;visibility:visible !important;transition:background .25s,color .25s}
   .stackdemo .step:not(.visible){color:#A8A8A8}
+  .print-pdf .stackdemo .step{color:inherit !important}
   .stackdemo .step.current-fragment{background:#6E1C2E;color:#FFFFFF}
   .stackdemo .step.current-fragment .cm{color:#F3D9A0}
   .stackdemo .cm{color:#8A8A8A}
@@ -592,11 +598,12 @@ unsigned HashTable::hash(const string&amp; word) const {
   </div>
 </section>
 
-<section class="stackdemo">
+<section class="step-anim stackdemo">
   <h2><code>contains</code></h2>
 <style>
   .stackdemo .step{display:block;padding:2px 10px;border-radius:6px;opacity:1 !important;visibility:visible !important;transition:background .25s,color .25s}
   .stackdemo .step:not(.visible){color:#A8A8A8}
+  .print-pdf .stackdemo .step{color:inherit !important}
   .stackdemo .step.current-fragment{background:#6E1C2E;color:#FFFFFF}
   .stackdemo .step.current-fragment .cm{color:#F3D9A0}
   .stackdemo .cm{color:#8A8A8A}
@@ -611,7 +618,7 @@ unsigned HashTable::hash(const string&amp; word) const {
   </div>
 </section>
 
-<section>
+<section class="step-anim">
   <h2>How Is <code>contains</code> O(1)?</h2>
   <p style="font-size:0.62em">It walks a bucket's list, and walking a list is O(n).</p>
   <p class="fragment" data-fragment-index="1" style="font-size:0.62em"><strong>Yes. But what is n?</strong></p>
@@ -620,7 +627,7 @@ unsigned HashTable::hash(const string&amp; word) const {
   <p class="fragment" data-fragment-index="4" style="font-size:0.58em">Enough buckets and a hash that spreads: n is about 1, so O(1). Everything in one bucket: O(n).</p>
 </section>
 
-<section>
+<section class="step-anim">
   <h2>Your Turn: <code>remove("Eve")</code></h2>
   <div style="display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:20px;align-items:center">
     <div>
@@ -636,7 +643,7 @@ unsigned HashTable::hash(const string&amp; word) const {
   </div>
 </section>
 
-<section>
+<section class="step-anim">
   <h2>A Good Hash Function</h2>
   <ol style="font-size:0.6em">
     <li class="fragment" data-fragment-index="1"><strong>Fast</strong>: O(1), it never looks at the table</li>
@@ -647,7 +654,7 @@ unsigned HashTable::hash(const string&amp; word) const {
   <p class="fragment" data-fragment-index="5" style="font-size:0.56em">First + last character: fast and deterministic. Does it spread? You measure that in a11.</p>
 </section>
 
-<section>
+<section class="step-anim">
   <h2>Too Many Collisions?</h2>
   <p style="font-size:0.58em"><strong>Load factor</strong> = words / buckets. Rule of thumb: 2 buckets per word.</p>
   <div class="stackgrid" style="margin-top:0.4em">
