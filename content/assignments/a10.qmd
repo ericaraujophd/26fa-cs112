@@ -27,7 +27,7 @@ By the end of this assignment, you will be able to:
 - Say what an Abstract Data Type is, and why the operations are the definition
   and the storage is not
 - Implement a Stack whose `push` and `pop` are both O(1)
-- Implement a Queue whose `enqueue` and `dequeue` are both O(1)
+- Implement a Queue whose `add` and `remove` are both O(1)
 - Explain why the obvious array queue is O(n), and what a circular array changes
 - Use the remainder operator to move an index around a ring
 - Explain why "front equals back" is ambiguous, and defend one of the two
@@ -38,7 +38,7 @@ By the end of this assignment, you will be able to:
 ---
 
 This assignment covers course skills **C5** (implement a stack with O(1) push
-and pop) and **C6** (implement a queue with O(1) enqueue and dequeue), from
+and pop) and **C6** (implement a queue with O(1) add and remove), from
 cluster **C**, assessed at **Window 2** on Nov 20.
 
 ::: {.callout-note}
@@ -317,7 +317,7 @@ types:
 
 ```cpp
 throw StackException("pop()", "stack is empty");
-throw QueueException("enqueue()", "queue is full");
+throw QueueException("add()", "queue is full");
 ```
 
 Two fields, not one sentence: *where* the trouble happened is something the
@@ -352,14 +352,14 @@ strings are for whoever reads the output, so make them useful.
 
 A Queue is first in, first out. Items leave in the order they arrived.
 
-Try the obvious design. Keep the front of the line at index 0. Enqueue at the
-end, like a stack. Dequeue from the front:
+Try the obvious design. Keep the front of the line at index 0. Add at the
+end, like a stack. Remove from the front:
 
 ```
           ┌─────┬─────┬─────┬─────┬─────┬─────┐
           │ Ada │Grace│Alan │  ?  │  ?  │  ?  │
           └─────┴─────┴─────┴─────┴─────┴─────┘
-             ▲ dequeue takes this one
+             ▲ remove takes this one
 ```
 
 Ada leaves. Now index 0 is empty and Grace is at index 1, but we said the front
@@ -372,7 +372,7 @@ of the line lives at index 0. So we shuffle everyone down:
 ```
 
 It works. It is also **O(n)**, and you have met this exact cost before: it is
-`Vec::prepend` from week 4, wearing a different hat. Every dequeue touches every
+`Vec::prepend` from week 4, wearing a different hat. Every remove touches every
 remaining item. A queue of ten thousand jobs does ten thousand moves to serve
 one of them, and the second one does 9,999 more.
 
@@ -381,8 +381,8 @@ one of them, and the second one does 9,999 more.
 queue that shifts is a different data structure with the same interface.
 
 Four of the thirty-six checks read `Stack.h` and `Queue.h` as text and fail you
-if there is a loop inside `push`, `pop`, `enqueue`, `dequeue`, `peekTop`,
-`peekFront`, `getSize`, `isEmpty` or `isFull`. A shifting queue gives every
+if there is a loop inside `push`, `pop`, `add`, `remove`, `peekTop`,
+`peekFirst`, `peekLast`, `getSize`, `isEmpty` or `isFull`. A shifting queue gives every
 right answer, so no behavioral check could ever catch it, and timing it on a
 shared grading machine would not be trustworthy.
 :::
@@ -390,7 +390,7 @@ shared grading machine would not be trustworthy.
 So: **do not move the data. Move the ends.**
 
 Keep an index that says where the front currently is, and stop insisting it is
-zero. Dequeue becomes "add one to `myFront`", which is O(1) and obviously right:
+zero. Remove becomes "add one to `myFront`", which is O(1) and obviously right:
 
 ```
           ┌─────┬─────┬─────┬─────┬─────┬─────┐
@@ -459,7 +459,7 @@ For an array of 6, that takes 0→1→2→3→4→5→**0**→1→… and never 
 **Every index you move in `Queue.h` moves with `% mySlots`.** If you have
 written `+ 1` without a `%` anywhere in that file, that is a bug waiting for the
 right test to find it. There are exactly two places an index moves: the end of
-`enqueue` and the middle of `dequeue`.
+`add` and the middle of `remove`.
 :::
 
 ### Watch it go round
@@ -474,38 +474,38 @@ start            ┌─────┬─────┬─────┬──
                  └─────┴─────┴─────┴─────┘
                    FB
 
-enqueue A        ┌─────┬─────┬─────┬─────┐
+add A        ┌─────┬─────┬─────┬─────┐
                  │  A  │  ?  │  ?  │  ?  │      F=0  B=1   size 1
                  └─────┴─────┴─────┴─────┘
                     F     B
 
-enqueue B        ┌─────┬─────┬─────┬─────┐
+add B        ┌─────┬─────┬─────┬─────┐
                  │  A  │  B  │  ?  │  ?  │      F=0  B=2   size 2
                  └─────┴─────┴─────┴─────┘
                     F           B
 
-enqueue C        ┌─────┬─────┬─────┬─────┐
+add C        ┌─────┬─────┬─────┬─────┐
                  │  A  │  B  │  C  │  ?  │      F=0  B=3   size 3 : FULL
                  └─────┴─────┴─────┴─────┘
                     F                 B
 
-dequeue → A      ┌─────┬─────┬─────┬─────┐
+remove → A      ┌─────┬─────┬─────┬─────┐
                  │ --- │  B  │  C  │  ?  │      F=1  B=3   size 2
                  └─────┴─────┴─────┴─────┘
                           F           B
 
-dequeue → B      ┌─────┬─────┬─────┬─────┐
+remove → B      ┌─────┬─────┬─────┬─────┐
                  │ --- │ --- │  C  │  ?  │      F=2  B=3   size 1
                  └─────┴─────┴─────┴─────┘
                                 F     B
 
-enqueue D        ┌─────┬─────┬─────┬─────┐
+add D        ┌─────┬─────┬─────┬─────┐
                  │ --- │ --- │  C  │  D  │      F=2  B=0   size 2
                  └─────┴─────┴─────┴─────┘
                    B            F
                    ▲ B wrapped: (3 + 1) % 4 = 0
 
-enqueue E        ┌─────┬─────┬─────┬─────┐
+add E        ┌─────┬─────┬─────┬─────┐
                  │  E  │ --- │  C  │  D  │      F=2  B=1   size 3 : FULL
                  └─────┴─────┴─────┴─────┘
                           B     F
@@ -518,8 +518,8 @@ that is fine, because `myFront` is the only thing that decides who is next.
 
 ::: {.callout-tip}
 **Do this one on paper before you write TODO 7 and TODO 9.** Capacity 3 again,
-but a 4-slot array: enqueue A, B, C, dequeue, dequeue, enqueue D, enqueue E,
-dequeue, dequeue, dequeue. Write down `F` and `B` after every single step. If
+but a 4-slot array: add A, B, C, remove, remove, add D, add E,
+remove, remove, remove. Write down `F` and `B` after every single step. If
 your paper trace and your code ever disagree, the paper is right and you have
 found your bug in about ninety seconds.
 :::
@@ -539,7 +539,7 @@ full             ┌─────┬─────┬─────┬──
 ```
 
 **`F == B` in both.** An empty queue and a completely full one are, as far as
-the two indices are concerned, identical. Every enqueue moves `B` forward one;
+the two indices are concerned, identical. Every add moves `B` forward one;
 after four of them in a 4-slot array, `B` has gone all the way round and landed
 back where it started.
 
@@ -577,8 +577,8 @@ capacity 3, array of 4, the fullest this is ever allowed to get:
 | empty | `myFront == myBack` |
 | full | `(myBack + 1) % mySlots == myFront` |
 | size | `(myBack + mySlots - myFront) % mySlots` |
-| enqueue | store at `myBack`, then `myBack = (myBack + 1) % mySlots` |
-| dequeue | read at `myFront`, then `myFront = (myFront + 1) % mySlots` |
+| add | store at `myBack`, then `myBack = (myBack + 1) % mySlots` |
+| remove | read at `myFront`, then `myFront = (myFront + 1) % mySlots` |
 | unused member | `myCount` |
 
 Read the "full" row out loud: *the queue is full when adding one more would make
@@ -604,7 +604,7 @@ ask `myCount` instead. The array can be exactly as long as the capacity, and
 every slot gets used.
 
 The cost is that `myCount` is a third thing that has to stay correct: every
-`enqueue` has to remember `++myCount` and every `dequeue` has to remember
+`add` has to remember `++myCount` and every `remove` has to remember
 `--myCount`, forever, in every path through the function.
 
 ```
@@ -622,8 +622,8 @@ capacity 3, array of 3, holding all three:
 | empty | `myCount == 0` |
 | full | `myCount == myCapacity` |
 | size | `myCount` |
-| enqueue | store at `(myFront + myCount) % mySlots`, then `++myCount` |
-| dequeue | read at `myFront`, then `myFront = (myFront + 1) % mySlots` and `--myCount` |
+| add | store at `(myFront + myCount) % mySlots`, then `++myCount` |
+| remove | read at `myFront`, then `myFront = (myFront + 1) % mySlots` and `--myCount` |
 | unused member | `myBack` |
 
 ### Which one should you pick?
@@ -680,21 +680,27 @@ decided on.
 **TODO 6**, `isEmpty`, `isFull`, `getSize`, from your technique's table above.
 One line each. Do not write a loop in `getSize`; there is a check for that.
 
-**TODO 7**, `enqueue`. Refuse if full, store at the back, move the back index
+**TODO 7**, `add`. Refuse if full, store at the back, move the back index
 (with `%`). Refusing must leave every index exactly as it was.
 
-**TODO 8**, `peekFront`. Refuse if empty, otherwise return `myArray[myFront]`.
-Unlike the Stack, `myFront` is the index of a real item, not of a free slot, so
-there is no `- 1` here.
+**TODO 8**, `peekFirst` and `peekLast`. Both refuse if empty.
 
-**TODO 9**, `dequeue`. Refuse if empty, read the front, move `myFront` (with
+- `peekFirst` returns `myArray[myFront]`. Unlike the Stack, `myFront` is the
+  index of a real item, not of a free slot, so there is no `- 1` here.
+- `peekLast` returns the newest item, and no member points straight at it. In
+  the wasted-slot technique it is one step *behind* `myBack`, and one step
+  behind slot 0 is slot `mySlots - 1`: add `mySlots` before you subtract, the
+  same unsigned trap as `getSize`. In the count technique it is `myCount - 1`
+  steps after `myFront`, wrapped with `%`.
+
+**TODO 9**, `remove`. Refuse if empty, read the front, move `myFront` (with
 `%`), adjust `myCount` if that is your technique, return the item. Nothing is
 erased and nothing is moved, same as `Stack::pop`, for the same reason.
 
 ::: {.callout-warning}
 **A capacity of 1 is legal and it is where mistakes show up.** With the
-wasted-slot technique that is an array of 2. Try it on paper: enqueue, dequeue,
-enqueue, dequeue. There is a check for it.
+wasted-slot technique that is an array of 2. Try it on paper: add, remove,
+add, remove. There is a check for it.
 :::
 
 ---
@@ -742,7 +748,7 @@ make checks
 **A suggested order, with the score you should see.** Start at 5. TODO 1 takes
 you to **6**; TODOs 2–4 finish the Stack and take you to **19**. Then read §7
 properly. TODOs 5 and 6 only get you to **21**, most of the Queue checks need
-`enqueue` before they can test anything at all, and 7, 8 and 9 together take
+`add` before they can test anything at all, and 7, 8 and 9 together take
 you the rest of the way to **36**.
 
 So the Queue looks unrewarding right up until it suddenly is not. Do not read
@@ -754,7 +760,7 @@ index in `peekTop` or `pop`, and §4 has the picture.
 
 ::: {.callout-note}
 **The two long checks** run five thousand pushes and pops, and five thousand
-enqueues and dequeues, in an order generated by a formula, and compare every
+adds and removes, in an order generated by a formula, and compare every
 single operation against what the Standard Library's containers do with the same
 sequence. They are the ones most likely to catch a wrap-around mistake that only
 shows up on a particular pattern. They are also completely deterministic, so if
@@ -789,7 +795,7 @@ deadline on this assignment beyond the last day of classes.
 In **a12** you will solve a maze twice with the same code, once using a Stack and
 once using a Queue, and watch the two containers produce depth-first and
 breadth-first search from an otherwise identical algorithm. In **a13** a Queue
-*is* the snake: enqueue the new head, dequeue the tail, and the animation falls
+*is* the snake: add the new head, remove the tail, and the animation falls
 out of it.
 
 Both of those assignments ship a working `Stack` and `Queue` in case yours is

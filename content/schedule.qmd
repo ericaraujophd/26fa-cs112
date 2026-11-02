@@ -674,7 +674,7 @@ learning objectives are there too, folded away until you want them.
             <p class="slo-section-label">🛠️ Skills</p>
             <ul class="slo-list">
               <li><span class="bloom-dot bloom-create" title="Create"></span>Implement a Stack with O(1) push and pop.</li>
-              <li><span class="bloom-dot bloom-create" title="Create"></span>Implement a Queue with O(1) enqueue and dequeue.</li>
+              <li><span class="bloom-dot bloom-create" title="Create"></span>Implement a Queue with O(1) add and remove.</li>
               <li><span class="bloom-dot bloom-create" title="Create"></span>Implement and use a hash table with a reasonable hash function.</li>
             </ul>
           </div>

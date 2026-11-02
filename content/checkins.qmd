@@ -488,7 +488,7 @@ Skills marked **†** are *persistent*, once taught, they can resurface in any l
       <div class="srow"><span class="sid">C3</span><span class="sdesc">Implement a linked list with correct pointer manipulation</span><span class="sasg">a08</span></div>
       <div class="srow"><span class="sid">C4</span><span class="sdesc">Compare linked list and dynamic array for a given use case</span><span class="sasg">in class + a09 findings</span></div>
       <div class="srow"><span class="sid">C5</span><span class="sdesc">Implement a stack with O(1) push and pop</span><span class="sasg">a10</span></div>
-      <div class="srow"><span class="sid">C6</span><span class="sdesc">Implement a queue with O(1) enqueue and dequeue</span><span class="sasg">a10, a13</span></div>
+      <div class="srow"><span class="sid">C6</span><span class="sdesc">Implement a queue with O(1) add and remove</span><span class="sasg">a10, a13</span></div>
       <div class="srow"><span class="sid">C7</span><span class="sdesc">Implement and use a hash table with a reasonable hash function</span><span class="sasg">a11</span></div>
       <div class="sample"><b>A question might ask</b>Here is a <code>Node</code> struct. Write a function that removes the node at a given index from a singly linked list. Handle the edge cases.</div>
     </div>

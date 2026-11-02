@@ -325,7 +325,7 @@ of the other end. Slower, but not wrong.
 **With the Queue it is fatal.** Breadth-first search expands an entire ring of
 cells before it takes any of them back out, so the duplicates pile up instead
 of being consumed: the queue overruns the capacity you gave it, and a cell's
-parent can be overwritten by a *longer* route before it is ever dequeued. There
+parent can be overwritten by a *longer* route before it is ever removed. There
 goes the shortest path, which was the only reason to use a Queue.
 :::
 
@@ -364,8 +364,8 @@ Copy TODO 3. Change three things:
 
 ```
 Stack<Cell>  →  Queue<Cell>
-push         →  enqueue
-pop          →  dequeue
+push         →  add
+pop          →  remove
 ```
 
 That is the entire difference. Same visited grid, same parents, same loop.

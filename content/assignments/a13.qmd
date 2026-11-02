@@ -16,9 +16,9 @@ be the lighter one. TODO 3 is the heart of it and is four lines long.
 By the end of this assignment, you will be able to:
 
 - Recognize a queue in the wild, in a place where nobody labeled it one
-- Implement moving, growing and dying in terms of one enqueue and one dequeue
+- Implement moving, growing and dying in terms of one add and one remove
   per frame
-- Explain why "growing" needs no code of its own, only a dequeue that does not
+- Explain why "growing" needs no code of its own, only a remove that does not
   happen
 - Use modular arithmetic to wrap a coordinate round the edge of a grid
 - Say why a game with random elements can still be graded, and what makes that
@@ -27,7 +27,7 @@ By the end of this assignment, you will be able to:
 ---
 
 This assignment applies course skill **C6** (implement a queue with O(1)
-enqueue and dequeue) rather than teaching a new one. It is week 10's second
+add and remove) rather than teaching a new one. It is week 10's second
 assignment, and it is the shorter of the two on purpose, a12 is the one with
 the weight in it.
 
@@ -55,15 +55,15 @@ disappears at the back. Nothing in the middle moves at all.
 The snake's body is a `Queue<Segment>`, and the entire animation is:
 
 ```cpp
-myBody.enqueue(newHead);      // grow a head
-myBody.dequeue();             // lose a tail
+myBody.add(newHead);      // grow a head
+myBody.remove();             // lose a tail
 ```
 
 once per frame.
 
 And then eating:
 
-> **To grow, skip the dequeue.**
+> **To grow, skip the remove.**
 
 That is all of it. The head keeps advancing, nothing leaves at the back, and
 the snake is one segment longer for every frame you skip. There is no "grow"
@@ -205,7 +205,7 @@ otherwise:                  the tail leaves the front, freeing its square
 ```
 
 That third line is eating. `step()` adds `GROW_BY` to `myGrowth` when the snake
-eats; each frame after that skips the dequeue once. The frame that eats is
+eats; each frame after that skips the remove once. The frame that eats is
 itself the first frame of growing, so a snake of 1 becomes a snake of
 `1 + GROW_BY` over `GROW_BY` frames.
 

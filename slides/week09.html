@@ -102,60 +102,119 @@
 
 <section>
   <h2>Abstract Data Type</h2>
-  <p style="font-size:0.72em">An ADT is a promise about <strong>behavior</strong>, with no commitment about <strong>storage</strong>.</p>
-  <div class="two-col">
-    <div>
-      <h3>The ADT says</h3>
-      <ul style="font-size:0.58em">
-        <li>what operations exist</li>
-        <li>what they mean</li>
-        <li>what they cost</li>
-      </ul>
-    </div>
-    <div>
-      <h3>The ADT doesn't say</h3>
-      <ul style="font-size:0.58em">
-        <li>array or linked list</li>
-        <li>where the front is</li>
-        <li>how it grows</li>
-      </ul>
-    </div>
-  </div>
-  <div class="callout">Interface versus implementation, the same idea as week 3's <code>public</code>/<code>private</code>, now applied to a whole data structure.</div>
+  <p style="font-size:0.56em;margin:0 0 0.4em">An ADT is a <strong>promise</strong>: which operations you may call, what values it holds, what each one costs. Never how the data is stored.</p>
+  
+<svg viewBox="0 0 880 300" role="img" aria-label="A machine: its front panel, the ADT, has the buttons push, pop, peekTop and isEmpty. Behind a wall, inside, either an array or a linked list does the work." style="width:100%;height:auto;font-family:'Segoe UI',system-ui,sans-serif">
+  <!-- the front panel: the ADT -->
+  <text x="190" y="22" text-anchor="middle" font-size="17" font-weight="700" fill="#6E1C2E">The ADT: what the user sees</text>
+  <rect x="40" y="36" width="300" height="236" rx="18" fill="#FFFFFF" stroke="#6E1C2E" stroke-width="3"/>
+  <rect x="62" y="56" width="256" height="44" rx="8" fill="#6E1C2E"/>
+  <text x="190" y="84" text-anchor="middle" font-size="16" fill="#FFFFFF" font-weight="600">Stack · last in, first out</text>
+  <g font-family="'Fira Code',Consolas,monospace" font-size="16" fill="#6E1C2E">
+    <rect x="62" y="116" width="122" height="40" rx="20" fill="#F7EDEF" stroke="#6E1C2E" stroke-width="1.5"/><text x="123" y="142" text-anchor="middle">push(x)</text>
+    <rect x="196" y="116" width="122" height="40" rx="20" fill="#F7EDEF" stroke="#6E1C2E" stroke-width="1.5"/><text x="257" y="142" text-anchor="middle">pop()</text>
+    <rect x="62" y="166" width="122" height="40" rx="20" fill="#F7EDEF" stroke="#6E1C2E" stroke-width="1.5"/><text x="123" y="192" text-anchor="middle">peekTop()</text>
+    <rect x="196" y="166" width="122" height="40" rx="20" fill="#F7EDEF" stroke="#6E1C2E" stroke-width="1.5"/><text x="257" y="192" text-anchor="middle">isEmpty()</text>
+  </g>
+  <text x="190" y="240" text-anchor="middle" font-size="15" fill="#3a3a3a">every button: O(1)</text>
+
+  <!-- the wall -->
+  <line x1="410" y1="30" x2="410" y2="272" stroke="#9A9A9A" stroke-width="2" stroke-dasharray="7 7"/>
+  <text x="402" y="292" text-anchor="end" font-size="13" fill="#7A7A7A">the user never looks past this line</text>
+
+  <!-- the inside: data structures -->
+  <text x="650" y="22" text-anchor="middle" font-size="17" font-weight="700" fill="#2B2B2B">Inside: a data structure</text>
+  <text x="470" y="70" font-size="15" fill="#3a3a3a">an array, top at the end</text>
+  <g font-family="'Fira Code',Consolas,monospace" font-size="15" fill="#2B2B2B" stroke="#2B2B2B" stroke-width="1.5">
+    <rect x="470" y="82" width="60" height="40" fill="#FFFFFF"/><rect x="530" y="82" width="60" height="40" fill="#FFFFFF"/>
+    <rect x="590" y="82" width="60" height="40" fill="#FFFFFF"/><rect x="650" y="82" width="60" height="40" fill="#FFFFFF"/>
+    <rect x="710" y="82" width="60" height="40" fill="#FFFFFF"/>
+  </g>
+  <g font-family="'Fira Code',Consolas,monospace" font-size="15" fill="#2B2B2B" text-anchor="middle">
+    <text x="500" y="107">blue</text><text x="560" y="107">green</text><text x="620" y="107">white</text>
+  </g>
+  <path d="M620 150 L620 128" stroke="#C49A2C" stroke-width="3" marker-end="url(#adtArrow)"/>
+  <text x="620" y="168" text-anchor="middle" font-size="14" font-weight="700" fill="#A07D1C">top</text>
+
+  <text x="470" y="206" font-size="15" fill="#3a3a3a">or a linked list, top at the front</text>
+  <g font-family="'Fira Code',Consolas,monospace" font-size="15" fill="#2B2B2B">
+    <rect x="470" y="218" width="76" height="38" rx="6" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.5"/><text x="508" y="242" text-anchor="middle">white</text>
+    <rect x="590" y="218" width="76" height="38" rx="6" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.5"/><text x="628" y="242" text-anchor="middle">green</text>
+    <rect x="710" y="218" width="76" height="38" rx="6" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.5"/><text x="748" y="242" text-anchor="middle">blue</text>
+  </g>
+  <path d="M546 237 L586 237" stroke="#2B2B2B" stroke-width="1.8" marker-end="url(#adtArrowInk)"/>
+  <path d="M666 237 L706 237" stroke="#2B2B2B" stroke-width="1.8" marker-end="url(#adtArrowInk)"/>
+  <path d="M508 288 L508 262" stroke="#C49A2C" stroke-width="3" marker-end="url(#adtArrow)"/>
+  <text x="520" y="284" font-size="14" font-weight="700" fill="#A07D1C">top</text>
+
+  <defs>
+    <marker id="adtArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#C49A2C"/></marker>
+    <marker id="adtArrowInk" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#2B2B2B"/></marker>
+  </defs>
+</svg>
+  <p style="font-size:0.6em;margin-top:0.4em">The <strong style="color:#6E1C2E">Stack is an ADT</strong>. An array or a linked list is a <strong>data structure</strong>: one way to keep the promise.</p>
 </section>
 
 <section>
+  <h2>ADTs and How They Are Built</h2>
+  <table style="font-size:0.5em">
+    <thead><tr><th>ADT</th><th>Operations</th><th>Promise</th><th>Built with</th></tr></thead>
+    <tbody>
+      <tr><td><strong>List</strong></td><td><code>get(i)</code>, <code>insert</code>, <code>remove</code></td><td>items in positions 0 to n&minus;1</td><td>dynamic array (your <code>Vec</code>, week 4) or linked list (your <code>List</code>, week 6)</td></tr>
+      <tr><td><strong>Stack</strong></td><td><code>push</code>, <code>pop</code>, <code>peekTop</code></td><td>last in, first out</td><td>array or linked list: <strong>today</strong></td></tr>
+      <tr><td><strong>Queue</strong></td><td><code>add</code>, <code>remove</code>, <code>peekFirst</code>, <code>peekLast</code></td><td>first in, first out</td><td>circular array or linked list: <strong>Wednesday</strong></td></tr>
+      <tr><td><strong>Map</strong></td><td><code>put(key, value)</code>, <code>get(key)</code></td><td>one value per key</td><td>hash table (<strong>Friday</strong>) or search tree (week 11)</td></tr>
+      <tr><td><strong>Set</strong></td><td><code>add</code>, <code>contains</code>, <code>remove</code></td><td>no duplicates</td><td>hash table or search tree (week 11)</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:0.56em;margin-top:0.6em">Python's <code>list</code>, <code>dict</code> and <code>set</code> from CS108 are three of these, built for you. One ADT, several data structures: choosing between them is what this course is about.</p>
+</section>
+
+<section class="stackdemo">
   <h2>The Stack: Last In, First Out</h2>
-  <div class="two-col">
+<style>
+  .stackdemo .step{display:block;padding:2px 10px;border-radius:6px;opacity:1 !important;visibility:visible !important;transition:background .25s,color .25s}
+  .stackdemo .step:not(.visible){color:#A8A8A8}
+  .stackdemo .step.current-fragment{background:#6E1C2E;color:#FFFFFF}
+  .stackdemo .step.current-fragment .cm{color:#F3D9A0}
+  .stackdemo .cm{color:#8A8A8A}
+  .stackdemo .code{font-family:'Fira Code',Consolas,monospace;font-size:0.48em;line-height:1.7;text-align:left;background:#FFFFFF;border:1px solid #DDD3C7;border-radius:10px;padding:14px 10px;white-space:pre}
+</style>
+  <div style="display:grid;grid-template-columns:1.45fr 1fr;gap:28px;align-items:center">
     <div>
-      <pre style="font-size:0.46em"><code class="language-cpp" data-trim>
-push(item)   // put on top
-pop()        // take off top
-peekTop()    // look, don't take
-isEmpty()
-getSize()
-      </code></pre>
+      <div class="code"><span class="step fragment" data-fragment-index="1">s.push("blue");</span><span class="step fragment" data-fragment-index="2">s.push("green");</span><span class="step fragment" data-fragment-index="3">s.push("white");</span><span class="step fragment" data-fragment-index="4">s.peekTop();  <span class="cm">// "white", still there</span></span><span class="step fragment" data-fragment-index="5">s.pop();      <span class="cm">// "white"</span></span><span class="step fragment" data-fragment-index="6">s.pop();      <span class="cm">// "green"</span></span></div>
+      <p style="font-size:0.5em;margin-top:0.6em">Last in, first out: <strong>white</strong> went on last and comes off first. <code>push</code>, <code>pop</code> and <code>peekTop</code> all work at the <strong>top</strong>, and only there.</p>
     </div>
     <div>
-      <div class="mem-diagram" style="font-size:0.55em">
-        <div class="mem-row"><span class="mem-lbl">top →</span><span class="mem-val">white</span></div>
-        <div class="mem-row"><span class="mem-val">green</span></div>
-        <div class="mem-row"><span class="mem-val">blue</span></div>
-      </div>
-    </div>
+<svg viewBox="0 0 360 310" role="img" aria-label="A stack: blue, then green, then white are pushed; peekTop shows white; pop takes white, then green" style="width:100%;height:auto;font-family:'Segoe UI',system-ui,sans-serif">
+  <path d="M66 60 L66 262 L294 262 L294 60" fill="none" stroke="#6E1C2E" stroke-width="4" stroke-linecap="round"/>
+  <text x="180" y="292" text-anchor="middle" font-size="15" fill="#6E1C2E" font-weight="700">only the top is reachable</text>
+  <g class="fragment" data-fragment-index="1"><rect x="80" y="222" width="200" height="34" rx="10" fill="#3E6A99" stroke="#2B2B2B" stroke-width="2"/><text x="180" y="245" text-anchor="middle" font-size="18" font-family="'Fira Code',Consolas,monospace" fill="#FFFFFF">blue</text></g>
+  <g class="fragment fade-out" data-fragment-index="6"><g class="fragment" data-fragment-index="2"><rect x="80" y="184" width="200" height="34" rx="10" fill="#4B8A4E" stroke="#2B2B2B" stroke-width="2"/><text x="180" y="207" text-anchor="middle" font-size="18" font-family="'Fira Code',Consolas,monospace" fill="#FFFFFF">green</text></g></g>
+  <g class="fragment fade-out" data-fragment-index="5"><g class="fragment" data-fragment-index="3"><rect x="80" y="146" width="200" height="34" rx="10" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><text x="180" y="169" text-anchor="middle" font-size="18" font-family="'Fira Code',Consolas,monospace" fill="#2B2B2B">white</text></g>
+    <g class="fragment" data-fragment-index="4"><rect x="72" y="138" width="216" height="50" rx="14" fill="none" stroke="#C49A2C" stroke-width="4"/>
+      <text x="300" y="168" font-size="15" font-weight="700" fill="#A07D1C">top</text></g></g>
+</svg></div>
   </div>
-  <div class="callout">A stack of plates. Push green, push white, pop; you get <strong>white</strong> back, because it was last on.</div>
 </section>
 
 <section>
   <h2>Stacks Are Everywhere</h2>
-  <ul>
-    <li><strong>Ctrl-Z</strong>: the last change is the first undone</li>
-    <li><strong>Browser back button</strong>: the page you just left is on top</li>
-    <li><strong>The run-time stack</strong>: functions return in reverse call order</li>
-    <li><strong>Matching brackets</strong>: push an opener, pop when you meet its closer</li>
-  </ul>
-  <div class="callout">Whenever "most recent first" is the right answer, a stack is the right structure. You'll meet the run-time stack again next week, in recursion.</div>
+  <style>
+    .stackgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:0.2em}
+    .stackcard{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 10px 10px;border:1px solid #DDD3C7;border-radius:12px;background:#FFFFFF;text-align:center}
+    .stackcard strong{font-size:0.56em;color:#6E1C2E}
+    .stackcard span{font-size:0.44em;line-height:1.3;color:#3A3A3A}
+  </style>
+  <div class="stackgrid">
+    <div class="fragment fade-up stackcard" data-fragment-index="1"><svg viewBox="0 0 160 100" aria-hidden="true" style="width:100%;height:132px"><ellipse cx="80" cy="84" rx="46" ry="9" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><ellipse cx="80" cy="74" rx="46" ry="9" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><ellipse cx="80" cy="64" rx="46" ry="9" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><ellipse cx="80" cy="54" rx="46" ry="9" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><ellipse cx="80" cy="40" rx="46" ry="9" fill="#F7EDEF" stroke="#6E1C2E" stroke-width="2.5"/><path d="M80 6 L80 24" stroke="#C49A2C" stroke-width="3"/><path d="M73 17 L80 25 L87 17" fill="none" stroke="#C49A2C" stroke-width="3"/></svg><strong>Plates</strong><span>you take the one put back last</span></div>
+    <div class="fragment fade-up stackcard" data-fragment-index="2"><svg viewBox="0 0 160 100" aria-hidden="true" style="width:100%;height:132px"><rect x="56" y="8" width="48" height="86" rx="8" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><path d="M62 86 Q80 78 98 86" fill="none" stroke="#2B2B2B" stroke-width="2"/><path d="M62 76 Q80 68 98 76" fill="none" stroke="#2B2B2B" stroke-width="2"/><path d="M62 66 Q80 58 98 66" fill="none" stroke="#2B2B2B" stroke-width="2"/><path d="M62 56 Q80 48 98 56" fill="none" stroke="#2B2B2B" stroke-width="2"/><path d="M62 46 Q80 38 98 46" fill="none" stroke="#2B2B2B" stroke-width="2"/><path d="M62 34 Q80 26 98 34" fill="none" stroke="#6E1C2E" stroke-width="3"/></svg><strong>A tube of chips</strong><span>only the last one in is within reach</span></div>
+    <div class="fragment fade-up stackcard" data-fragment-index="3"><svg viewBox="0 0 160 100" aria-hidden="true" style="width:100%;height:132px"><rect x="20" y="76" width="84" height="16" rx="3" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.5"/><rect x="20" y="58" width="84" height="16" rx="3" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.5"/><rect x="20" y="40" width="84" height="16" rx="3" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.5"/><rect x="20" y="22" width="84" height="16" rx="3" fill="#F7EDEF" stroke="#6E1C2E" stroke-width="2"/><text x="62" y="34" text-anchor="middle" font-size="10" fill="#6E1C2E">typed "the"</text><path d="M142 52 A22 22 0 1 0 120 74" fill="none" stroke="#C49A2C" stroke-width="3"/><path d="M114 67 L119 76 L129 72" fill="none" stroke="#C49A2C" stroke-width="3"/></svg><strong>Undo, Ctrl-Z</strong><span>the last change is the first undone</span></div>
+    <div class="fragment fade-up stackcard" data-fragment-index="4"><svg viewBox="0 0 160 100" aria-hidden="true" style="width:100%;height:132px"><rect x="56" y="38" width="84" height="56" rx="5" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.5"/><rect x="46" y="30" width="84" height="56" rx="5" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.5"/><rect x="36" y="22" width="84" height="56" rx="5" fill="#FFFFFF" stroke="#6E1C2E" stroke-width="2.2"/><path d="M36 34 L120 34" stroke="#6E1C2E" stroke-width="1.5"/><path d="M60 56 L46 56 M53 49 L46 56 L53 63" fill="none" stroke="#C49A2C" stroke-width="3"/></svg><strong>Back button</strong><span>the page you just left is on top</span></div>
+    <div class="fragment fade-up stackcard" data-fragment-index="5"><svg viewBox="0 0 160 100" aria-hidden="true" style="width:100%;height:132px"><rect x="30" y="76" width="100" height="18" rx="3" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.5"/><text x="80" y="89" text-anchor="middle" font-size="11" font-family="monospace" fill="#2B2B2B">main()</text><rect x="30" y="56" width="100" height="18" rx="3" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.5"/><text x="80" y="69" text-anchor="middle" font-size="11" font-family="monospace" fill="#2B2B2B">drawMap()</text><rect x="30" y="36" width="100" height="18" rx="3" fill="#F7EDEF" stroke="#6E1C2E" stroke-width="2"/><text x="80" y="49" text-anchor="middle" font-size="11" font-family="monospace" fill="#6E1C2E">drawTile()</text><text x="80" y="24" text-anchor="middle" font-size="11" fill="#A07D1C" font-weight="700">returns first</text></svg><strong>Function calls</strong><span>the last function called returns first</span></div>
+    <div class="fragment fade-up stackcard" data-fragment-index="6"><svg viewBox="0 0 160 100" aria-hidden="true" style="width:100%;height:132px"><text x="80" y="26" text-anchor="middle" font-size="22" font-family="monospace" fill="#2B2B2B">( [ { } ] )</text><rect x="58" y="80" width="44" height="16" rx="3" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.5"/><text x="80" y="92" text-anchor="middle" font-size="12" font-family="monospace" fill="#2B2B2B">(</text><rect x="58" y="62" width="44" height="16" rx="3" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.5"/><text x="80" y="74" text-anchor="middle" font-size="12" font-family="monospace" fill="#2B2B2B">[</text><rect x="58" y="44" width="44" height="16" rx="3" fill="#F7EDEF" stroke="#6E1C2E" stroke-width="2"/><text x="80" y="56" text-anchor="middle" font-size="12" font-family="monospace" fill="#6E1C2E">{</text></svg><strong>Matching brackets</strong><span>push an opener, pop it at its closer</span></div>
+  </div>
+  <p class="fragment" data-fragment-index="7" style="font-size:0.56em;margin-top:0.7em">Whenever <strong>most recent first</strong> is the right answer, a stack is the right structure. The function-call stack comes back next week, in recursion.</p>
 </section>
 
 <section>
@@ -184,176 +243,267 @@ while (!s.isEmpty()) {
 </section>
 
 <section>
-  <h2>Implementing a Stack</h2>
-  <div class="two-col">
-    <div>
-      <h3>Array: top at the END</h3>
-      <pre style="font-size:0.44em"><code class="language-cpp" data-trim>
-void push(const Item &amp;it) {
-  if (isFull()) throw ...;
-  myArray[mySize] = it;
-  ++mySize;
-}
-      </code></pre>
-      <p style="font-size:0.54em">O(1). Top at index 0 would shift everything, O(n).</p>
-    </div>
-    <div>
-      <h3>Linked list: top at the FRONT</h3>
-      <pre style="font-size:0.44em"><code class="language-cpp" data-trim>
-void push(const Item &amp;it) {
-  myList.prepend(it);
-}
-      </code></pre>
-      <p style="font-size:0.54em">O(1). Top at the back would need a walk to find it, O(n).</p>
-    </div>
+  <h2>What Goes Inside a Stack?</h2>
+  <style>
+    .implgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:0.4em}
+    .implcard{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 6px 10px;border:1px solid #DDD3C7;border-radius:12px;background:#FFFFFF;text-align:center}
+    .implcard strong{font-size:0.48em;color:#6E1C2E}
+    .implcard span{font-size:0.38em;line-height:1.3;color:#3A3A3A}
+  </style>
+  <div class="implgrid">
+    <div class="fragment fade-up implcard" data-fragment-index="1"><svg viewBox="0 0 160 70" aria-hidden="true" style="width:100%;height:84px"><rect x="10" y="22" width="28" height="26" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.6"/><circle cx="24.0" cy="35.0" r="5" fill="#2B2B2B"/><rect x="38" y="22" width="28" height="26" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.6"/><circle cx="52.0" cy="35.0" r="5" fill="#2B2B2B"/><rect x="66" y="22" width="28" height="26" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.6"/><circle cx="80.0" cy="35.0" r="5" fill="#2B2B2B"/><rect x="94" y="22" width="28" height="26" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.6"/><rect x="122" y="22" width="28" height="26" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.6"/><path d="M10 54 L150 54" stroke="#6E1C2E" stroke-width="2"/><text x="150" y="66" text-anchor="end" font-size="10" fill="#6E1C2E">capacity</text></svg><strong>An array</strong><span>fixed size: it can be full</span></div>
+    <div class="fragment fade-up implcard" data-fragment-index="2"><svg viewBox="0 0 160 70" aria-hidden="true" style="width:100%;height:84px"><rect x="6" y="22" width="22" height="26" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.6"/><circle cx="17.0" cy="35.0" r="5" fill="#2B2B2B"/><rect x="28" y="22" width="22" height="26" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.6"/><circle cx="39.0" cy="35.0" r="5" fill="#2B2B2B"/><rect x="50" y="22" width="22" height="26" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.6"/><circle cx="61.0" cy="35.0" r="5" fill="#2B2B2B"/><path d="M76 35 L88 35" stroke="#C49A2C" stroke-width="2.5"/><path d="M84 30 L90 35 L84 40" fill="none" stroke="#C49A2C" stroke-width="2.5"/><rect x="94.0" y="22" width="10.5" height="26" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.6"/><circle cx="99.25" cy="35.0" r="5" fill="#2B2B2B"/><rect x="104.5" y="22" width="10.5" height="26" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.6"/><circle cx="109.75" cy="35.0" r="5" fill="#2B2B2B"/><rect x="115.0" y="22" width="10.5" height="26" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.6"/><circle cx="120.25" cy="35.0" r="5" fill="#2B2B2B"/><rect x="125.5" y="22" width="10.5" height="26" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.6"/><rect x="136.0" y="22" width="10.5" height="26" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.6"/><rect x="146.5" y="22" width="10.5" height="26" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.6"/></svg><strong>A dynamic array</strong><span>grows when full, like your <code>Vec</code></span></div>
+    <div class="fragment fade-up implcard" data-fragment-index="3"><svg viewBox="0 0 160 70" aria-hidden="true" style="width:100%;height:84px"><rect x="10" y="22" width="30" height="24" rx="5" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.6"/><circle cx="25.0" cy="34" r="4.5" fill="#2B2B2B"/><path d="M40 34 L53 34" stroke="#2B2B2B" stroke-width="1.6"/><path d="M48 30 L54 34 L48 38" fill="none" stroke="#2B2B2B" stroke-width="1.6"/><rect x="56" y="22" width="30" height="24" rx="5" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.6"/><circle cx="71.0" cy="34" r="4.5" fill="#2B2B2B"/><path d="M86 34 L99 34" stroke="#2B2B2B" stroke-width="1.6"/><path d="M94 30 L100 34 L94 38" fill="none" stroke="#2B2B2B" stroke-width="1.6"/><rect x="102" y="22" width="30" height="24" rx="5" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.6"/><circle cx="117.0" cy="34" r="4.5" fill="#2B2B2B"/></svg><strong>A linked list</strong><span>nodes and pointers, like your <code>List</code></span></div>
+    <div class="fragment fade-up implcard" data-fragment-index="4"><svg viewBox="0 0 160 70" aria-hidden="true" style="width:100%;height:84px"><rect x="4" y="6" width="152" height="58" rx="10" fill="none" stroke="#6E1C2E" stroke-width="2" stroke-dasharray="5 4"/><text x="12" y="20" font-size="10" fill="#6E1C2E" font-family="monospace">Stack</text><rect x="22" y="28" width="26" height="24" rx="5" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.6"/><circle cx="35.0" cy="40" r="4.5" fill="#2B2B2B"/><path d="M48 40 L59 40" stroke="#2B2B2B" stroke-width="1.6"/><path d="M54 36 L60 40 L54 44" fill="none" stroke="#2B2B2B" stroke-width="1.6"/><rect x="62" y="28" width="26" height="24" rx="5" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.6"/><circle cx="75.0" cy="40" r="4.5" fill="#2B2B2B"/><path d="M88 40 L99 40" stroke="#2B2B2B" stroke-width="1.6"/><path d="M94 36 L100 40 L94 44" fill="none" stroke="#2B2B2B" stroke-width="1.6"/><rect x="102" y="28" width="26" height="24" rx="5" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.6"/><circle cx="115.0" cy="40" r="4.5" fill="#2B2B2B"/></svg><strong>An internal <code>List</code></strong><span>reuse your <code>List</code> class inside</span></div>
+    <div class="fragment fade-up implcard" data-fragment-index="5"><svg viewBox="0 0 160 70" aria-hidden="true" style="width:100%;height:84px"><rect x="4" y="6" width="152" height="58" rx="10" fill="none" stroke="#6E1C2E" stroke-width="2" stroke-dasharray="5 4"/><text x="12" y="20" font-size="10" fill="#6E1C2E" font-family="monospace">Stack</text><rect x="26" y="28" width="26" height="22" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.6"/><circle cx="39.0" cy="39.0" r="5" fill="#2B2B2B"/><rect x="52" y="28" width="26" height="22" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.6"/><circle cx="65.0" cy="39.0" r="5" fill="#2B2B2B"/><rect x="78" y="28" width="26" height="22" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.6"/><rect x="104" y="28" width="26" height="22" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.6"/></svg><strong>An internal <code>Vec</code></strong><span>reuse your <code>Vec</code> class inside</span></div>
   </div>
-  <div class="callout callout-maroon">Same ADT, two implementations, one design rule: <strong>put the action where the structure is fast.</strong></div>
+  <p class="fragment" data-fragment-index="6" style="font-size:0.6em;margin-top:0.8em">Where is the top? What does it cost?</p>
 </section>
 
 <section>
   <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
   <div class="pi-question">
-    <strong>Implementing a stack with a linked list, where should the top be?</strong>
+    <strong>A stack in an array: where should the top be?</strong>
   </div>
   <ul class="pi-choices pi-compact">
-    <li class="fragment correct" data-fragment-index="1"><span class="letter">A.</span> At the front, prepend and remove-first are both O(1)</li>
-    <li><span class="letter">B.</span> At the back; that's where append is</li>
-    <li><span class="letter">C.</span> Either; both are O(1)</li>
-    <li><span class="letter">D.</span> In the middle, to balance the cost</li>
+    <li><span class="letter">A.</span> Always at index 0</li>
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">B.</span> Always at index <code>mySize - 1</code></li>
+    <li><span class="letter">C.</span> It does not matter, both are equally fast</li>
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>A. the front.</strong> Appending at the back is O(1) thanks to <code>myLast</code>, but <em>removing</em> the last node needs the node before it, which means walking the list: O(n). The front is fast in both directions.
+    <strong>B.</strong> At index 0, every push and pop shifts everything: O(n).
+  </div>
+</section>
+
+<section class="stackdemo">
+  <h2>The Array Stack</h2>
+<style>
+  .stackdemo .step{display:block;padding:2px 10px;border-radius:6px;opacity:1 !important;visibility:visible !important;transition:background .25s,color .25s}
+  .stackdemo .step:not(.visible){color:#A8A8A8}
+  .stackdemo .step.current-fragment{background:#6E1C2E;color:#FFFFFF}
+  .stackdemo .step.current-fragment .cm{color:#F3D9A0}
+  .stackdemo .cm{color:#8A8A8A}
+  .stackdemo .code{font-family:'Fira Code',Consolas,monospace;font-size:0.48em;line-height:1.7;text-align:left;background:#FFFFFF;border:1px solid #DDD3C7;border-radius:10px;padding:14px 10px;white-space:pre}
+</style>
+  <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.45fr);gap:24px;align-items:center">
+    <div>
+      <div class="code" style="font-size:0.42em"><span class="step fragment" data-fragment-index="1">s.push("a");</span><span class="step fragment" data-fragment-index="2">s.push("b");</span><span class="step fragment" data-fragment-index="3">s.push("c");</span><span class="step fragment" data-fragment-index="4">s.pop();     <span class="cm">// "c" stays</span></span><span class="step fragment" data-fragment-index="5">s.push("d"); <span class="cm">// over "c"</span></span></div>
+    </div>
+    <div><svg viewBox="0 0 470 210" role="img" aria-label="An array of capacity 6. mySize moves right on push and left on pop; a popped value stays in the array until a push writes over it" style="width:100%;height:auto;font-family:'Segoe UI',system-ui,sans-serif"><rect x="40" y="96" width="64" height="52" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><text x="72" y="172" text-anchor="middle" font-size="14" fill="#7A7A7A" font-family="monospace">[0]</text><rect x="104" y="96" width="64" height="52" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><text x="136" y="172" text-anchor="middle" font-size="14" fill="#7A7A7A" font-family="monospace">[1]</text><rect x="168" y="96" width="64" height="52" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><text x="200" y="172" text-anchor="middle" font-size="14" fill="#7A7A7A" font-family="monospace">[2]</text><rect x="232" y="96" width="64" height="52" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><text x="264" y="172" text-anchor="middle" font-size="14" fill="#7A7A7A" font-family="monospace">[3]</text><rect x="296" y="96" width="64" height="52" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><text x="328" y="172" text-anchor="middle" font-size="14" fill="#7A7A7A" font-family="monospace">[4]</text><rect x="360" y="96" width="64" height="52" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><text x="392" y="172" text-anchor="middle" font-size="14" fill="#7A7A7A" font-family="monospace">[5]</text><text x="430" y="208" text-anchor="end" font-size="14" fill="#6E1C2E">myCapacity = 6</text><g class="fragment" data-fragment-index="1"><text x="72" y="130" text-anchor="middle" font-size="22" font-family="'Fira Code',monospace" fill="#2B2B2B">"a"</text></g><g class="fragment" data-fragment-index="2"><text x="136" y="130" text-anchor="middle" font-size="22" font-family="'Fira Code',monospace" fill="#2B2B2B">"b"</text></g><g class="fragment fade-out" data-fragment-index="4"><g class="fragment" data-fragment-index="3"><text x="200" y="130" text-anchor="middle" font-size="22" font-family="'Fira Code',monospace" fill="#2B2B2B">"c"</text></g></g><g class="fragment" data-fragment-index="4"><g class="fragment fade-out" data-fragment-index="5"><text x="200" y="130" text-anchor="middle" font-size="22" font-family="'Fira Code',monospace" fill="#BDBDBD">"c"</text></g></g><g class="fragment" data-fragment-index="5"><text x="200" y="130" text-anchor="middle" font-size="22" font-family="'Fira Code',monospace" fill="#2B2B2B">"d"</text></g><g class="fragment fade-out" data-fragment-index="1"><g><text x="40" y="40" font-size="20" font-family="'Fira Code',monospace" fill="#6E1C2E" font-weight="700">mySize = 0</text><text x="230" y="84" text-anchor="middle" font-size="16" fill="#7A7A7A">empty: no top</text></g></g><g class="fragment fade-out" data-fragment-index="2"><g class="fragment" data-fragment-index="1"><text x="40" y="40" font-size="20" font-family="'Fira Code',monospace" fill="#6E1C2E" font-weight="700">mySize = 1</text><rect x="36" y="92" width="72" height="60" rx="6" fill="none" stroke="#C49A2C" stroke-width="4"/><text x="72" y="84" text-anchor="middle" font-size="16" font-weight="700" fill="#A07D1C">top</text></g></g><g class="fragment fade-out" data-fragment-index="3"><g class="fragment" data-fragment-index="2"><text x="40" y="40" font-size="20" font-family="'Fira Code',monospace" fill="#6E1C2E" font-weight="700">mySize = 2</text><rect x="100" y="92" width="72" height="60" rx="6" fill="none" stroke="#C49A2C" stroke-width="4"/><text x="136" y="84" text-anchor="middle" font-size="16" font-weight="700" fill="#A07D1C">top</text></g></g><g class="fragment fade-out" data-fragment-index="4"><g class="fragment" data-fragment-index="3"><text x="40" y="40" font-size="20" font-family="'Fira Code',monospace" fill="#6E1C2E" font-weight="700">mySize = 3</text><rect x="164" y="92" width="72" height="60" rx="6" fill="none" stroke="#C49A2C" stroke-width="4"/><text x="200" y="84" text-anchor="middle" font-size="16" font-weight="700" fill="#A07D1C">top</text></g></g><g class="fragment fade-out" data-fragment-index="5"><g class="fragment" data-fragment-index="4"><text x="40" y="40" font-size="20" font-family="'Fira Code',monospace" fill="#6E1C2E" font-weight="700">mySize = 2</text><rect x="100" y="92" width="72" height="60" rx="6" fill="none" stroke="#C49A2C" stroke-width="4"/><text x="136" y="84" text-anchor="middle" font-size="16" font-weight="700" fill="#A07D1C">top</text></g></g><g class="fragment" data-fragment-index="5"><text x="40" y="40" font-size="20" font-family="'Fira Code',monospace" fill="#6E1C2E" font-weight="700">mySize = 3</text><rect x="164" y="92" width="72" height="60" rx="6" fill="none" stroke="#C49A2C" stroke-width="4"/><text x="200" y="84" text-anchor="middle" font-size="16" font-weight="700" fill="#A07D1C">top</text></g></svg></div>
+  </div>
+  <p class="fragment" data-fragment-index="5" style="font-size:0.5em;margin-top:0.5em">Nothing shifts: O(1). Full when <code>mySize == myCapacity</code>.</p>
+</section>
+
+<section>
+  <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
+  <div class="pi-question">
+    <strong>A stack in a singly linked list: where should the top be?</strong>
+  </div>
+  <ul class="pi-choices pi-compact">
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">A.</span> At the front, <code>myFirst</code></li>
+    <li><span class="letter">B.</span> At the back, <code>myLast</code></li>
+    <li><span class="letter">C.</span> It does not matter, both are equally fast</li>
+  </ul>
+  <div class="answer-box fragment" data-fragment-index="1">
+    <div class="ans-label">&#10003; Answer</div>
+    <strong>A.</strong> Removing the last node means walking to the one before it: O(n).
   </div>
 </section>
 
 <section>
+  <h2>A Stack Built on Your <code>List</code></h2>
+    <pre style="font-size:0.42em;width:fit-content;margin:0 auto"><code class="language-cpp" data-trim>
+template &lt;class Item&gt;
+class Stack {
+public:
+    void push(const Item&amp; it) { myList.prepend(it); }
+    Item pop()                { return myList.removeFirst(); }
+    Item peekTop() const      { return myList.getFirst(); }
+    bool isEmpty() const      { return myList.getSize() == 0; }
+private:
+    List&lt;Item&gt; myList;   // used only at its front
+};
+    </code></pre>
+  <div class="pillrow" style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;font-size:0.42em;margin-top:0.5em">
+    <span class="fragment" style="padding:4px 12px;border:1px solid #DDD3C7;border-radius:999px;background:#FFF">every method: <strong>one line</strong></span>
+    <span class="fragment" style="padding:4px 12px;border:1px solid #DDD3C7;border-radius:999px;background:#FFF">already written and tested</span>
+    <span class="fragment" style="padding:4px 12px;border:1px solid #DDD3C7;border-radius:999px;background:#FFF">top = front: O(1)</span>
+    <span class="fragment" style="padding:4px 12px;border:1px solid #DDD3C7;border-radius:999px;background:#FFF">cost: a <code>new</code> per item</span>
+  </div>
+</section>
+
+<section>
+  <h2>Five Ways to Build a Stack</h2>
+  <style>
+    .dots{display:inline-flex;gap:4px}
+    .dots i{width:12px;height:12px;border-radius:50%;border:2px solid #C9BFB3;display:inline-block}
+    .dots i.on{background:#6E1C2E;border-color:#6E1C2E}
+  </style>
+  <table style="font-size:0.5em">
+    <thead><tr><th>Inside</th><th>Speed</th><th>Memory</th><th>Easy to write</th><th>Watch out for</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Array</strong></td><td><span class="dots"><i class="on"></i><i class="on"></i><i class="on"></i></span></td><td><span class="dots"><i class="on"></i><i class="on"></i><i class="on"></i></span></td><td><span class="dots"><i class="on"></i><i class="on"></i><i></i></span></td><td>a maximum size</td></tr>
+      <tr><td><strong>Dynamic array</strong></td><td><span class="dots"><i class="on"></i><i class="on"></i><i></i></span></td><td><span class="dots"><i class="on"></i><i class="on"></i><i></i></span></td><td><span class="dots"><i class="on"></i><i class="on"></i><i></i></span></td><td>push is O(1)* on average</td></tr>
+      <tr><td><strong>Linked list</strong></td><td><span class="dots"><i class="on"></i><i></i><i></i></span></td><td><span class="dots"><i></i><i></i><i></i></span></td><td><span class="dots"><i class="on"></i><i></i><i></i></span></td><td>pointers are tricky</td></tr>
+      <tr><td><strong>Internal <code>Vec</code></strong></td><td><span class="dots"><i class="on"></i><i></i><i></i></span></td><td><span class="dots"><i class="on"></i><i class="on"></i><i></i></span></td><td><span class="dots"><i class="on"></i><i class="on"></i><i class="on"></i></span></td><td>O(1)* push, from <code>Vec</code></td></tr>
+      <tr><td><strong>Internal <code>List</code></strong></td><td><span class="dots"><i class="on"></i><i></i><i></i></span></td><td><span class="dots"><i></i><i></i><i></i></span></td><td><span class="dots"><i class="on"></i><i class="on"></i><i class="on"></i></span></td><td>memory per item</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:0.56em;margin-top:0.6em">a10 builds the first row.</p>
+</section>
+
+<section class="stackdemo">
   <h2>The Queue: First In, First Out</h2>
-  <div class="two-col">
+<style>
+  .stackdemo .step{display:block;padding:2px 10px;border-radius:6px;opacity:1 !important;visibility:visible !important;transition:background .25s,color .25s}
+  .stackdemo .step:not(.visible){color:#A8A8A8}
+  .stackdemo .step.current-fragment{background:#6E1C2E;color:#FFFFFF}
+  .stackdemo .step.current-fragment .cm{color:#F3D9A0}
+  .stackdemo .cm{color:#8A8A8A}
+  .stackdemo .code{font-family:'Fira Code',Consolas,monospace;font-size:0.48em;line-height:1.7;text-align:left;background:#FFFFFF;border:1px solid #DDD3C7;border-radius:10px;padding:14px 10px;white-space:pre}
+</style>
+  <div class="two-col" style="align-items:center">
     <div>
-      <pre style="font-size:0.46em"><code class="language-cpp" data-trim>
-add(item)     // join the back
-remove()      // serve the front
-peekFront()
-isEmpty()
-getSize()
-      </code></pre>
+      <div class="code"><span class="step fragment" data-fragment-index="1">q.add("Ana");</span><span class="step fragment" data-fragment-index="2">q.add("Ben");</span><span class="step fragment" data-fragment-index="3">q.add("Cy");</span><span class="step fragment" data-fragment-index="4">q.peekFirst();  <span class="cm">// "Ana"</span></span><span class="step fragment" data-fragment-index="5">q.peekLast();   <span class="cm">// "Cy"</span></span><span class="step fragment" data-fragment-index="6">q.remove();     <span class="cm">// "Ana"</span></span><span class="step fragment" data-fragment-index="7">q.remove();     <span class="cm">// "Ben"</span></span></div>
     </div>
-    <div>
-      <div class="mem-diagram" style="font-size:0.55em">
-        <div class="mem-row"><span class="mem-lbl">front</span><span class="mem-val">11 → 22 → 33</span><span class="mem-lbl">back</span></div>
-      </div>
-      <p style="font-size:0.55em">Serve at the front, join at the back, a supermarket queue.</p>
-    </div>
+    <div><svg viewBox="0 0 420 250" role="img" aria-label="A line at a counter: Ana, Ben and Cy join at the back; peekFirst shows Ana, peekLast shows Cy; remove serves Ana, then Ben, and the others step forward" style="width:100%;height:auto;font-family:'Segoe UI',system-ui,sans-serif"><rect x="20" y="70" width="34" height="120" rx="6" fill="#6E1C2E"/><text x="37" y="226" text-anchor="middle" font-size="15" font-weight="700" fill="#6E1C2E">front</text><text x="370" y="226" text-anchor="middle" font-size="15" font-weight="700" fill="#6E1C2E">back</text><path d="M330 236 L400 236" stroke="#6E1C2E" stroke-width="2"/><g class="fragment fade-out" data-fragment-index="6"><g class="fragment" data-fragment-index="1"><circle cx="110" cy="96" r="17" fill="#3E6A99" stroke="#2B2B2B" stroke-width="2"/><rect x="87" y="118" width="46" height="62" rx="16" fill="#3E6A99" stroke="#2B2B2B" stroke-width="2"/><text x="110" y="206" text-anchor="middle" font-size="17" font-family="'Fira Code',Consolas,monospace" fill="#2B2B2B">"Ana"</text></g></g><g class="fragment fade-out" data-fragment-index="6"><g class="fragment" data-fragment-index="2"><circle cx="196" cy="96" r="17" fill="#4B8A4E" stroke="#2B2B2B" stroke-width="2"/><rect x="173" y="118" width="46" height="62" rx="16" fill="#4B8A4E" stroke="#2B2B2B" stroke-width="2"/><text x="196" y="206" text-anchor="middle" font-size="17" font-family="'Fira Code',Consolas,monospace" fill="#2B2B2B">"Ben"</text></g></g><g class="fragment fade-out" data-fragment-index="7"><g class="fragment" data-fragment-index="6"><circle cx="110" cy="96" r="17" fill="#4B8A4E" stroke="#2B2B2B" stroke-width="2"/><rect x="87" y="118" width="46" height="62" rx="16" fill="#4B8A4E" stroke="#2B2B2B" stroke-width="2"/><text x="110" y="206" text-anchor="middle" font-size="17" font-family="'Fira Code',Consolas,monospace" fill="#2B2B2B">"Ben"</text></g></g><g class="fragment fade-out" data-fragment-index="6"><g class="fragment" data-fragment-index="3"><circle cx="282" cy="96" r="17" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><rect x="259" y="118" width="46" height="62" rx="16" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><text x="282" y="206" text-anchor="middle" font-size="17" font-family="'Fira Code',Consolas,monospace" fill="#2B2B2B">"Cy"</text></g></g><g class="fragment fade-out" data-fragment-index="7"><g class="fragment" data-fragment-index="6"><circle cx="196" cy="96" r="17" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><rect x="173" y="118" width="46" height="62" rx="16" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><text x="196" y="206" text-anchor="middle" font-size="17" font-family="'Fira Code',Consolas,monospace" fill="#2B2B2B">"Cy"</text></g></g><g class="fragment" data-fragment-index="7"><circle cx="110" cy="96" r="17" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><rect x="87" y="118" width="46" height="62" rx="16" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><text x="110" y="206" text-anchor="middle" font-size="17" font-family="'Fira Code',Consolas,monospace" fill="#2B2B2B">"Cy"</text></g><g class="fragment fade-out" data-fragment-index="5"><g class="fragment" data-fragment-index="4"><rect x="76" y="66" width="68" height="152" rx="16" fill="none" stroke="#C49A2C" stroke-width="4"/></g></g><g class="fragment fade-out" data-fragment-index="6"><g class="fragment" data-fragment-index="5"><rect x="248" y="66" width="68" height="152" rx="16" fill="none" stroke="#C49A2C" stroke-width="4"/></g></g></svg></div>
   </div>
-  <div class="callout">Also called First Come, First Served. Print jobs, request handling, breadth-first search, all queues.</div>
 </section>
 
 <section>
-  <h2>The Obvious Array Queue Is Wrong</h2>
-  <p style="font-size:0.66em">Front at index 0, back at <code>mySize - 1</code>. Adding is easy. Removing?</p>
-  <div class="mem-diagram" style="max-width:640px">
-    <div class="mem-row"><span class="mem-lbl">before</span><span class="mem-val">[ 11 | 22 | 33 | _ ]</span></div>
-    <div class="mem-row"><span class="mem-lbl">remove()</span><span class="mem-val">[ 22 | 33 | _ | _ ]</span><span class="mem-addr">everything shifted down</span></div>
+  <h2>Queues Are Everywhere</h2>
+  <style>
+    .stackgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:0.3em}
+    .stackcard{display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 10px 12px;border:1px solid #DDD3C7;border-radius:12px;background:#FFFFFF;text-align:center}
+    .stackcard strong{font-size:0.56em;color:#6E1C2E}
+    .stackcard span{font-size:0.44em;line-height:1.3;color:#3A3A3A}
+  </style>
+  <div class="stackgrid">
+    <div class="fragment fade-up stackcard" data-fragment-index="1"><svg viewBox="0 0 160 100" aria-hidden="true" style="width:100%;height:132px"><rect x="10" y="30" width="16" height="60" rx="3" fill="#6E1C2E"/><circle cx="82" cy="44" r="9" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><rect x="71" y="56" width="22" height="30" rx="8" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><circle cx="112" cy="44" r="9" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><rect x="101" y="56" width="22" height="30" rx="8" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><circle cx="142" cy="44" r="9" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><rect x="131" y="56" width="22" height="30" rx="8" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><circle cx="48" cy="44" r="9" fill="#F7EDEF" stroke="#6E1C2E" stroke-width="2.5"/><rect x="37" y="56" width="22" height="30" rx="8" fill="#F7EDEF" stroke="#6E1C2E" stroke-width="2.5"/></svg><strong>A line at a counter</strong><span>first to arrive, first served</span></div>
+    <div class="fragment fade-up stackcard" data-fragment-index="2"><svg viewBox="0 0 160 100" aria-hidden="true" style="width:100%;height:132px"><rect x="12" y="34" width="56" height="40" rx="6" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><rect x="22" y="22" width="36" height="14" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.5"/><rect x="22" y="62" width="36" height="26" fill="#F7EDEF" stroke="#6E1C2E" stroke-width="2"/><rect x="80" y="40" width="22" height="30" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.5"/><text x="91" y="60" text-anchor="middle" font-size="12" fill="#2B2B2B">1</text><rect x="106" y="40" width="22" height="30" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.5"/><text x="117" y="60" text-anchor="middle" font-size="12" fill="#2B2B2B">2</text><rect x="132" y="40" width="22" height="30" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.5"/><text x="143" y="60" text-anchor="middle" font-size="12" fill="#2B2B2B">3</text></svg><strong>Print jobs</strong><span>pages print in the order they were sent</span></div>
+    <div class="fragment fade-up stackcard" data-fragment-index="3"><svg viewBox="0 0 160 100" aria-hidden="true" style="width:100%;height:132px"><rect x="20" y="14" width="120" height="20" rx="4" fill="#F7EDEF" stroke="#6E1C2E" stroke-width="2"/><path d="M28 18 L28 30 L38 24 Z" fill="#6E1C2E"/><text x="46" y="28" font-size="11" fill="#6E1C2E">now playing</text><rect x="20" y="40" width="120" height="18" rx="4" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.5"/><text x="30" y="53" font-size="11" fill="#2B2B2B">1. up next</text><rect x="20" y="62" width="120" height="18" rx="4" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.5"/><text x="30" y="75" font-size="11" fill="#2B2B2B">2. after that</text><rect x="20" y="84" width="120" height="18" rx="4" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.5"/><text x="30" y="97" font-size="11" fill="#2B2B2B">3. added last</text></svg><strong>Up next</strong><span>the song added first plays first</span></div>
+    <div class="fragment fade-up stackcard" data-fragment-index="4"><svg viewBox="0 0 160 100" aria-hidden="true" style="width:100%;height:132px"><rect x="40" y="14" width="26" height="26" rx="4" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.8"/><text x="53" y="32" text-anchor="middle" font-size="14" font-family="monospace" fill="#2B2B2B">c</text><rect x="68" y="14" width="26" height="26" rx="4" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.8"/><text x="81" y="32" text-anchor="middle" font-size="14" font-family="monospace" fill="#2B2B2B">a</text><rect x="96" y="14" width="26" height="26" rx="4" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.8"/><text x="109" y="32" text-anchor="middle" font-size="14" font-family="monospace" fill="#2B2B2B">t</text><path d="M80 46 L80 60" stroke="#C49A2C" stroke-width="3"/><path d="M74 54 L80 62 L86 54" fill="none" stroke="#C49A2C" stroke-width="3"/><rect x="44" y="68" width="24" height="22" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.5"/><text x="56" y="84" text-anchor="middle" font-size="13" font-family="monospace" fill="#2B2B2B">c</text><rect x="68" y="68" width="24" height="22" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.5"/><text x="80" y="84" text-anchor="middle" font-size="13" font-family="monospace" fill="#2B2B2B">a</text><rect x="92" y="68" width="24" height="22" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.5"/><text x="104" y="84" text-anchor="middle" font-size="13" font-family="monospace" fill="#2B2B2B">t</text></svg><strong>Keystrokes</strong><span>typed c, a, t: read as c, a, t</span></div>
+    <div class="fragment fade-up stackcard" data-fragment-index="5"><svg viewBox="0 0 160 100" aria-hidden="true" style="width:100%;height:132px"><rect x="30" y="10" width="20" height="20" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1"/><rect x="50" y="10" width="20" height="20" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1"/><rect x="70" y="10" width="20" height="20" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1"/><text x="80" y="25" text-anchor="middle" font-size="11" fill="#2B2B2B">2</text><rect x="90" y="10" width="20" height="20" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1"/><rect x="110" y="10" width="20" height="20" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1"/><rect x="30" y="30" width="20" height="20" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1"/><rect x="50" y="30" width="20" height="20" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1"/><text x="60" y="45" text-anchor="middle" font-size="11" fill="#2B2B2B">2</text><rect x="70" y="30" width="20" height="20" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1"/><text x="80" y="45" text-anchor="middle" font-size="11" fill="#2B2B2B">1</text><rect x="90" y="30" width="20" height="20" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1"/><text x="100" y="45" text-anchor="middle" font-size="11" fill="#2B2B2B">2</text><rect x="110" y="30" width="20" height="20" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1"/><rect x="30" y="50" width="20" height="20" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1"/><text x="40" y="65" text-anchor="middle" font-size="11" fill="#2B2B2B">2</text><rect x="50" y="50" width="20" height="20" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1"/><text x="60" y="65" text-anchor="middle" font-size="11" fill="#2B2B2B">1</text><rect x="70" y="50" width="20" height="20" fill="#F7EDEF" stroke="#2B2B2B" stroke-width="1"/><text x="80" y="65" text-anchor="middle" font-size="11" fill="#6E1C2E">0</text><rect x="90" y="50" width="20" height="20" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1"/><text x="100" y="65" text-anchor="middle" font-size="11" fill="#2B2B2B">1</text><rect x="110" y="50" width="20" height="20" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1"/><text x="120" y="65" text-anchor="middle" font-size="11" fill="#2B2B2B">2</text><rect x="30" y="70" width="20" height="20" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1"/><rect x="50" y="70" width="20" height="20" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1"/><text x="60" y="85" text-anchor="middle" font-size="11" fill="#2B2B2B">2</text><rect x="70" y="70" width="20" height="20" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1"/><text x="80" y="85" text-anchor="middle" font-size="11" fill="#2B2B2B">1</text><rect x="90" y="70" width="20" height="20" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1"/><text x="100" y="85" text-anchor="middle" font-size="11" fill="#2B2B2B">2</text><rect x="110" y="70" width="20" height="20" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1"/><rect x="30" y="90" width="20" height="20" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1"/><rect x="50" y="90" width="20" height="20" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1"/><rect x="70" y="90" width="20" height="20" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1"/><text x="80" y="105" text-anchor="middle" font-size="11" fill="#2B2B2B">2</text><rect x="90" y="90" width="20" height="20" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1"/><rect x="110" y="90" width="20" height="20" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1"/></svg><strong>Searching a maze</strong><span>explore the nearest cells first</span></div>
+    <div class="fragment fade-up stackcard" data-fragment-index="6"><svg viewBox="0 0 160 100" aria-hidden="true" style="width:100%;height:132px"><rect x="34" y="44" width="18" height="18" rx="4" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.8"/><rect x="54" y="44" width="18" height="18" rx="4" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.8"/><rect x="74" y="44" width="18" height="18" rx="4" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.8"/><rect x="94" y="44" width="18" height="18" rx="4" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.8"/><rect x="114" y="44" width="18" height="18" rx="4" fill="#F7EDEF" stroke="#6E1C2E" stroke-width="2.5"/><text x="123" y="36" text-anchor="middle" font-size="10" fill="#6E1C2E">joins</text><text x="43" y="80" text-anchor="middle" font-size="10" fill="#A07D1C">leaves</text></svg><strong>A snake game</strong><span>the head joins, the tail leaves</span></div>
   </div>
-  <div class="callout callout-maroon">Every <code>remove()</code> shifts every remaining item: <strong>O(n)</strong>. For a structure whose whole job is serving the front, that's a bad trade.</div>
-</section>
-
-<section data-auto-animate>
-  <h2>Don't Move the Data, Move the Ends</h2>
-  <div class="mem-diagram" style="max-width:660px" data-id="ring">
-    <div class="mem-row"><span class="mem-lbl">index</span><span class="mem-val">[0] &nbsp; [1] &nbsp; [2] &nbsp; [3] &nbsp; [4]</span></div>
-    <div class="mem-row"><span class="mem-lbl">data</span><span class="mem-val">&nbsp;_ &nbsp;&nbsp; 22 &nbsp;&nbsp; 33 &nbsp;&nbsp; 44 &nbsp;&nbsp; _</span></div>
-    <div class="mem-row"><span class="mem-lbl">&nbsp;</span><span class="mem-addr">head = 1 &nbsp;&nbsp;&nbsp; tail = 3</span></div>
-  </div>
-  <div class="callout">Keep two indices. <code>remove()</code> just moves <code>head</code> forward, no shifting, <strong>O(1)</strong>.</div>
-</section>
-
-<section data-auto-animate>
-  <h2>…And Wrap Around the End</h2>
-  <div class="mem-diagram" style="max-width:660px" data-id="ring">
-    <div class="mem-row"><span class="mem-lbl">index</span><span class="mem-val">[0] &nbsp; [1] &nbsp; [2] &nbsp; [3] &nbsp; [4]</span></div>
-    <div class="mem-row"><span class="mem-lbl">data</span><span class="mem-val">66 &nbsp;&nbsp; _ &nbsp;&nbsp; 33 &nbsp;&nbsp; 44 &nbsp;&nbsp; 55</span></div>
-    <div class="mem-row"><span class="mem-lbl">&nbsp;</span><span class="mem-addr">head = 2 &nbsp;&nbsp;&nbsp; tail = 0 &nbsp;&nbsp;(wrapped)</span></div>
-  </div>
-  <pre style="font-size:0.52em"><code class="language-cpp" data-trim>
-tail = (tail + 1) % myCapacity;    // advance with wraparound
-head = (head + 1) % myCapacity;
-  </code></pre>
-  <div class="callout callout-maroon">The modulo turns the array into a <strong>circle</strong>. Both ends move; nothing is ever copied.</div>
+  <p class="fragment" data-fragment-index="7" style="font-size:0.56em;margin-top:0.7em">Whenever <strong>first come, first served</strong> is the rule, a queue is the structure.</p>
 </section>
 
 <section>
   <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
   <div class="pi-question">
-    <strong>With <code>head == tail</code>, is the circular queue empty or full?</strong>
+    <strong>What does this print?</strong>
+    <pre style="font-size:0.5em"><code class="language-cpp" data-trim>
+s.push(10);
+q.add(s.peekTop());
+q.add(11);
+cout &lt;&lt; q.peekFirst() &lt;&lt; " ";
+s.push(q.peekFirst());
+s.push(13);
+cout &lt;&lt; s.peekTop() &lt;&lt; " ";
+q.add(12);
+s.push(q.peekLast());
+cout &lt;&lt; s.peekTop() &lt;&lt; " " &lt;&lt; q.peekFirst();
+    </code></pre>
   </div>
   <ul class="pi-choices pi-compact">
-    <li><span class="letter">A.</span> Empty</li>
-    <li><span class="letter">B.</span> Full</li>
-    <li class="fragment correct" data-fragment-index="1"><span class="letter">C.</span> Ambiguous; you can't tell without more information</li>
-    <li><span class="letter">D.</span> Impossible; they can never be equal</li>
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">A.</span> 10 13 12 10</li>
+    <li><span class="letter">B.</span> 10 10 13 12</li>
+    <li><span class="letter">C.</span> 10 11 13 12</li>
+    <li><span class="letter">D.</span> 10 11 12 13</li>
   </ul>
   <div class="answer-box fragment" data-fragment-index="1">
     <div class="ans-label">&#10003; Answer</div>
-    <strong>C. you genuinely can't tell.</strong> Both an empty and a completely full queue put the two indices in the same place. The usual fixes: keep a separate <code>mySize</code> counter, or deliberately leave one slot empty so full and empty never look alike.
+    <strong>A.</strong> Peeking never removes: 10 stays at the front of the queue.
   </div>
 </section>
 
 <section>
-  <h2>Circular Array: The Trade</h2>
+  <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
+  <div class="pi-question">
+    <strong>A queue in a linked list with <code>myFirst</code> and <code>myLast</code>: where should the front be?</strong>
+  </div>
+  <ul class="pi-choices pi-compact">
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">A.</span> At <code>myFirst</code></li>
+    <li><span class="letter">B.</span> At <code>myLast</code></li>
+    <li><span class="letter">C.</span> It does not matter, both are equally fast</li>
+  </ul>
+  <div class="answer-box fragment" data-fragment-index="1">
+    <div class="ans-label">&#10003; Answer</div>
+    <strong>A.</strong> Remove at <code>myFirst</code>, add at <code>myLast</code>: both O(1).
+  </div>
+</section>
+
+<section class="stackdemo">
+  <h2>The Obvious Array Queue</h2>
+<style>
+  .stackdemo .step{display:block;padding:2px 10px;border-radius:6px;opacity:1 !important;visibility:visible !important;transition:background .25s,color .25s}
+  .stackdemo .step:not(.visible){color:#A8A8A8}
+  .stackdemo .step.current-fragment{background:#6E1C2E;color:#FFFFFF}
+  .stackdemo .step.current-fragment .cm{color:#F3D9A0}
+  .stackdemo .cm{color:#8A8A8A}
+  .stackdemo .code{font-family:'Fira Code',Consolas,monospace;font-size:0.48em;line-height:1.7;text-align:left;background:#FFFFFF;border:1px solid #DDD3C7;border-radius:10px;padding:14px 10px;white-space:pre}
+</style>
+  <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.45fr);gap:24px;align-items:center">
+    <div>
+      <div class="code"><span class="step fragment" data-fragment-index="1">q.add(11);</span><span class="step fragment" data-fragment-index="2">q.add(22);</span><span class="step fragment" data-fragment-index="3">q.add(33);</span><span class="step fragment" data-fragment-index="4">q.remove();  <span class="cm">// 11</span></span></div>
+    </div>
+    <div><svg viewBox="0 0 440 230" role="img" aria-label="An array queue with the front fixed at index 0: remove removes 11 and shifts 22 and 33 one cell left" style="width:100%;height:auto;font-family:'Segoe UI',system-ui,sans-serif"><rect x="30" y="100" width="76" height="56" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><text x="68" y="180" text-anchor="middle" font-size="15" fill="#7A7A7A" font-family="monospace">[0]</text><rect x="106" y="100" width="76" height="56" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><text x="144" y="180" text-anchor="middle" font-size="15" fill="#7A7A7A" font-family="monospace">[1]</text><rect x="182" y="100" width="76" height="56" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><text x="220" y="180" text-anchor="middle" font-size="15" fill="#7A7A7A" font-family="monospace">[2]</text><rect x="258" y="100" width="76" height="56" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><text x="296" y="180" text-anchor="middle" font-size="15" fill="#7A7A7A" font-family="monospace">[3]</text><rect x="334" y="100" width="76" height="56" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><text x="372" y="180" text-anchor="middle" font-size="15" fill="#7A7A7A" font-family="monospace">[4]</text><text x="68" y="214" text-anchor="middle" font-size="15" font-weight="700" fill="#A07D1C">front</text><g class="fragment fade-out" data-fragment-index="4"><g class="fragment" data-fragment-index="1"><text x="68" y="137" text-anchor="middle" font-size="24" font-family="'Fira Code',Consolas,monospace" fill="#2B2B2B">11</text></g></g><g class="fragment fade-out" data-fragment-index="4"><g class="fragment" data-fragment-index="2"><text x="144" y="137" text-anchor="middle" font-size="24" font-family="'Fira Code',Consolas,monospace" fill="#2B2B2B">22</text></g></g><g class="fragment fade-out" data-fragment-index="4"><g class="fragment" data-fragment-index="3"><text x="220" y="137" text-anchor="middle" font-size="24" font-family="'Fira Code',Consolas,monospace" fill="#2B2B2B">33</text></g></g><g class="fragment" data-fragment-index="4"><text x="68" y="137" text-anchor="middle" font-size="24" font-family="'Fira Code',Consolas,monospace" fill="#2B2B2B">22</text></g><g class="fragment" data-fragment-index="4"><text x="144" y="137" text-anchor="middle" font-size="24" font-family="'Fira Code',Consolas,monospace" fill="#2B2B2B">33</text></g><g class="fragment" data-fragment-index="4"><path d="M130 76 Q106 52 82 76" fill="none" stroke="#6E1C2E" stroke-width="3"/><path d="M80 66 L82 77 L92 72" fill="none" stroke="#6E1C2E" stroke-width="3"/><path d="M206 76 Q182 52 158 76" fill="none" stroke="#6E1C2E" stroke-width="3"/><path d="M156 66 L158 77 L168 72" fill="none" stroke="#6E1C2E" stroke-width="3"/></g></svg></div>
+  </div>
+  <p class="fragment" data-fragment-index="5" style="font-size:0.56em;margin-top:0.6em">Every remove moves every item: <strong>O(n)</strong>.</p>
+</section>
+
+<section class="stackdemo">
+  <h2>Move the Front, Not the Items</h2>
+<style>
+  .stackdemo .step{display:block;padding:2px 10px;border-radius:6px;opacity:1 !important;visibility:visible !important;transition:background .25s,color .25s}
+  .stackdemo .step:not(.visible){color:#A8A8A8}
+  .stackdemo .step.current-fragment{background:#6E1C2E;color:#FFFFFF}
+  .stackdemo .step.current-fragment .cm{color:#F3D9A0}
+  .stackdemo .cm{color:#8A8A8A}
+  .stackdemo .code{font-family:'Fira Code',Consolas,monospace;font-size:0.48em;line-height:1.7;text-align:left;background:#FFFFFF;border:1px solid #DDD3C7;border-radius:10px;padding:14px 10px;white-space:pre}
+</style>
+  <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.45fr);gap:24px;align-items:center">
+    <div>
+      <div class="code"><span class="step fragment" data-fragment-index="1">q.add(11);</span><span class="step fragment" data-fragment-index="2">q.add(22);</span><span class="step fragment" data-fragment-index="3">q.add(33);</span><span class="step fragment" data-fragment-index="4">q.remove();   <span class="cm">// 11</span></span><span class="step fragment" data-fragment-index="5">q.remove();   <span class="cm">// 22</span></span><span class="step fragment" data-fragment-index="6">q.add(44);</span><span class="step fragment" data-fragment-index="7">q.add(55); <span class="cm">// wraps</span></span><span class="step fragment" data-fragment-index="8">q.add(66); <span class="cm">// in [0]</span></span></div>
+    </div>
+    <div><svg viewBox="0 0 440 290" role="img" aria-label="A circular array queue of five slots: myFront and myBack move forward on remove and add; myBack wraps from 4 to 0 and 66 is written into slot 0" style="width:100%;height:auto;font-family:'Segoe UI',system-ui,sans-serif"><rect x="30" y="100" width="76" height="56" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><text x="68" y="180" text-anchor="middle" font-size="15" fill="#7A7A7A" font-family="monospace">[0]</text><rect x="106" y="100" width="76" height="56" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><text x="144" y="180" text-anchor="middle" font-size="15" fill="#7A7A7A" font-family="monospace">[1]</text><rect x="182" y="100" width="76" height="56" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><text x="220" y="180" text-anchor="middle" font-size="15" fill="#7A7A7A" font-family="monospace">[2]</text><rect x="258" y="100" width="76" height="56" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><text x="296" y="180" text-anchor="middle" font-size="15" fill="#7A7A7A" font-family="monospace">[3]</text><rect x="334" y="100" width="76" height="56" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><text x="372" y="180" text-anchor="middle" font-size="15" fill="#7A7A7A" font-family="monospace">[4]</text><g class="fragment fade-out" data-fragment-index="4"><g class="fragment" data-fragment-index="1"><text x="68" y="137" text-anchor="middle" font-size="24" font-family="'Fira Code',Consolas,monospace" fill="#2B2B2B">11</text></g></g><g class="fragment fade-out" data-fragment-index="8"><g class="fragment" data-fragment-index="4"><text x="68" y="137" text-anchor="middle" font-size="24" font-family="'Fira Code',Consolas,monospace" fill="#BDBDBD">11</text></g></g><g class="fragment" data-fragment-index="8"><text x="68" y="137" text-anchor="middle" font-size="24" font-family="'Fira Code',Consolas,monospace" fill="#2B2B2B">66</text></g><g class="fragment fade-out" data-fragment-index="5"><g class="fragment" data-fragment-index="2"><text x="144" y="137" text-anchor="middle" font-size="24" font-family="'Fira Code',Consolas,monospace" fill="#2B2B2B">22</text></g></g><g class="fragment" data-fragment-index="5"><text x="144" y="137" text-anchor="middle" font-size="24" font-family="'Fira Code',Consolas,monospace" fill="#BDBDBD">22</text></g><g class="fragment" data-fragment-index="3"><text x="220" y="137" text-anchor="middle" font-size="24" font-family="'Fira Code',Consolas,monospace" fill="#2B2B2B">33</text></g><g class="fragment" data-fragment-index="6"><text x="296" y="137" text-anchor="middle" font-size="24" font-family="'Fira Code',Consolas,monospace" fill="#2B2B2B">44</text></g><g class="fragment" data-fragment-index="7"><text x="372" y="137" text-anchor="middle" font-size="24" font-family="'Fira Code',Consolas,monospace" fill="#2B2B2B">55</text></g><g class="fragment fade-out" data-fragment-index="1"><text x="30" y="40" font-size="19" font-family="'Fira Code',Consolas,monospace" font-weight="700" fill="#A07D1C">myFront = 0</text><text x="250" y="40" font-size="19" font-family="'Fira Code',Consolas,monospace" font-weight="700" fill="#6E1C2E">myBack = 0</text><path d="M68 62 L68 94" stroke="#6E1C2E" stroke-width="3"/><path d="M61 84 L68 96 L75 84" fill="none" stroke="#6E1C2E" stroke-width="3"/><path d="M68 218 L68 190" stroke="#C49A2C" stroke-width="3"/><path d="M61 200 L68 188 L75 200" fill="none" stroke="#C49A2C" stroke-width="3"/></g><g class="fragment fade-out" data-fragment-index="2"><g class="fragment" data-fragment-index="1"><text x="30" y="40" font-size="19" font-family="'Fira Code',Consolas,monospace" font-weight="700" fill="#A07D1C">myFront = 0</text><text x="250" y="40" font-size="19" font-family="'Fira Code',Consolas,monospace" font-weight="700" fill="#6E1C2E">myBack = 1</text><path d="M144 62 L144 94" stroke="#6E1C2E" stroke-width="3"/><path d="M137 84 L144 96 L151 84" fill="none" stroke="#6E1C2E" stroke-width="3"/><path d="M68 218 L68 190" stroke="#C49A2C" stroke-width="3"/><path d="M61 200 L68 188 L75 200" fill="none" stroke="#C49A2C" stroke-width="3"/></g></g><g class="fragment fade-out" data-fragment-index="3"><g class="fragment" data-fragment-index="2"><text x="30" y="40" font-size="19" font-family="'Fira Code',Consolas,monospace" font-weight="700" fill="#A07D1C">myFront = 0</text><text x="250" y="40" font-size="19" font-family="'Fira Code',Consolas,monospace" font-weight="700" fill="#6E1C2E">myBack = 2</text><path d="M220 62 L220 94" stroke="#6E1C2E" stroke-width="3"/><path d="M213 84 L220 96 L227 84" fill="none" stroke="#6E1C2E" stroke-width="3"/><path d="M68 218 L68 190" stroke="#C49A2C" stroke-width="3"/><path d="M61 200 L68 188 L75 200" fill="none" stroke="#C49A2C" stroke-width="3"/></g></g><g class="fragment fade-out" data-fragment-index="4"><g class="fragment" data-fragment-index="3"><text x="30" y="40" font-size="19" font-family="'Fira Code',Consolas,monospace" font-weight="700" fill="#A07D1C">myFront = 0</text><text x="250" y="40" font-size="19" font-family="'Fira Code',Consolas,monospace" font-weight="700" fill="#6E1C2E">myBack = 3</text><path d="M296 62 L296 94" stroke="#6E1C2E" stroke-width="3"/><path d="M289 84 L296 96 L303 84" fill="none" stroke="#6E1C2E" stroke-width="3"/><path d="M68 218 L68 190" stroke="#C49A2C" stroke-width="3"/><path d="M61 200 L68 188 L75 200" fill="none" stroke="#C49A2C" stroke-width="3"/></g></g><g class="fragment fade-out" data-fragment-index="5"><g class="fragment" data-fragment-index="4"><text x="30" y="40" font-size="19" font-family="'Fira Code',Consolas,monospace" font-weight="700" fill="#A07D1C">myFront = 1</text><text x="250" y="40" font-size="19" font-family="'Fira Code',Consolas,monospace" font-weight="700" fill="#6E1C2E">myBack = 3</text><path d="M296 62 L296 94" stroke="#6E1C2E" stroke-width="3"/><path d="M289 84 L296 96 L303 84" fill="none" stroke="#6E1C2E" stroke-width="3"/><path d="M144 218 L144 190" stroke="#C49A2C" stroke-width="3"/><path d="M137 200 L144 188 L151 200" fill="none" stroke="#C49A2C" stroke-width="3"/></g></g><g class="fragment fade-out" data-fragment-index="6"><g class="fragment" data-fragment-index="5"><text x="30" y="40" font-size="19" font-family="'Fira Code',Consolas,monospace" font-weight="700" fill="#A07D1C">myFront = 2</text><text x="250" y="40" font-size="19" font-family="'Fira Code',Consolas,monospace" font-weight="700" fill="#6E1C2E">myBack = 3</text><path d="M296 62 L296 94" stroke="#6E1C2E" stroke-width="3"/><path d="M289 84 L296 96 L303 84" fill="none" stroke="#6E1C2E" stroke-width="3"/><path d="M220 218 L220 190" stroke="#C49A2C" stroke-width="3"/><path d="M213 200 L220 188 L227 200" fill="none" stroke="#C49A2C" stroke-width="3"/></g></g><g class="fragment fade-out" data-fragment-index="7"><g class="fragment" data-fragment-index="6"><text x="30" y="40" font-size="19" font-family="'Fira Code',Consolas,monospace" font-weight="700" fill="#A07D1C">myFront = 2</text><text x="250" y="40" font-size="19" font-family="'Fira Code',Consolas,monospace" font-weight="700" fill="#6E1C2E">myBack = 4</text><path d="M372 62 L372 94" stroke="#6E1C2E" stroke-width="3"/><path d="M365 84 L372 96 L379 84" fill="none" stroke="#6E1C2E" stroke-width="3"/><path d="M220 218 L220 190" stroke="#C49A2C" stroke-width="3"/><path d="M213 200 L220 188 L227 200" fill="none" stroke="#C49A2C" stroke-width="3"/></g></g><g class="fragment fade-out" data-fragment-index="8"><g class="fragment" data-fragment-index="7"><text x="30" y="40" font-size="19" font-family="'Fira Code',Consolas,monospace" font-weight="700" fill="#A07D1C">myFront = 2</text><text x="250" y="40" font-size="19" font-family="'Fira Code',Consolas,monospace" font-weight="700" fill="#6E1C2E">myBack = 0</text><path d="M68 62 L68 94" stroke="#6E1C2E" stroke-width="3"/><path d="M61 84 L68 96 L75 84" fill="none" stroke="#6E1C2E" stroke-width="3"/><path d="M220 218 L220 190" stroke="#C49A2C" stroke-width="3"/><path d="M213 200 L220 188 L227 200" fill="none" stroke="#C49A2C" stroke-width="3"/></g></g><g class="fragment" data-fragment-index="8"><text x="30" y="40" font-size="19" font-family="'Fira Code',Consolas,monospace" font-weight="700" fill="#A07D1C">myFront = 2</text><text x="250" y="40" font-size="19" font-family="'Fira Code',Consolas,monospace" font-weight="700" fill="#6E1C2E">myBack = 1</text><path d="M144 62 L144 94" stroke="#6E1C2E" stroke-width="3"/><path d="M137 84 L144 96 L151 84" fill="none" stroke="#6E1C2E" stroke-width="3"/><path d="M220 218 L220 190" stroke="#C49A2C" stroke-width="3"/><path d="M213 200 L220 188 L227 200" fill="none" stroke="#C49A2C" stroke-width="3"/></g><g class="fragment" data-fragment-index="7"><path d="M406 128 C 436 128, 436 262, 220 262 C 10 262, 6 128, 26 128" fill="none" stroke="#6E1C2E" stroke-width="2.5" stroke-dasharray="6 5"/><path d="M18 122 L28 128 L18 134" fill="none" stroke="#6E1C2E" stroke-width="2.5"/><text x="220" y="284" text-anchor="middle" font-size="16" font-family="'Fira Code',Consolas,monospace" fill="#6E1C2E">next = (i + 1) % mySlots</text></g></svg></div>
+  </div>
+</section>
+
+<section>
+  <span class="pi-badge">Talk to your neighbor &middot; TTYN</span>
+  <div class="pi-question">
+    <strong>Three slots. <code>add</code> A, B, C: <code>myBack</code> wraps to 0. Empty or full?</strong>
+  </div>
+  <svg viewBox="0 0 300 110" aria-hidden="true" style="width:420px;height:auto;display:block;margin:0 auto 0.3em"><rect x="30" y="30" width="80" height="50" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><text x="70" y="63" text-anchor="middle" font-size="22" font-family="'Fira Code',Consolas,monospace" fill="#2B2B2B">A</text><rect x="110" y="30" width="80" height="50" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><text x="150" y="63" text-anchor="middle" font-size="22" font-family="'Fira Code',Consolas,monospace" fill="#2B2B2B">B</text><rect x="190" y="30" width="80" height="50" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><text x="230" y="63" text-anchor="middle" font-size="22" font-family="'Fira Code',Consolas,monospace" fill="#2B2B2B">C</text><text x="70" y="20" text-anchor="middle" font-size="14" font-family="'Fira Code',Consolas,monospace" font-weight="700" fill="#6E1C2E">myBack = 0</text><text x="70" y="104" text-anchor="middle" font-size="14" font-family="'Fira Code',Consolas,monospace" font-weight="700" fill="#A07D1C">myFront = 0</text></svg>
+  <ul class="pi-choices pi-compact">
+    <li><span class="letter">A.</span> Full</li>
+    <li><span class="letter">B.</span> Empty</li>
+    <li class="fragment correct" data-fragment-index="1"><span class="letter">C.</span> <code>myFront</code> and <code>myBack</code> alone can't tell</li>
+  </ul>
+  <div class="answer-box fragment" data-fragment-index="1">
+    <div class="ans-label">&#10003; Answer</div>
+    <strong>C.</strong> A new, empty queue also has <code>myFront == myBack == 0</code>.
+  </div>
+</section>
+
+<section>
+  <h2>Two Ways Out</h2>
   <div class="two-col">
-    <div>
-      <h3>Wins</h3>
-      <ul style="font-size:0.58em">
-        <li>Every operation O(1)</li>
-        <li>No shifting, ever</li>
-        <li>Almost no memory overhead</li>
-      </ul>
+    <div class="fragment">
+      <h3>Keep a count</h3>
+      <svg viewBox="0 0 260 96" aria-hidden="true" style="width:100%;height:auto"><rect x="10" y="24" width="60" height="44" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><text x="40" y="53" text-anchor="middle" font-size="20" font-family="'Fira Code',Consolas,monospace" fill="#2B2B2B">A</text><rect x="70" y="24" width="60" height="44" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><text x="100" y="53" text-anchor="middle" font-size="20" font-family="'Fira Code',Consolas,monospace" fill="#2B2B2B">B</text><rect x="130" y="24" width="60" height="44" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><text x="160" y="53" text-anchor="middle" font-size="20" font-family="'Fira Code',Consolas,monospace" fill="#2B2B2B">C</text><text x="10" y="90" font-size="14" font-family="'Fira Code',Consolas,monospace" fill="#6E1C2E">myCount = 3</text></svg>
+      <p style="font-size:0.52em">Full: <code>myCount == myCapacity</code><br>Empty: <code>myCount == 0</code></p>
     </div>
-    <div>
-      <h3>Costs</h3>
-      <ul style="font-size:0.58em">
-        <li>Fiddly index arithmetic</li>
-        <li>Full vs. empty needs care</li>
-        <li>Fixed capacity unless you grow it</li>
-      </ul>
+    <div class="fragment">
+      <h3>Leave one slot empty</h3>
+      <svg viewBox="0 0 260 96" aria-hidden="true" style="width:100%;height:auto"><rect x="10" y="24" width="60" height="44" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><text x="40" y="53" text-anchor="middle" font-size="20" font-family="'Fira Code',Consolas,monospace" fill="#2B2B2B">A</text><rect x="70" y="24" width="60" height="44" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><text x="100" y="53" text-anchor="middle" font-size="20" font-family="'Fira Code',Consolas,monospace" fill="#2B2B2B">B</text><rect x="130" y="24" width="60" height="44" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="2"/><text x="160" y="53" text-anchor="middle" font-size="20" font-family="'Fira Code',Consolas,monospace" fill="#2B2B2B">C</text><rect x="190" y="24" width="60" height="44" fill="#F4F1EC" stroke="#A8A8A8" stroke-width="2" stroke-dasharray="5 4"/><text x="10" y="90" font-size="14" font-family="'Fira Code',Consolas,monospace" fill="#6E1C2E">mySlots = myCapacity + 1</text></svg>
+      <p style="font-size:0.52em">Full: the back is one step behind the front<br>Empty: <code>myFront == myBack</code></p>
     </div>
   </div>
-  <div class="callout">A linked-list queue avoids the fiddliness, <code>add</code> at the tail, <code>remove</code> at the head, both O(1): at the cost of a pointer per item and a <code>new</code> on every insert.</div>
-</section>
-
-<section class="demo-slide" data-background-color="#6E1C2E">
-  <h1>Demo</h1>
-  <div class="demo-rule"></div>
-  <svg class="demo-art" viewBox="0 -34 320 246" xmlns="http://www.w3.org/2000/svg">
-    <path d="M254,12 C250,0 260,-6 256,-20 C270,-11 267,1 261,12 Z" fill="#E8873A"/>
-    <path d="M266,12 C264,4 270,0 268,-10 C277,-3 275,5 271,12 Z" fill="#F2CD00"/>
-    <path d="M243,12 C241,5 246,2 244,-6 C251,-1 250,6 247,12 Z" fill="#E8873A" opacity=".75"/>
-    <rect x="40" y="10" width="240" height="150" rx="9" fill="#1e1f1a" stroke="#C49A2C" stroke-width="3"/>
-    <text x="58" y="46" font-family="'Fira Code',Consolas,monospace" font-size="15.0" fill="#9be36b">$ ./queue_demo</text>
-    <text x="58" y="76" font-family="'Fira Code',Consolas,monospace" font-size="13.0" fill="#ff7b72">head=3 tail=3 size=5</text>
-    <text x="58" y="96" font-family="'Fira Code',Consolas,monospace" font-size="13.0" fill="#ff7b72">queue is FULL, not empty</text>
-    <text x="58" y="134" font-family="'Fira Code',Consolas,monospace" font-size="15" fill="#9be36b">$</text>
-    <rect x="72" y="122" width="9" height="15" fill="#9be36b"/>
-    <path d="M22,168 L298,168 L314,196 L6,196 Z" fill="#eceae3" stroke="#8d8d86" stroke-width="2.5" stroke-linejoin="round"/>
-    <rect x="140" y="174" width="40" height="6" rx="3" fill="#cfcdc6"/>
-  </svg>
-  <p class="demo-cap">Watching head and tail chase each other around.</p>
-  <p class="demo-sub">(full and empty look identical. that is the whole bug.)</p>
-</section>
-
-<section>
-  <h2>Deques</h2>
-  <p style="font-size:0.7em">Pronounced "deck", a <strong>d</strong>ouble-<strong>e</strong>nded <strong>que</strong>ue.</p>
-  <pre style="font-size:0.55em"><code class="language-cpp" data-trim>
-#include &lt;deque&gt;
-
-deque&lt;int&gt; d;
-d.push_front(1);   d.push_back(2);
-d.pop_front();     d.pop_back();
-  </code></pre>
-  <div class="callout">Push and pop at either end, all O(1). A deque can act as a stack <em>or</em> a queue, which is why the STL's <code>stack</code> and <code>queue</code> are built on one by default.</div>
+  <p class="fragment" style="font-size:0.56em;margin-top:0.6em">a10: you pick one, and write down why.</p>
 </section>
 
 <section>
@@ -465,8 +615,8 @@ load factor = items / slots
     <li>Stack = LIFO; Queue = FIFO</li>
     <li>Put the action where the structure is fast: end of an array, front of a list</li>
     <li>A naive array queue makes <code style='color:var(--gold)'>remove()</code> O(n); a <strong>circular array</strong> fixes it</li>
-    <li><code style='color:var(--gold)'>(i + 1) % capacity</code> is the whole trick</li>
-    <li><code style='color:var(--gold)'>head == tail</code> is ambiguous, keep a size, or leave a gap</li>
+    <li><code style='color:var(--gold)'>(i + 1) % mySlots</code> is the whole trick</li>
+    <li><code style='color:var(--gold)'>myFront == myBack</code> is ambiguous: keep a count, or leave a slot empty</li>
   </ul>
   <div class="next">Next: a10 · a11 →</div>
   <p class="credit-line">
