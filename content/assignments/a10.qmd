@@ -30,8 +30,8 @@ By the end of this assignment, you will be able to:
 - Implement a Queue whose `add` and `remove` are both O(1)
 - Explain why the obvious array queue is O(n), and what a circular array changes
 - Use the remainder operator to move an index around a ring
-- Explain why "front equals back" is ambiguous, and defend one of the two
-  standard fixes for it
+- Explain why `myLast` starts at `capacity - 1`, and why the Queue keeps
+  `mySize` to tell full from empty
 - Define your own exception type, throw it, and catch it
 - Write a class template whose definitions live in its header
 
