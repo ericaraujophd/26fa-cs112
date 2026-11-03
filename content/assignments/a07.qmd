@@ -284,7 +284,7 @@ What `readResults` does:
 1. Open the file. If it will not open, throw
    `invalid_argument("cannot open file: " + filename)`.
 2. Read the first line with `getline` and **throw it away**, it is the header.
-3. For every line after that: skip it if it is blank; split it; if you did not
+3. For every line after that: skip it if it is empty (`line == ""`); split it; if you did not
    get exactly 12 fields, throw; otherwise fill in a `Result` and `push_back` it.
 4. Return the vector.
 
