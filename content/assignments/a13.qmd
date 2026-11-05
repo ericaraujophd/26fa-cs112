@@ -190,9 +190,11 @@ the size back first:
 (row - 1 + ROWS) % ROWS
 ```
 
-You met this exact trap in a10, in the circular queue's `getSize`, and it is
-here for the same reason: the remainder operator does not do what you want on
-the way down. A wrapping grid and a circular array are the same idea.
+a10's circular queue never met this trap: its indexes only ever step
+forward, `(myLast + 1) % myCapacity`, and on the way up `%` is all you need.
+The snake can also step up or left, and on the way down the remainder operator
+does not do what you want. A wrapping grid and a circular array are the same
+idea; the grid just wraps in both directions.
 :::
 
 **TODO 3, `updateSnake`.** The queue. Four lines:
