@@ -133,6 +133,17 @@ C++ syntax, this is written for that situation.
 
 ---
 
+## Practice the syntax: MineCode
+
+[**mine-code-one.vercel.app**](https://mine-code-one.vercel.app)
+
+Levels for practicing basic C++ syntax in a game, made by students in
+Prof. Victor Norman's course here at Calvin. They are still testing it and have
+asked for CS112 students to try it. Play a few levels, and think about what you
+would tell them: what helped, what confused you, what you would change.
+
+---
+
 ::: {.callout-note}
 ## Nothing here replaces doing the work
 
