@@ -80,8 +80,8 @@ You are going to write three programs that get from `S` to `E`. Two of them
 will be **the same program** with a different container. The third will have
 no container in it at all.
 
-The question is what happens to an algorithm when
-you change the thing that remembers where you have not been yet.
+The container holds the cells you have found but not explored yet. Which one
+it hands back next decides the route you get:
 
 | | remembers with | finds |
 |---|---|---|
@@ -411,6 +411,8 @@ And the answer changes completely:
 ```
 
 ### Why changing the container does that
+
+![`mazes/twoways.txt`, both searches side by side, one step at a time. Each step takes one cell out of the container (it rises out of the row of boxes and turns gold in the maze), then puts its unvisited neighbors in (the outlined boxes). The boxes are labeled with each cell's row and column.](../../figures/a12-maze-search.gif){#fig-maze-search fig-alt="An animation of the twoways maze drawn twice, side by side, with row and column numbers along the edges. On the left, depth-first search with a Stack; on the right, breadth-first search with a Queue. Under each maze the container is drawn as a row of boxes labeled row,col: the Stack's top is its right end, and the Queue's front is its left end and its back its right end. Each step, one box rises out of the container and that cell turns gold in the maze, then the cell's unvisited neighbors join the container as outlined boxes and turn light gold in the maze. Cells already taken out are pink. The Stack runs down one corridor at a time and reaches E after taking out 95 cells, with a winding route of 89 cells drawn in maroon and 13 cells left in the Stack, never needed. The Queue spreads out evenly across the maze and reaches E after taking out all 129 open cells, with a route of 29 cells."}
 
 A container decides **what you look at next**, and that is the only decision a
 search makes.
