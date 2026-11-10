@@ -58,40 +58,109 @@ stack, so leave it until after that lecture.
 
 ## 1. Introduction
 
-Here is a maze:
+A maze file is a rectangle of characters. `#` is a wall, `.` is open, `S` is
+where you start and `E` is where you are trying to get to. From any open square
+you can step up, down, left or right, never diagonally. Here is a small one:
 
 ```
-#####################
-#S............#.....#
-#.#######.###.###.#.#
-#.......#...#.....#.#
-#.#.#.#.###.#.#.###.#
-#...#.#...#...#.....#
-#.#.#.###.#.#.#.###.#
-#.#.....#...#.#...#.#
-#.#.#########.###.#.#
-#.#.........#.....#.#
-#.#.###.###.#####.#.#
-#.........#........E#
-#####################
+#########
+#S......#
+#.#####.#
+#.#...#.#
+#...#...#
+#.#.#####
+#.#....E#
+#########
 ```
 
-You are going to write three programs that get from `S` to `E`. Two of them
-will be **the same program** with a different container. The third will have
-no container in it at all.
+![The same maze drawn, with the row and column of every square. A square is named by row, then column: `S` is 1,1 and `E` is 6,7.](../../figures/a12-intro-maze.png){#fig-intro-maze fig-alt="The small maze drawn as a grid of dark walls and white open squares, 8 rows by 9 columns, numbered 0 to 7 down the left and 0 to 8 along the top. S is at row 1, column 1, and E at row 6, column 7. Row 1 is open from S across to column 7. Column 1 is open from S down to row 6. Column 7 is open from row 1 down to row 4. Row 4 runs from column 1 to column 3 and from column 5 to column 7, and row 3 runs from column 3 to column 5, so the open squares form a loop around a small block of wall. Column 3 continues down from row 4 to row 6, and row 6 runs from column 3 across to E."}
 
-The container holds the cells you have found but not explored yet. Which one
-it hands back next decides the route you get:
+There are two ways from `S` to `E`. The short one goes down the left side and
+along the bottom, 12 squares counting both ends. The long one goes right along
+the top, round the loop in the middle and down to the bottom, 22 squares.
 
-| | remembers with | finds |
-|---|---|---|
-| **depth first** | a `Stack` | *a* route, usually a long, wandering one |
-| **breadth first** | a `Queue` | the **shortest** route |
-| **depth first, recursively** | the run-time stack | *a* route, again |
+You will write three programs that find a route. All three keep a record of
+the squares they have already found, and all three need somewhere to keep the
+squares they have found but not looked at yet. That somewhere is what makes
+them different.
 
-The first two differ only in the container, which changes three names. The
-third looks different, but it does exactly what the first one does, with the
-computer keeping the stack for you instead of you keeping it yourself.
+### Depth first, with a Stack (TODO 3)
+
+Push `S` onto a Stack. Then, over and over: pop the top cell, and push each of
+its open neighbors that has not been found yet. Stop when `E` comes out.
+
+The first three steps on this maze:
+
+| step | pop | push | the Stack after, top on the right |
+|---|---|---|---|
+| 1 | 1,1 (`S`) | 2,1 and 1,2 | 2,1 · 1,2 |
+| 2 | 1,2 | 1,3 | 2,1 · 1,3 |
+| 3 | 1,3 | 1,4 | 2,1 · 1,4 |
+
+A Stack hands back the cell pushed last. After step 1 that is 1,2, the square
+to the right of `S`, so the search heads right along row 1, and every pop
+after that takes the square it has just found. It follows that corridor to
+the end, goes round the loop and reaches `E` with the long route, **22
+squares**. 2,1, the way down from `S`, sits at the bottom of the Stack the
+whole time and is never popped.
+
+### Breadth first, with a Queue (TODO 4)
+
+The same loop with a Queue: `add` where TODO 3 has `push`, `remove` where it
+has `pop`.
+
+| step | remove | add | the Queue after, front on the left |
+|---|---|---|---|
+| 1 | 1,1 (`S`) | 2,1 and 1,2 | 2,1 · 1,2 |
+| 2 | 2,1 | 3,1 | 1,2 · 3,1 |
+| 3 | 1,2 | 1,3 | 3,1 · 1,3 |
+| 4 | 3,1 | 4,1 | 1,3 · 4,1 |
+
+A Queue hands back the cell that has waited longest, so the search takes turns:
+one square down, one square right, another down, another right. Every square
+one step from `S` comes out before any square two steps away, every square two
+steps away before any three steps away, and so on. So the first time `E`
+comes out, it has come the shortest way: **12 squares**.
+
+### Depth first, recursively (TODO 5)
+
+No container of your own. A function `explore(cell)` adds the cell to the
+path and calls itself on each neighbor that has not been found yet. If one of
+those calls reaches `E`, it is done. If none of them does, it takes its cell
+back off the path and returns `false`.
+
+`explore` tries the neighbors in the order up, down, left, right, so from `S`
+it goes down first. At 6,1 it hits a dead end: `explore(6,1)` and then
+`explore(5,1)` return `false`, and both squares come back off the path. From
+4,1 it goes right to 4,3, then up and all the way round the loop, until it
+reaches 1,2, next to `S`, where every neighbor has been found. Fourteen calls
+return `false` one after another, back to 4,3. From 4,3 it goes down and
+reaches `E`: **12 squares**.
+
+Each call that is still waiting for an answer is a frame on the run-time
+stack, and at every moment those frames are exactly the squares on the path.
+That is the stack this version uses, without declaring one.
+
+### All three at once
+
+![The three searches on this maze, one step at a time. The Stack and the Queue take two frames per step: a cell comes out (it rises out of the row of boxes and turns gold in the maze), then its neighbors go in (outlined boxes). The recursive search takes one frame per call or return, and its row of boxes is the run-time stack, one box per call of `explore`.](../../figures/a12-intro-search.gif){#fig-intro-search fig-alt="An animation in three rows, one per search, each with the small maze on the left and its container drawn as a row of boxes labeled row,col on the right. Row one, depth first with a Stack: the Stack's top is its right end; the search runs right along row 1, round the loop and down to E, and ends with a 22-square route while 2,1 is still waiting in the Stack. Row two, breadth first with a Queue: cells leave from the front on the left and join at the back on the right; the search spreads down and right in turn and ends with the 12-square route down the left side and along the bottom. Row three, depth first recursively: the boxes are the run-time stack, one per call of explore, newest on the right, and a thin line in the maze joins the squares on the path. It goes down to the dead end at 6,1 and backs out, goes round the loop and backs out of all of it one call at a time, then goes down from 4,3 to E, ending with the 12-square route as twelve frames."}
+
+| | remembers with | route on this maze | promises |
+|---|---|---|---|
+| **depth first** | a `Stack` | 22 squares | *a* route |
+| **breadth first** | a `Queue` | 12 squares | the **shortest** route |
+| **depth first, recursively** | the run-time stack | 12 squares | *a* route |
+
+The two depth-first versions both follow one corridor as far as it goes, but
+they try the neighbors in opposite orders. The Stack pops the neighbor pushed
+last, which is the one to the right. `explore` tries the first one in the
+list, up, then down. That is the only reason the recursive version found the
+short route here. On another maze the order can work against it. Only the Queue
+finds the shortest route on every maze.
+
+To watch your own solvers do this, save the maze above as `mazes/loop.txt` and
+run `./a12 mazes/loop.txt`. The seven mazes in the repository are bigger. On
+`mazes/twoways.txt` the Stack's route is 89 squares and the Queue's is 29.
 
 ::: {.callout-note}
 **This is a search problem, and searching is one of the main jobs these
