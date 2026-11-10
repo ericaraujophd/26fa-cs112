@@ -15,9 +15,9 @@ title: "Assignment 12: Recursion"
 Your own private GitHub repository is waiting for you (see
 [Getting the code](#getting-the-code) below), clone it and open it in VS Code.
 
-**Plan to set aside about 2.5 to 3 hours.** TODO 3 is the big one; TODO 4 is
-about ten minutes once TODO 3 works. TODO 5
-needs Wednesday's lecture.
+**Plan to set aside about 2.5 to 3 hours.** TODO 3 is the big one. TODO 4
+takes about ten minutes once TODO 3 works, and TODO 5 needs Wednesday's
+lecture.
 :::
 
 ## Objectives
@@ -46,12 +46,12 @@ work, against each other, in the same program.
 **Lab and homework.** You start this in lab on **Tuesday Nov 10**, with Monday's
 lecture on what recursion is behind you.
 
-**§4 and §5 are the lab**, the two warm-ups and depth-first search with a
-Stack. Both only need Monday.
+**§4 to §6 are the lab**: the two warm-ups (TODOs 1 and 2), then depth-first
+search with a Stack (TODO 3). They need only Monday's lecture.
 
 **§7 onwards is homework.** TODO 4 needs nothing new and takes minutes. TODO 5
-is the recursive solver, and it lands after **Wednesday's** lecture on the
-run-time stack, which is the lecture it is an exercise in.
+is the recursive solver. It practices Wednesday's lecture on the run-time
+stack, so leave it until after that lecture.
 :::
 
 ---
@@ -77,8 +77,8 @@ Here is a maze:
 ```
 
 You are going to write three programs that get from `S` to `E`. Two of them
-will be **the same program**, differing by one word. The third will have no
-container in it at all.
+will be **the same program** with a different container. The third will have
+no container in it at all.
 
 The question is what happens to an algorithm when
 you change the thing that remembers where you have not been yet.
@@ -89,16 +89,16 @@ you change the thing that remembers where you have not been yet.
 | **breadth first** | a `Queue` | the **shortest** route |
 | **depth first, recursively** | the run-time stack | *a* route, again |
 
-The first two differ by three identifiers. The third is a different-looking
-program that turns out to be doing exactly what the first one did, with the
+The first two differ only in the container, which changes three names. The
+third looks different, but it does exactly what the first one does, with the
 computer keeping the stack for you instead of you keeping it yourself.
 
 ::: {.callout-note}
-**This is a search problem, and searching is most of what these containers are
-for.** Route-finding, solving a puzzle, working out which packages a package
-depends on, finding the shortest chain of friends between two people, a
-compiler deciding what to rebuild, all of them are this program with the maze
-swapped out. Learn it once here.
+**This is a search problem, and searching is one of the main jobs these
+containers do.** Route-finding, solving a puzzle, working out which packages a
+package depends on, finding the shortest chain of friends between two people,
+a compiler deciding what to rebuild: each of these is this program with
+something else in place of the maze.
 :::
 
 ---
@@ -186,7 +186,9 @@ and are not what this assignment is about:
 
 The ones in the repository work, and they are **not the a10 answer key**. They
 are thin shells around `std::vector` and `std::deque`, no array, no `mySize`,
-nothing circular. They give nothing away about a10.
+nothing circular. They give nothing away about a10. You only need their method
+names, which are a10's: `push`, `pop` and `isEmpty` for the Stack, `add`,
+`remove` and `isEmpty` for the Queue.
 
 If your own a10 containers work, copy your `Stack.h` and `Queue.h` over these
 and everything will keep compiling: same class, same methods, same exceptions.
@@ -196,8 +198,8 @@ heard of when you wrote it.
 ::: {.callout-note}
 **Grading always uses the shipped containers, whatever you leave in those
 files.** So dropping in your own cannot help your a12 score and a bug in them
-cannot hurt it. a12 grades your search; a10 already graded your containers, and
-one rough week should not cost you two.
+cannot hurt it. a12 grades your search. a10 already graded your containers,
+and one rough week should not cost you two.
 :::
 
 ---
@@ -232,15 +234,15 @@ Trace it for `{5, 3, 8}` before you write it:
   sumArray(v, 3)  =  8 + 8   =  16
 ```
 
-Going down is the **winding** phase; coming back up is **unwinding**. Both of
-those are on Wednesday's slides, and it is much easier to see them on a
+Going down is the **winding** phase, and coming back up is **unwinding**.
+Both are on Wednesday's slides, and they are much easier to see on a
 three-element array than on a maze.
 
 **TODO 2, `reverseArray(values, n)`**, in place.
 
 Swap the two ends, then the middle is a smaller version of the same problem.
-`values + 1` is the array starting one element later, which is how you hand the
-middle to the next call.
+`&values[1]` is the array starting one element later, the same `&a[1]` as the
+`sum` slide on Monday, and it is how you hand the middle to the next call.
 
 ::: {.callout-warning}
 Count carefully. If you swap the two ends of an `n`-element array, the middle
@@ -264,6 +266,24 @@ vector<vector<Cell>> parent(maze.getRows(),  vector<Cell>(maze.getCols()));
 
 `visited[r][c]`, have I already discovered this cell?
 `parent[r][c]`, which cell was I standing on when I discovered it?
+
+Copy those two lines as they are. They are new, so read them from the inside
+out:
+
+- `vector<bool>(maze.getCols(), false)` is **one row**: a vector of
+  `getCols()` items, every one of them `false`.
+- `vector<vector<bool>> visited(maze.getRows(), ...)` is a vector whose items
+  are rows, `getRows()` copies of that row.
+
+So `visited[r]` is row `r`, and `visited[r][c]` is the bool in row `r`,
+column `c`, the same indexing as the 2D arrays from week 2. `parent` is the
+same with `Cell` in place of `bool`, and every `Cell` in it starts as `Cell()`,
+which is (0, 0).
+
+Why not a plain 2D array, `bool visited[rows][cols]`? C++ wants an array's
+size fixed when the program is compiled, and a maze's size is only known once
+its file has been read. A vector can be given its size while the program
+runs.
 
 ::: {.callout-note}
 **No hash table here, and that is a deliberate choice.** A cell *is* a pair of
@@ -390,7 +410,7 @@ And the answer changes completely:
   42 cells                 18 cells
 ```
 
-### Why one word does that
+### Why changing the container does that
 
 A container decides **what you look at next**, and that is the only decision a
 search makes.
@@ -436,12 +456,16 @@ Same search. No `Stack`.
 You will want a helper that calls itself:
 
 ```cpp
-static bool explore(const Maze& maze, Cell here,
-                    vector<vector<bool>>& visited, Path& path);
+bool explore(const Maze& maze, Cell here,
+             vector<vector<bool>>& visited, Path& path);
 ```
 
 which returns `true` if the end can be reached from `here`, and leaves the route
-from `here` onwards on the back of `path`.
+from `here` onwards on the back of `path`. Write it in `Solver.cpp` **above**
+`solveRecursively`, so the compiler has seen it by the time
+`solveRecursively` calls it. `path.push_back(here)` adds a cell to the back of
+the path and `path.pop_back()` takes it off again, the vector methods from
+week 5.
 
 ```
 mark here visited
@@ -520,8 +544,8 @@ any shortest route will do.
 :::
 
 Each check runs in its own process. A recursive function with no reachable base
-case will be killed when it runs out of stack; this way that costs you one check
-rather than the whole run.
+case is killed when it runs out of stack, and because each check runs alone,
+that costs you one check rather than the whole run.
 
 Run one on its own while you are debugging:
 

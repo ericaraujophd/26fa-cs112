@@ -7,7 +7,7 @@ Your own private GitHub repository is waiting for you (see
 [Getting the code](#getting-the-code) below), clone it and open it in VS Code.
 
 **Plan to set aside about 2 to 2.5 hours.** There is no new data structure
-here and no new C++, this is the week's second assignment and it is meant to
+here and no new C++. This is the week's second assignment, and it is meant to
 be the lighter one. TODO 3 is the heart of it and is four lines long.
 :::
 
@@ -27,9 +27,8 @@ By the end of this assignment, you will be able to:
 ---
 
 This assignment applies course skill **C6** (implement a queue with O(1)
-add and remove) rather than teaching a new one. It is week 10's second
-assignment, and it is the shorter of the two on purpose, a12 is the one with
-the weight in it.
+add and remove) rather than teaching a new one. It is the shorter of week
+10's two assignments on purpose: a12 carries the weight.
 
 ::: {.callout-note}
 **This one is homework.** Tuesday's lab belongs to a12. Nothing here needs a
@@ -49,14 +48,14 @@ frame 3     ..####@.....
 frame 4     ...####@....
 ```
 
-Look at what is actually happening. A square appears at the front. A square
-disappears at the back. Nothing in the middle moves at all.
+Look at what changes from one frame to the next. A square appears at the
+front. A square disappears at the back. Nothing in the middle moves at all.
 
 The snake's body is a `Queue<Segment>`, and the entire animation is:
 
 ```cpp
 myBody.add(newHead);      // grow a head
-myBody.remove();             // lose a tail
+myBody.remove();          // lose a tail
 ```
 
 once per frame.
@@ -72,10 +71,10 @@ segments along. You will write four lines in TODO 3, and one of them is a
 `return`.
 
 ::: {.callout-note}
-There is no better fit between a data structure and a problem in this
-course. The same game written over a `vector` needs to decide what to do
-about the tail on every frame, shift everything down, or track an offset, or reverse the order
-and pay somewhere else. Over a queue, the question does not come up.
+Write the same game over a `vector` and you have to decide what to do about
+the tail on every frame: shift everything down, track an offset, or reverse
+the order and pay for it somewhere else. Over a queue, the question does not
+come up.
 :::
 
 ---
@@ -154,8 +153,8 @@ in, and it settles a question you would otherwise have to guess at:
 
 Step 2 happens **before** step 4, so the tail still counts as part of the snake
 at the moment you decide whether you crashed. Turning into the square your tail
-is about to leave kills you. Some versions of Snake are kinder; this one is not,
-and the rule is at least simple.
+is about to leave kills you. Some versions of Snake let you do that. This one
+does not.
 
 ### You never write an escape code
 
@@ -164,17 +163,17 @@ character `▀` fills the top half of a terminal cell with the foreground color
 and leaves the bottom half showing the background, so one printed character
 draws two grid rows and the pixels come out square.
 
-Everything you write works on a plain `char` grid. Color is a mapping applied
-at the very end, and nowhere else.
+Everything you write works on a plain `char` grid. Color is added at the end,
+in `render.cpp`, and nowhere else.
 
 ---
 
 ## 4. The six TODOs
 
 **TODO 1, `drawSnake`.** Paint `BODY` on every occupied square, then `HEAD` on
-top, then `TARGET`. Walk `myOccupied`, the 2D array of bools the class keeps;
-do not take segments out of the queue to look at them, because a queue only
-lets you see its front and you would be dismantling the snake to read it.
+top, then `TARGET`. Walk `myOccupied`, the 2D array of bools the class keeps.
+Do not take segments out of the queue to look at them: a queue only lets you
+see its front, and you would be dismantling the snake to read it.
 
 Do this one first even though it is not the interesting one. Once it works you
 can *see* everything else you write.
@@ -194,7 +193,7 @@ a10's circular queue never met this trap: its indexes only ever step
 forward, `(myLast + 1) % myCapacity`, and on the way up `%` is all you need.
 The snake can also step up or left, and on the way down the remainder operator
 does not do what you want. A wrapping grid and a circular array are the same
-idea; the grid just wraps in both directions.
+idea, except that the grid wraps in both directions.
 :::
 
 **TODO 3, `updateSnake`.** The queue. Four lines:
@@ -207,7 +206,7 @@ otherwise:                  the tail leaves the front, freeing its square
 ```
 
 That third line is eating. `step()` adds `GROW_BY` to `myGrowth` when the snake
-eats; each frame after that skips the remove once. The frame that eats is
+eats, and each frame after that skips the remove once. The frame that eats is
 itself the first frame of growing, so a snake of 1 becomes a snake of
 `1 + GROW_BY` over `GROW_BY` frames.
 
@@ -219,23 +218,23 @@ itself the first frame of growing, so a snake of 1 becomes a snake of
 **exactly** this procedure:
 
 ```
-repeat:
-    row = nextRandom() % ROWS          ← the row FIRST
-    col = nextRandom() % COLS          ← then the column
-until (row, col) is free
+row = nextRandom() % ROWS              ← the row FIRST
+col = nextRandom() % COLS              ← then the column
+while (row, col) is occupied:
+    row = nextRandom() % ROWS          ← a fresh pair, row first again
+    col = nextRandom() % COLS
 ```
 
 Two numbers per attempt, row before column, a fresh pair every attempt. §5
-explains why the order is not a matter of taste.
+explains why the order matters.
 
 ---
 
 ## 5. Why a random game can be graded at all {#determinism}
 
 A game with random elements sounds ungradeable. Play it twice and you get two
-different games; there is nothing to compare against.
-
-Except that the randomness is not random.
+different games, with nothing to compare against. But the random numbers here
+come from a formula.
 
 `nextRandom()` in `given.cpp` is a **linear congruential generator**: multiply
 the last number by something, add something, keep the middle bits. Give it the
@@ -246,6 +245,9 @@ every machine that has ever existed.
 myRandom = myRandom * 1103515245u + 12345u;
 return (myRandom >> 16) & 0x7FFFu;
 ```
+
+You do not need to follow the second line. `>>` and `&` work on the bits of a
+number there, and have nothing to do with `cout`.
 
 `main.cpp` starts every game from the same seed, 2026. So the first target is
 always at row 16, column 38, on your laptop, on the grading machine, in
@@ -356,5 +358,5 @@ None of this is graded and none of it is required. But the pieces are all here:
   A script that also avoided its own body would do better.
 
 The last one is not small. Deciding where to go next, given what you know
-about the board, is a search problem, and you wrote three of those last week.
+about the board, is a search problem, and you wrote three of those in a12.
 :::
