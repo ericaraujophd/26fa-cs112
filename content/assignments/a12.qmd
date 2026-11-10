@@ -158,9 +158,9 @@ list, up, then down. That is the only reason the recursive version found the
 short route here. On another maze the order can work against it. Only the Queue
 finds the shortest route on every maze.
 
-To watch your own solvers do this, save the maze above as `mazes/loop.txt` and
-run `./a12 mazes/loop.txt`. The seven mazes in the repository are bigger. On
-`mazes/twoways.txt` the Stack's route is 89 squares and the Queue's is 29.
+This maze is in your repository as `mazes/loop.txt`. Once your solvers work,
+`./a12 mazes/loop.txt` should print 22, 12 and 12. The other mazes are bigger.
+On `mazes/twoways.txt` the Stack's route is 89 squares and the Queue's is 29.
 
 ::: {.callout-note}
 **This is a search problem, and searching is one of the main jobs these
@@ -235,7 +235,7 @@ reports **6 / 32**.
 | `Maze.h`, `Maze.cpp` | no | the maze, and two helpers you should use |
 | `Stack.h`, `Queue.h` | **replaceable** | working containers, see below |
 | `main.cpp` | no | solves a maze three ways and draws the results |
-| `mazes/` | no | seven mazes |
+| `mazes/` | no | eight mazes |
 | `checks.cpp` | no | the course's checks |
 
 ### Two helpers you should use
