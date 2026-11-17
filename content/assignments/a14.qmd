@@ -161,11 +161,26 @@ tree is handled in one place only.
 
 ## 4. TODOs 1 to 5, the tree {#the-tree}
 
-**TODO 1, the constructor.** Two lines.
+**TODO 1, the constructor, `BST()`.** A new tree is empty: it has no root node
+and holds no items. Set `myRoot` to `nullptr` and `myNumItems` to 0.
 
-**TODO 2, `insert`.** Three cases, and they are exactly the three ways two
-items can compare: smaller goes left, larger goes right, equal is already here
-and **throws**.
+**TODO 2, `insert`.** Two functions, as §3 explains.
+
+`BST::insert(it)`:
+
+1. If the tree is empty, make the root: `myRoot = new Node(it);`
+2. Otherwise, let the root do it: `myRoot->insert(it);`
+3. Then add 1 to `myNumItems`.
+
+`Node::insert(it)` compares `it` with `myItem`. There are three cases, the three
+ways two items can compare:
+
+- `it < myItem`: it belongs on the left. If `myLeft` is `nullptr`, attach a new
+  node there with `myLeft = new Node(it);`. Otherwise call
+  `myLeft->insert(it);`.
+- `it > myItem`: the same on the right, with `myRight`.
+- Otherwise the item is already in the tree, so **throw**:
+  `throw BSTException("insert()", "item is already in the tree");`
 
 ::: {.callout-note}
 **Why throw on a duplicate?** A second copy of a value has no place to go in the
@@ -193,9 +208,16 @@ tree think it grew.
 :::
 
 **TODO 3, `contains`.** The same walk as `insert`, but it changes nothing.
-**Return what the recursive call gives you.** Dropping that answer and falling
-off the end of the function was the most common way to lose marks on this in
-spring.
+
+- `BST::contains(it)`: if the tree is empty, return `false`. Otherwise return
+  `myRoot->contains(it)`.
+- `Node::contains(it)`: if `it == myItem`, return `true`. If `it < myItem`,
+  return `false` when there is no left child, and otherwise return
+  `myLeft->contains(it)`. If `it > myItem`, do the same on the right.
+
+**Return what the recursive call gives you.** Calling `myLeft->contains(it)`
+without `return` throws the answer away, and falling off the end of the
+function was the most common way to lose marks on this in spring.
 
 **TODO 4, `getHeight`.** Heights here count **nodes**, not edges:
 
@@ -205,16 +227,27 @@ spring.
 | one node | 1 |
 | a root with one child | 2 |
 
-The recursive definition is one line: *a node's height is one more than the
-taller of its two subtrees*. Then decide the base case. You can say that a node
-with no children has height 1, or that a missing subtree has height 0 and let
-the formula do the rest. The second is shorter.
+A node's height is one more than the taller of its two subtrees:
+
+- `BST::getHeight()`: an empty tree has height 0. Otherwise return
+  `myRoot->getHeight()`.
+- `Node::getHeight()`: work out the height of the left subtree, which is 0 if
+  `myLeft` is `nullptr` and `myLeft->getHeight()` otherwise. Do the same for the
+  right. Return 1 plus the larger of the two.
+
+A leaf then gets 1 + 0 = 1 with no special case.
 
 Every height in §7 comes from this method. Check it against a tree you have
 drawn on paper before you trust it.
 
-**TODO 5, the two traversals.** `traversePreorder` is written for you as the
-model. Copy it and move one line:
+**TODO 5, the two traversals.** `traversePreorder` is written for you, on
+`BST` and on `Node`. Read both. `BST::traversePreorder` asks the root to start
+if the tree is not empty, and `Node::traversePreorder` does three things: it
+processes its own item with `processItem(out)`, then calls the left child, then
+the right child, each only if it is not `nullptr`.
+
+Write `traverseInorder` and `traversePostorder` the same way, on both classes.
+Copy the preorder code and change the order of the three steps:
 
 ```
 pre-order    me, left, right
@@ -234,18 +267,28 @@ Your index prints alphabetically without any sorting code.
 
 ## 5. TODOs 6 and 7, index a text, twice {#the-index}
 
-**TODO 6, `indexText`.** Put every word of the text into the tree. Each
-successful insert is a word you had not seen, and each `BSTException` is a
-repetition. An in-order traversal then prints the vocabulary alphabetically.
+**TODO 6, `indexText(words, tree)`.** Put every word into the tree and count.
 
-**TODO 7, `indexWithMap`.** The same job, about five lines:
+1. Loop over `words`. For each word, `insert` it into `tree` inside a `try`.
+2. If the insert succeeds, the word is new: add 1 to `report.distinct`.
+3. If it throws a `BSTException`, the word was already there: catch it and add
+   1 to `report.repeats`.
+4. Set `report.total` to the number of words you looked at, which is
+   `distinct + repeats`, and return `report`.
+
+`main.cpp` then prints the tree with an in-order traversal, in alphabetical
+order.
+
+**TODO 7, `indexWithMap(words)`.** The same job with a `map<string, int>`,
+about five lines. Loop over `words` and, for each one, do
 
 ```cpp
 counts[word]++;
 ```
 
-A missing key is created with a value-initialized `int`, which is 0, and then
-incremented.
+then return `counts`. If `word` is not a key yet, `counts[word]` adds it with
+the value 0, and `++` makes it 1. If it is already a key, `++` adds one to its
+count.
 
 ::: {.callout-important}
 **What the map does that your tree does not.**
@@ -265,9 +308,14 @@ does. Inside, it is a balanced binary search tree, usually a red-black tree.
 
 ## 6. TODO 8, one trial
 
-`runTrial` builds a fresh tree from a list of words and reports how tall it came
-out. **Three lines, if you call TODO 6 to do the inserting.** It already counts
-the distinct words and the repeats, the two things a trial needs.
+**TODO 8, `runTrial(sample)`.** Build a fresh tree from `sample` and report how
+tall it came out.
+
+1. Declare a local `BST<string>`.
+2. Call your `indexText` with `sample` and that tree. It returns an
+   `IndexReport` with the distinct words and the repeats.
+3. Fill in `result.height` from the tree's `getHeight()`, and copy `distinct`
+   and `repeats` from the report. Return `result`.
 
 Make the tree a local variable so its destructor frees it. `main.cpp` runs this
 ten times on twenty thousand words each.
