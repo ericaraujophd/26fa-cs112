@@ -215,9 +215,9 @@ tree think it grew.
   return `false` when there is no left child, and otherwise return
   `myLeft->contains(it)`. If `it > myItem`, do the same on the right.
 
-**Return what the recursive call gives you.** Calling `myLeft->contains(it)`
-without `return` throws the answer away, and falling off the end of the
-function was the most common way to lose marks on this in spring.
+**Write `return` in front of each recursive call:** `return myLeft->contains(it);`.
+Without it, the answer the child found is thrown away, and the function reaches
+its end without returning a value.
 
 **TODO 4, `getHeight`.** Heights here count **nodes**, not edges:
 
