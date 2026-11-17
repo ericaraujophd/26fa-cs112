@@ -136,12 +136,32 @@ reports **1 / 36**.
 | `Exceptions.h` | no | `BSTException` |
 | `fieldnotes.txt` | no | the text you index |
 | `words.txt` | no | a11's dictionary, already sorted |
+| `Timer.h` | no | a09's stopwatch |
+| `checks.cpp` | no | the course's checks. Read them: they are the specification. |
+
+Do not edit the files marked *no*. Grading puts back its own copies of all of
+them, so a change there cannot change your score. `make test` also checks
+several of them against their original versions and tells you if one has
+changed.
 
 ::: {.callout-note}
 **Header-only.** `BST` is a class template, so its definitions live in
 `BST.h` below the class, as with `Trace` in a06,
 `List` in a08, and `Stack` and `Queue` in a10. There is no `BST.cpp`.
 :::
+
+### What `BST.h` already has
+
+- **The destructor.** `~Node` deletes its two children, and each of them deletes
+  its own children, and so on down. So one `delete myRoot` in `~BST` frees the
+  whole tree, the same idea as a08's `List`. Deleting a `nullptr` does nothing,
+  which is why there is no `if` before each `delete`.
+- **`isEmpty()` and `getSize()`.**
+- **`processItem(out)`**, what a traversal does with each item: it writes the
+  item and a space to the stream `out`. Every traversal writes to the `out` it
+  is given, which is how the checks can pass a `stringstream` and read back what
+  your traversal produced.
+- **`traversePreorder`**, on `BST` and on `Node`, the model for TODO 5.
 
 ### Every operation is written twice
 
@@ -178,6 +198,9 @@ and holds no items. Set `myRoot` to `nullptr` and `myNumItems` to 0.
 - `it > myItem`: the same on the right, with `myRight`.
 - Otherwise the item is already in the tree, so **throw**:
   `throw BSTException("insert()", "item is already in the tree");`
+
+`Item` only needs `<` and `>`, so the same code works for `int` and for
+`string`.
 
 ::: {.callout-note}
 **Why throw on a duplicate?** A second copy of a value has no place to go in the
@@ -232,7 +255,9 @@ A node's height is one more than the taller of its two subtrees:
   `myLeft` is `nullptr` and `myLeft->getHeight()` otherwise. Do the same for the
   right. Return 1 plus the larger of the two.
 
-A leaf then gets 1 + 0 = 1 with no special case.
+A leaf then gets 1 + 0 = 1 with no special case. You cannot call
+`getHeight()` on a `nullptr`, which is why each child is checked before you ask
+it.
 
 ![The height of every node in three small trees. A leaf has height 1, and every other node is 1 plus the taller of its two children. The height of a tree is the height of its root.](../../figures/a14-heights.svg){#fig-heights fig-alt="Three binary search trees side by side, each node labeled with its height. Left, a root with one child: 50 with height 2, and its left child 30 with height 1; the tree's height is 2. Middle, a bushier tree: 57 with height 4; its left child 36 with height 3, whose children are 13 with height 1 and 42 with height 2, and 42 has a left child 40 with height 1; 57's right child 84 has height 2 and its right child 99 has height 1; the tree's height is 4. Right, 10, 20, 30, 40 inserted in order, a chain going right: 10 has height 4, 20 has 3, 30 has 2 and 40 has 1; the tree's height is 4."}
 
@@ -267,6 +292,9 @@ Your index prints alphabetically without any sorting code.
 ## 5. TODOs 6 and 7, index a text, twice {#the-index}
 
 **TODO 6, `indexText(words, tree)`.** Put every word into the tree and count.
+The words come from `wordsIn` in `given.cpp`: every word of `fieldnotes.txt`,
+lower-cased, with anything that is not a letter treated as a space, so `don't`
+becomes `don` and `t`.
 
 1. Loop over `words`. For each word, `insert` it into `tree` inside a `try`.
 2. If the insert succeeds, the word is new: add 1 to `report.distinct`.
@@ -323,7 +351,20 @@ ten times on twenty thousand words each.
 
 ## 7. The experiment {#the-experiment}
 
-Run `./a14` and look at what it prints, and at `results.html`.
+Run `./a14` and look at what it prints. It also writes `results.html`, a chart
+of the ten heights against `lg(N)` and the two heights from the insertion-order
+test.
+
+Your files are on the Coder server and your browser is on your laptop, so
+double-clicking `results.html` only shows you its source. Serve the folder
+instead, from your repository folder:
+
+```bash
+python3 -m http.server 8000
+```
+
+Then open `http://localhost:8000/results.html`. VS Code forwards the port for
+you.
 
 ### Ten trees from random samples
 
@@ -431,6 +472,17 @@ writing itself is not graded.
 ```bash
 make test         # all 36 checks
 ```
+
+To run the course's checks yourself, or one of them by name while you work on
+it:
+
+```bash
+make checks
+./checks "Tree: an in-order traversal comes out sorted"
+```
+
+Each check runs in its own process, so a recursion that never stops costs you
+that one check, not the whole run.
 
 ::: {.callout-important}
 **There are no hidden tests.** What you run with `make test` is exactly what the
