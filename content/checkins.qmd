@@ -513,9 +513,9 @@ Skills marked **†** are *persistent*, once taught, they can resurface in any l
       <div class="chead">F · Trees <span class="ccount">5 skills</span></div>
       <div class="srow"><span class="sid">F1</span><span class="sdesc">Implement BST insertion and traversals</span><span class="sasg">a14</span></div>
       <div class="srow"><span class="sid">F2</span><span class="sdesc">Implement BST <code>contains</code> and <code>remove</code></span><span class="sasg">in class (wk11)</span></div>
-      <div class="srow"><span class="sid">F3</span><span class="sdesc">Analyze BST complexity for best and worst cases</span><span class="sasg">in class (wk12)</span></div>
-      <div class="srow"><span class="sid">F4</span><span class="sdesc">Compute balance factors; identify when AVL rebalancing is needed</span><span class="sasg">in class (wk12)</span></div>
-      <div class="srow"><span class="sid">F5</span><span class="sdesc">Implement or trace AVL tree rotations</span><span class="sasg">in class (wk12)</span></div>
+      <div class="srow"><span class="sid">F3</span><span class="sdesc">Analyze BST complexity for best and worst cases</span><span class="sasg">in class (Nov 30)</span></div>
+      <div class="srow"><span class="sid">F4</span><span class="sdesc">Compute balance factors; identify when AVL rebalancing is needed</span><span class="sasg">in class (Nov 30)</span></div>
+      <div class="srow"><span class="sid">F5</span><span class="sdesc">Implement or trace AVL tree rotations</span><span class="sasg">in class (Nov 30)</span></div>
       <div class="sample"><b>A question might ask</b>Insert the values 5, 3, 7, 1, 4 into an empty BST. Draw the result, then give me the in-order traversal.</div>
     </div>
     <div class="ccard" style="--cc:#2c5f2e;--ccd:#86C98A">

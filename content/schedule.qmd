@@ -785,7 +785,7 @@ learning objectives are there too, folded away until you want them.
         </div>
       </details>
       <div class="alert alert-warning py-1 px-2 mb-3" style="font-size:0.85rem;">
-        ⚠️ No class Friday Nov 20. Prof. Araújo is traveling to present at AAR 2026.
+        ⚠️ No class Friday Nov 20. Prof. Araújo is traveling to present at AAR 2026. The STL set and map moves to Mon Nov 30.
       </div>
       <p style="font-size:.85em;opacity:.75;margin-top:.9rem">The STL <code>set</code> and <code>map</code> are trees underneath, you meet the library's version the same week you build one by hand.</p>
 
@@ -821,7 +821,7 @@ learning objectives are there too, folded away until you want them.
         <div class="res-val"><a href="../slides/week12.html?fs=1" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week12.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week12-bw.pdf">print version</a></div>
       </div>
       <div class="alert alert-warning py-1 px-2 mb-3" style="font-size:0.85rem;">
-        ⚠️ No classes this week. No lecture Mon Nov 23 and no labs Tue Nov 24 (Prof. Araújo is presenting at AAR 2026), then Thanksgiving break Nov 25–27. Next class Mon Nov 30.
+        ⚠️ No classes this week. No lecture Mon Nov 23 and no labs Tue Nov 24 (Prof. Araújo is presenting at AAR 2026), then Thanksgiving break Nov 25–27. AVL trees are taught on Mon Nov 30, with the STL set and map.
       </div>
 
       <details class="slo-details">
@@ -876,6 +876,9 @@ learning objectives are there too, folded away until you want them.
         <div class="res-label">🖥️ Slides</div>
         <div class="res-val"><span class="res-tbd">being written</span></div>
       </div>
+      <div class="alert alert-warning py-1 px-2 mb-3" style="font-size:0.85rem;">
+        ⚠️ Mon Nov 30: the STL set and map, and AVL trees, the two classes missed on Nov 20 and Nov 23. Parallelism starts on Wed Dec 2.
+      </div>
       <details class="slo-details">
         <summary class="slo-summary">Learning objectives <span class="slo-count">4</span></summary>
         <div class="slo-cols">
@@ -926,6 +929,9 @@ learning objectives are there too, folded away until you want them.
 
         <div class="res-label">🖥️ Slides</div>
         <div class="res-val"><span class="res-tbd">being written</span></div>
+      </div>
+      <div class="alert alert-warning py-1 px-2 mb-3" style="font-size:0.85rem;">
+        ⚠️ Wed Dec 9, the last class, combines the last two parallelism classes.
       </div>
       <details class="slo-details">
         <summary class="slo-summary">Learning objectives <span class="slo-count">2</span></summary>
