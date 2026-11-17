@@ -107,22 +107,23 @@ You book **one 20-minute appointment per window** (25 minutes in Window 1), thre
 instructor's calendar is real, and this semester it is unusually tight right
 after each window's reference date:
 
-- **Window 1 (ref. Oct 23)**, Fall Break runs Oct 16–21. Everything for
-  clusters A and B is taught by Oct 3, so you are ready now. **If you have not
-  booked yet, book this week or next.**
+- **Window 1 (ref. Oct 23)**, booking **closes on Dec 1**, a week before the
+  other windows, so that the last week of classes is left for Windows 2 and 3.
+  **If you have not had your Window 1 check-in yet, book it now.**
 - **Window 2 (ref. Nov 20)**, the instructor is away Nov 21–24 and Thanksgiving
   follows. There are no slots between Nov 21 and Nov 29. **Book on or before
   Nov 20.**
-- **Window 3 (ref. Dec 2)**, clear, but it inherits anyone who slipped out of
-  Window 2.
+- **Window 3 (ref. Dec 2)**, booking is open now. It shares the last two weeks
+  with anyone who slipped out of Window 2.
 
-Everything closes on **Dec 9**, the last day of classes. Waiting is the single
-most common way students end up unable to get an appointment at all.
+Windows 2 and 3 close on **Dec 9**, the last day of classes, and Window 1 closes
+on **Dec 1**. If everyone waits for the last week, there will not be enough
+slots for everyone.
 :::
 
 ## How to Book {#how-to-book}
 
-**Windows 1 and 2 are open.** Bookings go through the instructor's calendar, so every
+**Windows 1, 2 and 3 are open.** Bookings go through the instructor's calendar, so every
 time the page offers is a time he is actually free. Pick one that does not
 collide with your own classes.
 
@@ -133,7 +134,7 @@ collide with your own classes.
 // browser from the visitor's clock. Nothing here is decided at build time, so
 // the row stops being right only when checkin-windows.yml is wrong.
 (function () {
-  var WINDOWS = [{"n":1,"opens":"2026-09-29","reference":"2026-10-23","closes":"2026-12-09","opensLabel":"29 September","referenceLabel":"23 October","closesLabel":"9 December","url":"https://bookings.cloud.microsoft/book/AdvisingDays12@calvincollege.onmicrosoft.com/s/Tx-rOrayH0aWDoFY8HXavw2?ismsaljsauthenabled"},{"n":2,"opens":"2026-10-26","reference":"2026-11-20","closes":"2026-12-09","opensLabel":"26 October","referenceLabel":"20 November","closesLabel":"9 December","url":"https://bookings.cloud.microsoft/book/AdvisingDays12@calvincollege.onmicrosoft.com/s/L3379R65Jku52IJn63pEuw2?ismsaljsauthenabled"},{"n":3,"opens":"2026-11-16","reference":"2026-12-02","closes":"2026-12-09","opensLabel":"16 November","referenceLabel":"2 December","closesLabel":"9 December","url":null}];
+  var WINDOWS = [{"n":1,"opens":"2026-09-29","reference":"2026-10-23","closes":"2026-12-01","opensLabel":"29 September","referenceLabel":"23 October","closesLabel":"1 December","url":"https://bookings.cloud.microsoft/book/AdvisingDays12@calvincollege.onmicrosoft.com/s/Tx-rOrayH0aWDoFY8HXavw2?ismsaljsauthenabled"},{"n":2,"opens":"2026-10-26","reference":"2026-11-20","closes":"2026-12-09","opensLabel":"26 October","referenceLabel":"20 November","closesLabel":"9 December","url":"https://bookings.cloud.microsoft/book/AdvisingDays12@calvincollege.onmicrosoft.com/s/L3379R65Jku52IJn63pEuw2?ismsaljsauthenabled"},{"n":3,"opens":"2026-11-16","reference":"2026-12-02","closes":"2026-12-09","opensLabel":"16 November","referenceLabel":"2 December","closesLabel":"9 December","url":"https://bookings.cloud.microsoft/book/AdvisingDays12@calvincollege.onmicrosoft.com/s/xYK4U6h4T0Ky93uLJhBpaw2?ismsaljsauthenabled"}];
 
   function todayISO() {
     var d = new Date();
@@ -197,12 +198,8 @@ collide with your own classes.
   write the deep copy, and the copy constructor is the one question in this
   window you will not want to meet cold.
 
-- **The link stays open until Dec 9**, so Window 1 is not a deadline that
-  forces you early. The calendar is a different matter. Window 2 opens in
-  November and Window 3 in December, into the same set of hours, and Fall
-  Break takes a week of the second half of October out. A
-  Window 1 appointment in December means three check-ins in the last fortnight
-  of the semester.
+- **Window 1 bookings close on Dec 1**, a week before Windows 2 and 3, so the
+  last week of classes is left for those two.
 :::
 
 ::: {.callout-warning}

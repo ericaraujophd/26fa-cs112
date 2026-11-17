@@ -311,7 +311,7 @@ One date governs everything: **the last day of classes, Wednesday Dec 9.**
 
 **Work**, no assignment or quiz is accepted after Dec 9. Until then you may submit any assignment at any time, in any order.
 
-**Check-in bookings**, every appointment you intend to have must be **booked** by Dec 9, including any in the Final Window. The appointment itself may fall later. Final Window sessions run Dec 12–17, during exam week. What closes on Dec 9 is the ability to request one, so that the exam-week schedule can be set.
+**Check-in bookings**, every appointment you intend to have must be **booked** by Dec 9, including any in the Final Window. Window 1 closes earlier, on **Dec 1**. The appointment itself may fall later. Final Window sessions run Dec 12–17, during exam week. What closes on Dec 9 is the ability to request one, so that the exam-week schedule can be set.
 
 ::: {.callout-important}
 Booking closes **before** the appointment happens. If you wait until exam week to ask for a Final Window slot, there will be nothing to ask for, the list closed on Dec 9.

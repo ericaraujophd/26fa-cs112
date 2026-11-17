@@ -18,13 +18,14 @@
 # that quietly vanishes tells a student nothing, and "#" as a link is how the
 # front page ended up with a dead button in the first place.
 #
-# All bookings, in every window, close on the last day of classes.
+# All bookings close on the last day of classes, except Window 1, which closes
+# on Dec 1 so that Windows 2 and 3 have the last week (Eric, Nov 17).
 
 windows:
   - n: 1
     opens: 2026-09-29
     reference: 2026-10-23
-    closes: 2026-12-09
+    closes: 2026-12-01
     url: https://bookings.cloud.microsoft/book/AdvisingDays12@calvincollege.onmicrosoft.com/s/Tx-rOrayH0aWDoFY8HXavw2?ismsaljsauthenabled
 
   - n: 2
@@ -37,4 +38,4 @@ windows:
     opens: 2026-11-16
     reference: 2026-12-02
     closes: 2026-12-09
-    url: null
+    url: https://bookings.cloud.microsoft/book/AdvisingDays12@calvincollege.onmicrosoft.com/s/xYK4U6h4T0Ky93uLJhBpaw2?ismsaljsauthenabled
