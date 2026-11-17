@@ -234,6 +234,8 @@ A node's height is one more than the taller of its two subtrees:
 
 A leaf then gets 1 + 0 = 1 with no special case.
 
+![The height of every node in three small trees. A leaf has height 1, and every other node is 1 plus the taller of its two children. The height of a tree is the height of its root.](../../figures/a14-heights.svg){#fig-heights fig-alt="Three binary search trees side by side, each node labeled with its height. Left, a root with one child: 50 with height 2, and its left child 30 with height 1; the tree's height is 2. Middle, a bushier tree: 57 with height 4; its left child 36 with height 3, whose children are 13 with height 1 and 42 with height 2, and 42 has a left child 40 with height 1; 57's right child 84 has height 2 and its right child 99 has height 1; the tree's height is 4. Right, 10, 20, 30, 40 inserted in order, a chain going right: 10 has height 4, 20 has 3, 30 has 2 and 40 has 1; the tree's height is 4."}
+
 Every height in §7 comes from this method. Check it against a tree you have
 drawn on paper before you trust it.
 
