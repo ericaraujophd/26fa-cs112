@@ -23,16 +23,16 @@ Your own private GitHub repository is waiting for you (see
 
 By the end of this assignment, you will be able to:
 
-- State the binary search tree property, and explain why it makes a search cheap
-- Implement `insert`, `contains` and `getHeight` recursively, on a structure
-  with two children per node
-- Explain why an in-order traversal of a BST comes out sorted, without any
-  sorting code
-- Use `std::map` for the same job, and say what it gives you that your tree
-  does not
-- Measure the height of trees you built yourself, and compare that with
+- State the binary search tree property and explain why a search in a BST is
+  fast
+- Write `insert`, `contains` and `getHeight` as recursive functions
+- Write the inorder and postorder traversals, and explain why inorder prints
+  the items in sorted order
+- Count words with a `std::map` and compare it with your BST
+- Measure the height of BSTs built from random words and compare it with
   `lg(N)`
-- Put a number on the constant that Big-Oh throws away
+- Show how inserting sorted data turns a BST into a linked list
+- Estimate the constant `a` in `a·lg(N) + b` from your own measurements
 
 ---
 
