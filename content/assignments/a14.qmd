@@ -15,8 +15,8 @@ title: "Assignment 14: Binary Search Trees"
 Your own private GitHub repository is waiting for you (see
 [Getting the code](#getting-the-code) below), clone it and open it in VS Code.
 
-**Plan to set aside about 3 hours.** The tree (§4) is the bulk of it. Parts 2,
-3 and 4 are short once it works. Do not rush `findings.txt` (§8).
+**Plan to set aside about 3 hours.** The tree (§4, TODOs 1 to 5) is most of it.
+TODOs 6 to 8 are short once the tree works. Do not rush `findings.txt` (§8).
 :::
 
 ## Objectives
@@ -116,8 +116,9 @@ somewhere else.** Only the repository I create for you is connected to grading,
 and work done anywhere else has to be moved over by hand.
 :::
 
-`make` succeeds, `./a14` stops and tells you to do TODO 1, and `make test`
-reports **1 / 36**.
+`make` succeeds, with one warning that `myNumItems` is used uninitialized until
+you write TODO 1. `./a14` stops and tells you to do TODOs 1 and 2, and
+`make test` reports **1 / 36**.
 
 ---
 
@@ -204,7 +205,7 @@ and holds no items. Set `myRoot` to `nullptr` and `myNumItems` to 0.
 `Item` only needs `<` and `>`, so the same code works for `int` and for
 `string`.
 
-![`insert` walked twice on the tree 57, 36, 84, 13. On the left, `insert(42)`: smaller than 57, so left; bigger than 36, and 36 has no right child, so a new node for 42 goes there. On the right, `insert(36)`: smaller than 57, so left; equal to 36, so it throws and the tree does not change.](../../figures/a14-insert.svg){#fig-insert fig-alt="Two copies of the tree 57 with children 36 and 84, and 13 under 36. Left panel, insert(42): the path from 57 to 36 is highlighted, labeled 42 less than 57 go left, then 42 greater than 36 and myRight is nullptr; a new node 42 is attached as 36's right child, labeled new Node(42), a leaf. Caption: myNumItems goes up after the call returns. Right panel, insert(36): the path from 57 to 36 is highlighted and 36 is outlined in red, labeled 36 equals 36, already here, throw BSTException. Caption: nothing is added, and myNumItems does not change."}
+![`insert` walked twice on the tree 57, 36, 84, 13. On the left, `insert(42)`: smaller than 57, so left. Bigger than 36, and 36 has no right child, so a new node for 42 goes there. On the right, `insert(36)`: smaller than 57, so left. Equal to 36, so it throws and the tree does not change.](../../figures/a14-insert.svg){#fig-insert fig-alt="Two copies of the tree 57 with children 36 and 84, and 13 under 36. Left panel, insert(42): the path from 57 to 36 is highlighted, labeled 42 less than 57 go left, then 42 greater than 36 and myRight is nullptr; a new node 42 is attached as 36's right child, labeled new Node(42), a leaf. Caption: myNumItems goes up after the call returns. Right panel, insert(36): the path from 57 to 36 is highlighted and 36 is outlined in red, labeled 36 equals 36, already here, throw BSTException. Caption: nothing is added, and myNumItems does not change."}
 
 ::: {.callout-note}
 **Why throw on a duplicate?** A second copy of a value has no place to go in the
@@ -385,6 +386,7 @@ typical run:
        ...
    smallest 31   largest 36   mean 33.40   median 33.00   stdev 1.85
    lg(N) for N = 17516 is 14.10
+   duplicates per trial, on average: 2483
 ```
 
 About 17,500 distinct words, in a tree of height about **33**. A perfectly
@@ -414,12 +416,14 @@ to the right of the last one. The tree is a linked list.
 
 ![The same thing with seven words. Inserted shuffled, they make a full tree of height 3. Inserted in alphabetical order, each word goes to the right of the one before, and the tree has height 7.](../../figures/a14-shapes.svg){#fig-shapes fig-alt="Left, the words dog, bee, fox, ant, cat, eel, gnu inserted in that order: dog at the root, bee and fox under it, and ant, cat, eel, gnu as leaves; height 3. Right, ant, bee, cat, dog, eel, fox, gnu inserted in alphabetical order: each word is the right child of the one before, a diagonal chain; height 7, a linked list."}
 
-Look up a word in each:
+Then it looks up the same word in each. Your times will differ from these, but
+the gap will be about as large:
 
 ```
-   in the shuffled tree:   0.036 microseconds
-   in the sorted tree:     24.684 microseconds
-   the shape cost you a factor of 690.
+   looking up "barrier":
+     in the shuffled tree:   0.031 microseconds
+     in the sorted tree:     16.549 microseconds
+     the shape cost you a factor of 533.1.
 ```
 
 ::: {.callout-important}
@@ -459,8 +463,8 @@ what your program printed:
   `already in order` line)
 - `duplicates-per-trial`: the line `duplicates per trial, on average`
 
-The grader checks these against your own program's output. Then answer these
-four questions in the same file:
+The grader checks the first two against what your own program printed. Then
+answer these four questions in the same file:
 
 1. Is `lg(N)` or `N` a better approximation for your measured heights? Why?
 2. How much variance is there in the ten heights? Is that surprising?
@@ -477,9 +481,10 @@ You have measured both `lg(N)` and the height you got, so dividing the height
 by `lg(N)` gives you a value for `a`.
 :::
 
-Two of the four are graded on a factual point rather than on prose: **answer 1
-must start with `lg` or `N`**, and **answer 4 must start with your value for
-`a`, as a number**. The rest of each answer needs at least twenty words. The
+Two of the four are also checked for a fact. **Answer 1 must start with `lg` or
+`N`**, whichever fits your heights, and only the one that fits passes. **Answer 4
+must start with your value for `a`, as a number**, and it has to be a value
+your heights support. Each of the four answers needs at least twenty words. The
 writing itself is not graded.
 
 ---
