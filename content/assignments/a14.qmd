@@ -41,8 +41,8 @@ and **G1**/**G2** (use the STL containers), from clusters **F** and **G**.
 
 ::: {.callout-important}
 **Window 2's reference date is Friday of this week, Nov 20.** You are preparing
-for a check-in in the same week you do this, so this assignment is
-deliberately moderate. Do not let it crowd out your preparation.
+for a check-in in the same week you do this, so this assignment is shorter than
+usual.
 :::
 
 ::: {.callout-note}
@@ -50,12 +50,11 @@ deliberately moderate. Do not let it crowd out your preparation.
 Monday's lecture on the BST property and `insert` behind you. §4's TODOs 1–3
 need only Monday.
 
-TODO 7 uses `std::map`, which is **Friday's** lecture, but it is five lines
-and the comment in the file tells you what you need, so do not wait for it if
-you are ready.
+TODO 7 uses `std::map`, which is **Friday's** lecture. You can do it before
+then: §5 and the comment in `Index.cpp` give the steps.
 
-**There is no `remove` in this assignment.** Wednesday's lecture codes that one
-live, together.
+**There is no `remove` in this assignment.** We write it together in
+Wednesday's lecture.
 :::
 
 ---
@@ -139,8 +138,8 @@ reports **1 / 36**.
 | `words.txt` | no | a11's dictionary, already sorted |
 
 ::: {.callout-note}
-**Header-only, for the third time.** `BST` is a class template, so its
-definitions live in `BST.h` below the class, the same rule as `Trace` in a06,
+**Header-only.** `BST` is a class template, so its definitions live in
+`BST.h` below the class, as with `Trace` in a06,
 `List` in a08, and `Stack` and `Queue` in a10. There is no `BST.cpp`.
 :::
 
@@ -153,9 +152,8 @@ Node::insert    the recursive one, decides left or right, and either
                 recurses or attaches a new Node
 ```
 
-`BST::insert` deals with the empty tree and the count, and `Node::insert` does
-the recursion. Kept apart, each one is about four lines long, and the empty
-tree is handled in one place only.
+`contains`, `getHeight` and the traversals are split the same way: the `BST`
+version handles the empty tree, and the `Node` version does the recursion.
 
 ---
 
@@ -172,8 +170,7 @@ and holds no items. Set `myRoot` to `nullptr` and `myNumItems` to 0.
 2. Otherwise, let the root do it: `myRoot->insert(it);`
 3. Then add 1 to `myNumItems`.
 
-`Node::insert(it)` compares `it` with `myItem`. There are three cases, the three
-ways two items can compare:
+`Node::insert(it)` compares `it` with `myItem`:
 
 - `it < myItem`: it belongs on the left. If `myLeft` is `nullptr`, attach a new
   node there with `myLeft = new Node(it);`. Otherwise call
