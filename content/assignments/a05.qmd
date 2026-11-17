@@ -341,8 +341,7 @@ That is a good place to stop on Tuesday.
 
 **Before you write anything in this section, read the `setSize` that is already
 written in the middle of `Trace.cpp`.** It is the pattern you are about to use,
-spelled out, and the comments above it point at the mistake that cost spring's
-students more marks than anything else in the course.
+spelled out, and the comments above it point at the mistake to avoid.
 
 ### TODO 5, `append`
 

@@ -607,10 +607,9 @@ spreads out.
 
 ::: {.callout-important}
 **Left is always tried before right.** Every one of these lists is in strict
-priority order, and ties never go to chance. The
-version of this project that ran last spring picked left or right *at random*,
-which meant no two runs of the same world ever agreed, and nothing about it could
-be checked automatically. A fixed tie-break costs you a little realism, water
+priority order, and ties never go to chance. Picking left or right *at random*
+would mean no two runs of the same world agree, and nothing about it could be
+checked automatically. A fixed tie-break costs you a little realism, water
 leans left rather than leveling perfectly, and buys you a simulation you can
 test.
 :::

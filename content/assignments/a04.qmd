@@ -644,9 +644,8 @@ Shorter than you expect. `Lap myLaps[MAX_LAPS];` has already default-constructed
 all ten laps by the time the constructor body starts, so the whole body is one
 line: set `myNumLaps` to `0`, because no lap has been added yet.
 
-Compare that with the version of this class CS112 built last spring, which stored
-plain `int` scores and had to loop over the array zeroing every slot. Objects
-that know how to initialize themselves save you that loop.
+If the array held plain `int` scores instead, you would have to loop over it and
+set every slot to 0. Objects that initialize themselves save you that loop.
 
 ### TODO 10, `findPositionFor`
 

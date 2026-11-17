@@ -8,8 +8,8 @@ Your own private GitHub repository is waiting for you (see
 
 **Plan to set aside about 2 to 2.5 hours.** TODOs 1–5 are short and get the
 machinery working. **TODO 6 is the assignment**, it is where you make the hash
-function good, and it is the part that can run long. Spring's rule was a good
-one: stop after an hour of tuning.
+function good, and it is the part that can run long. Stop after an hour of
+tuning.
 :::
 
 ## Objectives

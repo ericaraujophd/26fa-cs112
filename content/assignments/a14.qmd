@@ -172,6 +172,8 @@ Node::insert    the recursive one, decides left or right, and either
                 recurses or attaches a new Node
 ```
 
+![A BST object and its Node objects. The BST holds only `myRoot` and `myNumItems`. Each item lives in its own Node, with `myItem` on top and the two child pointers under it. A slash is a `nullptr`.](../../figures/a14-two-classes.svg){#fig-two-classes fig-alt="On the left, a box for the BST object with two fields, myRoot and myNumItems equal to 5; myRoot points to the root node. On the right, five Node objects for 57, 36, 84, 13 and 42, each drawn as a box with the item on top and two cells under it, myLeft and myRight. 57 points left to 36 and right to 84; 36 points left to 13 and right to 42; 84, 13 and 42 have slashes in both cells, meaning nullptr."}
+
 `contains`, `getHeight` and the traversals are split the same way: the `BST`
 version handles the empty tree, and the `Node` version does the recursion.
 
@@ -201,6 +203,8 @@ and holds no items. Set `myRoot` to `nullptr` and `myNumItems` to 0.
 
 `Item` only needs `<` and `>`, so the same code works for `int` and for
 `string`.
+
+![`insert` walked twice on the tree 57, 36, 84, 13. On the left, `insert(42)`: smaller than 57, so left; bigger than 36, and 36 has no right child, so a new node for 42 goes there. On the right, `insert(36)`: smaller than 57, so left; equal to 36, so it throws and the tree does not change.](../../figures/a14-insert.svg){#fig-insert fig-alt="Two copies of the tree 57 with children 36 and 84, and 13 under 36. Left panel, insert(42): the path from 57 to 36 is highlighted, labeled 42 less than 57 go left, then 42 greater than 36 and myRight is nullptr; a new node 42 is attached as 36's right child, labeled new Node(42), a leaf. Caption: myNumItems goes up after the call returns. Right panel, insert(36): the path from 57 to 36 is highlighted and 36 is outlined in red, labeled 36 equals 36, already here, throw BSTException. Caption: nothing is added, and myNumItems does not change."}
 
 ::: {.callout-note}
 **Why throw on a duplicate?** A second copy of a value has no place to go in the
@@ -278,6 +282,8 @@ pre-order    me, left, right
 in-order     left, me, right
 post-order   left, right, me
 ```
+
+![The same tree visited by the three traversals. The gold number on each node is when that traversal visits it, which is when `processItem(out)` prints it. The output is underneath each tree.](../../figures/a14-traversals.svg){#fig-traversals fig-alt="The tree 57, with children 36 and 84; 36 has children 13 and 42; 84 has children 63 and 99. It is drawn three times. Preorder visits 57, 36, 13, 42, 84, 63, 99 and prints 57 36 13 42 84 63 99. Inorder visits 13, 36, 42, 57, 63, 84, 99 and prints them in sorted order. Postorder visits 13, 42, 36, 63, 99, 84, 57."}
 
 ::: {.callout-note}
 **Why in-order comes out sorted.** Everything to the left of a node is smaller
@@ -406,6 +412,8 @@ order they already sit in `words.txt`, which is alphabetical.
 Height 5,000. Each word is greater than the one before it, so each new word goes
 to the right of the last one. The tree is a linked list.
 
+![The same thing with seven words. Inserted shuffled, they make a full tree of height 3. Inserted in alphabetical order, each word goes to the right of the one before, and the tree has height 7.](../../figures/a14-shapes.svg){#fig-shapes fig-alt="Left, the words dog, bee, fox, ant, cat, eel, gnu inserted in that order: dog at the root, bee and fox under it, and ant, cat, eel, gnu as leaves; height 3. Right, ant, bee, cat, dog, eel, fox, gnu inserted in alphabetical order: each word is the right child of the one before, a diagonal chain; height 7, a linked list."}
+
 Look up a word in each:
 
 ```
@@ -442,8 +450,17 @@ than the shuffled one.
 
 ## 8. TODO 9, `findings.txt` {#findings}
 
-Three numbers from your own run, and four questions, the same four as in
-spring.
+Fill in `findings.txt` after you run `./a14`. First copy three numbers from
+what your program printed:
+
+- `mean-height`: the mean of the ten trial heights (the `mean` on the
+  statistics line)
+- `sorted-height`: the height of the tree built from the words in order (the
+  `already in order` line)
+- `duplicates-per-trial`: the line `duplicates per trial, on average`
+
+The grader checks these against your own program's output. Then answer these
+four questions in the same file:
 
 1. Is `lg(N)` or `N` a better approximation for your measured heights? Why?
 2. How much variance is there in the ten heights? Is that surprising?
