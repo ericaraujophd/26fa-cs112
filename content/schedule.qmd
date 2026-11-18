@@ -785,7 +785,7 @@ learning objectives are there too, folded away until you want them.
         </div>
       </details>
       <div class="alert alert-warning py-1 px-2 mb-3" style="font-size:0.85rem;">
-        ⚠️ No class Friday Nov 20. Prof. Araújo is traveling to present at AAR 2026. The STL set and map moves to Mon Nov 30.
+        ⚠️ No class Friday Nov 20. Prof. Araújo is traveling to present at AAR 2026. The STL set and map moves to Wed Dec 2.
       </div>
       <p style="font-size:.85em;opacity:.75;margin-top:.9rem">The STL <code>set</code> and <code>map</code> are trees underneath, you meet the library's version the same week you build one by hand.</p>
 
@@ -821,7 +821,7 @@ learning objectives are there too, folded away until you want them.
         <div class="res-val"><a href="../slides/week12.html?fs=1" target="_blank" rel="noopener">view online</a><span class="res-sep">·</span><a href="../slides/week12.pdf">PDF</a><span class="res-sep">·</span><a href="../slides/week12-bw.pdf">print version</a></div>
       </div>
       <div class="alert alert-warning py-1 px-2 mb-3" style="font-size:0.85rem;">
-        ⚠️ No classes this week. No lecture Mon Nov 23 and no labs Tue Nov 24 (Prof. Araújo is presenting at AAR 2026), then Thanksgiving break Nov 25–27. AVL trees move to Wed Dec 2.
+        ⚠️ No classes this week. No lecture Mon Nov 23 and no labs Tue Nov 24 (Prof. Araújo is presenting at AAR 2026), then Thanksgiving break Nov 25–27. AVL trees move to Mon Nov 30.
       </div>
 
       <details class="slo-details">
@@ -877,7 +877,7 @@ learning objectives are there too, folded away until you want them.
         <div class="res-val"><span class="res-tbd">being written</span></div>
       </div>
       <div class="alert alert-warning py-1 px-2 mb-3" style="font-size:0.85rem;">
-        ⚠️ Mon Nov 30: the STL set and map. Wed Dec 2: AVL trees. These are the two classes missed on Nov 20 and Nov 23. Parallelism starts on Fri Dec 4.
+        ⚠️ Mon Nov 30: AVL trees. Tue Dec 1: no new lab, a catch-up lab for a14 and check-in preparation. Wed Dec 2: the STL set and map. These are the two classes missed on Nov 20 and Nov 23. Fri Dec 4: parallelism, the basic concepts.
       </div>
       <details class="slo-details">
         <summary class="slo-summary">Learning objectives <span class="slo-count">4</span></summary>
@@ -931,7 +931,7 @@ learning objectives are there too, folded away until you want them.
         <div class="res-val"><span class="res-tbd">being written</span></div>
       </div>
       <div class="alert alert-warning py-1 px-2 mb-3" style="font-size:0.85rem;">
-        ⚠️ Parallelism takes three classes: Fri Dec 4, Mon Dec 7 and Wed Dec 9. The last one also recaps the course.
+        ⚠️ Mon Dec 7: OpenMP. Tue Dec 8: a15 starts in lab. Wed Dec 9: parallel experiments, and a recap of the course.
       </div>
       <details class="slo-details">
         <summary class="slo-summary">Learning objectives <span class="slo-count">2</span></summary>

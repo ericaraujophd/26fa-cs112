@@ -90,7 +90,7 @@
 <section>
   <h2>This Week</h2>
   <ul class="agenda-list">
-    <li><div class="agenda-num">1</div> Last week's problem</li>
+    <li><div class="agenda-num">1</div> The sorted-input problem</li>
     <li><div class="agenda-num">2</div> A self-balancing BST</li>
     <li><div class="agenda-num">3</div> Balance factor</li>
     <li><div class="agenda-num">4</div> A rotation</li>
@@ -100,7 +100,7 @@
 </section>
 
 <section>
-  <h2>Last Week's Problem</h2>
+  <h2>The Sorted-Input Problem</h2>
   <div class="two-col">
     <div>
       <h3>10, 20, 30, 40 in order</h3>
@@ -117,7 +117,7 @@
   <circle class="tree-node" cx="264" cy="158" r="21"/>
   <text class="tree-lbl" x="264" y="164" text-anchor="middle">40</text>
   </svg>
-      <p style="font-size:0.55em">height 3, find is <strong>O(n)</strong></p>
+      <p style="font-size:0.55em">height 4, find is <strong>O(n)</strong></p>
     </div>
     <div>
       <h3>The same values, balanced</h3>
@@ -134,7 +134,7 @@
   <circle class="tree-node" cx="264" cy="143" r="21"/>
   <text class="tree-lbl" x="264" y="149" text-anchor="middle">40</text>
   </svg>
-      <p style="font-size:0.55em">height 2, find is <strong>O(lg n)</strong></p>
+      <p style="font-size:0.55em">height 3, find is <strong>O(lg n)</strong></p>
     </div>
   </div>
   <div class="callout callout-maroon">Sorted input is not exotic; it's the most natural way data arrives. A BST that degrades on sorted input degrades on real data.</div>
@@ -298,8 +298,8 @@ Node* rotateRight(Node *p) {
     <path d="M243,12 C241,5 246,2 244,-6 C251,-1 250,6 247,12 Z" fill="#E8873A" opacity=".75"/>
     <rect x="40" y="10" width="240" height="150" rx="9" fill="#1e1f1a" stroke="#C49A2C" stroke-width="3"/>
     <text x="58" y="46" font-family="'Fira Code',Consolas,monospace" font-size="15.0" fill="#9be36b">$ ./avl_demo --sorted</text>
-    <text x="58" y="76" font-family="'Fira Code',Consolas,monospace" font-size="13.0" fill="#ff7b72">inserted 1000 values</text>
-    <text x="58" y="96" font-family="'Fira Code',Consolas,monospace" font-size="13.0" fill="#ff7b72">height: 9  (BST was 999)</text>
+    <text x="58" y="76" font-family="'Fira Code',Consolas,monospace" font-size="12.9" fill="#ff7b72">inserted 1000 values</text>
+    <text x="58" y="96" font-family="'Fira Code',Consolas,monospace" font-size="12.9" fill="#ff7b72">height: 10  (BST was 1000)</text>
     <text x="58" y="134" font-family="'Fira Code',Consolas,monospace" font-size="15" fill="#9be36b">$</text>
     <rect x="72" y="122" width="9" height="15" fill="#9be36b"/>
     <path d="M22,168 L298,168 L314,196 L6,196 Z" fill="#eceae3" stroke="#8d8d86" stroke-width="2.5" stroke-linejoin="round"/>
@@ -329,7 +329,7 @@ Node* rotateRight(Node *p) {
       </ul>
     </div>
   </div>
-  <div class="callout">The STL's <code>map</code> and <code>set</code> are balanced trees, usually red-black rather than AVL, same guarantee, fewer rotations on insert. You'll meet them next week.</div>
+  <div class="callout">The STL's <code>map</code> and <code>set</code> are balanced trees, usually red-black rather than AVL, same guarantee, fewer rotations on insert. You meet them on Wednesday.</div>
 </section>
 
 <section class="closing-slide" data-background-color="#6E1C2E">

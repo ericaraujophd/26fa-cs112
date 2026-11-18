@@ -16,24 +16,34 @@
 lectures:
   # Eric at AAR 2026, Nov 20 to 24, then Thanksgiving (Nov 17).
   - date: 2026-11-20
-    title: "No class (Prof. Araújo at AAR 2026). The STL set and map moves to Mon Nov 30"
+    title: "No class (Prof. Araújo at AAR 2026). The STL set and map moves to Wed Dec 2"
   - date: 2026-11-23
     day: Mon
     title: "No class (Prof. Araújo at AAR 2026), and no labs Tue Nov 24"
   # The two lost classes, taught when we are back, and parallelism cut to
   # three classes (Eric, Nov 17: "two or three is more than enough").
+  # AVL first: a14 already practices the map (TODO 7), AVL is only taught in
+  # class, and Window 3's reference date is Dec 2 (Eric left the order to me).
   - date: 2026-11-30
     day: Mon
-    title: "The STL set and map (moved from Nov 20)"
+    title: "AVL trees (moved from Nov 23)"
+  - date: 2026-12-01
+    day: Tue
+    title: "Lab: no new lab. Catch up on a14 and prepare for your check-ins"
   - date: 2026-12-02
     day: Wed
-    title: "AVL trees (moved from Nov 23)"
+    title: "The STL set and map (moved from Nov 20)"
+  # The parallelism classes follow spring's Multiprocessing deck: the basic
+  # concepts first, then OpenMP.
   - date: 2026-12-04
     day: Fri
-    title: "Parallelism 1: Moore's law and fork-join"
+    title: "Parallelism, the basic concepts: Moore's law, cores and threads"
   - date: 2026-12-07
     day: Mon
-    title: "Parallelism 2: OpenMP"
+    title: "OpenMP: #pragma omp parallel and parallel for"
+  - date: 2026-12-08
+    day: Tue
+    title: "Lab: a15 starts"
   - date: 2026-12-09
     day: Wed
-    title: "Parallelism 3: experiments, and course recap"
+    title: "Parallel experiments, and course recap"
