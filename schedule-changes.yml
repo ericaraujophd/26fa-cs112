@@ -20,11 +20,20 @@ lectures:
   - date: 2026-11-23
     day: Mon
     title: "No class (Prof. Araújo at AAR 2026), and no labs Tue Nov 24"
-  # The two lost classes, combined into the first class back (Nov 17).
+  # The two lost classes, taught when we are back, and parallelism cut to
+  # three classes (Eric, Nov 17: "two or three is more than enough").
   - date: 2026-11-30
     day: Mon
-    title: "The STL set and map, and AVL trees (moved from Nov 20 and Nov 23)"
-  # Parallelism starts two classes late; the last two classes are one (Nov 17).
+    title: "The STL set and map (moved from Nov 20)"
+  - date: 2026-12-02
+    day: Wed
+    title: "AVL trees (moved from Nov 23)"
+  - date: 2026-12-04
+    day: Fri
+    title: "Parallelism 1: Moore's law and fork-join"
+  - date: 2026-12-07
+    day: Mon
+    title: "Parallelism 2: OpenMP"
   - date: 2026-12-09
     day: Wed
-    title: "Last class: the last two parallelism classes, combined"
+    title: "Parallelism 3: experiments, and course recap"
