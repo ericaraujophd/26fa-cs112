@@ -422,9 +422,9 @@ Each assignment **opens on the Monday of its week**. You can see the whole term 
         <span class="asg-id">a15</span>
         <span class="asg-status asg-soon">Coming soon</span>
       </div>
-      <div class="asg-name">Parallelism with OpenMP</div>
-      <div class="asg-desc">Matrix operations parallelized with OpenMP, and timed.</div>
-      <div class="asg-note">spans both weeks · outline available now</div>
+      <div class="asg-name">Faster Genome Scanning</div>
+      <div class="asg-desc">Joel Adams' lab: count CAT in the cat genome, then make it faster with OpenMP.</div>
+      <div class="asg-note">done in the Tuesday Dec 8 lab</div>
     </a>
   </div>
 </section>

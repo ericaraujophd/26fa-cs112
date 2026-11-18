@@ -1,57 +1,79 @@
 ---
-title: "Assignment 15: Parallelism with OpenMP"
-subtitle: "Weeks 13–14 · Nov 30 – Dec 9"
+title: "Assignment 15: Faster Genome Scanning"
+subtitle: "Week 14 · Tuesday Dec 8 lab"
 ---
 
 ```{=html}
-<a class="lab-open-btn" href="../../slides/lab-opening-w13.html?fs=1"
+<a class="lab-open-btn" href="../../slides/lab-opening-w14.html?fs=1"
    target="_blank" rel="noopener">
   <span class="lab-open-ico">&#9654;</span>
-  Lab opening &middot; Week 13
+  Lab opening &middot; Week 14
   <span class="lab-open-sub">full screen</span>
 </a>
 ```
 
 ::: {.callout-note}
-**Not published yet.** This page fills in before week 13 begins. The outline
-below is what the assignment is being built to cover, a preview, not a
-specification. Nothing here is final.
-
-This is the only assignment that spans **two weeks**: it starts in week 13 and
-concludes in week 14, so budget accordingly.
+**This is Joel Adams' lab, and his page has the instructions.** Do it in the
+lab on **Tuesday Dec 8**. It follows Friday's and Monday's classes on
+parallelism and OpenMP.
 :::
 
-## What it will cover
+## Objectives
 
-This assignment closes out the course by taking a data structure you already
-know and making it faster on hardware you already have, the last of the five
-course outcomes, *use parallel computing techniques to improve algorithm
-performance and measure the improvement*.
+Joel's page lists them: profiling, compile-time optimization, multicore CPUs,
+threads, and OpenMP. You take a program that counts how often a short DNA
+sequence (`CAT`) appears in the cat genome, about 2.5 billion characters, and
+make it faster, first by improving the sequential code and then by running it
+on several threads.
 
-By the end of it, you will be able to:
+## The instructions
 
-- Describe Moore's law, and why manufacturers stopped raising clock speed
-- Describe the fork-join paradigm, and where it fits a loop over a matrix
-- Use `#pragma omp parallel for` to parallelise a loop
-- Reason about how memory access patterns affect parallel speed-up
-- Compare timings across scheduling strategies and justify the difference
-- Explain the speed-up you measured, including the cases where parallelism
-  did not help
+```{=html}
+<p style="text-align:center;margin:1.2rem 0">
+  <a class="btn btn-primary" href="https://cs.calvin.edu/courses/cs/112/adams/labs/genScan/"
+     target="_blank" rel="noopener">Faster Genome Scanning, by Joel Adams &#8599;</a>
+</p>
+```
 
-## Shape of the work
+Follow his page from the top. Part I makes the sequential program faster.
+Part II runs it on several threads with OpenMP.
 
-Matrix operations are the vehicle. They are easy to state, expensive enough to
-time honestly, and they reward thinking about how memory is walked rather than
-just how many cores are thrown at the problem.
+## Getting the Code {#getting-the-code}
 
-As with every assignment this term, the measuring and the write-up carry real
-weight. A correct parallel loop that you cannot explain is not the goal.
+Your private GitHub repository for this assignment is created for you inside
+the course organization, with Joel's starting code already in it:
+`genScan.cpp`, `OO_MPI_IO.h` and the `Makefile`. **Skip the step on his page
+that downloads those three files.** You already have them.
 
-## Before it opens
+```bash
+gh repo clone 26fa-cs112/cs112-a15-YOURUSERNAME
+cd cs112-a15-YOURUSERNAME
+make
+```
 
-Nothing to do yet. When the page fills in, it will follow the same structure as
-the rest: objectives, getting the code, the parts in order, and what to submit.
+If `gh repo clone` cannot find your repository, see
+[Getting the Code in a14](a14.qmd#getting-the-code): the same steps apply.
 
-In the meantime, [the schedule](../schedule.html) lists the readings and slides
-for weeks 13 and 14, and [Skills & Check-Ins](../checkins.html) shows which
-skills this assignment gives you evidence for.
+::: {.callout-warning}
+**Do not put the genome in your repository folder.** It is about 2.5 GB. Keep
+it in `/tmp`, as the lab says. GitHub refuses a file that large, and every push
+after it would fail.
+:::
+
+## What to Submit
+
+1. Your final `genScan.cpp` and `Makefile`.
+2. The lab's spreadsheet, both tabs, each exported as a PDF and saved in your
+   repository as `sequential.pdf` and `parallel.pdf`.
+
+```bash
+git add genScan.cpp Makefile sequential.pdf parallel.pdf
+git commit -m "Complete a15"
+git push
+```
+
+::: {.callout-important}
+Put your name at the top of `README.md` before your final push.
+:::
+
+There is no `make test` for this one. It is graded on what you submit.
